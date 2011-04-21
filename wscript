@@ -134,6 +134,12 @@ def build(bld):
         target = 'flu')
 
     bld(
+        features = 'fc fcprogram',
+        source = ['LuaFortran/examples/test.f90'],
+        use = 'flu',
+        target = 'sample')
+
+    bld(
         features = 'c cprogram',
         use = 'lualib',
         source = lua_sources,
