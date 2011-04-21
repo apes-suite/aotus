@@ -105,7 +105,7 @@ contains
 
     c_index = index
     c_string = lua_tolstring(L%state, c_index, c_len)
-    len = c_len
+    len = int(c_len,kind=kind(len))
     string_shape(1) = len
     call c_f_pointer(c_string, string, string_shape)
   end function flu_tolstring
@@ -117,11 +117,11 @@ contains
     real :: number
 
     integer(kind=c_int) :: c_index
-    integer(kind=c_double) :: c_number
+    real(kind=c_double) :: c_number
 
     c_index = index
     c_number = lua_tonumber(L%state, c_index)
-    number = c_number
+    number = real(c_number, kind=kind(number))
   end function flu_tonumber
 
 
