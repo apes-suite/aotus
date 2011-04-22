@@ -74,6 +74,7 @@ contains
         ErrCode = ibSet(ErrCode, aoterr_Fatal)
       end if
     end if
+    call flu_pop(conf)
 
   end subroutine get_config_real
 
