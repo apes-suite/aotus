@@ -112,6 +112,8 @@ def build(bld):
     flu_sources = ['LuaFortran/lua_fif.f90',
                    'LuaFortran/flu_binding.f90']
 
+    aotus_sources = ['aotus_module.f90']
+
     bld(
         features = 'c',
         source = core_sources + lib_sources,
@@ -120,18 +122,32 @@ def build(bld):
 
     bld(
         features = 'c cstlib',
-        source = core_sources + lib_sources,
         defines = ['LUA_USE_LINUX'],
-        stlib = bld.env['STLIBS'],
         use = 'luaobjs',
         name = 'lualib',
         target = 'lua')
 
     bld(
-        features = 'fc fcstlib',
+        features = 'fc',
         source = flu_sources,
-        use = 'luaobjs',
+        target = 'fluobjs')
+
+    bld(
+        features = 'fc fcstlib',
+        use = ['luaobjs', 'fluobjs'],
         target = 'flu')
+
+    bld(
+        features = 'fc fcstlib',
+        source = aotus_sources,
+        use = ['luaobjs', 'fluobjs'],
+        target = 'aotus')
+
+    bld(
+        features = 'fc fcprogram',
+        source = ['test/aotus_test.f90'],
+        use = 'aotus',
+        target = 'aotus_test')
 
     bld(
         features = 'fc fcprogram',

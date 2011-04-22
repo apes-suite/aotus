@@ -15,7 +15,7 @@ module flu_binding
 
   public :: flu_close
   public :: flu_getfield, flu_getglobal
-  public :: flu_isnumber
+  public :: flu_isnumber, flu_isNoneOrNil
   public :: flu_pcall
   public :: flu_tolstring, flu_tonumber
 
@@ -66,9 +66,22 @@ contains
 
     integer(kind=c_int) :: c_index
 
-    c_index = index
-    is_number = (lua_isnumber(L%state, c_index).eq.1)
+    c_index = int(index, kind = c_int)
+    is_number = (lua_isnumber(L%state, c_index) .eq. 1)
   end function flu_isnumber
+
+
+  function flu_isNoneOrNil(L, index) result(is_NoneOrNil)
+    type(flu_State) :: L
+    integer         :: index
+    logical         :: is_NoneOrNil
+
+    integer(kind=c_int) :: c_index
+
+    c_index = int(index, kind = c_int)
+    !! Only defined as a Macro, using lua_type:
+    is_NoneOrNil = (lua_Type(L%state, c_index) <= 0)
+  end function flu_isNoneOrNil
 
 
   function flu_pcall(L, nargs, nresults, errfunc) result(errcode)

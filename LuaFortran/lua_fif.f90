@@ -29,7 +29,14 @@ module lua_fif
       type(c_ptr), value :: L
     end subroutine lua_close
 
-    function lua_isnumber(L, index) bind(c, name="lua_isnumber")
+    function lua_type(L, index) bind(c, name="lua_type")
+      use, intrinsic :: iso_c_binding
+      type(c_ptr), value :: L
+      integer(kind=c_int), value :: index
+      integer(kind=c_int) :: lua_type
+    end function lua_type
+
+    function lua_isNumber(L, index) bind(c, name="lua_isnumber")
       use, intrinsic :: iso_c_binding
       type(c_ptr), value :: L
       integer(kind=c_int), value :: index
