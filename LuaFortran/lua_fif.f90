@@ -24,17 +24,16 @@ module lua_fif
       character(kind=c_char), dimension(*) :: k
     end subroutine lua_getfield
 
+    function lua_gettop(L) bind(c, name="lua_gettop")
+      use, intrinsic :: iso_c_binding
+      type(c_ptr), value :: L
+      integer(kind=c_int) :: lua_gettop
+    end function lua_gettop
+
     subroutine lua_close(L) bind(c, name="lua_close")
       use, intrinsic :: iso_c_binding
       type(c_ptr), value :: L
     end subroutine lua_close
-
-    function lua_type(L, index) bind(c, name="lua_type")
-      use, intrinsic :: iso_c_binding
-      type(c_ptr), value :: L
-      integer(kind=c_int), value :: index
-      integer(kind=c_int) :: lua_type
-    end function lua_type
 
     function lua_isNumber(L, index) bind(c, name="lua_isnumber")
       use, intrinsic :: iso_c_binding
@@ -42,6 +41,20 @@ module lua_fif
       integer(kind=c_int), value :: index
       integer(kind=c_int) :: lua_isnumber
     end function lua_isnumber
+
+    function lua_isTable(L, index) bind(c, name="lua_isTable")
+      use, intrinsic :: iso_c_binding
+      type(c_ptr), value :: L
+      integer(kind=c_int), value :: index
+      integer(kind=c_int) :: lua_isTable
+    end function lua_isTable
+
+    function lua_next(L, index) bind(c, name="lua_next")
+      use, intrinsic :: iso_c_binding
+      type(c_ptr), value :: L
+      integer(kind=c_int), value :: index
+      integer(kind=c_int) :: lua_next
+    end function lua_next
 
     function lua_pcall(L, nargs, nresults, errfunc) bind(c, name="lua_pcall")
       use, intrinsic :: iso_c_binding
@@ -51,6 +64,17 @@ module lua_fif
       integer(kind=c_int), value :: errfunc
       integer(kind=c_int) :: lua_pcall
     end function lua_pcall
+
+    subroutine lua_pop(L, n) bind(c, name="lua_pop")
+      use, intrinsic :: iso_c_binding
+      type(c_ptr), value :: L
+      integer(kind=c_int), value :: n
+    end subroutine lua_pop
+
+    subroutine lua_pushnil(L) bind(c, name="lua_pushnil")
+      use, intrinsic :: iso_c_binding
+      type(c_ptr), value :: L
+    end subroutine lua_pushnil
 
     function lua_tolstring(L, index, len) bind(c, name="lua_tolstring")
       use, intrinsic :: iso_c_binding
@@ -66,6 +90,13 @@ module lua_fif
       integer(kind=c_int), value :: index
       real(kind=c_double) :: lua_tonumber
     end function lua_tonumber
+
+    function lua_type(L, index) bind(c, name="lua_type")
+      use, intrinsic :: iso_c_binding
+      type(c_ptr), value :: L
+      integer(kind=c_int), value :: index
+      integer(kind=c_int) :: lua_type
+    end function lua_type
 
   end interface
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

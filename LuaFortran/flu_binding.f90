@@ -18,6 +18,7 @@ module flu_binding
   public :: flu_isnumber, flu_isNoneOrNil
   public :: flu_pcall
   public :: flu_tolstring, flu_tonumber
+  public :: flu_pop
 
   public :: fluL_loadfile, fluL_newstate, fluL_openlibs
 
@@ -59,6 +60,14 @@ contains
   end subroutine flu_getglobal
 
 
+  function flu_gettop(L) result(stacktop)
+    type(flu_state) :: L
+    integer :: stacktop
+
+    stacktop = int(lua_gettop(L%state), kind=kind(stacktop))
+  end function flu_gettop
+
+
   function flu_isnumber(L, index) result(is_number)
     type(flu_State) :: L
     integer         :: index
@@ -69,6 +78,18 @@ contains
     c_index = int(index, kind = c_int)
     is_number = (lua_isnumber(L%state, c_index) .eq. 1)
   end function flu_isnumber
+
+
+  function flu_isTable(L, index) result(is_Table)
+    type(flu_State) :: L
+    integer         :: index
+    logical         :: is_Table
+
+    integer(kind=c_int) :: c_index
+
+    c_index = int(index, kind = c_int)
+    is_Table = (lua_isTable(L%state, c_index) .eq. 1)
+  end function flu_isTable
 
 
   function flu_isNoneOrNil(L, index) result(is_NoneOrNil)
@@ -82,6 +103,18 @@ contains
     !! Only defined as a Macro, using lua_type:
     is_NoneOrNil = (lua_Type(L%state, c_index) <= 0)
   end function flu_isNoneOrNil
+
+
+  function flu_next(L, index) result(exists)
+    type(flu_State) :: L
+    integer, intent(in) :: index
+    logical :: exists
+
+    integer(kind=c_int) :: retCode
+
+    retCode = lua_next(L%state, index)
+    exists = (retCode /= 0)
+  end function flu_next
 
 
   function flu_pcall(L, nargs, nresults, errfunc) result(errcode)
@@ -103,6 +136,25 @@ contains
     c_errcode = lua_pcall(L%state, c_nargs, c_nresults, c_errfunc)
     errcode = c_errcode
   end function flu_pcall
+
+
+  subroutine flu_pop(L, n)
+    type(flu_State) :: L
+    integer, optional, intent(in) :: n
+
+    integer(kind=c_int) :: n_c
+
+    n = 1
+    if (present(n)) n_c = n
+    call lua_pop(L%state, n_c)
+  end subroutine flu_pop
+
+
+  subroutine flu_pushnil(L)
+    type(flu_State) :: L
+
+    call lua_pushnil(L%state)
+  end subroutine flu_pushnil
 
 
   function flu_tolstring(L, index, len) result(string)
