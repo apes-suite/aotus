@@ -14,11 +14,13 @@ module flu_binding
   public :: flu_State
 
   public :: flu_close
-  public :: flu_getfield, flu_getglobal
-  public :: flu_isnumber, flu_isNoneOrNil
+  public :: flu_getField, flu_getGlobal, flu_getTop
+  public :: flu_isnumber, flu_isNoneOrNil, flu_isTable
   public :: flu_pcall
+  public :: flu_next
   public :: flu_tolstring, flu_tonumber
   public :: flu_pop
+  public :: flu_pushnil
 
   public :: fluL_loadfile, fluL_newstate, fluL_openlibs
 
@@ -88,7 +90,8 @@ contains
     integer(kind=c_int) :: c_index
 
     c_index = int(index, kind = c_int)
-    is_Table = (lua_isTable(L%state, c_index) .eq. 1)
+    !! Only defined as a Macro, using lua_type:
+    is_Table = (lua_type(L%state, c_index) == LUA_TTABLE)
   end function flu_isTable
 
 
@@ -144,9 +147,9 @@ contains
 
     integer(kind=c_int) :: n_c
 
-    n = 1
-    if (present(n)) n_c = n
-    call lua_pop(L%state, n_c)
+    n_c = -2
+    if (present(n)) n_c = -n-1
+    call lua_settop(L%state, n_c)
   end subroutine flu_pop
 
 

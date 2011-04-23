@@ -112,7 +112,8 @@ def build(bld):
     flu_sources = ['LuaFortran/lua_fif.f90',
                    'LuaFortran/flu_binding.f90']
 
-    aotus_sources = ['aotus_module.f90']
+    aotus_sources = ['aotus_module.f90',
+                     'aot_table_module.f90']
 
     bld(
         features = 'c',

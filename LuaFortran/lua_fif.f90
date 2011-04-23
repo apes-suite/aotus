@@ -9,6 +9,7 @@ module lua_fif
 
   ! lua constants
   integer(kind=c_int), parameter :: LUA_GLOBALSINDEX = -10002
+  integer(kind=c_int), parameter :: LUA_TTABLE = 5
 
 
 
@@ -42,13 +43,6 @@ module lua_fif
       integer(kind=c_int) :: lua_isnumber
     end function lua_isnumber
 
-    function lua_isTable(L, index) bind(c, name="lua_isTable")
-      use, intrinsic :: iso_c_binding
-      type(c_ptr), value :: L
-      integer(kind=c_int), value :: index
-      integer(kind=c_int) :: lua_isTable
-    end function lua_isTable
-
     function lua_next(L, index) bind(c, name="lua_next")
       use, intrinsic :: iso_c_binding
       type(c_ptr), value :: L
@@ -65,16 +59,16 @@ module lua_fif
       integer(kind=c_int) :: lua_pcall
     end function lua_pcall
 
-    subroutine lua_pop(L, n) bind(c, name="lua_pop")
-      use, intrinsic :: iso_c_binding
-      type(c_ptr), value :: L
-      integer(kind=c_int), value :: n
-    end subroutine lua_pop
-
     subroutine lua_pushnil(L) bind(c, name="lua_pushnil")
       use, intrinsic :: iso_c_binding
       type(c_ptr), value :: L
     end subroutine lua_pushnil
+
+    subroutine lua_settop(L, index) bind(c, name="lua_settop")
+      use, intrinsic :: iso_c_binding
+      type(c_ptr), value :: L
+      integer(kind=c_int), value :: index
+    end subroutine lua_settop
 
     function lua_tolstring(L, index, len) bind(c, name="lua_tolstring")
       use, intrinsic :: iso_c_binding
