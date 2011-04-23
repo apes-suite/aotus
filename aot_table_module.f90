@@ -54,4 +54,20 @@ contains
     end if
   end function aot_table_first
 
+  !> Count the entries in a lua table.
+  function aot_table_length(L, thandle) result(length)
+    type(flu_state) :: L
+    integer, intent(in) :: thandle
+    integer :: length
+
+    length = 0
+    if (aot_table_first(L, thandle)) then
+      do
+        length = length + 1
+        call flu_pop(L)
+        if (.not. flu_next(L, thandle)) exit
+      end do
+    end if
+  end function aot_table_length
+
 end module aot_table_module

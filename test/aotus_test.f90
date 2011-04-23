@@ -44,6 +44,7 @@ program aotus_test
 
   stl_table = aot_table_global(L = conf, table_name = 'stl_files')
   if (stl_table /= 0) then
+    write(*,*) 'There are ', aot_table_length(L=conf, thandle=stl_table), ' entries'
     if (aot_table_first(L=conf, thandle=stl_table)) then
       do
         write(*,*) 'Process entry in stl_table'
