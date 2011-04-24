@@ -15,10 +15,10 @@ module flu_binding
 
   public :: flu_close
   public :: flu_getField, flu_getGlobal, flu_getTop
-  public :: flu_isnumber, flu_isNoneOrNil, flu_isTable
+  public :: flu_isnumber, flu_isNoneOrNil, flu_isTable, flu_isBoolean
   public :: flu_pcall
   public :: flu_next
-  public :: flu_tolstring, flu_tonumber
+  public :: flu_tolstring, flu_tonumber, flu_toboolean
   public :: flu_pop
   public :: flu_pushnil
 
@@ -68,6 +68,19 @@ contains
 
     stacktop = int(lua_gettop(L%state), kind=kind(stacktop))
   end function flu_gettop
+
+
+  function flu_isBoolean(L, index) result(is_boolean)
+    type(flu_State) :: L
+    integer         :: index
+    logical         :: is_boolean
+
+    integer(kind=c_int) :: c_index
+
+    c_index = int(index, kind = c_int)
+    !! Only defined as a Macro, using lua_type:
+    is_boolean = (lua_type(L%state, c_index) == LUA_TBOOLEAN)
+  end function flu_isBoolean
 
 
   function flu_isnumber(L, index) result(is_number)
@@ -191,6 +204,18 @@ contains
     c_number = lua_tonumber(L%state, c_index)
     number = real(c_number, kind=kind(number))
   end function flu_tonumber
+
+
+  function flu_toBoolean(L, index) result(bool)
+    type(flu_State) :: L
+    integer :: index
+    logical :: bool
+
+    integer(kind=c_int) :: c_index
+
+    c_index = index
+    bool = (lua_toBoolean(L%state, c_index) == 1)
+  end function flu_toBoolean
 
 
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

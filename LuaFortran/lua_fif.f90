@@ -9,6 +9,7 @@ module lua_fif
 
   ! lua constants
   integer(kind=c_int), parameter :: LUA_GLOBALSINDEX = -10002
+  integer(kind=c_int), parameter :: LUA_TBOOLEAN = 1
   integer(kind=c_int), parameter :: LUA_TTABLE = 5
 
 
@@ -84,6 +85,13 @@ module lua_fif
       integer(kind=c_int), value :: index
       real(kind=c_double) :: lua_tonumber
     end function lua_tonumber
+
+    function lua_toboolean(L, index) bind(c, name="lua_toboolean")
+      use, intrinsic :: iso_c_binding
+      type(c_ptr), value :: L
+      integer(kind=c_int), value :: index
+      integer(kind=c_int) :: lua_toboolean
+    end function lua_toboolean
 
     function lua_type(L, index) bind(c, name="lua_type")
       use, intrinsic :: iso_c_binding
