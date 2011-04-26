@@ -156,13 +156,13 @@ def build(bld):
         use = 'flu',
         target = 'sample')
 
-    bld(
-        features = 'c cprogram',
-        use = 'lualib',
-        source = lua_sources,
-        defines = ['LUA_USE_LINUX'],
-        stlib = bld.env['STLIBS'],
-        target = 'lua')
+#    bld(
+#        features = 'c cprogram',
+#        use = 'lualib',
+#        source = lua_sources,
+#        defines = ['LUA_USE_LINUX'],
+#        stlib = bld.env['STLIBS'],
+#        target = 'lua')
 
 
 from waflib.Build import BuildContext
