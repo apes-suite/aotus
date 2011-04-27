@@ -67,7 +67,7 @@ def configure(conf):
     }[buildsys]
 
     # Flags for the debug variant
-    conf.env['FCFLAGS'] = fcopts[conf.env.FC_NAME, 'warn'] + fcopts[conf.env.FC_NAME, 'optimize']
+    conf.env['FCFLAGS'] = fcopts[conf.env.FC_NAME, 'warn']# + fcopts[conf.env.FC_NAME, 'optimize']
     conf.env['LINKFLAGS'] = conf.env['FCFLAGS']
 
     # Set flags for the debugging variant
