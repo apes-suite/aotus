@@ -15,6 +15,7 @@ module aotus_module
   integer, parameter :: aoterr_WrongType = 2
 
   integer, parameter :: double_k = selected_real_kind(15)
+  integer, parameter :: single_k = selected_real_kind(6)
 
   !> Get a global configuration value from the script
   interface get_config_val
@@ -73,9 +74,9 @@ contains
   subroutine get_config_real(conf, var, conf_val, ErrCode, default)
     type(flu_State) :: conf
     character(len=*), intent(in) :: var
-    real, intent(out) :: conf_val
+    real(kind=single_k), intent(out) :: conf_val
     integer, intent(out) :: ErrCode
-    real, optional, intent(in) :: default
+    real(kind=single_k), optional, intent(in) :: default
 
     logical :: not_retrievable
 
@@ -264,12 +265,12 @@ contains
   subroutine get_table_real(conf, thandle, tab_val, ErrCode, var, pos, default)
     type(flu_State) :: conf
     integer, intent(in) :: thandle
-    real, intent(out) :: tab_val
+    real(kind=single_k), intent(out) :: tab_val
     integer, intent(out) :: ErrCode
 
     character(len=*), intent(in), optional :: var
     integer, intent(in), optional :: pos
-    real, intent(in), optional :: default
+    real(kind=single_k), intent(in), optional :: default
 
     logical :: not_retrievable
 
