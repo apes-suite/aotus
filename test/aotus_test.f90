@@ -6,11 +6,10 @@ program aotus_test
 
   real :: width
   type(flu_State) :: conf
-  integer :: iError, strlen
+  integer :: iError
   integer :: stl_table
   integer :: stl_tab_len
   integer :: desc_table
-  character, pointer :: cstring(:)
   character(len=80) :: buffer
   character(len=20) :: keys(3)
   integer :: i

@@ -8,7 +8,7 @@ module aotus_module
 
   public :: aoterr_Fatal, aoterr_NonExistent, aoterr_WrongType
   public :: get_config_val, open_config, close_config
-  public :: get_table_val
+  public :: get_top_val, get_table_val
 
   integer, parameter :: aoterr_Fatal = 0
   integer, parameter :: aoterr_NonExistent = 1
@@ -16,6 +16,15 @@ module aotus_module
 
   integer, parameter :: double_k = selected_real_kind(15)
   integer, parameter :: single_k = selected_real_kind(6)
+
+  !> Get the value on top of the stack
+  interface get_top_val
+    module procedure get_top_real
+    module procedure get_top_double
+    module procedure get_top_integer
+    module procedure get_top_string
+    module procedure get_top_logical
+  end interface
 
   !> Get a global configuration value from the script
   interface get_config_val
@@ -71,10 +80,9 @@ contains
   end subroutine close_config
 
 
-  subroutine get_config_real(conf, var, conf_val, ErrCode, default)
+  subroutine get_top_real(conf, top_val, ErrCode, default)
     type(flu_State) :: conf
-    character(len=*), intent(in) :: var
-    real(kind=single_k), intent(out) :: conf_val
+    real(kind=single_k), intent(out) :: top_val
     integer, intent(out) :: ErrCode
     real(kind=single_k), optional, intent(in) :: default
 
@@ -83,13 +91,12 @@ contains
     ErrCode = 0
     not_retrievable = .false.
 
-    call flu_getglobal(conf, var)
     if (flu_isNoneOrNil(conf, -1)) then
       ErrCode = ibSet(ErrCode, aoterr_NonExistent)
       not_retrievable = .true.
     else
       if (flu_isNumber(conf, -1)) then
-        conf_val = flu_toNumber(conf, -1)
+        top_val = flu_toNumber(conf, -1)
       else
         ErrCode = ibSet(ErrCode, aoterr_WrongType)
         ErrCode = ibSet(ErrCode, aoterr_Fatal)
@@ -99,12 +106,170 @@ contains
 
     if (not_retrievable) then
       if (present(default)) then
-        conf_val = default
+        top_val = default
       else
         ErrCode = ibSet(ErrCode, aoterr_Fatal)
       end if
     end if
     call flu_pop(conf)
+
+  end subroutine get_top_real
+
+
+  subroutine get_top_double(conf, top_val, ErrCode, default)
+    type(flu_State) :: conf
+    real(kind=double_k), intent(out) :: top_val
+    integer, intent(out) :: ErrCode
+    real(kind=double_k), optional, intent(in) :: default
+
+    logical :: not_retrievable
+
+    ErrCode = 0
+    not_retrievable = .false.
+
+    if (flu_isNoneOrNil(conf, -1)) then
+      ErrCode = ibSet(ErrCode, aoterr_NonExistent)
+      not_retrievable = .true.
+    else
+      if (flu_isNumber(conf, -1)) then
+        top_val = flu_toNumber(conf, -1)
+      else
+        ErrCode = ibSet(ErrCode, aoterr_WrongType)
+        ErrCode = ibSet(ErrCode, aoterr_Fatal)
+        not_retrievable = .true.
+      end if
+    end if
+
+    if (not_retrievable) then
+      if (present(default)) then
+        top_val = default
+      else
+        ErrCode = ibSet(ErrCode, aoterr_Fatal)
+      end if
+    end if
+    call flu_pop(conf)
+
+  end subroutine get_top_double
+
+
+  subroutine get_top_integer(conf, top_val, ErrCode, default)
+    type(flu_State) :: conf
+    integer, intent(out) :: top_val
+    integer, intent(out) :: ErrCode
+    integer, optional, intent(in) :: default
+
+    logical :: not_retrievable
+
+    ErrCode = 0
+    not_retrievable = .false.
+
+    if (flu_isNoneOrNil(conf, -1)) then
+      ErrCode = ibSet(ErrCode, aoterr_NonExistent)
+      not_retrievable = .true.
+    else
+      if (flu_isNumber(conf, -1)) then
+        top_val = int(flu_toNumber(conf, -1))
+      else
+        ErrCode = ibSet(ErrCode, aoterr_WrongType)
+        ErrCode = ibSet(ErrCode, aoterr_Fatal)
+        not_retrievable = .true.
+      end if
+    end if
+
+    if (not_retrievable) then
+      if (present(default)) then
+        top_val = default
+      else
+        ErrCode = ibSet(ErrCode, aoterr_Fatal)
+      end if
+    end if
+    call flu_pop(conf)
+
+  end subroutine get_top_integer
+
+
+  subroutine get_top_logical(conf, top_val, ErrCode, default)
+    type(flu_State) :: conf
+    logical, intent(out) :: top_val
+    integer, intent(out) :: ErrCode
+    logical, optional, intent(in) :: default
+
+    logical :: not_retrievable
+
+    ErrCode = 0
+    not_retrievable = .false.
+
+    if (flu_isNoneOrNil(conf, -1)) then
+      ErrCode = ibSet(ErrCode, aoterr_NonExistent)
+      not_retrievable = .true.
+    else
+      if (flu_isBoolean(conf, -1)) then
+        top_val = flu_toBoolean(conf, -1)
+      else
+        ErrCode = ibSet(ErrCode, aoterr_WrongType)
+        ErrCode = ibSet(ErrCode, aoterr_Fatal)
+        not_retrievable = .true.
+      end if
+    end if
+
+    if (not_retrievable) then
+      if (present(default)) then
+        top_val = default
+      else
+        ErrCode = ibSet(ErrCode, aoterr_Fatal)
+      end if
+    end if
+    call flu_pop(conf)
+
+  end subroutine get_top_logical
+
+
+  subroutine get_top_string(conf, top_val, ErrCode, default)
+    type(flu_State) :: conf
+    character(len=*) :: top_val
+    integer, intent(out) :: ErrCode
+    character(len=*), optional, intent(in) :: default
+
+    logical :: not_retrievable
+    character, pointer :: cstring(:)
+    integer :: i, StrLen, StrLimit
+
+    ErrCode = 0
+    not_retrievable = .false.
+
+    if (flu_isNoneOrNil(conf, -1)) then
+      ErrCode = ibSet(ErrCode, aoterr_NonExistent)
+      not_retrievable = .true.
+    else
+      cstring => flu_toLString(conf, -1, StrLen)
+      StrLimit = min(StrLen, len(top_val))
+      top_val = ''
+      do i=1,StrLimit
+        top_val(i:i) = cstring(i)
+      end do
+    end if
+
+    if (not_retrievable) then
+      if (present(default)) then
+        top_val = default
+      else
+        ErrCode = ibSet(ErrCode, aoterr_Fatal)
+      end if
+    end if
+    call flu_pop(conf)
+
+  end subroutine get_top_string
+
+
+  subroutine get_config_real(conf, var, conf_val, ErrCode, default)
+    type(flu_State) :: conf
+    character(len=*), intent(in) :: var
+    real(kind=single_k), intent(out) :: conf_val
+    integer, intent(out) :: ErrCode
+    real(kind=single_k), optional, intent(in) :: default
+
+    call flu_getglobal(conf, var)
+    call get_top_val(conf, conf_val, ErrCode, default)
 
   end subroutine get_config_real
 
@@ -116,33 +281,8 @@ contains
     integer, intent(out) :: ErrCode
     real(kind=double_k), optional, intent(in) :: default
 
-    logical :: not_retrievable
-
-    ErrCode = 0
-    not_retrievable = .false.
-
     call flu_getglobal(conf, var)
-    if (flu_isNoneOrNil(conf, -1)) then
-      ErrCode = ibSet(ErrCode, aoterr_NonExistent)
-      not_retrievable = .true.
-    else
-      if (flu_isNumber(conf, -1)) then
-        conf_val = flu_toNumber(conf, -1)
-      else
-        ErrCode = ibSet(ErrCode, aoterr_WrongType)
-        ErrCode = ibSet(ErrCode, aoterr_Fatal)
-        not_retrievable = .true.
-      end if
-    end if
-
-    if (not_retrievable) then
-      if (present(default)) then
-        conf_val = default
-      else
-        ErrCode = ibSet(ErrCode, aoterr_Fatal)
-      end if
-    end if
-    call flu_pop(conf)
+    call get_top_val(conf, conf_val, ErrCode, default)
 
   end subroutine get_config_double
 
@@ -154,33 +294,8 @@ contains
     integer, intent(out) :: ErrCode
     integer, optional, intent(in) :: default
 
-    logical :: not_retrievable
-
-    ErrCode = 0
-    not_retrievable = .false.
-
     call flu_getglobal(conf, var)
-    if (flu_isNoneOrNil(conf, -1)) then
-      ErrCode = ibSet(ErrCode, aoterr_NonExistent)
-      not_retrievable = .true.
-    else
-      if (flu_isNumber(conf, -1)) then
-        conf_val = int(flu_toNumber(conf, -1))
-      else
-        ErrCode = ibSet(ErrCode, aoterr_WrongType)
-        ErrCode = ibSet(ErrCode, aoterr_Fatal)
-        not_retrievable = .true.
-      end if
-    end if
-
-    if (not_retrievable) then
-      if (present(default)) then
-        conf_val = default
-      else
-        ErrCode = ibSet(ErrCode, aoterr_Fatal)
-      end if
-    end if
-    call flu_pop(conf)
+    call get_top_val(conf, conf_val, ErrCode, default)
 
   end subroutine get_config_integer
 
@@ -192,33 +307,8 @@ contains
     integer, intent(out) :: ErrCode
     logical, optional, intent(in) :: default
 
-    logical :: not_retrievable
-
-    ErrCode = 0
-    not_retrievable = .false.
-
     call flu_getglobal(conf, var)
-    if (flu_isNoneOrNil(conf, -1)) then
-      ErrCode = ibSet(ErrCode, aoterr_NonExistent)
-      not_retrievable = .true.
-    else
-      if (flu_isBoolean(conf, -1)) then
-        conf_val = flu_toBoolean(conf, -1)
-      else
-        ErrCode = ibSet(ErrCode, aoterr_WrongType)
-        ErrCode = ibSet(ErrCode, aoterr_Fatal)
-        not_retrievable = .true.
-      end if
-    end if
-
-    if (not_retrievable) then
-      if (present(default)) then
-        conf_val = default
-      else
-        ErrCode = ibSet(ErrCode, aoterr_Fatal)
-      end if
-    end if
-    call flu_pop(conf)
+    call get_top_val(conf, conf_val, ErrCode, default)
 
   end subroutine get_config_logical
 
@@ -230,34 +320,8 @@ contains
     integer, intent(out) :: ErrCode
     character(len=*), optional, intent(in) :: default
 
-    logical :: not_retrievable
-    character, pointer :: cstring(:)
-    integer :: i, StrLen, StrLimit
-
-    ErrCode = 0
-    not_retrievable = .false.
-
     call flu_getglobal(conf, var)
-    if (flu_isNoneOrNil(conf, -1)) then
-      ErrCode = ibSet(ErrCode, aoterr_NonExistent)
-      not_retrievable = .true.
-    else
-      cstring => flu_toLString(conf, -1, StrLen)
-      StrLimit = min(StrLen, len(conf_val))
-      conf_val = ''
-      do i=1,StrLimit
-        conf_val(i:i) = cstring(i)
-      end do
-    end if
-
-    if (not_retrievable) then
-      if (present(default)) then
-        conf_val = default
-      else
-        ErrCode = ibSet(ErrCode, aoterr_Fatal)
-      end if
-    end if
-    call flu_pop(conf)
+    call get_top_val(conf, conf_val, ErrCode, default)
 
   end subroutine get_config_string
 
@@ -272,34 +336,9 @@ contains
     integer, intent(in), optional :: pos
     real(kind=single_k), intent(in), optional :: default
 
-    logical :: not_retrievable
-
-    ErrCode = 0
-    not_retrievable = .false.
-
     call aot_table_getval(L=conf, thandle=thandle, &
       &                   key=var, pos=pos)
-    if (flu_isNoneOrNil(conf, -1)) then
-      ErrCode = ibSet(ErrCode, aoterr_NonExistent)
-      not_retrievable = .true.
-    else
-      if (flu_isNumber(conf, -1)) then
-        tab_val = flu_toNumber(conf, -1)
-      else
-        ErrCode = ibSet(ErrCode, aoterr_WrongType)
-        ErrCode = ibSet(ErrCode, aoterr_Fatal)
-        not_retrievable = .true.
-      end if
-    end if
-
-    if (not_retrievable) then
-      if (present(default)) then
-        tab_val = default
-      else
-        ErrCode = ibSet(ErrCode, aoterr_Fatal)
-      end if
-    end if
-    call flu_pop(conf)
+    call get_top_val(conf, tab_val, ErrCode, default)
 
   end subroutine get_table_real
 
@@ -314,34 +353,9 @@ contains
     integer, intent(in), optional :: pos
     real(kind=double_k), intent(in), optional :: default
 
-    logical :: not_retrievable
-
-    ErrCode = 0
-    not_retrievable = .false.
-
     call aot_table_getval(L=conf, thandle=thandle, &
       &                   key=var, pos=pos)
-    if (flu_isNoneOrNil(conf, -1)) then
-      ErrCode = ibSet(ErrCode, aoterr_NonExistent)
-      not_retrievable = .true.
-    else
-      if (flu_isNumber(conf, -1)) then
-        tab_val = flu_toNumber(conf, -1)
-      else
-        ErrCode = ibSet(ErrCode, aoterr_WrongType)
-        ErrCode = ibSet(ErrCode, aoterr_Fatal)
-        not_retrievable = .true.
-      end if
-    end if
-
-    if (not_retrievable) then
-      if (present(default)) then
-        tab_val = default
-      else
-        ErrCode = ibSet(ErrCode, aoterr_Fatal)
-      end if
-    end if
-    call flu_pop(conf)
+    call get_top_val(conf, tab_val, ErrCode, default)
 
   end subroutine get_table_double
 
@@ -356,34 +370,9 @@ contains
     integer, intent(in), optional :: pos
     integer, intent(in), optional :: default
 
-    logical :: not_retrievable
-
-    ErrCode = 0
-    not_retrievable = .false.
-
     call aot_table_getval(L=conf, thandle=thandle, &
       &                   key=var, pos=pos)
-    if (flu_isNoneOrNil(conf, -1)) then
-      ErrCode = ibSet(ErrCode, aoterr_NonExistent)
-      not_retrievable = .true.
-    else
-      if (flu_isNumber(conf, -1)) then
-        tab_val = int(flu_toNumber(conf, -1))
-      else
-        ErrCode = ibSet(ErrCode, aoterr_WrongType)
-        ErrCode = ibSet(ErrCode, aoterr_Fatal)
-        not_retrievable = .true.
-      end if
-    end if
-
-    if (not_retrievable) then
-      if (present(default)) then
-        tab_val = default
-      else
-        ErrCode = ibSet(ErrCode, aoterr_Fatal)
-      end if
-    end if
-    call flu_pop(conf)
+    call get_top_val(conf, tab_val, ErrCode, default)
 
   end subroutine get_table_integer
 
@@ -398,34 +387,9 @@ contains
     integer, intent(in), optional :: pos
     logical, intent(in), optional :: default
 
-    logical :: not_retrievable
-
-    ErrCode = 0
-    not_retrievable = .false.
-
     call aot_table_getval(L=conf, thandle=thandle, &
       &                   key=var, pos=pos)
-    if (flu_isNoneOrNil(conf, -1)) then
-      ErrCode = ibSet(ErrCode, aoterr_NonExistent)
-      not_retrievable = .true.
-    else
-      if (flu_isBoolean(conf, -1)) then
-        tab_val = flu_toBoolean(conf, -1)
-      else
-        ErrCode = ibSet(ErrCode, aoterr_WrongType)
-        ErrCode = ibSet(ErrCode, aoterr_Fatal)
-        not_retrievable = .true.
-      end if
-    end if
-
-    if (not_retrievable) then
-      if (present(default)) then
-        tab_val = default
-      else
-        ErrCode = ibSet(ErrCode, aoterr_Fatal)
-      end if
-    end if
-    call flu_pop(conf)
+    call get_top_val(conf, tab_val, ErrCode, default)
 
   end subroutine get_table_logical
 
@@ -440,35 +404,9 @@ contains
     integer, intent(in), optional :: pos
     character(len=*), intent(in), optional :: default
 
-    logical :: not_retrievable
-    character, pointer :: cstring(:)
-    integer :: i, StrLen, StrLimit
-
-    ErrCode = 0
-    not_retrievable = .false.
-
     call aot_table_getval(L=conf, thandle=thandle, &
       &                   key=var, pos=pos)
-    if (flu_isNoneOrNil(conf, -1)) then
-      ErrCode = ibSet(ErrCode, aoterr_NonExistent)
-      not_retrievable = .true.
-    else
-      cstring => flu_toLString(conf, -1, StrLen)
-      StrLimit = min(StrLen, len(tab_val))
-      tab_val = ''
-      do i=1,StrLimit
-        tab_val(i:i) = cstring(i)
-      end do
-    end if
-
-    if (not_retrievable) then
-      if (present(default)) then
-        tab_val = default
-      else
-        ErrCode = ibSet(ErrCode, aoterr_Fatal)
-      end if
-    end if
-    call flu_pop(conf)
+    call get_top_val(conf, tab_val, ErrCode, default)
 
   end subroutine get_table_string
 

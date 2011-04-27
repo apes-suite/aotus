@@ -48,7 +48,7 @@ contains
 
     if (thandle /= 0) then
       ! Only proceed if thandle is actually a table
-      ! (Should be received with aot_table_global or aot_table_top
+      ! (Should be received with aot_table_global or aot_table_top)
 
       if (present(key)) then
         ! Try to look up the given key first
