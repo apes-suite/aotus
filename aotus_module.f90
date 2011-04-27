@@ -61,6 +61,8 @@ contains
 
     logical :: not_retrievable
 
+    write(*,*) "INTEGER AOTUS"
+
     ErrCode = 0
     not_retrievable = .false.
 
