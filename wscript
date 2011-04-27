@@ -63,7 +63,7 @@ def configure(conf):
 
     conf.env['STLIBS'] = {
         'darwin': ['readline'],
-        'linux': ['dl', 'readline', 'history', 'ncurses']
+        'linux': ['dl', 'readline', 'history', 'ncurses','m']
     }[buildsys]
 
     # Flags for the debug variant
