@@ -34,7 +34,7 @@ def configure(conf):
     fcopts['IFORT', 'standard'] = ['-stand']
     fcopts['IFORT', 'double'] = ['-r8']
     fcopts['IFORT', 'debug'] = '-check all -check noarg_temp_created'.split() + ['-traceback', '-g']
-    fcopts['IFORT', 'optimize'] = ['-fast']
+    fcopts['IFORT', 'optimize'] = ['-O3  ']
     fcopts['IFORT', 'profile'] = ['-vec-report3', '-opt-report', '-pg']
 
     fcopts['SOL', 'warn'] = ['-w4']
