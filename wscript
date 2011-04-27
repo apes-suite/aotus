@@ -63,11 +63,11 @@ def configure(conf):
 
     conf.env['STLIBS'] = {
         'darwin': ['readline'],
-        'linux': ['dl', 'readline', 'history', 'ncurses']
+        'linux': ['dl', 'readline', 'history', 'ncurses','m']
     }[buildsys]
 
     # Flags for the debug variant
-    conf.env['FCFLAGS'] = fcopts[conf.env.FC_NAME, 'warn'] + fcopts[conf.env.FC_NAME, 'optimize']
+    conf.env['FCFLAGS'] = fcopts[conf.env.FC_NAME, 'warn']# + fcopts[conf.env.FC_NAME, 'optimize']
     conf.env['LINKFLAGS'] = conf.env['FCFLAGS']
 
     # Set flags for the debugging variant
