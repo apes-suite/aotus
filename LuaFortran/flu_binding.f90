@@ -14,13 +14,13 @@ module flu_binding
   public :: flu_State
 
   public :: flu_close
-  public :: flu_getField, flu_getGlobal, flu_getTop
+  public :: flu_getField, flu_getGlobal, flu_getTable, flu_getTop
   public :: flu_isnumber, flu_isNoneOrNil, flu_isTable, flu_isBoolean
   public :: flu_pcall
   public :: flu_next
   public :: flu_tolstring, flu_tonumber, flu_toboolean
   public :: flu_pop
-  public :: flu_pushnil
+  public :: flu_pushinteger, flu_pushnil
 
   public :: fluL_loadfile, fluL_newstate, fluL_openlibs
 
@@ -60,6 +60,17 @@ contains
     c_k = trim(k) // c_null_char
     call lua_getfield(L%state, LUA_GLOBALSINDEX, c_k)
   end subroutine flu_getglobal
+
+
+  subroutine flu_gettable(L, index)
+    type(flu_State) :: L
+    integer :: index
+
+    integer(kind=c_int) :: c_index
+
+    c_index = index
+    call lua_gettable(L%state, c_index)
+  end subroutine flu_gettable
 
 
   function flu_gettop(L) result(stacktop)
@@ -164,6 +175,17 @@ contains
     if (present(n)) n_c = -n-1
     call lua_settop(L%state, n_c)
   end subroutine flu_pop
+
+
+  subroutine flu_pushinteger(L, n)
+    type(flu_State) :: L
+    integer :: n
+
+    integer(kind=lua_int) :: n_c
+
+    n_c = n
+    call lua_pushinteger(L%state, n_c)
+  end subroutine flu_pushinteger
 
 
   subroutine flu_pushnil(L)

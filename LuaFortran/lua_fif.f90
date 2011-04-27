@@ -1,18 +1,12 @@
 module lua_fif
   use, intrinsic :: iso_c_binding
+  use lua_parameters
   ! This module provides a direct translation of the
   ! lua 5.1.4
   ! C-Interfaces to Fortran 2003 interfaces using the
   ! ISO_C_BINDING facilities.
 
   implicit none
-
-  ! lua constants
-  integer(kind=c_int), parameter :: LUA_GLOBALSINDEX = -10002
-  integer(kind=c_int), parameter :: LUA_TBOOLEAN = 1
-  integer(kind=c_int), parameter :: LUA_TTABLE = 5
-
-
 
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   ! lua API interfaces
@@ -25,6 +19,12 @@ module lua_fif
       integer(kind=c_int), value :: index
       character(kind=c_char), dimension(*) :: k
     end subroutine lua_getfield
+
+    subroutine lua_gettable(L, index) bind(c, name="lua_gettable")
+      use, intrinsic :: iso_c_binding
+      type(c_ptr), value :: L
+      integer(kind=c_int), value :: index
+    end subroutine lua_gettable
 
     function lua_gettop(L) bind(c, name="lua_gettop")
       use, intrinsic :: iso_c_binding
@@ -60,6 +60,13 @@ module lua_fif
       integer(kind=c_int) :: lua_pcall
     end function lua_pcall
 
+    subroutine lua_pushinteger(L, n) bind(c, name="lua_pushinteger")
+      use, intrinsic :: iso_c_binding
+      use lua_parameters, only: lua_int
+      type(c_ptr), value :: L
+      integer(kind=lua_int), value :: n
+    end subroutine lua_pushinteger
+
     subroutine lua_pushnil(L) bind(c, name="lua_pushnil")
       use, intrinsic :: iso_c_binding
       type(c_ptr), value :: L
@@ -81,9 +88,10 @@ module lua_fif
 
     function lua_tonumber(L, index) bind(c, name="lua_tonumber")
       use, intrinsic :: iso_c_binding
+      use lua_parameters, only: lua_num
       type(c_ptr), value :: L
       integer(kind=c_int), value :: index
-      real(kind=c_double) :: lua_tonumber
+      real(kind=lua_num) :: lua_tonumber
     end function lua_tonumber
 
     function lua_toboolean(L, index) bind(c, name="lua_toboolean")

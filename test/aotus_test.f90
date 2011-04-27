@@ -8,9 +8,11 @@ program aotus_test
   type(flu_State) :: conf
   integer :: iError, strlen
   integer :: stl_table
+  integer :: stl_tab_len
   integer :: desc_table
   character, pointer :: cstring(:)
   character(len=80) :: buffer
+  character(len=20) :: keys(3)
   integer :: i
 
   call open_config(conf = conf, filename = 'config.lua')
@@ -42,27 +44,36 @@ program aotus_test
 
   flush(6)
 
+      keys(1) = 'filename'
+      keys(2) = 'bctype'
+      keys(3) = 'fileformat'
+
   stl_table = aot_table_global(L = conf, table_name = 'stl_files')
   if (stl_table /= 0) then
     write(*,*) 'There are ', aot_table_length(L=conf, thandle=stl_table), ' entries'
-    if (aot_table_first(L=conf, thandle=stl_table)) then
+    if (aot_table_first(conf, stl_table)) then
       do
         write(*,*) 'Process entry in stl_table'
         flush(6)
         desc_table = aot_table_top(conf)
-        if (aot_table_first(L=conf, thandle=desc_table)) then
-          do
-            cstring => flu_toLString(L=conf, index=-1, len=strLen)
-            buffer = ''
-            do i=1,strLen
-              buffer(i:i) = cstring(i)
-            end do
-            call flu_pop(conf)
-            write(*,*) trim(buffer)
-            if (.not. flu_next(conf, desc_table)) exit
-          end do
+        stl_tab_len = aot_table_length(L=conf, thandle=desc_table)
+        do i=1,min(3, stl_tab_len)
+          call get_table_val(conf = conf, thandle = desc_table, &
+            &                tab_val = buffer, ErrCode = iError, &
+            &                var = trim(keys(i)), pos = i)
+          if (btest(iError, aoterr_Fatal)) then
+            write(*,*) 'FATAL Error occured, while retrieving'//trim(keys(i))
+            if (btest(iError, aoterr_NonExistent)) write(*,*) 'Variable not existent!'
+            if (btest(iError, aoterr_WrongType)) write(*,*) 'Variable has wrong type!'
+          else
+            if (btest(iError, aoterr_NonExistent)) write(*,*) 'Variable not set in' &
+              &                                            // ' config, Using default' &
+              &                                            // '  value!'
+          write(*,*) trim(keys(i))//' = ', trim(buffer)
         end if
+        end do
         call flu_pop(conf)
+
         if (.not. flu_next(conf, stl_table)) exit
       end do
     end if

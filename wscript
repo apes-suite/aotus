@@ -63,11 +63,11 @@ def configure(conf):
 
     conf.env['STLIBS'] = {
         'darwin': ['readline'],
-        'linux': ['dl', 'readline', 'history', 'ncurses','m']
+        'linux': ['dl', 'readline', 'history', 'ncurses', 'm']
     }[buildsys]
 
-    # Flags for the debug variant
-    conf.env['FCFLAGS'] = fcopts[conf.env.FC_NAME, 'warn']# + fcopts[conf.env.FC_NAME, 'optimize']
+    # Flags for the default (production) variant
+    conf.env['FCFLAGS'] = fcopts[conf.env.FC_NAME, 'warn'] + fcopts[conf.env.FC_NAME, 'optimize']
     conf.env['LINKFLAGS'] = conf.env['FCFLAGS']
 
     # Set flags for the debugging variant
@@ -110,6 +110,7 @@ def build(bld):
                     'external/lua-5.1.4/src/print.c']
 
     flu_sources = ['LuaFortran/lua_fif.f90',
+                   'LuaFortran/lua_parameters.f90',
                    'LuaFortran/flu_binding.f90']
 
     aotus_sources = ['aotus_module.f90',

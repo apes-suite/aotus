@@ -36,6 +36,52 @@ contains
     thandle = aot_table_top(L)
   end function aot_table_global
 
+  !> This subroutine tries to push the value of table thandle on
+  !! the lua stack, or if this fails, the entry at position pos
+  !! of the table. If no corresponding value is found, a nil
+  !! value is pushed to the stack.
+  subroutine aot_table_getval(L, thandle, key, pos)
+    type(flu_state) :: L
+    integer :: thandle
+    character(len=*), intent(in), optional :: key
+    integer, intent(in), optional :: pos
+
+    if (thandle /= 0) then
+      ! Only proceed if thandle is actually a table
+      ! (Should be received with aot_table_global or aot_table_top
+
+      if (present(key)) then
+        ! Try to look up the given key first
+        call flu_getfield(L, thandle, key)
+        if (flu_isNoneOrNil(L, -1)) then
+          ! If this is not found, try to retrieve
+          ! the value at the given position
+          if (present(pos)) then
+            call flu_pop(L)
+            call flu_pushInteger(L, pos)
+            call flu_getTable(L, thandle)
+          end if
+        end if
+      else
+        ! No key to look up, just check the given position
+        if (present(pos)) then
+          call flu_pushInteger(L, pos)
+          call flu_getTable(L, thandle)
+        else
+          ! Neither key nor pos present, nothing to look up
+          ! Just push a NIL onto the stack as a result
+          call flu_pushnil(L)
+        end if
+      end if
+
+    else
+
+      call flu_pushnil(L)
+
+    end if
+
+  end subroutine aot_table_getval
+
   !> Load the first key-value pair of table thandle on the
   !! stack. This serves as an entry point, further traversal
   !! can be done by flu_next(L, thandle).
