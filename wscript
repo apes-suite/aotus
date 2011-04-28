@@ -3,7 +3,7 @@
 # Harald Klimach 2011
 import os
 
-APPNAME = 'treelm'
+APPNAME = 'aotus'
 VERSION = '1'
 
 top = '.'
