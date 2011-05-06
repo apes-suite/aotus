@@ -18,6 +18,7 @@ module flu_binding
   public :: flu_isnumber, flu_isNoneOrNil, flu_isTable, flu_isBoolean
   public :: flu_pcall
   public :: flu_next
+  public :: flu_setTop
   public :: flu_tolstring, flu_tonumber, flu_toboolean
   public :: flu_pop
   public :: flu_pushinteger, flu_pushnil
@@ -194,6 +195,15 @@ contains
     call lua_pushnil(L%state)
   end subroutine flu_pushnil
 
+  subroutine flu_settop(L, n)
+    type(flu_State) :: L
+    integer, intent(in) :: n
+
+    integer(kind=c_int) :: n_c
+
+    n_c = n
+    call lua_settop(L%state, n_c)
+  end subroutine flu_settop
 
   function flu_tolstring(L, index, len) result(string)
     type(flu_State) :: L
