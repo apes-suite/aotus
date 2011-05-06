@@ -50,7 +50,7 @@ contains
     character(len=*), intent(in), optional :: key
     integer, intent(in), optional :: pos
 
-    call aot_table_getval(L, thandle, key, pos)
+    call aot_table_getval(L, parent, key, pos)
     thandle = aot_table_top(L)
   end subroutine aot_table_table
 
