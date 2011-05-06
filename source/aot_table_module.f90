@@ -60,7 +60,7 @@ contains
     type(flu_state) :: L
     integer, intent(in) :: thandle
 
-    call flu_settop(L, thandle-1)
+    if (thandle > 0) call flu_settop(L, thandle-1)
   end subroutine aot_table_close
 
   !> This subroutine tries to push the value of table thandle on

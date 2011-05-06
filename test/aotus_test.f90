@@ -47,7 +47,7 @@ program aotus_test
       keys(2) = 'bctype'
       keys(3) = 'fileformat'
 
-  stl_table = aot_table_global(L = conf, table_name = 'stl_files')
+  call aot_table_open(L = conf, thandle = stl_table, key = 'stl_files')
   if (stl_table /= 0) then
     write(*,*) 'There are ', aot_table_length(L=conf, thandle=stl_table), ' entries'
     if (aot_table_first(conf, stl_table)) then
@@ -76,8 +76,8 @@ program aotus_test
         if (.not. flu_next(conf, stl_table)) exit
       end do
     end if
-    call flu_pop(conf)
   end if
+  call aot_table_close(L = conf, thandle = stl_table)
 
   call close_config(conf)
 
