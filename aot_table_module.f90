@@ -31,28 +31,28 @@ contains
   !! and return its position in the stack as a handle for this
   !! table. If it does not exist or the global variable is not
   !! a table, the handle will be set to 0.
-  function aot_table_global(L, key) result(thandle)
+  subroutine aot_table_global(L, thandle, key)
     type(flu_state) :: L
+    integer, intent(out) :: thandle
     character(len=*), intent(in) :: key
-    integer :: thandle
 
     call flu_getglobal(L, key)
 
     thandle = aot_table_top(L)
-  end function aot_table_global
+  end subroutine aot_table_global
 
   !> This subroutine tries to get a table in a table, and
   !! return a handle for it.
-  function aot_table_table(L, thandle, key, pos) result(subhandle)
+  subroutine aot_table_table(L, parent, thandle, key, pos)
     type(flu_state) :: L
-    integer, intent(in) :: thandle
+    integer, intent(in) :: parent
+    integer, intent(out) :: thandle
     character(len=*), intent(in), optional :: key
     integer, intent(in), optional :: pos
-    integer :: subhandle
 
     call aot_table_getval(L, thandle, key, pos)
-    subhandle = aot_table_top(L)
-  end function aot_table_table
+    thandle = aot_table_top(L)
+  end subroutine aot_table_table
 
   !> Close a table again, by popping all values above and itself
   !! from the stack.
