@@ -74,12 +74,12 @@ def configure(conf):
     conf.check_cc(function_name='popen', header_name=['stdio.h'], define_name='LUA_USE_POPEN', mandatory=False)
 
     # Flags for the default (production) variant
-    conf.env['FCFLAGS'] = fcopts[conf.env.FC_NAME, 'warn'] + fcopts[conf.env.FC_NAME, 'standard'] + fcopts[conf.env.FC_NAME, 'optimize']
+    conf.env['FCFLAGS'] = fcopts[conf.env.FC_NAME, 'warn'] + fcopts[conf.env.FC_NAME, 'optimize']
     conf.env['LINKFLAGS'] = conf.env['FCFLAGS']
 
     # Set flags for the debugging variant
     conf.setenv('debug',conf.env)
-    conf.env['FCFLAGS'] = fcopts[conf.env.FC_NAME, 'warn'] + fcopts[conf.env.FC_NAME, 'standard'] + fcopts[conf.env.FC_NAME, 'w2e'] + fcopts[conf.env.FC_NAME, 'debug']
+    conf.env['FCFLAGS'] = fcopts[conf.env.FC_NAME, 'warn'] + fcopts[conf.env.FC_NAME, 'w2e'] + fcopts[conf.env.FC_NAME, 'debug']
     conf.env['LINKFLAGS'] = conf.env['FCFLAGS']
 
 def build(bld):
