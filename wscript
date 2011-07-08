@@ -16,52 +16,21 @@ def options(opt):
 
 def configure(conf):
     from waflib import Utils
+    # The fcopts provide some sane flag combinations
+    # for different variants in the various compilers.
+    # They are found in apes/sys_env, and included in
+    # the waf script, when built with build_waf.sh.
+    from waflib.extras.fc_flags import fcopts
+    # includes options for:
+    # * 'warn': activate compile time warnings
+    # * 'w2e': turn warnings into errors
+    # * 'standard': check for standard compliance
+    # * 'debug': activate debugging facilities
+    # * 'optimize': turn optimization on
+    # * 'profile': activate profiling facilities
+    # * 'double': promote default reals to double precision
+
     buildsys = Utils.unversioned_sys_platform()
-
-    fcopts = {}
-    ### Definition of some default fortran flags for various compilers.
-    ### Easily select and combine any of the desired features.
-    fcopts['GFORTRAN', 'warn'] = ['-Wall', '-Wconversion', '-Wimplicit-interface', '-Wunderflow', '-W', '-frange-check']
-    fcopts['GFORTRAN', 'w2e'] = ['-Werror']
-    fcopts['GFORTRAN', 'standard'] = ['-std=f2003']
-    fcopts['GFORTRAN', 'double'] = ['-fdefault-real-8']
-    fcopts['GFORTRAN', 'debug'] = ['-fbacktrace', '-fbounds-check', '-g']
-    fcopts['GFORTRAN', 'optimize'] = ['-O3']
-    fcopts['GFORTRAN', 'profile'] = ['-Q', '-pg']
-
-    fcopts['IFORT', 'warn'] = '-warn all'.split() + ['-WB', '-Winline']
-    fcopts['IFORT', 'w2e'] = '-warn stderrors'.split()
-    fcopts['IFORT', 'standard'] = ['-stand']
-    fcopts['IFORT', 'double'] = ['-r8']
-    fcopts['IFORT', 'debug'] = '-check all -check noarg_temp_created'.split() + ['-traceback', '-g']
-    fcopts['IFORT', 'optimize'] = ['-O3']
-    fcopts['IFORT', 'profile'] = ['-vec-report3', '-opt-report', '-pg']
-
-    fcopts['SOL', 'warn'] = ['-w4']
-    fcopts['SOL', 'w2e'] = ['-errwarn=%all']
-    fcopts['SOL', 'standard'] = []
-    fcopts['SOL', 'double'] = ['-xtypemap=real:64']
-    fcopts['SOL', 'debug'] = ['-C', '-xcheck', '-traceback', '-g']
-    fcopts['SOL', 'optimize'] = ['-fast', '-xipo']
-    fcopts['SOL', 'profile'] = ['-pg']
-
-    fcopts['PGFC', 'warn'] = ['-Minform=inform', '-Minfo=all']
-    fcopts['PGFC', 'w2e'] = []
-    fcopts['PGFC', 'standard'] = ['-Mstandard']
-    fcopts['PGFC', 'double'] = ['-Mr8']
-    fcopts['PGFC', 'debug'] = ['-Mbounds', '-Mchkptr', '-Mlist', '-traceback', '-g']
-    fcopts['PGFC', 'optimize'] = ['-O4']
-    fcopts['PGFC', 'profile'] = ['-pg']
-
-    fcopts['BGXLF', 'warn'] = []
-    fcopts['BGXLF', 'w2e'] = ['-qhalt=w']
-    fcopts['BGXLF', 'standard'] = ['-qlanglvl=2003pure']
-    fcopts['BGXLF', 'double'] = ['-qautodbl=dbl4']
-    fcopts['BGXLF', 'debug'] = ['-C', '-g', '-qflttrap', '-qfullpath']
-    fcopts['BGXLF', 'optimize'] = ['-O5']
-    fcopts['BGXLF', 'profile'] = []
-    ### End of set of Fortran flags
-    #########################################################################
 
     # Load the compiler informations
     conf.load('compiler_c')
