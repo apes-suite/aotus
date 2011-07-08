@@ -30,6 +30,7 @@ module aotus_module
     module procedure get_config_real
     module procedure get_config_double
     module procedure get_config_integer
+    module procedure get_config_long
     module procedure get_config_string
     module procedure get_config_logical
   end interface
@@ -334,6 +335,19 @@ contains
     call get_top_val(conf, conf_val, ErrCode, default)
 
   end subroutine get_config_integer
+
+
+  subroutine get_config_long(conf, var, conf_val, ErrCode, default)
+    type(flu_State) :: conf
+    character(len=*), intent(in) :: var
+    integer(kind=long_k), intent(out) :: conf_val
+    integer, intent(out) :: ErrCode
+    integer(kind=long_k), optional, intent(in) :: default
+
+    call flu_getglobal(conf, var)
+    call get_top_val(conf, conf_val, ErrCode, default)
+
+  end subroutine get_config_long
 
 
   subroutine get_config_logical(conf, var, conf_val, ErrCode, default)
