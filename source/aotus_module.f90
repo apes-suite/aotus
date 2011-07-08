@@ -1,6 +1,6 @@
 module aotus_module
   use flu_binding
-  use aot_kinds_module, only: double_k, single_k
+  use aot_kinds_module, only: double_k, single_k, long_k
   use aot_table_module, only: aot_table_getval
 
   implicit none
@@ -20,6 +20,7 @@ module aotus_module
     module procedure get_top_real
     module procedure get_top_double
     module procedure get_top_integer
+    module procedure get_top_long
     module procedure get_top_string
     module procedure get_top_logical
   end interface
@@ -29,6 +30,7 @@ module aotus_module
     module procedure get_config_real
     module procedure get_config_double
     module procedure get_config_integer
+    module procedure get_config_long
     module procedure get_config_string
     module procedure get_config_logical
   end interface
@@ -44,6 +46,7 @@ module aotus_module
     module procedure get_table_real
     module procedure get_table_double
     module procedure get_table_integer
+    module procedure get_table_long
     module procedure get_table_string
     module procedure get_table_logical
   end interface
@@ -187,6 +190,40 @@ contains
 
   end subroutine get_top_integer
 
+  subroutine get_top_long(conf, top_val, ErrCode, default)
+    type(flu_State) :: conf
+    integer(kind=long_k), intent(out) :: top_val
+    integer, intent(out) :: ErrCode
+    integer(kind=long_k), optional, intent(in) :: default
+
+    logical :: not_retrievable
+
+    ErrCode = 0
+    not_retrievable = .false.
+
+    if (flu_isNoneOrNil(conf, -1)) then
+      ErrCode = ibSet(ErrCode, aoterr_NonExistent)
+      not_retrievable = .true.
+    else
+      if (flu_isNumber(conf, -1)) then
+        top_val = int(flu_toNumber(conf, -1),kind=long_k)
+      else
+        ErrCode = ibSet(ErrCode, aoterr_WrongType)
+        ErrCode = ibSet(ErrCode, aoterr_Fatal)
+        not_retrievable = .true.
+      end if
+    end if
+
+    if (not_retrievable) then
+      if (present(default)) then
+        top_val = default
+      else
+        ErrCode = ibSet(ErrCode, aoterr_Fatal)
+      end if
+    end if
+    call flu_pop(conf)
+
+  end subroutine get_top_long
 
   subroutine get_top_logical(conf, top_val, ErrCode, default)
     type(flu_State) :: conf
@@ -300,6 +337,19 @@ contains
   end subroutine get_config_integer
 
 
+  subroutine get_config_long(conf, var, conf_val, ErrCode, default)
+    type(flu_State) :: conf
+    character(len=*), intent(in) :: var
+    integer(kind=long_k), intent(out) :: conf_val
+    integer, intent(out) :: ErrCode
+    integer(kind=long_k), optional, intent(in) :: default
+
+    call flu_getglobal(conf, var)
+    call get_top_val(conf, conf_val, ErrCode, default)
+
+  end subroutine get_config_long
+
+
   subroutine get_config_logical(conf, var, conf_val, ErrCode, default)
     type(flu_State) :: conf
     character(len=*), intent(in) :: var
@@ -376,6 +426,21 @@ contains
 
   end subroutine get_table_integer
 
+  subroutine get_table_long(conf, thandle, tab_val, ErrCode, var, pos, default)
+    type(flu_State) :: conf
+    integer, intent(in) :: thandle
+    integer(kind=long_k), intent(out) :: tab_val
+    integer, intent(out) :: ErrCode
+
+    character(len=*), intent(in), optional :: var
+    integer, intent(in), optional :: pos
+    integer(kind=long_k), intent(in), optional :: default
+
+    call aot_table_getval(L=conf, thandle=thandle, &
+      &                   key=var, pos=pos)
+    call get_top_val(conf, tab_val, ErrCode, default)
+
+  end subroutine get_table_long
 
   subroutine get_table_logical(conf, thandle, tab_val, ErrCode, var, pos, default)
     type(flu_State) :: conf
