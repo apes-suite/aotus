@@ -5,6 +5,11 @@ module aot_table_module
 
   implicit none
 
+  !> This routine provides a way to open a table
+  !! either as a globally defined one, are as a
+  !! table within another table.
+  !! After the table is opened, the returned
+  !! handle can be used to access its components.
   interface aot_table_open
     module procedure aot_table_global
     module procedure aot_table_table

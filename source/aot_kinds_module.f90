@@ -1,3 +1,6 @@
+!> Global definitions of some handy kind declarations
+!! with the help of the intrinsic selected_*_kind
+!! functions.
 module aot_kinds_module
   implicit none
 

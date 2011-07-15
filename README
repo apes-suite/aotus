@@ -1,3 +1,16 @@
+= AOTUS =
+The AOTUS library provides a wrapper around the
+C-API of the Lua scripting language, allowing a
+convenient usage of Lua scripts as
+configuration files in Fortran applications.
+Please have look at the Wiki at
+https://bitbucket.org/haraldkl/aotus/wiki/Home
+for usage informations.
+
+This library is released under a simplified MIT
+licence, please have look at the COPYRIGHT file
+for details.
+
 = How To Build =
 Run
 

@@ -1,3 +1,5 @@
+!> This module provides high level Fortran interfaces
+!! to retrieve values from a Lua script.
 module aotus_module
   use flu_binding
   use aot_kinds_module, only: double_k, single_k, long_k
@@ -16,6 +18,12 @@ module aotus_module
   integer, parameter :: aoterr_WrongType = 2
 
   !> Get the value on top of the stack
+  !! This is the most basic operation to
+  !! retrieve a value.
+  !! It is also most flexible in the sense,
+  !! that it does not matter how the value
+  !! actually gets on top of the stack by
+  !! previous Lua operations.
   interface get_top_val
     module procedure get_top_real
     module procedure get_top_double
@@ -25,7 +33,9 @@ module aotus_module
     module procedure get_top_logical
   end interface
 
-  !> Get a global configuration value from the script
+  !> Get a global configuration value from the script.
+  !! This provides a convenient direct access to
+  !! global variables from the Lua script.
   interface get_config_val
     module procedure get_config_real
     module procedure get_config_double

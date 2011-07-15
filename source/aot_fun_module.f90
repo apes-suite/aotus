@@ -66,7 +66,7 @@ contains
     fun = aot_fun_top(L)
   end subroutine aot_fun_global
 
-  !> Get a nested defined function.
+  !> Get a function defined as component of a table.
   subroutine aot_fun_table(L, parent, fun, key, pos)
     type(flu_state) :: L
     integer, intent(in) :: parent
