@@ -13,6 +13,10 @@ module aotus_module
   public :: get_config_val, open_config, close_config
   public :: get_top_val, get_table_val
 
+  !> Some parameters for the error handling.
+  !! They indicate the bits to set in case of
+  !! the corresponding error, to allow appropiate
+  !! reactions of the calling application.
   integer, parameter :: aoterr_Fatal = 0
   integer, parameter :: aoterr_NonExistent = 1
   integer, parameter :: aoterr_WrongType = 2
