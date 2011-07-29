@@ -36,6 +36,9 @@ module aotus_module
   !> Get a global configuration value from the script.
   !! This provides a convenient direct access to
   !! global variables from the Lua script.
+  !! \todo unify the arguments and naming with the rest
+  !!       of the library, rename the config_val to key,
+  !!       to make the interface more consistent.
   interface get_config_val
     module procedure get_config_real
     module procedure get_config_double
@@ -52,6 +55,8 @@ module aotus_module
   !! Positional addressing is only valid, as long,
   !! as no value was provided by an explicit key
   !! in the list before the entry in question.
+  !! \todo add convenience functions which return
+  !!       complete vectors at once.
   interface get_table_val
     module procedure get_table_real
     module procedure get_table_double
