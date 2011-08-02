@@ -48,7 +48,7 @@ def configure(conf):
 
     # Set flags for the debugging variant
     conf.setenv('debug',conf.env)
-    conf.env['FCFLAGS'] = fcopts[conf.env.FC_NAME, 'standard'] + fcopts[conf.env.FC_NAME, 'debug'] #+ fcopts[conf.env.FC_NAME, 'w2e'] + fcopts[conf.env.FC_NAME, 'warn']
+    conf.env['FCFLAGS'] = fcopts[conf.env.FC_NAME, 'standard'] + fcopts[conf.env.FC_NAME, 'warn'] + fcopts[conf.env.FC_NAME, 'w2e'] + fcopts[conf.env.FC_NAME, 'debug']
     conf.env['LINKFLAGS'] = conf.env['FCFLAGS']
 
 def build(bld):
