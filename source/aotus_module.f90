@@ -13,6 +13,10 @@ module aotus_module
   public :: get_config_val, open_config, close_config
   public :: get_top_val, get_table_val
 
+  !> Some parameters for the error handling.
+  !! They indicate the bits to set in case of
+  !! the corresponding error, to allow appropiate
+  !! reactions of the calling application.
   integer, parameter :: aoterr_Fatal = 0
   integer, parameter :: aoterr_NonExistent = 1
   integer, parameter :: aoterr_WrongType = 2
@@ -36,6 +40,9 @@ module aotus_module
   !> Get a global configuration value from the script.
   !! This provides a convenient direct access to
   !! global variables from the Lua script.
+  !! \todo unify the arguments and naming with the rest
+  !!       of the library, rename the config_val to key,
+  !!       to make the interface more consistent.
   interface get_config_val
     module procedure get_config_real
     module procedure get_config_double
@@ -52,6 +59,8 @@ module aotus_module
   !! Positional addressing is only valid, as long,
   !! as no value was provided by an explicit key
   !! in the list before the entry in question.
+  !! \todo add convenience functions which return
+  !!       complete vectors at once.
   interface get_table_val
     module procedure get_table_real
     module procedure get_table_double

@@ -43,7 +43,7 @@ def configure(conf):
     conf.check_cc(function_name='popen', header_name=['stdio.h'], define_name='LUA_USE_POPEN', mandatory=False)
 
     # Flags for the default (production) variant
-    conf.env['FCFLAGS'] = fcopts[conf.env.FC_NAME, 'warn'] + fcopts[conf.env.FC_NAME, 'optimize']
+    conf.env['FCFLAGS'] = fcopts[conf.env.FC_NAME, 'optimize'] + fcopts[conf.env.FC_NAME, 'warn']
     conf.env['LINKFLAGS'] = conf.env['FCFLAGS']
 
     # Set flags for the debugging variant
