@@ -94,7 +94,8 @@ def build(bld):
     aotus_sources = ['source/aotus_module.f90',
                      'source/aot_fun_module.f90',
                      'source/aot_kinds_module.f90',
-                     'source/aot_table_module.f90']
+                     'source/aot_table_module.f90',
+                     'source/aot_path_module.f90']
 
     bld(
         features = 'c',
