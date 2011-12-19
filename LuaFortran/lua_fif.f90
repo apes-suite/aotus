@@ -13,6 +13,12 @@ module lua_fif
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   interface
 
+    subroutine lua_getglobal(L, k) bind(c, name="lua_getglobal")
+      use, intrinsic :: iso_c_binding
+      type(c_ptr), value :: L
+      character(kind=c_char), dimension(*) :: k
+    end subroutine lua_getglobal
+
     subroutine lua_getfield(L, index, k) bind(c, name="lua_getfield")
       use, intrinsic :: iso_c_binding
       type(c_ptr), value :: L
@@ -51,14 +57,16 @@ module lua_fif
       integer(kind=c_int) :: lua_next
     end function lua_next
 
-    function lua_pcall(L, nargs, nresults, errfunc) bind(c, name="lua_pcall")
+    function lua_pcallk(L, nargs, nresults, errfunc, ctx, k) bind(c, name="lua_pcallk")
       use, intrinsic :: iso_c_binding
       type(c_ptr), value :: L
       integer(kind=c_int), value :: nargs
       integer(kind=c_int), value :: nresults
       integer(kind=c_int), value :: errfunc
-      integer(kind=c_int) :: lua_pcall
-    end function lua_pcall
+      integer(kind=c_int), value :: ctx
+      type(c_ptr), value :: k
+      integer(kind=c_int) :: lua_pcallk
+    end function lua_pcallk
 
     subroutine lua_pushinteger(L, n) bind(c, name="lua_pushinteger")
       use, intrinsic :: iso_c_binding
@@ -98,13 +106,14 @@ module lua_fif
       type(c_ptr) :: lua_tolstring
     end function lua_tolstring
 
-    function lua_tonumber(L, index) bind(c, name="lua_tonumber")
+    function lua_tonumberx(L, index, isnum) bind(c, name="lua_tonumberx")
       use, intrinsic :: iso_c_binding
       use lua_parameters, only: lua_num
       type(c_ptr), value :: L
       integer(kind=c_int), value :: index
-      real(kind=lua_num) :: lua_tonumber
-    end function lua_tonumber
+      integer(kind=c_int) :: isnum
+      real(kind=lua_num) :: lua_tonumberx
+    end function lua_tonumberx
 
     function lua_toboolean(L, index) bind(c, name="lua_toboolean")
       use, intrinsic :: iso_c_binding
@@ -142,12 +151,13 @@ module lua_fif
       type(c_ptr) :: luaL_newstate
     end function luaL_newstate
 
-    function luaL_loadfile(L, filename) bind(c, name="luaL_loadfile")
+    function luaL_loadfilex(L, filename, mode) bind(c, name="luaL_loadfilex")
       use, intrinsic :: iso_c_binding
       type(c_ptr), value :: L
       character(kind=c_char), dimension(*) :: filename
-      integer(kind=c_int) :: luaL_loadfile
-    end function luaL_loadfile
+      character(kind=c_char), dimension(*) :: mode
+      integer(kind=c_int) :: luaL_loadfilex
+    end function luaL_loadfilex
 
   end interface
 

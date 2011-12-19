@@ -8,7 +8,6 @@ module lua_parameters
   integer, parameter :: lua_num = c_double
 
   ! lua constants
-  integer(kind=c_int), parameter :: LUA_GLOBALSINDEX = -10002
   integer(kind=c_int), parameter :: LUA_TBOOLEAN = 1
   integer(kind=c_int), parameter :: LUA_TTABLE = 5
   integer(kind=c_int), parameter :: LUA_TFUNCTION = 6

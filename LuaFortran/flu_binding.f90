@@ -67,7 +67,7 @@ contains
     character(len=len_trim(k)+1) :: c_k
 
     c_k = trim(k) // c_null_char
-    call lua_getfield(L%state, LUA_GLOBALSINDEX, c_k)
+    call lua_getglobal(L%state, c_k)
   end subroutine flu_getglobal
 
 
@@ -181,7 +181,8 @@ contains
     c_nresults = nresults
     c_errfunc = errfunc
 
-    c_errcode = lua_pcall(L%state, c_nargs, c_nresults, c_errfunc)
+    c_errcode = lua_pcallk(L%state, c_nargs, c_nresults, c_errfunc, &
+      &                    0_c_int, C_NULL_PTR)
     errcode = c_errcode
   end function flu_pcall
 
@@ -277,9 +278,10 @@ contains
     real(kind=c_double) :: number
 
     integer(kind=c_int) :: c_index
+    integer(kind=c_int) :: isnum
 
     c_index = index
-    number = lua_tonumber(L%state, c_index)
+    number = lua_tonumberx(L%state, c_index, isnum)
   end function flu_todouble
 
 
@@ -289,11 +291,11 @@ contains
     real :: number
 
     integer(kind=c_int) :: c_index
-    real(kind=c_double) :: c_number
+    integer(kind=c_int) :: isnum
 
     c_index = index
-    c_number = lua_tonumber(L%state, c_index)
-    number = real(c_number, kind=kind(number))
+    number = real(lua_tonumberx(L%state, c_index, isnum), &
+      &           kind=kind(number))
   end function flu_tonumber
 
 
@@ -324,10 +326,12 @@ contains
     integer :: errcode
 
     character(len=len_trim(filename)+1) :: c_filename
+    character(len=3) :: c_mode
     integer(kind=c_int) :: c_errcode
 
     c_filename = trim(filename) // c_null_char
-    c_errcode = luaL_loadfile(L%state, c_filename)
+    c_mode = "bt" // c_null_char
+    c_errcode = luaL_loadfilex(L%state, c_filename, c_mode)
     errcode = c_errcode
   end function fluL_loadfile
 
