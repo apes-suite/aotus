@@ -13,6 +13,7 @@ COPYRIGHT file for details.
 How To Build
 ============
 
+waf_ is used as build system.
 Run::
 
 ./waf configure build
@@ -49,5 +50,6 @@ Some projects with similar goals or related information:
 * FortLua_
 
 .. _Wiki: https://bitbucket.org/haraldkl/aotus/wiki/Home
+.. _waf: http://code.google.com/p/waf/
 .. _f2k3-lua: https://github.com/MaikBeckmann/f2k3-lua/tree/simple
 .. _FortLua: https://github.com/adolgert/FortLua
