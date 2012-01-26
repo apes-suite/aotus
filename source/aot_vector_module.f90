@@ -12,7 +12,7 @@ module aot_vector_module
   use flu_binding
   use aotus_module, only: get_top_val, aoterr_NonExistent, aoterr_Fatal
   use aot_kinds_module, only: double_k, single_k, long_k
-  use aot_table_module, only: aot_table_open, aot_table_top, &
+  use aot_table_module, only: aot_table_close, aot_table_top, &
     &                         aot_table_length, aot_table_getval, &
     &                         aot_table_first
 
@@ -967,6 +967,7 @@ contains
         allocate(errCode(0))
       end if
     end if
+    call aot_table_close(conf, vect_handle)
 
   end subroutine get_top_real_vvect
 
@@ -1048,6 +1049,7 @@ contains
         allocate(errCode(0))
       end if
     end if
+    call aot_table_close(conf, vect_handle)
 
   end subroutine get_top_double_vvect
 
@@ -1128,6 +1130,7 @@ contains
         allocate(errCode(0))
       end if
     end if
+    call aot_table_close(conf, vect_handle)
 
   end subroutine get_top_integer_vvect
 
@@ -1208,6 +1211,7 @@ contains
         allocate(errCode(0))
       end if
     end if
+    call aot_table_close(conf, vect_handle)
 
   end subroutine get_top_long_vvect
 
@@ -1288,6 +1292,7 @@ contains
         allocate(errCode(0))
       end if
     end if
+    call aot_table_close(conf, vect_handle)
 
   end subroutine get_top_logical_vvect
 
@@ -1371,6 +1376,7 @@ contains
         ErrCode = ibSet(ErrCode, aoterr_Fatal)
       end if
     end if
+    call aot_table_close(conf, vect_handle)
 
   end subroutine get_top_real_v
 
@@ -1453,6 +1459,7 @@ contains
         ErrCode = ibSet(ErrCode, aoterr_Fatal)
       end if
     end if
+    call aot_table_close(conf, vect_handle)
 
   end subroutine get_top_double_v
 
@@ -1535,6 +1542,7 @@ contains
         ErrCode = ibSet(ErrCode, aoterr_Fatal)
       end if
     end if
+    call aot_table_close(conf, vect_handle)
 
   end subroutine get_top_integer_v
 
@@ -1617,6 +1625,7 @@ contains
         ErrCode = ibSet(ErrCode, aoterr_Fatal)
       end if
     end if
+    call aot_table_close(conf, vect_handle)
 
   end subroutine get_top_long_v
 
@@ -1699,6 +1708,7 @@ contains
         ErrCode = ibSet(ErrCode, aoterr_Fatal)
       end if
     end if
+    call aot_table_close(conf, vect_handle)
 
   end subroutine get_top_logical_v
 
