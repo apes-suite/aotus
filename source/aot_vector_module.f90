@@ -2,7 +2,7 @@
 !! from a lua table at once.
 module aot_vector_module
   use flu_binding
-  use aotus_module, only: get_top_val, aoterr_NonExistent
+  use aotus_module, only: get_top_val, aoterr_NonExistent, aoterr_Fatal
   use aot_kinds_module, only: double_k, single_k, long_k
   use aot_table_module, only: aot_table_open, aot_table_top, &
     &                         aot_table_length, aot_table_getval, &
@@ -14,12 +14,29 @@ module aot_vector_module
 
   public :: get_table_val
 
+  !> Use these routines to obtain a vector whose length is unknown.
+  !!
+  !! Arrays will be allocated as needed to read the data from the
+  !! Lua script with thes routines. A maximal length has to be
+  !! specified to limit the allocated memory by this loading.
   interface get_table_val
     module procedure get_table_real_vvect
     module procedure get_table_double_vvect
     module procedure get_table_integer_vvect
     module procedure get_table_long_vvect
     module procedure get_table_logical_vvect
+  end interface get_table_val
+
+  !> Use these routines to obtain a vector of known length.
+  !!
+  !! The given vector has to exist already and will be filled by
+  !! values from the Lua table, as far as they exist.
+  interface get_table_val
+    module procedure get_table_real_v
+!!    module procedure get_table_double_v
+!!    module procedure get_table_integer_v
+!!    module procedure get_table_long_v
+!!    module procedure get_table_logical_v
   end interface get_table_val
 
 contains
@@ -31,8 +48,8 @@ contains
   !! capsulating the parsing of the Lua table internally.
   !! For the dynamically sized array, which will be allocated, a upper limit
   !! to allocate has to be specified.
-  subroutine get_table_real_vvect(conf, thandle, tab_val, ErrCode, var, &
-    &                            pos, maxlength, default)
+  subroutine get_table_real_vvect(conf, thandle, tab_val, ErrCode, &
+    &                             maxlength, var, pos, default)
     type(flu_State) :: conf !< Handle to the lua script
     integer, intent(in) :: thandle !< Handle of the parent table
 
@@ -130,8 +147,8 @@ contains
   !! capsulating the parsing of the Lua table internally.
   !! For the dynamically sized array, which will be allocated, a upper limit
   !! to allocate has to be specified.
-  subroutine get_table_double_vvect(conf, thandle, tab_val, ErrCode, var, &
-    &                            pos, maxlength, default)
+  subroutine get_table_double_vvect(conf, thandle, tab_val, ErrCode, &
+    &                               maxlength, var, pos, default)
     type(flu_State) :: conf !< Handle to the lua script
     integer, intent(in) :: thandle !< Handle of the parent table
 
@@ -230,8 +247,8 @@ contains
   !! capsulating the parsing of the Lua table internally.
   !! For the dynamically sized array, which will be allocated, a upper limit
   !! to allocate has to be specified.
-  subroutine get_table_integer_vvect(conf, thandle, tab_val, ErrCode, var, &
-    &                            pos, maxlength, default)
+  subroutine get_table_integer_vvect(conf, thandle, tab_val, ErrCode, &
+    &                                maxlength, var, pos, default)
     type(flu_State) :: conf !< Handle to the lua script
     integer, intent(in) :: thandle !< Handle of the parent table
 
@@ -329,8 +346,8 @@ contains
   !! capsulating the parsing of the Lua table internally.
   !! For the dynamically sized array, which will be allocated, a upper limit
   !! to allocate has to be specified.
-  subroutine get_table_long_vvect(conf, thandle, tab_val, ErrCode, var, &
-    &                            pos, maxlength, default)
+  subroutine get_table_long_vvect(conf, thandle, tab_val, ErrCode, &
+    &                             maxlength, var, pos, default)
     type(flu_State) :: conf !< Handle to the lua script
     integer, intent(in) :: thandle !< Handle of the parent table
 
@@ -428,8 +445,8 @@ contains
   !! capsulating the parsing of the Lua table internally.
   !! For the dynamically sized array, which will be allocated, a upper limit
   !! to allocate has to be specified.
-  subroutine get_table_logical_vvect(conf, thandle, tab_val, ErrCode, var, &
-    &                            pos, maxlength, default)
+  subroutine get_table_logical_vvect(conf, thandle, tab_val, ErrCode, &
+    &                                maxlength, var, pos, default)
     type(flu_State) :: conf !< Handle to the lua script
     integer, intent(in) :: thandle !< Handle of the parent table
 
@@ -519,5 +536,110 @@ contains
 
   end subroutine get_table_logical_vvect
 
+
+  !> This routine obtains a vectorial quantity with fixed length from a Lua
+  !! table as a whole.
+  !!
+  !! It is intented to ease the reading of vectors on the Fortran side by
+  !! capsulating the parsing of the Lua table internally.
+  !! Components which are not found are filled with the data given in
+  !! the default vector. For each component an error code will be returned
+  !! to indicate the success when reading it.
+  !! If the vector is not defined at all, all components will be indicated
+  !! as non-existent.
+  !! Components, which are neither defined in the Lua script, nor in the
+  !! default will be marked with the aoterr_Fatal flag.
+  subroutine get_table_real_v(conf, thandle, tab_val, ErrCode, var, &
+    &                         pos, default)
+    type(flu_State) :: conf !< Handle to the lua script
+    integer, intent(in) :: thandle !< Handle of the parent table
+
+    !> Vector read from the Lua table.
+    real(kind=single_k), intent(out) :: tab_val(:)
+
+    !> Error code describing problems encountered in each of the components.
+    !! This array has to have the same length as tab_val.
+    integer, intent(out) :: ErrCode(:)
+
+    !> Name of the variable (vector) to read.
+    character(len=*), intent(in), optional :: var
+
+    !> Position of the (vector) to read.
+    integer, intent(in), optional :: pos
+
+    !> A default vector to use, if no proper definition is found.
+    !! Components will be filled with the help of this default definition.
+    real(kind=single_k), intent(in), optional :: default(:)
+
+    integer :: vect_handle
+    integer :: table_len, vect_len, def_len
+    integer :: vect_lb, minub
+    integer :: iComp
+
+    ! Get the requeseted value from the provided table
+    call aot_table_getval(L=conf, thandle=thandle, &
+      &                   key=var, pos=pos)
+
+    ! Try to interpret it as table.
+    vect_handle = aot_table_top(L=conf)
+    table_len = aot_table_length(L=conf, thandle=vect_handle)
+
+    vect_len = min(table_len, size(tab_val))
+
+    ! Find the length of the default value, if it is not provided, its 0.
+    def_len = 0
+    if (present(default)) def_len = size(default)
+
+    ! Now parse the table with the vector entries.
+    if (aot_table_first(conf, vect_handle).and.(vect_len > 0)) then
+
+      ! Only if the vector table actually exists, and has at least one entry,
+      ! this parsing has to be done.
+      if (present(default).and.(def_len > 0)) then
+        call get_top_val(conf, tab_val(1), ErrCode(1), default(1))
+      else
+        call get_top_val(conf, tab_val(1), ErrCode(1))
+      end if
+
+      ! Up to the length of the default value, provide the default settings.
+      do iComp=2,def_len
+        if (.not. flu_next(conf, vect_handle)) exit
+        call get_top_val(conf, tab_val(iComp), ErrCode(iComp), default(iComp))
+      end do
+
+      vect_lb = max(2, def_len)
+      ! After def_len entries no default values for the components are
+      ! available anymore, proceed without a default setting for the rest.
+      do iComp=vect_lb,vect_len
+        if (.not. flu_next(conf, vect_handle)) exit
+        call get_top_val(conf, tab_val(iComp), ErrCode(iComp))
+      end do
+
+      ! If the table in the Lua script is not long enough, fill the remaining
+      ! components with the default components, as far as they are defined.
+      do iComp=vect_len+1,def_len
+        ErrCode(iComp) = ibSet(ErrCode(iComp), aoterr_NonExistent)
+        tab_val(iComp) = default(iComp)
+      end do
+      vect_lb = max(vect_len+1, def_len)
+      do iComp=vect_lb,vect_len
+        ErrCode(iComp) = ibSet(ErrCode(iComp), aoterr_Fatal)
+      end do
+    else
+      ! No vector definition found in the Lua script, use the default.
+      ErrCode = ibSet(ErrCode, aoterr_NonExistent)
+      if (present(default)) then
+        minub = min(vect_len, def_len)
+        tab_val(:minub) = default(:minub)
+        if (minub < vect_len) then
+          ErrCode(minub+1:) = ibSet(ErrCode(minub+1:), aoterr_Fatal)
+        end if
+      else
+        ! No vector definition in the Lua script and no default provided.
+        ErrCode = ibSet(ErrCode, aoterr_Fatal)
+      end if
+    end if
+
+  end subroutine get_table_real_v
 
 end module aot_vector_module
