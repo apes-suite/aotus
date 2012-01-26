@@ -3,6 +3,7 @@ program aotus_test
   use aotus_module
   use aot_table_module
   use aot_fun_module
+  use aot_vector_module
 
   implicit none
 
@@ -10,6 +11,7 @@ program aotus_test
   type(flu_State) :: conf
   type(aot_fun_type) :: foo 
   integer :: iError
+  integer :: vErr(3)
   integer :: stl_table
   integer :: stl_tab_len
   integer :: desc_table
@@ -80,15 +82,20 @@ program aotus_test
   end if
   call aot_table_close(L = conf, thandle = stl_table)
 
+  !> Get a vector, describing the coordinate from the script
+  call get_config_val(conf = conf, var = 'coord', conf_val = coord, &
+    &                 ErrCode = vErr, &
+    &                 default = [0.0_double_k, 0.0_double_k, 0.0_double_k])
+
   !> First open a function with aot_fun_open
   call aot_fun_open(L = conf, fun = foo, key = 'ic_density')
   
   !> Then put required parameters into it with
   !! aot_fun_put
-  coord = 0.0_double_k
   call aot_fun_put_double(L = conf, fun = foo, arg = coord(1))
   call aot_fun_put_double(L = conf, fun = foo, arg = coord(2))
   call aot_fun_put_double(L = conf, fun = foo, arg = coord(3))
+
 
   !> Execute the function with aot_fun_do
   call aot_fun_do(L = conf, fun = foo, nresults = 1) 

@@ -5,6 +5,8 @@ height = 150
 stl_files = { {'filename', 123, 'binary'},
               {'geomfile', 456, fileformat='ascii'} }
 
+coord = { 0.1, 0.0, 0.0 }
+
 --function 'gausspulse'
 function gauss_pulse(x, y, z, origin, amplitude, hwidth)
   fact = -0.5/(hwidth*hwidth)
