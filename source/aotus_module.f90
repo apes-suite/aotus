@@ -59,8 +59,6 @@ module aotus_module
   !! Positional addressing is only valid, as long,
   !! as no value was provided by an explicit key
   !! in the list before the entry in question.
-  !! \todo add convenience functions which return
-  !!       complete vectors at once.
   interface get_table_val
     module procedure get_table_real
     module procedure get_table_double
