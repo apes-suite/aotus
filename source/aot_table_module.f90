@@ -27,6 +27,7 @@ contains
 
     if (flu_isNoneOrNil(L, -1) .or. (.not. flu_isTable(L, -1))) then
       thandle = 0
+      call flu_pop(L)
     else
       thandle = flu_gettop(L)
     end if
