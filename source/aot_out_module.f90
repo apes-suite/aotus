@@ -52,6 +52,7 @@ contains
     !------------------------------------------------------------------------ 
     if (present(filename)) then
       put_conf%outunit = newunit()
+      write(*,*) 'opening filename',trim(filename)
       open(unit = put_conf%outunit, file = trim(filename), action = 'write', &
         &  status='replace', recl=360)
     else if ( present(outUnit) ) then
@@ -61,9 +62,10 @@ contains
        stop
     end if
 
-      put_conf%indent = 0
-      put_conf%stack(:) = 0 
-      put_conf%level = 0
+    put_conf%indent = 0
+    put_conf%stack(:) = 0 
+    put_conf%level = 0
+
   end subroutine aot_open_put
 !******************************************************************************!
 
