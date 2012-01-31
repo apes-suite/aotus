@@ -8,6 +8,8 @@
 !! the reading functions, however it is almost completely
 !! independent and relies purely on Fortran output methods.
 module aot_out_module
+  
+  use aot_kinds_module
 
   implicit none
 
@@ -29,6 +31,7 @@ module aot_out_module
     module procedure aot_put_val_int
     module procedure aot_put_val_char
     module procedure aot_put_val_real
+    module procedure aot_put_val_long
   end interface
 
   private
@@ -96,11 +99,12 @@ contains
       endif
       put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1 
     end if
-      if (present(tname)) then
-        write(put_conf%outunit,fmt="(a)") trim(separator)//trim(tname)//' = {' 
-      else
-        write(put_conf%outunit,fmt="(a)") trim(separator)//'{'
-      end if
+  
+    if (present(tname)) then
+      write(put_conf%outunit,fmt="(a)")trim(separator)//trim(tname)//' = {' 
+    else
+      write(put_conf%outunit,fmt="(a)") trim(separator)//'{'
+    end if
     put_conf%level = put_conf%level + 1
     put_conf%indent = put_conf%indent + 4
   end subroutine aot_table_open_out
@@ -132,6 +136,9 @@ contains
     character(len=*), optional, intent(in) :: vname
     integer, intent(in) :: val
     !------------------------------------------------------------------------ 
+    character(len=put_conf%indent) :: indent
+    !------------------------------------------------------------------------
+    indent = ''
     if ( put_conf%level .gt. 0 ) then
       if ( put_conf%stack(put_conf%level) .gt. 0) then
         ! commata for previous line maybe use advance = no ????
@@ -142,13 +149,13 @@ contains
     end if
     if (present(vname)) then
       if(put_conf%level .ne. 0) then
-        write(put_conf%outunit,fmt="(a,i2)",advance ='no') trim(vname)//" = ", val
+        write(put_conf%outunit,fmt="(a,i)",advance ='no') indent//trim(vname)//" = ", val
       else
-        write(put_conf%outunit,fmt="(a,i2)") trim(vname)//" = ", val
+        write(put_conf%outunit,fmt="(a,i)") indent//trim(vname)//" = ", val
       end if 
     else
       if(put_conf%level .ne. 0) then
-        write(put_conf%outunit,fmt="(a,i2)", advance ='no') val
+        write(put_conf%outunit,fmt="(a,i)", advance ='no') indent,val
       end if 
     end if
   end subroutine aot_put_val_int
@@ -164,6 +171,9 @@ contains
     character(len=*), optional, intent(in) :: vname
     character, intent(in) :: val
     !------------------------------------------------------------------------ 
+    character(len=put_conf%indent) :: indent
+    !------------------------------------------------------------------------
+    indent = ''
     if ( put_conf%level .gt. 0 ) then
       if ( put_conf%stack(put_conf%level) .gt. 0) then
         ! commata for previous line maybe use advance = no ????
@@ -174,13 +184,13 @@ contains
     end if
     if (present(vname)) then
       if(put_conf%level .ne. 0) then
-        write(put_conf%outunit,fmt="(a,a)",advance ='no') trim(vname)//" = ", "'"//val//"'"
+        write(put_conf%outunit,fmt="(a,a)",advance ='no')indent// trim(vname)//" = ", "'"//val//"'"
       else
-        write(put_conf%outunit,fmt="(a,a)") trim(vname)//" = ", "'"//val//"'"
+        write(put_conf%outunit,fmt="(a,a)")indent// trim(vname)//" = ", "'"//val//"'"
       end if 
     else
       if(put_conf%level .ne. 0) then
-        write(put_conf%outunit,fmt="(a,a)", advance ='no'),"'",val//"'"
+        write(put_conf%outunit,fmt="(a,a)", advance ='no'),indent//"'",val//"'"
       end if 
     end if
   end subroutine aot_put_val_char
@@ -196,6 +206,9 @@ contains
     character(len=*), optional, intent(in) :: vname
     real, intent(in) :: val
     !------------------------------------------------------------------------ 
+    character(len=put_conf%indent) :: indent
+    !------------------------------------------------------------------------
+    indent = ''
     if ( put_conf%level .gt. 0 ) then
       if ( put_conf%stack(put_conf%level) .gt. 0) then
         ! commata for previous line maybe use advance = no ????
@@ -206,17 +219,111 @@ contains
     end if
     if (present(vname)) then
       if(put_conf%level .ne. 0) then
-        write(put_conf%outunit,fmt="(a,f8.2)",advance ='no') trim(vname)//" = ", val
+        write(put_conf%outunit,fmt="(a,f8.2)",advance ='no')indent// trim(vname)//" = ", val
       else
-        write(put_conf%outunit,fmt="(a,f8.2)") trim(vname)//" = ", val
+        write(put_conf%outunit,fmt="(a,f8.2)")indent// trim(vname)//" = ", val
       end if 
     else
       if(put_conf%level .ne. 0) then
-        write(put_conf%outunit,fmt="(f8.2)", advance ='no') val
+        write(put_conf%outunit,fmt="(a,f8.2)", advance ='no')indent, val
       end if 
     end if
   end subroutine aot_put_val_real
  
+  
+  subroutine aot_put_val_long(put_conf, val, vname)
+    !------------------------------------------------------------------------ 
+    type(aot_out_type), intent(inout)  :: put_conf
+    character(len=*), optional, intent(in) :: vname
+    integer(kind = long_k), intent(in) :: val
+    !------------------------------------------------------------------------ 
+    character(len=put_conf%indent) :: indent
+    !------------------------------------------------------------------------
+    indent = ''
+    if ( put_conf%level .gt. 0 ) then
+      if ( put_conf%stack(put_conf%level) .gt. 0) then
+        ! commata for previous line maybe use advance = no ????
+        write(put_conf%outunit,fmt="(a)") ","
+      end if
+      put_conf%stack(put_conf%level) =              &
+        &      put_conf%stack(put_conf%level) + 1
+    end if
+    if (present(vname)) then
+      if(put_conf%level .ne. 0) then
+        write(put_conf%outunit,fmt="(a,i)",advance ='no')indent// trim(vname)//" = ", val
+      else
+        write(put_conf%outunit,fmt="(a,i)")indent// trim(vname)//" = ", val
+      end if 
+    else
+      if(put_conf%level .ne. 0) then
+        write(put_conf%outunit,fmt="(a,i)", advance ='no')indent, val
+      end if 
+    end if
+  end subroutine aot_put_val_long
+
+  
+  subroutine aot_put_val_double(put_conf, val, vname)
+    !------------------------------------------------------------------------ 
+    type(aot_out_type), intent(inout)  :: put_conf
+    character(len=*), optional, intent(in) :: vname
+    real(kind = double_k), intent(in) :: val
+    !------------------------------------------------------------------------ 
+    character(len=put_conf%indent) :: indent
+    !------------------------------------------------------------------------
+    indent = ''
+    if ( put_conf%level .gt. 0 ) then
+      if ( put_conf%stack(put_conf%level) .gt. 0) then
+        ! commata for previous line maybe use advance = no ????
+        write(put_conf%outunit,fmt="(a)") ","
+      end if
+      put_conf%stack(put_conf%level) =              &
+        &      put_conf%stack(put_conf%level) + 1
+    end if
+    if (present(vname)) then
+      if(put_conf%level .ne. 0) then
+        write(put_conf%outunit,fmt="(a,f4.2)",advance ='no')indent// trim(vname)//" = ", val
+      else
+        write(put_conf%outunit,fmt="(a,f4.2)")indent// trim(vname)//" = ", val
+      end if 
+    else
+      if(put_conf%level .ne. 0) then
+        write(put_conf%outunit,fmt="(a,f4.2)", advance ='no')indent, val
+      end if 
+    end if
+  end subroutine aot_put_val_double
+  
+
+  subroutine aot_put_val_single(put_conf, val, vname)
+    !------------------------------------------------------------------------ 
+    type(aot_out_type), intent(inout)  :: put_conf
+    character(len=*), optional, intent(in) :: vname
+    real(kind = single_k), intent(in) :: val
+    !------------------------------------------------------------------------ 
+    character(len=put_conf%indent) :: indent
+    !------------------------------------------------------------------------
+    indent = ''
+    if ( put_conf%level .gt. 0 ) then
+      if ( put_conf%stack(put_conf%level) .gt. 0) then
+        ! commata for previous line maybe use advance = no ????
+        write(put_conf%outunit,fmt="(a)") ","
+      end if
+      put_conf%stack(put_conf%level) =              &
+        &      put_conf%stack(put_conf%level) + 1
+    end if
+    if (present(vname)) then
+      if(put_conf%level .ne. 0) then
+        write(put_conf%outunit,fmt="(a,f4.2)",advance ='no')indent// trim(vname)//" = ", val
+      else
+        write(put_conf%outunit,fmt="(a,f4.2)")indent// trim(vname)//" = ", val
+      end if 
+    else
+      if(put_conf%level .ne. 0) then
+        write(put_conf%outunit,fmt="(a,f4.2)", advance ='no')indent, val
+      end if 
+    end if
+  end subroutine aot_put_val_single
+
+
 
   !> Helper function to provide new unit, as long as F2008 newunit argument
   !! in open statement is not commonly available.
