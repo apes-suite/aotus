@@ -23,6 +23,7 @@ module aot_out_module
     integer :: indent
     integer :: stack(0:100)
     integer :: level
+    logical :: externalOpen
   end type 
 
   interface aot_put_val
@@ -51,7 +52,9 @@ contains
       put_conf%outunit = newunit()
       open(unit = put_conf%outunit, file = trim(filename), action = 'write', &
         &  status='replace', recl=360)
+      put_conf%externalOpen = .false.
     else if ( present(outUnit) ) then
+      put_conf%externalOpen = .true.
       put_conf%outunit = outUnit
     else
         write(*,*) 'Error, no unit or filename specified for aot_open_put'
@@ -73,7 +76,7 @@ contains
     !------------------------------------------------------------------------ 
     type(aot_out_type), intent(inout)  :: put_conf
     !------------------------------------------------------------------------ 
-    close( put_conf%outunit )
+    if( .not. put_conf%externalOpen ) close( put_conf%outunit )
     put_conf%stack(put_conf%level) = 0                                         
   end subroutine aot_close_put
 !******************************************************************************!
