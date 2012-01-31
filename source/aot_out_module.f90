@@ -49,7 +49,6 @@ contains
     !------------------------------------------------------------------------ 
     if (present(filename)) then
       put_conf%outunit = newunit()
-      write(*,*) 'opening filename',trim(filename)
       open(unit = put_conf%outunit, file = trim(filename), action = 'write', &
         &  status='replace', recl=360)
     else if ( present(outUnit) ) then
@@ -164,7 +163,7 @@ contains
     !------------------------------------------------------------------------ 
     type(aot_out_type), intent(inout)  :: put_conf
     character(len=*), optional, intent(in) :: vname
-    character, intent(in) :: val
+    character(len=*), intent(in) :: val
     !------------------------------------------------------------------------ 
     if ( put_conf%level .gt. 0 ) then
       if ( put_conf%stack(put_conf%level) .gt. 0) then
@@ -208,9 +207,9 @@ contains
     end if
     if (present(vname)) then
       if(put_conf%level .ne. 0) then
-        write(put_conf%outunit,fmt="(a,f8.2)",advance ='no') trim(vname)//" = ", val
+        write(put_conf%outunit,fmt="(a,f0.6)",advance ='no') trim(vname)//" = ", val
       else
-        write(put_conf%outunit,fmt="(a,f8.2)") trim(vname)//" = ", val
+        write(put_conf%outunit,fmt="(a,f0.6)") trim(vname)//" = ", val
       end if 
     else
       if(put_conf%level .ne. 0) then
