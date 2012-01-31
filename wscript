@@ -95,6 +95,7 @@ def build(bld):
                      'source/aot_fun_module.f90',
                      'source/aot_kinds_module.f90',
                      'source/aot_table_module.f90',
+		     'source/aot_out_module.f90',
                      'source/aot_path_module.f90',
                      'source/aot_vector_module.f90']
 

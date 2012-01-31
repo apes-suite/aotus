@@ -13,6 +13,10 @@ module aot_out_module
 
   public :: aot_out_type
   public :: aot_put_val
+  public :: aot_open_put
+  public :: aot_table_open_out
+  public :: aot_table_close_out
+  public :: aot_close_put
 
   type aot_out_type
     integer :: outunit
@@ -37,23 +41,26 @@ contains
 !> open the file, set the filename and the values of put_conf
 !!
 !! Will overwrite the given file, if it already exists.
-  subroutine aot_open_put(put_conf, filename)
+  subroutine aot_open_put(put_conf, filename, unitname)
     !------------------------------------------------------------------------ 
-    character(len=*), intent(in) :: filename
+    character(len=*), optional, intent(in) :: filename
+    character(len=*), optional, intent(in) :: unitname
     type(aot_out_type), intent(out) :: put_conf
     !------------------------------------------------------------------------ 
-    ! defining local variables
-    integer :: rank
-    integer :: iError
-    !------------------------------------------------------------------------ 
+    if (present(filename)) then
+      put_conf%outunit = newunit()
+      open(unit = put_conf%outunit, file = trim(filename), action = 'write', &
+        &  status='replace', recl=360)
+    else if ( present(unitname) ) then
+      put_conf%outunit = unitname
+    else
+        write(*,*) 'Error, no unit or filename specified for aot_open_put'
+       stop
+    end if
 
-    put_conf%outunit = newunit()
-    open(unit = put_conf%outunit, file = trim(filename), action = 'write', &
-      &  status='replace', recl=360)
-    put_conf%indent = 0
-    put_conf%stack(:) = 0 
-    put_conf%level = 0
-
+      put_conf%indent = 0
+      put_conf%stack(:) = 0 
+      put_conf%level = 0
   end subroutine aot_open_put
 !******************************************************************************!
 
@@ -64,13 +71,13 @@ contains
   subroutine aot_table_open_out(put_conf, tname)
     !------------------------------------------------------------------------ 
     type(aot_out_type), intent(inout)  :: put_conf
-    character(len=*), intent(in) :: tname
+    character(len=*), optional, intent(in) :: tname
     !------------------------------------------------------------------------ 
     
     if (present(tname)) then
-      write(put_conf%outunit,*) trim(tname)//' = {' 
+      write(put_conf%outunit,fmt="(a)") trim(tname)//' = {' 
     else
-      write(put_conf%outunit,*) '{'
+      write(put_conf%outunit,fmt="(a)") '{'
     end if
     put_conf%level = put_conf%level + 1
     put_conf%indent = put_conf%indent + 4
@@ -87,7 +94,7 @@ contains
     !------------------------------------------------------------------------ 
     put_conf%indent = put_conf%indent - 4
     put_conf%level = put_conf%level - 1
-    write(put_conf%outunit,*) '}'            
+    write(put_conf%outunit,fmt="(a)") '}'            
   end subroutine aot_table_close_out
 !******************************************************************************!
     
@@ -100,6 +107,7 @@ contains
     type(aot_out_type), intent(inout)  :: put_conf
     !------------------------------------------------------------------------ 
     close( put_conf%outunit )
+    put_conf%stack(put_conf%level) = 0 
   end subroutine aot_close_put
 !******************************************************************************!
 
@@ -110,26 +118,26 @@ contains
   subroutine aot_put_val_int(put_conf, vname, val)
     !------------------------------------------------------------------------ 
     type(aot_out_type), intent(inout)  :: put_conf
-    character(len=*), intent(in) :: vname
+    character(len=*), optional, intent(in) :: vname
     integer, intent(in) :: val
     !------------------------------------------------------------------------ 
     if ( put_conf%level .gt. 0 ) then
       if ( put_conf%stack(put_conf%level) .gt. 0) then
         ! commata for previous line maybe use advance = no ????
-        write(put_conf%outunit,*) ","
+        write(put_conf%outunit,fmt="(a)") ","
       end if
       put_conf%stack(put_conf%level) =              &
         &      put_conf%stack(put_conf%level) + 1
     end if
     if (present(vname)) then
-      if(level .ne. 0) then
-        write(put_conf%outunit,*,advance ='no') trim(vname)//"=", val
+      if(put_conf%level .ne. 0) then
+        write(put_conf%outunit,fmt="(a,i2)",advance ='no') trim(vname)//"=", val
       else
-        write(put_conf%outunit,*) trim(vname)//"=", val
+        write(put_conf%outunit,fmt="(a,i2)") trim(vname)//"=", val
       end if 
     else
-      if(level .ne. 0) then
-        write(put_conf%outunit,*, advance ='no') val
+      if(put_conf%level .ne. 0) then
+        write(put_conf%outunit,fmt="(a,i2)", advance ='no') val
       end if 
     end if
   end subroutine aot_put_val_int
@@ -148,20 +156,20 @@ contains
     if ( put_conf%level .gt. 0 ) then
       if ( put_conf%stack(put_conf%level) .gt. 0) then
         ! commata for previous line maybe use advance = no ????
-        write(put_conf%outunit,*) ","
+        write(put_conf%outunit,fmt="(a)") ","
       end if
       put_conf%stack(put_conf%level) =              &
         &      put_conf%stack(put_conf%level) + 1
     end if
     if (present(vname)) then
-      if(level .ne. 0) then
-        write(put_conf%outunit,*,advance ='no') trim(vname)//"=", val
+      if(put_conf%level .ne. 0) then
+        write(put_conf%outunit,fmt="(a,a)",advance ='no') trim(vname)//"=", //"'"//val//"'"
       else
-        write(put_conf%outunit,*) trim(vname)//"=", val
+        write(put_conf%outunit,fmt="(a,a)") trim(vname)//"=", //"'"//val//"'"
       end if 
     else
-      if(level .ne. 0) then
-        write(put_conf%outunit,*, advance ='no') val
+      if(put_conf%level .ne. 0) then
+        write(put_conf%outunit,fmt="(a,a)", advance ='no'),"'",val//"'"
       end if 
     end if
   end subroutine aot_put_val_char
@@ -174,26 +182,26 @@ contains
   subroutine aot_put_val_real(put_conf, vname, val)
     !------------------------------------------------------------------------ 
     type(aot_out_type), intent(inout)  :: put_conf
-    character(len=*), intent(in) :: vname
+    character(len=*), optional, intent(in) :: vname
     real, intent(in) :: val
     !------------------------------------------------------------------------ 
     if ( put_conf%level .gt. 0 ) then
       if ( put_conf%stack(put_conf%level) .gt. 0) then
         ! commata for previous line maybe use advance = no ????
-        write(put_conf%outunit,*) ","
+        write(put_conf%outunit,fmt="(a)") ","
       end if
       put_conf%stack(put_conf%level) =              &
         &      put_conf%stack(put_conf%level) + 1
     end if
     if (present(vname)) then
-      if(level .ne. 0) then
-        write(put_conf%outunit,*,advance ='no') trim(vname)//"=", val
+      if(put_conf%level .ne. 0) then
+        write(put_conf%outunit,fmt="(a,f8.2)",advance ='no') trim(vname)//"=", val
       else
-        write(put_conf%outunit,*) trim(vname)//"=", val
+        write(put_conf%outunit,fmt="(a,f8.2)") trim(vname)//"=", val
       end if 
     else
-      if(level .ne. 0) then
-        write(put_conf%outunit,*, advance ='no') val
+      if(put_conf%level .ne. 0) then
+        write(put_conf%outunit,fmt="(f8.2)", advance ='no') val
       end if 
     end if
   end subroutine aot_put_val_real
