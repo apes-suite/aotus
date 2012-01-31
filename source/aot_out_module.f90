@@ -132,9 +132,9 @@ contains
     end if
     if (present(vname)) then
       if(put_conf%level .ne. 0) then
-        write(put_conf%outunit,fmt="(a,i2)",advance ='no') trim(vname)//"=", val
+        write(put_conf%outunit,fmt="(a,i2)",advance ='no') trim(vname)//" = ", val
       else
-        write(put_conf%outunit,fmt="(a,i2)") trim(vname)//"=", val
+        write(put_conf%outunit,fmt="(a,i2)") trim(vname)//" = ", val
       end if 
     else
       if(put_conf%level .ne. 0) then
