@@ -21,7 +21,7 @@ module aot_out_module
   type aot_out_type
     integer :: outunit
     integer :: indent
-    integer :: stack(100)
+    integer :: stack(0:100)
     integer :: level
   end type 
 
@@ -66,6 +66,19 @@ contains
 
     
 !******************************************************************************!
+!>  Close the table 
+!!
+  subroutine aot_close_put(put_conf)
+    !------------------------------------------------------------------------ 
+    type(aot_out_type), intent(inout)  :: put_conf
+    !------------------------------------------------------------------------ 
+    close( put_conf%outunit )
+    put_conf%stack(put_conf%level) = 0                                         
+  end subroutine aot_close_put
+!******************************************************************************!
+
+
+!******************************************************************************!
 !> Append the table start format { to table 
 !!
   subroutine aot_table_open_out(put_conf, tname)
@@ -99,23 +112,11 @@ contains
 !******************************************************************************!
     
 
-!******************************************************************************!
-!>  Close the table 
-!!
-  subroutine aot_close_put(put_conf)
-    !------------------------------------------------------------------------ 
-    type(aot_out_type), intent(inout)  :: put_conf
-    !------------------------------------------------------------------------ 
-    close( put_conf%outunit )
-    put_conf%stack(put_conf%level) = 0 
-  end subroutine aot_close_put
-!******************************************************************************!
-
     
 !******************************************************************************!
 !>  Put integer variables in the table 
 !!
-  subroutine aot_put_val_int(put_conf, vname, val)
+  subroutine aot_put_val_int(put_conf, val, vname)
     !------------------------------------------------------------------------ 
     type(aot_out_type), intent(inout)  :: put_conf
     character(len=*), optional, intent(in) :: vname
@@ -147,7 +148,7 @@ contains
 !******************************************************************************!
 !>  Put character variables in the table 
 !!
-  subroutine aot_put_val_char(put_conf, vname, val)
+  subroutine aot_put_val_char(put_conf, val, vname)
     !------------------------------------------------------------------------ 
     type(aot_out_type), intent(inout)  :: put_conf
     character(len=*), optional, intent(in) :: vname
@@ -179,7 +180,7 @@ contains
 !******************************************************************************!
 !>  Put real variables in the table 
 !!
-  subroutine aot_put_val_real(put_conf, vname, val)
+  subroutine aot_put_val_real(put_conf, val, vname)
     !------------------------------------------------------------------------ 
     type(aot_out_type), intent(inout)  :: put_conf
     character(len=*), optional, intent(in) :: vname
