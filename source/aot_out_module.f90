@@ -153,13 +153,13 @@ contains
     end if
     if (present(vname)) then
       if(put_conf%level .ne. 0) then
-        write(put_conf%outunit,fmt="(a,i)",advance ='no') indent//trim(vname)//" = ", val
+        write(put_conf%outunit,fmt="(a,i0)",advance ='no') indent//trim(vname)//" = ", val
       else
-        write(put_conf%outunit,fmt="(a,i)") indent//trim(vname)//" = ", val
+        write(put_conf%outunit,fmt="(a,i0)") indent//trim(vname)//" = ", val
       end if 
     else
       if(put_conf%level .ne. 0) then
-        write(put_conf%outunit,fmt="(a,i)", advance ='no') indent,val
+        write(put_conf%outunit,fmt="(a,i0)", advance ='no') indent,val
       end if 
     end if
   end subroutine aot_put_val_int
@@ -254,13 +254,13 @@ contains
     end if
     if (present(vname)) then
       if(put_conf%level .ne. 0) then
-        write(put_conf%outunit,fmt="(a,i)",advance ='no')indent// trim(vname)//" = ", val
+        write(put_conf%outunit,fmt="(a,i0)",advance ='no')indent// trim(vname)//" = ", val
       else
-        write(put_conf%outunit,fmt="(a,i)")indent// trim(vname)//" = ", val
+        write(put_conf%outunit,fmt="(a,i0)")indent// trim(vname)//" = ", val
       end if 
     else
       if(put_conf%level .ne. 0) then
-        write(put_conf%outunit,fmt="(a,i)", advance ='no')indent, val
+        write(put_conf%outunit,fmt="(a,i0)", advance ='no')indent, val
       end if 
     end if
   end subroutine aot_put_val_long
