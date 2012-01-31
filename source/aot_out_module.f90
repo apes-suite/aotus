@@ -41,18 +41,18 @@ contains
 !> open the file, set the filename and the values of put_conf
 !!
 !! Will overwrite the given file, if it already exists.
-  subroutine aot_open_put(put_conf, filename, unitname)
+  subroutine aot_open_put(put_conf, filename, outUnit)
     !------------------------------------------------------------------------ 
     character(len=*), optional, intent(in) :: filename
-    character(len=*), optional, intent(in) :: unitname
+    integer, optional, intent(in) :: outUnit
     type(aot_out_type), intent(out) :: put_conf
     !------------------------------------------------------------------------ 
     if (present(filename)) then
       put_conf%outunit = newunit()
       open(unit = put_conf%outunit, file = trim(filename), action = 'write', &
         &  status='replace', recl=360)
-    else if ( present(unitname) ) then
-      put_conf%outunit = unitname
+    else if ( present(outUnit) ) then
+      put_conf%outunit = outUnit
     else
         write(*,*) 'Error, no unit or filename specified for aot_open_put'
        stop
@@ -163,9 +163,9 @@ contains
     end if
     if (present(vname)) then
       if(put_conf%level .ne. 0) then
-        write(put_conf%outunit,fmt="(a,a)",advance ='no') trim(vname)//"=", //"'"//val//"'"
+        write(put_conf%outunit,fmt="(a,a)",advance ='no') trim(vname)//"=", "'"//val//"'"
       else
-        write(put_conf%outunit,fmt="(a,a)") trim(vname)//"=", //"'"//val//"'"
+        write(put_conf%outunit,fmt="(a,a)") trim(vname)//"=", "'"//val//"'"
       end if 
     else
       if(put_conf%level .ne. 0) then
