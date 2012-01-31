@@ -85,13 +85,22 @@ contains
     !------------------------------------------------------------------------ 
     type(aot_out_type), intent(inout)  :: put_conf
     character(len=*), optional, intent(in) :: tname
+    character(len=1) :: separator
     !------------------------------------------------------------------------ 
-    
-    if (present(tname)) then
-      write(put_conf%outunit,fmt="(a)") trim(tname)//' = {' 
-    else
-      write(put_conf%outunit,fmt="(a)") '{'
+    separator = ''
+    if(put_conf%level .gt. 0)  then
+      if( put_conf%stack( put_conf%level ) .gt. 0) then
+        separator = ','
+      else
+        separator = ''
+      endif
+      put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1 
     end if
+      if (present(tname)) then
+        write(put_conf%outunit,fmt="(a)") trim(separator)//trim(tname)//' = {' 
+      else
+        write(put_conf%outunit,fmt="(a)") trim(separator)//'{'
+      end if
     put_conf%level = put_conf%level + 1
     put_conf%indent = put_conf%indent + 4
   end subroutine aot_table_open_out
@@ -106,6 +115,7 @@ contains
     type(aot_out_type), intent(inout)  :: put_conf
     !------------------------------------------------------------------------ 
     put_conf%indent = put_conf%indent - 4
+    put_conf%stack(put_conf%level) = 0
     put_conf%level = put_conf%level - 1
     write(put_conf%outunit,fmt="(a)") '}'            
   end subroutine aot_table_close_out
@@ -164,9 +174,9 @@ contains
     end if
     if (present(vname)) then
       if(put_conf%level .ne. 0) then
-        write(put_conf%outunit,fmt="(a,a)",advance ='no') trim(vname)//"=", "'"//val//"'"
+        write(put_conf%outunit,fmt="(a,a)",advance ='no') trim(vname)//" = ", "'"//val//"'"
       else
-        write(put_conf%outunit,fmt="(a,a)") trim(vname)//"=", "'"//val//"'"
+        write(put_conf%outunit,fmt="(a,a)") trim(vname)//" = ", "'"//val//"'"
       end if 
     else
       if(put_conf%level .ne. 0) then
@@ -196,9 +206,9 @@ contains
     end if
     if (present(vname)) then
       if(put_conf%level .ne. 0) then
-        write(put_conf%outunit,fmt="(a,f8.2)",advance ='no') trim(vname)//"=", val
+        write(put_conf%outunit,fmt="(a,f8.2)",advance ='no') trim(vname)//" = ", val
       else
-        write(put_conf%outunit,fmt="(a,f8.2)") trim(vname)//"=", val
+        write(put_conf%outunit,fmt="(a,f8.2)") trim(vname)//" = ", val
       end if 
     else
       if(put_conf%level .ne. 0) then
