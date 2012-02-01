@@ -4,12 +4,14 @@ program aotus_test
   use aot_table_module
   use aot_fun_module
   use aot_vector_module
+  use aot_out_module
 
   implicit none
 
   real :: width
   type(flu_State) :: conf
   type(aot_fun_type) :: foo 
+  type(aot_out_type) :: dummyOut
   integer :: iError
   integer :: vErr(3)
   integer :: stl_table
@@ -112,5 +114,19 @@ program aotus_test
   call aot_fun_close(L = conf, fun = foo) 
 
   call close_config(conf)
+
+  call aot_open_put(put_conf = dummyOut, filename = 'dummy.lua')
+  call aot_out_open_table(dummyOut, 'screen')
+  call aot_put_val(dummyOut, 123, 'width')
+  call aot_put_val(dummyOut, 456, 'height')
+
+  call aot_out_open_table(dummyOut, 'origin')
+  call aot_put_val(dummyOut, 100)
+  call aot_put_val(dummyOut, 0)
+  call aot_out_close_table(dummyOut)
+
+  call aot_out_close_table(dummyOut)
+
+  call aot_close_put(dummyOut)
 
 end program aotus_test
