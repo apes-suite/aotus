@@ -34,9 +34,11 @@ module aot_out_module
   !> Put Fortran intrinsic types into the script.
   interface aot_put_val
     module procedure aot_put_val_int
-    module procedure aot_put_val_char
-    module procedure aot_put_val_real
     module procedure aot_put_val_long
+    module procedure aot_put_val_real
+    module procedure aot_put_val_double
+    module procedure aot_put_val_logical
+    module procedure aot_put_val_string
   end interface
 
   private
@@ -158,7 +160,7 @@ contains
 
 
 !******************************************************************************!
-!>  Put integer variables in the table
+!>  Put integer variables into the Lua script.
 !!
   subroutine aot_put_val_int(put_conf, val, vname)
     !------------------------------------------------------------------------
@@ -189,7 +191,7 @@ contains
       write(put_conf%outunit, fmt="(a,i0)", advance=adv_string) &
         & indent//trim(vname)//" = ", val
     else
-      write(put_conf%outunit, fmt="(a,i0)", advance=adv_string) indent,val
+      write(put_conf%outunit, fmt="(a,i0)", advance=adv_string) indent, val
     end if
 
   end subroutine aot_put_val_int
@@ -197,165 +199,207 @@ contains
 
 
 !******************************************************************************!
-!>  Put character variables in the table
+!>  Put long variables into the Lua script.
 !!
-  subroutine aot_put_val_char(put_conf, val, vname)
+  subroutine aot_put_val_long(put_conf, val, vname)
+    !------------------------------------------------------------------------
+    type(aot_out_type), intent(inout)  :: put_conf
+    character(len=*), optional, intent(in) :: vname
+    integer(kind=long_k), intent(in) :: val
+    !------------------------------------------------------------------------
+    character(len=put_conf%indent) :: indent
+    character(len=3) :: adv_string
+    !------------------------------------------------------------------------
+
+    indent = ''
+    adv_string = 'yes'
+
+    if (put_conf%level .gt. 0) then
+      ! Do not advance after writing this value, in order to allow
+      ! subsequent entries, to append the separator!
+      adv_string = 'no'
+      if (put_conf%stack(put_conf%level) .gt. 0) then
+        ! This is not the first entry in the current table, append a ',' to the
+        ! previous entry.
+        write(put_conf%outunit,fmt="(a)") ","
+      end if
+      put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1
+    end if
+
+    if (present(vname)) then
+      write(put_conf%outunit, fmt="(a,i0)", advance=adv_string) &
+        & indent//trim(vname)//" = ", val
+    else
+      write(put_conf%outunit, fmt="(a,i0)", advance=adv_string) indent, val
+    end if
+
+  end subroutine aot_put_val_long
+!******************************************************************************!
+
+
+!******************************************************************************!
+!>  Put real variables into the Lua script.
+!!
+  subroutine aot_put_val_real(put_conf, val, vname)
+    !------------------------------------------------------------------------
+    type(aot_out_type), intent(inout)  :: put_conf
+    character(len=*), optional, intent(in) :: vname
+    real(kind=single_k), intent(in) :: val
+    !------------------------------------------------------------------------
+    character(len=put_conf%indent) :: indent
+    character(len=3) :: adv_string
+    !------------------------------------------------------------------------
+
+    indent = ''
+    adv_string = 'yes'
+
+    if (put_conf%level .gt. 0) then
+      ! Do not advance after writing this value, in order to allow
+      ! subsequent entries, to append the separator!
+      adv_string = 'no'
+      if (put_conf%stack(put_conf%level) .gt. 0) then
+        ! This is not the first entry in the current table, append a ',' to the
+        ! previous entry.
+        write(put_conf%outunit,fmt="(a)") ","
+      end if
+      put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1
+    end if
+
+    if (present(vname)) then
+      write(put_conf%outunit, fmt="(a,f0.9)", advance=adv_string) &
+        & indent//trim(vname)//" = ", val
+    else
+      write(put_conf%outunit, fmt="(a,f0.9)", advance=adv_string) indent, val
+    end if
+
+  end subroutine aot_put_val_real
+!******************************************************************************!
+
+
+!******************************************************************************!
+!>  Put double variables into the Lua script.
+!!
+  subroutine aot_put_val_double(put_conf, val, vname)
+    !------------------------------------------------------------------------
+    type(aot_out_type), intent(inout)  :: put_conf
+    character(len=*), optional, intent(in) :: vname
+    real(kind=double_k), intent(in) :: val
+    !------------------------------------------------------------------------
+    character(len=put_conf%indent) :: indent
+    character(len=3) :: adv_string
+    !------------------------------------------------------------------------
+
+    indent = ''
+    adv_string = 'yes'
+
+    if (put_conf%level .gt. 0) then
+      ! Do not advance after writing this value, in order to allow
+      ! subsequent entries, to append the separator!
+      adv_string = 'no'
+      if (put_conf%stack(put_conf%level) .gt. 0) then
+        ! This is not the first entry in the current table, append a ',' to the
+        ! previous entry.
+        write(put_conf%outunit,fmt="(a)") ","
+      end if
+      put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1
+    end if
+
+    if (present(vname)) then
+      write(put_conf%outunit, fmt="(a,f0.9)", advance=adv_string) &
+        & indent//trim(vname)//" = ", val
+    else
+      write(put_conf%outunit, fmt="(a,f0.9)", advance=adv_string) indent, val
+    end if
+
+  end subroutine aot_put_val_double
+!******************************************************************************!
+
+
+!******************************************************************************!
+!>  Put logical variables into the Lua script.
+!!
+  subroutine aot_put_val_logical(put_conf, val, vname)
+    !------------------------------------------------------------------------
+    type(aot_out_type), intent(inout)  :: put_conf
+    character(len=*), optional, intent(in) :: vname
+    logical, intent(in) :: val
+    !------------------------------------------------------------------------
+    character(len=put_conf%indent) :: indent
+    character(len=3) :: adv_string
+    character(len=5) :: valstring
+    !------------------------------------------------------------------------
+
+    indent = ''
+    adv_string = 'yes'
+
+    if (val) then
+      valstring = 'true'
+    else
+      valstring = 'false'
+    end if
+
+    if (put_conf%level .gt. 0) then
+      ! Do not advance after writing this value, in order to allow
+      ! subsequent entries, to append the separator!
+      adv_string = 'no'
+      if (put_conf%stack(put_conf%level) .gt. 0) then
+        ! This is not the first entry in the current table, append a ',' to the
+        ! previous entry.
+        write(put_conf%outunit,fmt="(a)") ","
+      end if
+      put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1
+    end if
+
+    if (present(vname)) then
+      write(put_conf%outunit, fmt="(a)", advance=adv_string) &
+        & indent//trim(vname)//" = "//trim(valstring)
+    else
+      write(put_conf%outunit, fmt="(a)", advance=adv_string) indent &
+        &                                                    //trim(valstring)
+    end if
+
+  end subroutine aot_put_val_logical
+!******************************************************************************!
+
+
+!******************************************************************************!
+!>  Put string variables into the Lua script.
+!!
+  subroutine aot_put_val_string(put_conf, val, vname)
     !------------------------------------------------------------------------
     type(aot_out_type), intent(inout)  :: put_conf
     character(len=*), optional, intent(in) :: vname
     character(len=*), intent(in) :: val
     !------------------------------------------------------------------------
     character(len=put_conf%indent) :: indent
+    character(len=3) :: adv_string
     !------------------------------------------------------------------------
+
     indent = ''
-    if ( put_conf%level .gt. 0 ) then
-      if ( put_conf%stack(put_conf%level) .gt. 0) then
-        ! commata for previous line maybe use advance = no ????
+    adv_string = 'yes'
+
+    if (put_conf%level .gt. 0) then
+      ! Do not advance after writing this value, in order to allow
+      ! subsequent entries, to append the separator!
+      adv_string = 'no'
+      if (put_conf%stack(put_conf%level) .gt. 0) then
+        ! This is not the first entry in the current table, append a ',' to the
+        ! previous entry.
         write(put_conf%outunit,fmt="(a)") ","
       end if
-      put_conf%stack(put_conf%level) =              &
-        &      put_conf%stack(put_conf%level) + 1
+      put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1
     end if
+
     if (present(vname)) then
-      if(put_conf%level .ne. 0) then
-        write(put_conf%outunit,fmt="(a,a)",advance ='no')indent// trim(vname)//" = ", "'"//val//"'"
-      else
-        write(put_conf%outunit,fmt="(a,a)")indent// trim(vname)//" = ", "'"//val//"'"
-      end if
+      write(put_conf%outunit, fmt="(a)", advance=adv_string) &
+        & indent//trim(vname)//" = '"//trim(val)//"'"
     else
-      if(put_conf%level .ne. 0) then
-        write(put_conf%outunit,fmt="(a,a)", advance ='no'),indent//"'",val//"'"
-      end if
+      write(put_conf%outunit, fmt="(a)", advance=adv_string) &
+        &  indent//"'"//trim(val)//"'"
     end if
-  end subroutine aot_put_val_char
+
+  end subroutine aot_put_val_string
 !******************************************************************************!
-
-
-!******************************************************************************!
-!>  Put real variables in the table
-!!
-  subroutine aot_put_val_real(put_conf, val, vname)
-    !------------------------------------------------------------------------
-    type(aot_out_type), intent(inout)  :: put_conf
-    character(len=*), optional, intent(in) :: vname
-    real, intent(in) :: val
-    !------------------------------------------------------------------------
-    character(len=put_conf%indent) :: indent
-    !------------------------------------------------------------------------
-    indent = ''
-    if ( put_conf%level .gt. 0 ) then
-      if ( put_conf%stack(put_conf%level) .gt. 0) then
-        ! commata for previous line maybe use advance = no ????
-        write(put_conf%outunit,fmt="(a)") ","
-      end if
-      put_conf%stack(put_conf%level) =              &
-        &      put_conf%stack(put_conf%level) + 1
-    end if
-    if (present(vname)) then
-      if(put_conf%level .ne. 0) then
-        write(put_conf%outunit,fmt="(a,f0.6)",advance ='no') trim(vname)//" = ", val
-      else
-        write(put_conf%outunit,fmt="(a,f0.6)") trim(vname)//" = ", val
-      end if
-    else
-      if(put_conf%level .ne. 0) then
-        write(put_conf%outunit,fmt="(a,f0.6)", advance ='no')indent, val
-      end if
-    end if
-  end subroutine aot_put_val_real
-
-
-  subroutine aot_put_val_long(put_conf, val, vname)
-    !------------------------------------------------------------------------
-    type(aot_out_type), intent(inout)  :: put_conf
-    character(len=*), optional, intent(in) :: vname
-    integer(kind = long_k), intent(in) :: val
-    !------------------------------------------------------------------------
-    character(len=put_conf%indent) :: indent
-    !------------------------------------------------------------------------
-    indent = ''
-    if ( put_conf%level .gt. 0 ) then
-      if ( put_conf%stack(put_conf%level) .gt. 0) then
-        ! commata for previous line maybe use advance = no ????
-        write(put_conf%outunit,fmt="(a)") ","
-      end if
-      put_conf%stack(put_conf%level) =              &
-        &      put_conf%stack(put_conf%level) + 1
-    end if
-    if (present(vname)) then
-      if(put_conf%level .ne. 0) then
-        write(put_conf%outunit,fmt="(a,i0)",advance ='no')indent// trim(vname)//" = ", val
-      else
-        write(put_conf%outunit,fmt="(a,i0)")indent// trim(vname)//" = ", val
-      end if
-    else
-      if(put_conf%level .ne. 0) then
-        write(put_conf%outunit,fmt="(a,i0)", advance ='no')indent, val
-      end if
-    end if
-  end subroutine aot_put_val_long
-
-
-  subroutine aot_put_val_double(put_conf, val, vname)
-    !------------------------------------------------------------------------
-    type(aot_out_type), intent(inout)  :: put_conf
-    character(len=*), optional, intent(in) :: vname
-    real(kind = double_k), intent(in) :: val
-    !------------------------------------------------------------------------
-    character(len=put_conf%indent) :: indent
-    !------------------------------------------------------------------------
-    indent = ''
-    if ( put_conf%level .gt. 0 ) then
-      if ( put_conf%stack(put_conf%level) .gt. 0) then
-        ! commata for previous line maybe use advance = no ????
-        write(put_conf%outunit,fmt="(a)") ","
-      end if
-      put_conf%stack(put_conf%level) =              &
-        &      put_conf%stack(put_conf%level) + 1
-    end if
-    if (present(vname)) then
-      if(put_conf%level .ne. 0) then
-        write(put_conf%outunit,fmt="(a,f4.2)",advance ='no')indent// trim(vname)//" = ", val
-      else
-        write(put_conf%outunit,fmt="(a,f4.2)")indent// trim(vname)//" = ", val
-      end if
-    else
-      if(put_conf%level .ne. 0) then
-        write(put_conf%outunit,fmt="(a,f4.2)", advance ='no')indent, val
-      end if
-    end if
-  end subroutine aot_put_val_double
-
-
-  subroutine aot_put_val_single(put_conf, val, vname)
-    !------------------------------------------------------------------------
-    type(aot_out_type), intent(inout)  :: put_conf
-    character(len=*), optional, intent(in) :: vname
-    real(kind = single_k), intent(in) :: val
-    !------------------------------------------------------------------------
-    character(len=put_conf%indent) :: indent
-    !------------------------------------------------------------------------
-    indent = ''
-    if ( put_conf%level .gt. 0 ) then
-      if ( put_conf%stack(put_conf%level) .gt. 0) then
-        ! commata for previous line maybe use advance = no ????
-        write(put_conf%outunit,fmt="(a)") ","
-      end if
-      put_conf%stack(put_conf%level) =              &
-        &      put_conf%stack(put_conf%level) + 1
-    end if
-    if (present(vname)) then
-      if(put_conf%level .ne. 0) then
-        write(put_conf%outunit,fmt="(a,f4.2)",advance ='no')indent// trim(vname)//" = ", val
-      else
-        write(put_conf%outunit,fmt="(a,f4.2)")indent// trim(vname)//" = ", val
-      end if
-    else
-      if(put_conf%level .ne. 0) then
-        write(put_conf%outunit,fmt="(a,f4.2)", advance ='no')indent, val
-      end if
-    end if
-  end subroutine aot_put_val_single
 
 
 
