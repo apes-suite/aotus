@@ -41,7 +41,7 @@ module aot_out_module
 
   private
 
-  integer, parameter :: indentation
+  integer, parameter :: indentation = 4
 
 contains
 
