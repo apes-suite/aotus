@@ -8,7 +8,7 @@
 !! the reading functions, however it is almost completely
 !! independent and relies purely on Fortran output methods.
 module aot_out_module
-  
+
   use aot_kinds_module
 
   implicit none
@@ -29,7 +29,7 @@ module aot_out_module
     integer :: stack(100) !< Number of entries on each level
     integer :: level !< Current nesting level in tables
     logical :: externalOpen !< Flag if file opened outside the aot_out scope
-  end type 
+  end type
 
   !> Put Fortran intrinsic types into the script.
   interface aot_put_val
@@ -54,11 +54,11 @@ contains
 !! If both are given, the file will be opened and connected to a new unit,
 !! outUnit is ignored in this case.
   subroutine aot_open_put(put_conf, filename, outUnit)
-    !------------------------------------------------------------------------ 
+    !------------------------------------------------------------------------
     type(aot_out_type), intent(out) :: put_conf !< Handle for the file
     character(len=*), optional, intent(in) :: filename !< File to open
     integer, optional, intent(in) :: outUnit !< Pre-connected unit to write to
-    !------------------------------------------------------------------------ 
+    !------------------------------------------------------------------------
 
     if (present(filename)) then
       put_conf%outunit = newunit()
@@ -75,20 +75,20 @@ contains
     end if
 
     put_conf%indent = 0
-    put_conf%stack(:) = 0 
+    put_conf%stack(:) = 0
     put_conf%level = 0
 
   end subroutine aot_open_put
 !******************************************************************************!
 
-    
+
 !******************************************************************************!
-!>  Close the script again. 
+!>  Close the script again.
 !!
   subroutine aot_close_put(put_conf)
-    !------------------------------------------------------------------------ 
+    !------------------------------------------------------------------------
     type(aot_out_type), intent(inout)  :: put_conf
-    !------------------------------------------------------------------------ 
+    !------------------------------------------------------------------------
     if( .not. put_conf%externalOpen ) close( put_conf%outunit )
   end subroutine aot_close_put
 !******************************************************************************!
@@ -98,10 +98,10 @@ contains
 !> Start a new table to write to.
 !!
   subroutine aot_out_open_table(put_conf, tname)
-    !------------------------------------------------------------------------ 
+    !------------------------------------------------------------------------
     type(aot_out_type), intent(inout)  :: put_conf
     character(len=*), optional, intent(in) :: tname
-    !------------------------------------------------------------------------ 
+    !------------------------------------------------------------------------
     character(len=put_conf%indent) :: indent
 
     if(put_conf%level .gt. 0)  then
@@ -110,11 +110,11 @@ contains
         ! a separator.
         write(put_conf%outunit,fmt="(a)") ','
       endif
-      put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1 
+      put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1
     end if
-  
+
     if (present(tname)) then
-      write(put_conf%outunit, fmt="(a)") indent//trim(tname)//' = {' 
+      write(put_conf%outunit, fmt="(a)") indent//trim(tname)//' = {'
     else
       write(put_conf%outunit, fmt="(a)") indent//'{'
     end if
@@ -125,14 +125,14 @@ contains
   end subroutine aot_out_open_table
 !******************************************************************************!
 
-    
+
 !******************************************************************************!
-!>  Close the current table. 
+!>  Close the current table.
 !!
   subroutine aot_out_close_table(put_conf)
-    !------------------------------------------------------------------------ 
+    !------------------------------------------------------------------------
     type(aot_out_type), intent(inout)  :: put_conf
-    !------------------------------------------------------------------------ 
+    !------------------------------------------------------------------------
     character(len=max(put_conf%indent-indentation,0)) :: indent
 
     put_conf%indent = max(put_conf%indent - indentation, 0)
@@ -152,18 +152,18 @@ contains
 
   end subroutine aot_out_close_table
 !******************************************************************************!
-    
 
-    
+
+
 !******************************************************************************!
-!>  Put integer variables in the table 
+!>  Put integer variables in the table
 !!
   subroutine aot_put_val_int(put_conf, val, vname)
-    !------------------------------------------------------------------------ 
+    !------------------------------------------------------------------------
     type(aot_out_type), intent(inout)  :: put_conf
     character(len=*), optional, intent(in) :: vname
     integer, intent(in) :: val
-    !------------------------------------------------------------------------ 
+    !------------------------------------------------------------------------
     character(len=put_conf%indent) :: indent
     character(len=3) :: adv_string
     !------------------------------------------------------------------------
@@ -193,16 +193,16 @@ contains
   end subroutine aot_put_val_int
 !******************************************************************************!
 
-    
+
 !******************************************************************************!
-!>  Put character variables in the table 
+!>  Put character variables in the table
 !!
   subroutine aot_put_val_char(put_conf, val, vname)
-    !------------------------------------------------------------------------ 
+    !------------------------------------------------------------------------
     type(aot_out_type), intent(inout)  :: put_conf
     character(len=*), optional, intent(in) :: vname
     character(len=*), intent(in) :: val
-    !------------------------------------------------------------------------ 
+    !------------------------------------------------------------------------
     character(len=put_conf%indent) :: indent
     !------------------------------------------------------------------------
     indent = ''
@@ -219,25 +219,25 @@ contains
         write(put_conf%outunit,fmt="(a,a)",advance ='no')indent// trim(vname)//" = ", "'"//val//"'"
       else
         write(put_conf%outunit,fmt="(a,a)")indent// trim(vname)//" = ", "'"//val//"'"
-      end if 
+      end if
     else
       if(put_conf%level .ne. 0) then
         write(put_conf%outunit,fmt="(a,a)", advance ='no'),indent//"'",val//"'"
-      end if 
+      end if
     end if
   end subroutine aot_put_val_char
 !******************************************************************************!
 
-  
+
 !******************************************************************************!
-!>  Put real variables in the table 
+!>  Put real variables in the table
 !!
   subroutine aot_put_val_real(put_conf, val, vname)
-    !------------------------------------------------------------------------ 
+    !------------------------------------------------------------------------
     type(aot_out_type), intent(inout)  :: put_conf
     character(len=*), optional, intent(in) :: vname
     real, intent(in) :: val
-    !------------------------------------------------------------------------ 
+    !------------------------------------------------------------------------
     character(len=put_conf%indent) :: indent
     !------------------------------------------------------------------------
     indent = ''
@@ -254,21 +254,21 @@ contains
         write(put_conf%outunit,fmt="(a,f0.6)",advance ='no') trim(vname)//" = ", val
       else
         write(put_conf%outunit,fmt="(a,f0.6)") trim(vname)//" = ", val
-      end if 
+      end if
     else
       if(put_conf%level .ne. 0) then
         write(put_conf%outunit,fmt="(a,f0.6)", advance ='no')indent, val
-      end if 
+      end if
     end if
   end subroutine aot_put_val_real
- 
-  
+
+
   subroutine aot_put_val_long(put_conf, val, vname)
-    !------------------------------------------------------------------------ 
+    !------------------------------------------------------------------------
     type(aot_out_type), intent(inout)  :: put_conf
     character(len=*), optional, intent(in) :: vname
     integer(kind = long_k), intent(in) :: val
-    !------------------------------------------------------------------------ 
+    !------------------------------------------------------------------------
     character(len=put_conf%indent) :: indent
     !------------------------------------------------------------------------
     indent = ''
@@ -285,21 +285,21 @@ contains
         write(put_conf%outunit,fmt="(a,i0)",advance ='no')indent// trim(vname)//" = ", val
       else
         write(put_conf%outunit,fmt="(a,i0)")indent// trim(vname)//" = ", val
-      end if 
+      end if
     else
       if(put_conf%level .ne. 0) then
         write(put_conf%outunit,fmt="(a,i0)", advance ='no')indent, val
-      end if 
+      end if
     end if
   end subroutine aot_put_val_long
 
-  
+
   subroutine aot_put_val_double(put_conf, val, vname)
-    !------------------------------------------------------------------------ 
+    !------------------------------------------------------------------------
     type(aot_out_type), intent(inout)  :: put_conf
     character(len=*), optional, intent(in) :: vname
     real(kind = double_k), intent(in) :: val
-    !------------------------------------------------------------------------ 
+    !------------------------------------------------------------------------
     character(len=put_conf%indent) :: indent
     !------------------------------------------------------------------------
     indent = ''
@@ -316,21 +316,21 @@ contains
         write(put_conf%outunit,fmt="(a,f4.2)",advance ='no')indent// trim(vname)//" = ", val
       else
         write(put_conf%outunit,fmt="(a,f4.2)")indent// trim(vname)//" = ", val
-      end if 
+      end if
     else
       if(put_conf%level .ne. 0) then
         write(put_conf%outunit,fmt="(a,f4.2)", advance ='no')indent, val
-      end if 
+      end if
     end if
   end subroutine aot_put_val_double
-  
+
 
   subroutine aot_put_val_single(put_conf, val, vname)
-    !------------------------------------------------------------------------ 
+    !------------------------------------------------------------------------
     type(aot_out_type), intent(inout)  :: put_conf
     character(len=*), optional, intent(in) :: vname
     real(kind = single_k), intent(in) :: val
-    !------------------------------------------------------------------------ 
+    !------------------------------------------------------------------------
     character(len=put_conf%indent) :: indent
     !------------------------------------------------------------------------
     indent = ''
@@ -347,11 +347,11 @@ contains
         write(put_conf%outunit,fmt="(a,f4.2)",advance ='no')indent// trim(vname)//" = ", val
       else
         write(put_conf%outunit,fmt="(a,f4.2)")indent// trim(vname)//" = ", val
-      end if 
+      end if
     else
       if(put_conf%level .ne. 0) then
         write(put_conf%outunit,fmt="(a,f4.2)", advance ='no')indent, val
-      end if 
+      end if
     end if
   end subroutine aot_put_val_single
 
