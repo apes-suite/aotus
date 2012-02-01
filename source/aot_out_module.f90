@@ -14,7 +14,7 @@ module aot_out_module
   implicit none
 
   public :: aot_out_type
-  public :: aot_put_val
+  public :: aot_out_val
   public :: aot_out_open
   public :: aot_out_close
   public :: aot_out_open_table
@@ -32,13 +32,13 @@ module aot_out_module
   end type
 
   !> Put Fortran intrinsic types into the script.
-  interface aot_put_val
-    module procedure aot_put_val_int
-    module procedure aot_put_val_long
-    module procedure aot_put_val_real
-    module procedure aot_put_val_double
-    module procedure aot_put_val_logical
-    module procedure aot_put_val_string
+  interface aot_out_val
+    module procedure aot_out_val_int
+    module procedure aot_out_val_long
+    module procedure aot_out_val_real
+    module procedure aot_out_val_double
+    module procedure aot_out_val_logical
+    module procedure aot_out_val_string
   end interface
 
   private
@@ -162,7 +162,7 @@ contains
 !******************************************************************************!
 !>  Put integer variables into the Lua script.
 !!
-  subroutine aot_put_val_int(put_conf, val, vname)
+  subroutine aot_out_val_int(put_conf, val, vname)
     !------------------------------------------------------------------------
     type(aot_out_type), intent(inout)  :: put_conf
     character(len=*), optional, intent(in) :: vname
@@ -194,14 +194,14 @@ contains
       write(put_conf%outunit, fmt="(a,i0)", advance=adv_string) indent, val
     end if
 
-  end subroutine aot_put_val_int
+  end subroutine aot_out_val_int
 !******************************************************************************!
 
 
 !******************************************************************************!
 !>  Put long variables into the Lua script.
 !!
-  subroutine aot_put_val_long(put_conf, val, vname)
+  subroutine aot_out_val_long(put_conf, val, vname)
     !------------------------------------------------------------------------
     type(aot_out_type), intent(inout)  :: put_conf
     character(len=*), optional, intent(in) :: vname
@@ -233,14 +233,14 @@ contains
       write(put_conf%outunit, fmt="(a,i0)", advance=adv_string) indent, val
     end if
 
-  end subroutine aot_put_val_long
+  end subroutine aot_out_val_long
 !******************************************************************************!
 
 
 !******************************************************************************!
 !>  Put real variables into the Lua script.
 !!
-  subroutine aot_put_val_real(put_conf, val, vname)
+  subroutine aot_out_val_real(put_conf, val, vname)
     !------------------------------------------------------------------------
     type(aot_out_type), intent(inout)  :: put_conf
     character(len=*), optional, intent(in) :: vname
@@ -272,14 +272,14 @@ contains
       write(put_conf%outunit, fmt="(a,f0.9)", advance=adv_string) indent, val
     end if
 
-  end subroutine aot_put_val_real
+  end subroutine aot_out_val_real
 !******************************************************************************!
 
 
 !******************************************************************************!
 !>  Put double variables into the Lua script.
 !!
-  subroutine aot_put_val_double(put_conf, val, vname)
+  subroutine aot_out_val_double(put_conf, val, vname)
     !------------------------------------------------------------------------
     type(aot_out_type), intent(inout)  :: put_conf
     character(len=*), optional, intent(in) :: vname
@@ -311,14 +311,14 @@ contains
       write(put_conf%outunit, fmt="(a,f0.9)", advance=adv_string) indent, val
     end if
 
-  end subroutine aot_put_val_double
+  end subroutine aot_out_val_double
 !******************************************************************************!
 
 
 !******************************************************************************!
 !>  Put logical variables into the Lua script.
 !!
-  subroutine aot_put_val_logical(put_conf, val, vname)
+  subroutine aot_out_val_logical(put_conf, val, vname)
     !------------------------------------------------------------------------
     type(aot_out_type), intent(inout)  :: put_conf
     character(len=*), optional, intent(in) :: vname
@@ -358,14 +358,14 @@ contains
         &                                                    //trim(valstring)
     end if
 
-  end subroutine aot_put_val_logical
+  end subroutine aot_out_val_logical
 !******************************************************************************!
 
 
 !******************************************************************************!
 !>  Put string variables into the Lua script.
 !!
-  subroutine aot_put_val_string(put_conf, val, vname)
+  subroutine aot_out_val_string(put_conf, val, vname)
     !------------------------------------------------------------------------
     type(aot_out_type), intent(inout)  :: put_conf
     character(len=*), optional, intent(in) :: vname
@@ -398,7 +398,7 @@ contains
         &  indent//"'"//trim(val)//"'"
     end if
 
-  end subroutine aot_put_val_string
+  end subroutine aot_out_val_string
 !******************************************************************************!
 
 
