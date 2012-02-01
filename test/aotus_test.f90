@@ -115,7 +115,7 @@ program aotus_test
 
   call close_config(conf)
 
-  call aot_open_put(put_conf = dummyOut, filename = 'dummy.lua')
+  call aot_out_open(put_conf = dummyOut, filename = 'dummy.lua')
   call aot_out_open_table(dummyOut, 'screen')
   call aot_put_val(dummyOut, 123, 'width')
   call aot_put_val(dummyOut, 456, 'height')
@@ -127,6 +127,6 @@ program aotus_test
 
   call aot_out_close_table(dummyOut)
 
-  call aot_close_put(dummyOut)
+  call aot_out_close(dummyOut)
 
 end program aotus_test

@@ -15,8 +15,8 @@ module aot_out_module
 
   public :: aot_out_type
   public :: aot_put_val
-  public :: aot_open_put
-  public :: aot_close_put
+  public :: aot_out_open
+  public :: aot_out_close
   public :: aot_out_open_table
   public :: aot_out_close_table
 
@@ -53,7 +53,7 @@ contains
 !! pre-connected file.
 !! If both are given, the file will be opened and connected to a new unit,
 !! outUnit is ignored in this case.
-  subroutine aot_open_put(put_conf, filename, outUnit)
+  subroutine aot_out_open(put_conf, filename, outUnit)
     !------------------------------------------------------------------------
     type(aot_out_type), intent(out) :: put_conf !< Handle for the file
     character(len=*), optional, intent(in) :: filename !< File to open
@@ -78,19 +78,19 @@ contains
     put_conf%stack(:) = 0
     put_conf%level = 0
 
-  end subroutine aot_open_put
+  end subroutine aot_out_open
 !******************************************************************************!
 
 
 !******************************************************************************!
 !>  Close the script again.
 !!
-  subroutine aot_close_put(put_conf)
+  subroutine aot_out_close(put_conf)
     !------------------------------------------------------------------------
     type(aot_out_type), intent(inout)  :: put_conf
     !------------------------------------------------------------------------
     if( .not. put_conf%externalOpen ) close( put_conf%outunit )
-  end subroutine aot_close_put
+  end subroutine aot_out_close
 !******************************************************************************!
 
 
