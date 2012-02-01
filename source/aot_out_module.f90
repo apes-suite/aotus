@@ -1,4 +1,4 @@
-!> First draft of incomplete output module!
+!> A module to produce Lua scripts with nested tables.
 !!
 !! This module eases the output of readable Lua scripts.
 !! It takes care of indentation with nested tables, and
@@ -16,18 +16,22 @@ module aot_out_module
   public :: aot_out_type
   public :: aot_put_val
   public :: aot_open_put
-  public :: aot_table_open_out
-  public :: aot_table_close_out
   public :: aot_close_put
+  public :: aot_out_open_table
+  public :: aot_out_close_table
 
+  !> This type provides the internal representation of the opened Lua script.
+  !!
+  !! It is used to keep track of the state in the script internally.
   type aot_out_type
-    integer :: outunit
-    integer :: indent
-    integer :: stack(0:100)
-    integer :: level
-    logical :: externalOpen
+    integer :: outunit !< Unit to write to
+    integer :: indent !< Indentation level (number of spaces)
+    integer :: stack(100) !< Number of entries on each level
+    integer :: level !< Current nesting level in tables
+    logical :: externalOpen !< Flag if file opened outside the aot_out scope
   end type 
 
+  !> Put Fortran intrinsic types into the script.
   interface aot_put_val
     module procedure aot_put_val_int
     module procedure aot_put_val_char
@@ -37,20 +41,25 @@ module aot_out_module
 
   private
 
-  integer, parameter :: labelLen = 80
+  integer, parameter :: indentation
 
 contains
 
 !******************************************************************************!
-!> open the file, set the filename and the values of put_conf
+!> Open the file to write to and return a handle (put_conf) to it.
 !!
-!! Will overwrite the given file, if it already exists.
+!! This will overwrite the given file, if it already exists.
+!! Either filename of outUnit has to be specified, use outUnit to write to a
+!! pre-connected file.
+!! If both are given, the file will be opened and connected to a new unit,
+!! outUnit is ignored in this case.
   subroutine aot_open_put(put_conf, filename, outUnit)
     !------------------------------------------------------------------------ 
-    character(len=*), optional, intent(in) :: filename
-    integer, optional, intent(in) :: outUnit
-    type(aot_out_type), intent(out) :: put_conf
+    type(aot_out_type), intent(out) :: put_conf !< Handle for the file
+    character(len=*), optional, intent(in) :: filename !< File to open
+    integer, optional, intent(in) :: outUnit !< Pre-connected unit to write to
     !------------------------------------------------------------------------ 
+
     if (present(filename)) then
       put_conf%outunit = newunit()
       open(unit = put_conf%outunit, file = trim(filename), action = 'write', &
@@ -59,9 +68,10 @@ contains
     else if ( present(outUnit) ) then
       put_conf%externalOpen = .true.
       put_conf%outunit = outUnit
-    else
-        write(*,*) 'Error, no unit or filename specified for aot_open_put'
-       stop
+!HK!    else
+!HK!       write(*,*) 'Error, no unit or filename specified for aot_open_put'
+!HK!       stop
+!HK: Return an error code instead.
     end if
 
     put_conf%indent = 0
@@ -73,60 +83,74 @@ contains
 
     
 !******************************************************************************!
-!>  Close the table 
+!>  Close the script again. 
 !!
   subroutine aot_close_put(put_conf)
     !------------------------------------------------------------------------ 
     type(aot_out_type), intent(inout)  :: put_conf
     !------------------------------------------------------------------------ 
     if( .not. put_conf%externalOpen ) close( put_conf%outunit )
-    put_conf%stack(put_conf%level) = 0                                         
   end subroutine aot_close_put
 !******************************************************************************!
 
 
 !******************************************************************************!
-!> Append the table start format { to table 
+!> Start a new table to write to.
 !!
-  subroutine aot_table_open_out(put_conf, tname)
+  subroutine aot_out_open_table(put_conf, tname)
     !------------------------------------------------------------------------ 
     type(aot_out_type), intent(inout)  :: put_conf
     character(len=*), optional, intent(in) :: tname
-    character(len=1) :: separator
     !------------------------------------------------------------------------ 
-    separator = ''
+    character(len=put_conf%indent) :: indent
+
     if(put_conf%level .gt. 0)  then
       if( put_conf%stack( put_conf%level ) .gt. 0) then
-        separator = ','
-      else
-        separator = ''
+        ! Not the first entry in the parent table, close previous entry with
+        ! a separator.
+        write(put_conf%outunit,fmt="(a)") ','
       endif
       put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1 
     end if
   
     if (present(tname)) then
-      write(put_conf%outunit,fmt="(a)")trim(separator)//trim(tname)//' = {' 
+      write(put_conf%outunit, fmt="(a)") indent//trim(tname)//' = {' 
     else
-      write(put_conf%outunit,fmt="(a)") trim(separator)//'{'
+      write(put_conf%outunit, fmt="(a)") indent//'{'
     end if
+
     put_conf%level = put_conf%level + 1
-    put_conf%indent = put_conf%indent + 4
-  end subroutine aot_table_open_out
+    put_conf%indent = put_conf%indent + indentation
+
+  end subroutine aot_out_open_table
 !******************************************************************************!
 
     
 !******************************************************************************!
-!>  Append } to the table and decrease the level and indent 
+!>  Close the current table. 
 !!
-  subroutine aot_table_close_out(put_conf)
+  subroutine aot_out_close_table(put_conf)
     !------------------------------------------------------------------------ 
     type(aot_out_type), intent(inout)  :: put_conf
     !------------------------------------------------------------------------ 
-    put_conf%indent = put_conf%indent - 4
+    character(len=max(put_conf%indent-indentation,0)) :: indent
+
+    put_conf%indent = max(put_conf%indent - indentation, 0)
     put_conf%stack(put_conf%level) = 0
-    put_conf%level = put_conf%level - 1
-    write(put_conf%outunit,fmt="(a)") '}'            
-  end subroutine aot_table_close_out
+    put_conf%level = max(put_conf%level - 1, 0)
+
+    ! Close last entry without separator and put closing brace on a separate
+    ! line.
+    write(put_conf%outunit,*) ''
+
+    if (put_conf%level == 0) then
+      write(put_conf%outunit,fmt="(a)") indent//'}'
+    else
+      ! Do not advance, to let the next entry append the separator, to the line
+      write(put_conf%outunit,fmt="(a)", advance='no') indent//'}'
+    end if
+
+  end subroutine aot_out_close_table
 !******************************************************************************!
     
 
@@ -141,27 +165,31 @@ contains
     integer, intent(in) :: val
     !------------------------------------------------------------------------ 
     character(len=put_conf%indent) :: indent
+    character(len=3) :: adv_string
     !------------------------------------------------------------------------
+
     indent = ''
-    if ( put_conf%level .gt. 0 ) then
-      if ( put_conf%stack(put_conf%level) .gt. 0) then
-        ! commata for previous line maybe use advance = no ????
+    adv_string = 'yes'
+
+    if (put_conf%level .gt. 0) then
+      ! Do not advance after writing this value, in order to allow
+      ! subsequent entries, to append the separator!
+      adv_string = 'no'
+      if (put_conf%stack(put_conf%level) .gt. 0) then
+        ! This is not the first entry in the current table, append a ',' to the
+        ! previous entry.
         write(put_conf%outunit,fmt="(a)") ","
       end if
-      put_conf%stack(put_conf%level) =              &
-        &      put_conf%stack(put_conf%level) + 1
+      put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1
     end if
+
     if (present(vname)) then
-      if(put_conf%level .ne. 0) then
-        write(put_conf%outunit,fmt="(a,i0)",advance ='no') indent//trim(vname)//" = ", val
-      else
-        write(put_conf%outunit,fmt="(a,i0)") indent//trim(vname)//" = ", val
-      end if 
+      write(put_conf%outunit, fmt="(a,i0)", advance=adv_string) &
+        & indent//trim(vname)//" = ", val
     else
-      if(put_conf%level .ne. 0) then
-        write(put_conf%outunit,fmt="(a,i0)", advance ='no') indent,val
-      end if 
+      write(put_conf%outunit, fmt="(a,i0)", advance=adv_string) indent,val
     end if
+
   end subroutine aot_put_val_int
 !******************************************************************************!
 
