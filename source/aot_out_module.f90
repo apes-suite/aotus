@@ -104,6 +104,7 @@ contains
     !------------------------------------------------------------------------
     character(len=put_conf%indent) :: indent
 
+    indent = ''
     if(put_conf%level .gt. 0)  then
       if( put_conf%stack( put_conf%level ) .gt. 0) then
         ! Not the first entry in the parent table, close previous entry with
@@ -135,6 +136,7 @@ contains
     !------------------------------------------------------------------------
     character(len=max(put_conf%indent-indentation,0)) :: indent
 
+    indent = ''
     put_conf%indent = max(put_conf%indent - indentation, 0)
     put_conf%stack(put_conf%level) = 0
     put_conf%level = max(put_conf%level - 1, 0)
