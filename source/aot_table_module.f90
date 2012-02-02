@@ -24,7 +24,6 @@ contains
   function aot_table_top(L) result(thandle)
     type(flu_state) :: L
     integer :: thandle
-
     if (flu_isNoneOrNil(L, -1) .or. (.not. flu_isTable(L, -1))) then
       thandle = 0
       call flu_pop(L)
