@@ -23,6 +23,7 @@ program aotus_test
   integer :: nSTLs
   real(kind=double_k) :: coord(3)
   real(kind=double_k) :: results
+  integer :: kjval(2,3)
 
   call open_config(conf = conf, filename = 'config.lua')
 
@@ -109,6 +110,14 @@ program aotus_test
   write(*,"(a,3f5.2,a)") "result of ic_density at ",  coord, ':'
   write(*,"(EN16.7)") results
 
+  kjval(1,1) = 1
+  kjval(1,2) = 2
+  kjval(1,3) = 3
+  kjval(2,1) = 4
+  kjval(2,2) = 5
+  kjval(2,3) = 6
+
+
   !> Repeat putting and retrieving if needed.
   !! Close the function again with aot_fun_close.
   call aot_fun_close(L = conf, fun = foo) 
@@ -120,10 +129,13 @@ program aotus_test
   call aot_out_val(dummyOut, 123, 'width')
   call aot_out_val(dummyOut, 456, 'height')
 
-  call aot_out_open_table(dummyOut, 'origin')
+  call aot_out_open_table(dummyOut, 'origin')  
   call aot_out_val(dummyOut, 100)
   call aot_out_val(dummyOut, 0)
   call aot_out_close_table(dummyOut)
+!  call aot_out_val(dummyOut, (/0,1,2,3/))
+  !Kartik: Calling the routine to test with a 2d array
+  call aot_out_val(dummyOut, kjval)
 
   call aot_out_close_table(dummyOut)
 

@@ -39,6 +39,8 @@ module aot_out_module
     module procedure aot_out_val_double
     module procedure aot_out_val_logical
     module procedure aot_out_val_string
+    module procedure aot_out_val_arr_1d
+    module procedure aot_out_val_arr_2d
   end interface
 
   private
@@ -399,6 +401,131 @@ contains
     end if
 
   end subroutine aot_out_val_string
+!******************************************************************************!
+
+
+!******************************************************************************!
+!>  Put array variables into the Lua script.
+!!
+  subroutine aot_out_val_arr_1d(put_conf, val, vname, flag)
+    !------------------------------------------------------------------------
+    type(aot_out_type), intent(inout)  :: put_conf
+    character(len=*), optional, intent(in) :: vname
+    integer, intent(in) :: val(:)
+    integer, optional, intent(in) :: flag
+    !------------------------------------------------------------------------
+    character(len=put_conf%indent) :: indent
+    character(len=3) :: adv_string
+    character(len=1) :: comma_append
+    character(len=6) :: prepend
+    integer :: i
+    !------------------------------------------------------------------------
+
+    indent = ''
+    adv_string = 'yes'
+
+    if (put_conf%level .gt. 0) then
+      ! Do not advance after writing this value, in order to allow
+      ! subsequent entries, to append the separator!
+      adv_string = 'no'
+      if (put_conf%stack(put_conf%level) .gt. 0) then
+        ! This is not the first entry in the current table, append a ',' to the
+        ! previous entry.
+        ! The flag is used when this routine is called from a 2d arr routine
+        ! when it is 0, we will not write a comma
+        if ((present(flag)) .and. (flag .ne. 0)) then
+          write(put_conf%outunit,fmt="(a)") ","
+        end if
+      end if
+      put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1
+    end if
+
+    !Looping over val which is a one dimensional array
+    do i = LBOUND(val,1), UBOUND(val,1) 
+      !If loop index has not reached end of array we will write commas and at the end we
+      !will put a }
+      if (i .lt. UBOUND(val,1)) then
+        comma_append = ','
+      else 
+        comma_append = '}'
+      end if
+      
+      !If the vname is specified then it will be printed followed by = {
+      !otherwise only { will be printed marking start of subtable
+      if(i .eq. LBOUND(val,1) ) then
+        if (present(vname)) then
+          prepend = indent//trim(vname)//" = {"
+        else 
+          prepend = indent//"{"
+          write(put_conf%outunit, fmt="(a,i0,a)", advance=adv_string) &
+              & prepend, val(i), comma_append
+        end if
+      else
+        write(put_conf%outunit, fmt="(i0,a)", advance=adv_string) &
+            & val(i), comma_append
+      end if
+
+    end do
+
+  end subroutine aot_out_val_arr_1d
+!******************************************************************************!
+
+
+!******************************************************************************!
+!>  Put array variables into the Lua script.
+!!
+  subroutine aot_out_val_arr_2d(put_conf, val, vname)
+    !------------------------------------------------------------------------
+    type(aot_out_type), intent(inout)  :: put_conf
+    character(len=*), optional, intent(in) :: vname
+    integer, intent(in) :: val(:,:)
+    !------------------------------------------------------------------------
+    character(len=put_conf%indent) :: indent
+    character(len=3) :: adv_string
+    character(len=1) :: comma_append
+    character(len=20) :: prepend
+    integer :: i, flag
+    !------------------------------------------------------------------------
+
+    indent = ''
+    flag = 0
+    adv_string = 'yes'
+
+    if (put_conf%level .gt. 0) then
+      ! Do not advance after writing this value, in order to allow
+      ! subsequent entries, to append the separator!
+      adv_string = 'no'
+      if (put_conf%stack(put_conf%level) .gt. 0) then
+        ! This is not the first entry in the current table, append a ',' to the
+        ! previous entry.
+        write(put_conf%outunit,fmt="(a)") ","
+      end if
+      put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1
+    end if
+
+    do i = LBOUND(val,1), UBOUND(val,1)
+      !Write a { when loop is at starting index of array
+      if (i .eq. LBOUND(val,1)) then
+        if (present(vname)) then
+          write(put_conf%outunit, fmt="(a)", advance=adv_string) &
+               & indent//trim(vname)//" = {"
+        else
+          write(put_conf%outunit, fmt="(a)", advance=adv_string) &
+               & indent//"{"
+        end if
+      end if
+
+      !Call 1d routine to write 2nd dimension of val
+      call aot_out_val_arr_1d(put_conf, val(i,:), vname, flag)
+      flag = flag + 1
+
+      if (i .eq. UBOUND(val,1)) then
+        !At the last loop index, close the braces with }
+        write(put_conf%outunit, fmt="(a)", advance=adv_string) "}"
+      end if
+    end do
+
+  end subroutine aot_out_val_arr_2d
 !******************************************************************************!
 
 
