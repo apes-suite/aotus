@@ -407,6 +407,22 @@ contains
 !******************************************************************************!
 !>  Put array variables into the Lua script.
 !!
+!! HK: \todo What is this supposed to do, it will behave quite strange!
+!!     If the table is not put inside another table the routine will
+!!     produce the entries of the given array on a separate line each.
+!!     Otherwise all of them end up on the same line.
+!!     The behavior should be consistent!
+!!     Why can we not just call the aot_out_val stuff inside a small looping
+!!     routine? Why is the prepend limited to 6 characters, thus indentation
+!!     is quite limited also, just one level?
+!!     I am very strong in favor of using the already existing output routines
+!!     and just adding some small wrappers around them. If all values should be
+!!     put on a single line, we could introduce an optional argument prev_adv
+!!     and use 
+!!        write(put_conf%outunit,fmt="(a)",advance=prev_adv) ","
+!!     to avoid linebreaks after previous entries.
+!!     The code duplication is anyway quite extensive to support the various
+!!     intrinsic data types.
   subroutine aot_out_val_arr_1d(put_conf, val, vname, flag)
     !------------------------------------------------------------------------
     type(aot_out_type), intent(inout)  :: put_conf
@@ -474,6 +490,14 @@ contains
 !******************************************************************************!
 !>  Put array variables into the Lua script.
 !!
+!! HK: I do not see a need to support 2D arrays. Why not 3D also?
+!!     In the Input we also have just 1D, and I think it to tedious to
+!!     support higher dimensions also higher dimensions. There is anyway no
+!!     such concept in Lua, as this stuff is always represented as tables of
+!!     tables.
+!!     This routine should therefore removed again. Users either have to
+!!     serialize their data, or write routines generating tables of tables on
+!!     their own.
   subroutine aot_out_val_arr_2d(put_conf, val, vname)
     !------------------------------------------------------------------------
     type(aot_out_type), intent(inout)  :: put_conf
