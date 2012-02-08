@@ -40,7 +40,6 @@ module aot_out_module
     module procedure aot_out_val_logical
     module procedure aot_out_val_string
     module procedure aot_out_val_arr_1d
-    module procedure aot_out_val_arr_2d
   end interface
 
   private
@@ -164,10 +163,11 @@ contains
 !******************************************************************************!
 !>  Put integer variables into the Lua script.
 !!
-  subroutine aot_out_val_int(put_conf, val, vname)
+  subroutine aot_out_val_int(put_conf, val, vname, called)
     !------------------------------------------------------------------------
     type(aot_out_type), intent(inout)  :: put_conf
     character(len=*), optional, intent(in) :: vname
+    integer, optional, intent(in) :: called
     integer, intent(in) :: val
     !------------------------------------------------------------------------
     character(len=put_conf%indent) :: indent
@@ -175,7 +175,13 @@ contains
     !------------------------------------------------------------------------
 
     indent = ''
-    adv_string = 'yes'
+    !Called identifies if the routine is called inside another routine and
+    !if that is the case we will not advance to next line
+    !if (called .eq. 0) then
+      adv_string = 'no'
+    !else
+    ! adv_string = 'no'
+    !end if
 
     if (put_conf%level .gt. 0) then
       ! Do not advance after writing this value, in order to allow
@@ -407,150 +413,42 @@ contains
 !******************************************************************************!
 !>  Put array variables into the Lua script.
 !!
-!! HK: \todo What is this supposed to do, it will behave quite strange!
-!!     If the table is not put inside another table the routine will
-!!     produce the entries of the given array on a separate line each.
-!!     Otherwise all of them end up on the same line.
-!!     The behavior should be consistent!
-!!     Why can we not just call the aot_out_val stuff inside a small looping
-!!     routine? Why is the prepend limited to 6 characters, thus indentation
-!!     is quite limited also, just one level?
-!!     I am very strong in favor of using the already existing output routines
-!!     and just adding some small wrappers around them. If all values should be
-!!     put on a single line, we could introduce an optional argument prev_adv
-!!     and use 
-!!        write(put_conf%outunit,fmt="(a)",advance=prev_adv) ","
-!!     to avoid linebreaks after previous entries.
-!!     The code duplication is anyway quite extensive to support the various
-!!     intrinsic data types.
-  subroutine aot_out_val_arr_1d(put_conf, val, vname, flag)
+  subroutine aot_out_val_arr_1d(put_conf, val, vname)
     !------------------------------------------------------------------------
     type(aot_out_type), intent(inout)  :: put_conf
     character(len=*), optional, intent(in) :: vname
     integer, intent(in) :: val(:)
-    integer, optional, intent(in) :: flag
     !------------------------------------------------------------------------
-    character(len=put_conf%indent) :: indent
-    character(len=3) :: adv_string
-    character(len=1) :: comma_append
-    character(len=6) :: prepend
-    integer :: i
-    !------------------------------------------------------------------------
-
-    indent = ''
-    adv_string = 'yes'
+    integer i
 
     if (put_conf%level .gt. 0) then
       ! Do not advance after writing this value, in order to allow
       ! subsequent entries, to append the separator!
-      adv_string = 'no'
       if (put_conf%stack(put_conf%level) .gt. 0) then
         ! This is not the first entry in the current table, append a ',' to the
         ! previous entry.
-        ! The flag is used when this routine is called from a 2d arr routine
-        ! when it is 0, we will not write a comma
-        if ((present(flag)) .and. (flag .ne. 0)) then
-          write(put_conf%outunit,fmt="(a)") ","
-        end if
       end if
       put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1
     end if
 
+    !Opening the table(subtable for array actually)
+    call aot_out_open_table(put_conf, vname)
+
     !Looping over val which is a one dimensional array
     do i = LBOUND(val,1), UBOUND(val,1) 
-      !If loop index has not reached end of array we will write commas and at the end we
-      !will put a }
-      if (i .lt. UBOUND(val,1)) then
-        comma_append = ','
-      else 
-        comma_append = '}'
-      end if
-      
-      !If the vname is specified then it will be printed followed by = {
-      !otherwise only { will be printed marking start of subtable
-      if(i .eq. LBOUND(val,1) ) then
-        if (present(vname)) then
-          prepend = indent//trim(vname)//" = {"
-        else 
-          prepend = indent//"{"
-          write(put_conf%outunit, fmt="(a,i0,a)", advance=adv_string) &
-              & prepend, val(i), comma_append
-        end if
-      else
-        write(put_conf%outunit, fmt="(i0,a)", advance=adv_string) &
-            & val(i), comma_append
-      end if
 
+      !Call the aot_out_val_int routine to write integer values within array
+      call aot_out_val_int(put_conf, val(i), called = 1)
+      
     end do
+
+    !Close the table
+    call aot_out_close_table(put_conf)
 
   end subroutine aot_out_val_arr_1d
 !******************************************************************************!
 
 
-!******************************************************************************!
-!>  Put array variables into the Lua script.
-!!
-!! HK: I do not see a need to support 2D arrays. Why not 3D also?
-!!     In the Input we also have just 1D, and I think it to tedious to
-!!     support higher dimensions also higher dimensions. There is anyway no
-!!     such concept in Lua, as this stuff is always represented as tables of
-!!     tables.
-!!     This routine should therefore removed again. Users either have to
-!!     serialize their data, or write routines generating tables of tables on
-!!     their own.
-  subroutine aot_out_val_arr_2d(put_conf, val, vname)
-    !------------------------------------------------------------------------
-    type(aot_out_type), intent(inout)  :: put_conf
-    character(len=*), optional, intent(in) :: vname
-    integer, intent(in) :: val(:,:)
-    !------------------------------------------------------------------------
-    character(len=put_conf%indent) :: indent
-    character(len=3) :: adv_string
-    character(len=1) :: comma_append
-    character(len=20) :: prepend
-    integer :: i, flag
-    !------------------------------------------------------------------------
-
-    indent = ''
-    flag = 0
-    adv_string = 'yes'
-
-    if (put_conf%level .gt. 0) then
-      ! Do not advance after writing this value, in order to allow
-      ! subsequent entries, to append the separator!
-      adv_string = 'no'
-      if (put_conf%stack(put_conf%level) .gt. 0) then
-        ! This is not the first entry in the current table, append a ',' to the
-        ! previous entry.
-        write(put_conf%outunit,fmt="(a)") ","
-      end if
-      put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1
-    end if
-
-    do i = LBOUND(val,1), UBOUND(val,1)
-      !Write a { when loop is at starting index of array
-      if (i .eq. LBOUND(val,1)) then
-        if (present(vname)) then
-          write(put_conf%outunit, fmt="(a)", advance=adv_string) &
-               & indent//trim(vname)//" = {"
-        else
-          write(put_conf%outunit, fmt="(a)", advance=adv_string) &
-               & indent//"{"
-        end if
-      end if
-
-      !Call 1d routine to write 2nd dimension of val
-      call aot_out_val_arr_1d(put_conf, val(i,:), vname, flag)
-      flag = flag + 1
-
-      if (i .eq. UBOUND(val,1)) then
-        !At the last loop index, close the braces with }
-        write(put_conf%outunit, fmt="(a)", advance=adv_string) "}"
-      end if
-    end do
-
-  end subroutine aot_out_val_arr_2d
-!******************************************************************************!
 
 
 

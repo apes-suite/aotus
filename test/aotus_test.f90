@@ -126,16 +126,16 @@ program aotus_test
 
   call aot_out_open(put_conf = dummyOut, filename = 'dummy.lua')
   call aot_out_open_table(dummyOut, 'screen')
-  call aot_out_val(dummyOut, 123, 'width')
-  call aot_out_val(dummyOut, 456, 'height')
+  !call aot_out_val(dummyOut, 123, 'width')
+  !call aot_out_val(dummyOut, 456, 'height')
 
-  call aot_out_open_table(dummyOut, 'origin')  
-  call aot_out_val(dummyOut, 100)
-  call aot_out_val(dummyOut, 0)
+  !call aot_out_open_table(dummyOut, 'origin')  
+  !call aot_out_val(dummyOut, 100)
+  !call aot_out_val(dummyOut, 0)
   call aot_out_close_table(dummyOut)
-!  call aot_out_val(dummyOut, (/0,1,2,3/))
   !Kartik: Calling the routine to test with a 2d array
-  call aot_out_val(dummyOut, kjval)
+  call aot_out_val(dummyOut, (/0,1,2,3/), 'testarr')
+  call aot_out_val(dummyOut, (/4,5,6,7/), 'testarr2')
 
   call aot_out_close_table(dummyOut)
 
