@@ -163,25 +163,25 @@ contains
 !******************************************************************************!
 !>  Put integer variables into the Lua script.
 !!
-  subroutine aot_out_val_int(put_conf, val, vname, called)
+  subroutine aot_out_val_int(put_conf, val, vname, advance_previous)
     !------------------------------------------------------------------------
     type(aot_out_type), intent(inout)  :: put_conf
     character(len=*), optional, intent(in) :: vname
-    integer, optional, intent(in) :: called
+    logical, optional, intent(in) :: advance_previous
     integer, intent(in) :: val
     !------------------------------------------------------------------------
     character(len=put_conf%indent) :: indent
     character(len=3) :: adv_string
+    logical :: loc_adv_prev
     !------------------------------------------------------------------------
 
     indent = ''
-    !Called identifies if the routine is called inside another routine and
-    !if that is the case we will not advance to next line
-    !if (called .eq. 0) then
-      adv_string = 'no'
-    !else
-    ! adv_string = 'no'
-    !end if
+    adv_string = 'yes'
+    if (present(advance_previous)) then
+      loc_adv_prev = advance_previous
+    else
+      loc_adv_prev = .true.
+    end if
 
     if (put_conf%level .gt. 0) then
       ! Do not advance after writing this value, in order to allow
@@ -190,16 +190,21 @@ contains
       if (put_conf%stack(put_conf%level) .gt. 0) then
         ! This is not the first entry in the current table, append a ',' to the
         ! previous entry.
-        write(put_conf%outunit,fmt="(a)") ","
+        if (loc_adv_prev) then
+          write(put_conf%outunit, fmt="(a)") ","
+          write(put_conf%outunit, fmt="(a)", advance='no') indent
+        else
+          write(put_conf%outunit, fmt="(a)", advance='no') ", "
+        end if
       end if
       put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1
     end if
 
     if (present(vname)) then
       write(put_conf%outunit, fmt="(a,i0)", advance=adv_string) &
-        & indent//trim(vname)//" = ", val
+        & trim(vname)//" = ", val
     else
-      write(put_conf%outunit, fmt="(a,i0)", advance=adv_string) indent, val
+      write(put_conf%outunit, fmt="(a,i0)", advance=adv_string) val
     end if
 
   end subroutine aot_out_val_int
@@ -418,8 +423,9 @@ contains
     type(aot_out_type), intent(inout)  :: put_conf
     character(len=*), optional, intent(in) :: vname
     integer, intent(in) :: val(:)
+    integer :: i
+    logical :: entries_on_lines
     !------------------------------------------------------------------------
-    integer i
 
     if (put_conf%level .gt. 0) then
       ! Do not advance after writing this value, in order to allow
@@ -434,11 +440,14 @@ contains
     !Opening the table(subtable for array actually)
     call aot_out_open_table(put_conf, vname)
 
+    entries_on_lines = (size(val) > 10)
+    
     !Looping over val which is a one dimensional array
     do i = LBOUND(val,1), UBOUND(val,1) 
 
       !Call the aot_out_val_int routine to write integer values within array
-      call aot_out_val_int(put_conf, val(i), called = 1)
+      call aot_out_val_int(put_conf, val(i), &
+       &                   advance_previous = entries_on_lines)
       
     end do
 
