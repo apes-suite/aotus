@@ -11,8 +11,8 @@ out = 'build'
 
 def options(opt):
     from waflib.Tools.compiler_fc import fc_compiler
-    opt.load('compiler_c')
     opt.load('compiler_fc')
+    opt.load('compiler_c')
 
 def configure(conf):
     from waflib import Utils
@@ -33,8 +33,8 @@ def configure(conf):
     buildsys = Utils.unversioned_sys_platform()
 
     # Load the compiler informations
-    conf.load('compiler_c')
     conf.load('compiler_fc')
+    conf.load('compiler_c')
     conf.env['FCSTLIB_MARKER'] = ''
     conf.env['FCSHLIB_MARKER'] = ''
     conf.vars = ['FC_NAME', 'FC_VERSION', 'FCFLAGS'] # Recompilation if any of these change
