@@ -263,10 +263,10 @@ contains
     call aot_out_breakline(put_conf, advance_previous)
 
     if (present(vname)) then
-      write(put_conf%outunit, fmt="(a,f0.9)", advance=adv_string) &
+      write(put_conf%outunit, fmt="(a,f0.8)", advance=adv_string) &
         & trim(vname)//" = ", val
     else
-      write(put_conf%outunit, fmt="(f0.9)", advance=adv_string) val
+      write(put_conf%outunit, fmt="(f0.8)", advance=adv_string) val
     end if
 
   end subroutine aot_out_val_real
@@ -297,10 +297,10 @@ contains
     call aot_out_breakline(put_conf, advance_previous)
 
     if (present(vname)) then
-      write(put_conf%outunit, fmt="(a,f0.9)", advance=adv_string) &
+      write(put_conf%outunit, fmt="(a,f0.12)", advance=adv_string) &
         & trim(vname)//" = ", val
     else
-      write(put_conf%outunit, fmt="(f0.9)", advance=adv_string) val
+      write(put_conf%outunit, fmt="(f0.12)", advance=adv_string) val
     end if
 
   end subroutine aot_out_val_double
@@ -384,136 +384,191 @@ contains
 
 
 !******************************************************************************!
-!>  Put integer array variables into the Lua script.
+!> This is a vectorized version of the value output.
 !!
-  subroutine aot_out_val_arr_int(put_conf, val, vname, advance_previous)
+!! It takes a one-dimensional array and puts it into a table. The parameters
+!! have the usual meanings, as in the scalar routines, however and additional
+!! argument (max_per_line) allows the specification of the number of elements
+!! that might be put onto a single line.
+!! The first entry will be placed into the same line as the opening brace, and
+!! the closing brace will be put on the same line, as the last entry.
+  subroutine aot_out_val_arr_int(put_conf, val, vname, advance_previous, &
+    &                            max_per_line)
     !------------------------------------------------------------------------
+    !> Lua script to write the array into.
     type(aot_out_type), intent(inout)  :: put_conf
+
+    !> Name for this array
     character(len=*), optional, intent(in) :: vname
+
+    !> Actual data to write into the script
     integer, intent(in) :: val(:)
+
+    !> Flag if this array should be put on the same line as the last entry of
+    !! the parent table.
     logical, optional, intent(in) :: advance_previous
+
+    !> Maximal number of entries to put into a single line.
+    !! Defaults to 8.
+    integer, optional, intent(in) :: max_per_line
     !------------------------------------------------------------------------
     integer :: i
+    integer :: nVals
+    integer :: mpl
+    logical :: bline
     !------------------------------------------------------------------------
 
-    if (put_conf%level .gt. 0) then
-      ! Do not advance after writing this value, in order to allow
-      ! subsequent entries, to append the separator!
-      if (put_conf%stack(put_conf%level) .gt. 0) then
-        ! This is not the first entry in the current table, append a ',' to the
-        ! previous entry.
-      end if
-      put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1
+    if (present(max_per_line)) then
+      mpl = max_per_line
+    else
+      mpl = 8
     end if
 
     ! Opening the table(subtable for array actually)
-    call aot_out_open_table(put_conf, vname, & 
-     &                      advance_previous = advance_previous)
+    call aot_out_open_table(put_conf, vname, &
+      &                     advance_previous = advance_previous)
 
-    
-    ! Looping over val which is a one dimensional array
-    do i = 1, size(val)
-      if (mod(i, 10) .ne. 0) then
-        ! Call the aot_out_val_int routine to write integer values within array
-        call aot_out_val(put_conf, val(i), &
-          &              advance_previous = .false.)
-      else      
-        call aot_out_val(put_conf, val(i), &
-          &              advance_previous = .true.)
-      end if
-    end do
+    nVals = size(val)
+    if (nVals > 0) then
+      ! Always put the first entry on the same line as the opening brace.
+      call aot_out_val(put_conf, val(1), advance_previous = .false.)
 
-    ! Close the table
+      do i=2,nVals
+        ! Output each entry and break the line after mpl entries on a line.
+        bline = (mod(i-1, mpl) == 0)
+        call aot_out_val(put_conf, val(i), advance_previous = bline)
+      end do
+    end if
+
+    ! Always put the closing brace on the same line as the last entry.
     call aot_out_close_table(put_conf, advance_previous = .false.)
 
   end subroutine aot_out_val_arr_int
 !******************************************************************************!
 
+
 !******************************************************************************!
-!>  Put long array variables into the Lua script.
+!> This is a vectorized version of the value output.
 !!
-  subroutine aot_out_val_arr_long(put_conf, val, vname)
+!! It takes a one-dimensional array and puts it into a table. The parameters
+!! have the usual meanings, as in the scalar routines, however and additional
+!! argument (max_per_line) allows the specification of the number of elements
+!! that might be put onto a single line.
+!! The first entry will be placed into the same line as the opening brace, and
+!! the closing brace will be put on the same line, as the last entry.
+  subroutine aot_out_val_arr_long(put_conf, val, vname, advance_previous, &
+    &                             max_per_line)
     !------------------------------------------------------------------------
+    !> Lua script to write the array into.
     type(aot_out_type), intent(inout)  :: put_conf
+
+    !> Name for this array
     character(len=*), optional, intent(in) :: vname
+
+    !> Actual data to write into the script
     integer(kind=long_k), intent(in) :: val(:)
+
+    !> Flag if this array should be put on the same line as the last entry of
+    !! the parent table.
+    logical, optional, intent(in) :: advance_previous
+
+    !> Maximal number of entries to put into a single line.
+    !! Defaults to 8.
+    integer, optional, intent(in) :: max_per_line
     !------------------------------------------------------------------------
     integer :: i
+    integer :: nVals
+    integer :: mpl
+    logical :: bline
     !------------------------------------------------------------------------
 
-    if (put_conf%level .gt. 0) then
-      ! Do not advance after writing this value, in order to allow
-      ! subsequent entries, to append the separator!
-      if (put_conf%stack(put_conf%level) .gt. 0) then
-        ! This is not the first entry in the current table, append a ',' to the
-        ! previous entry.
-      end if
-      put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1
+    if (present(max_per_line)) then
+      mpl = max_per_line
+    else
+      mpl = 8
     end if
 
     ! Opening the table(subtable for array actually)
-    call aot_out_open_table(put_conf, vname, & 
-     &                      advance_previous = .false.)
+    call aot_out_open_table(put_conf, vname, &
+      &                     advance_previous = advance_previous)
 
-    
-    ! Looping over val which is a one dimensional array
-    do i = LBOUND(val,1), UBOUND(val,1) 
-      if(mod((i-1), 10) .ne. 0)then
-        ! Call the aot_out_val_int routine to write integer values within array
-        call aot_out_val(put_conf, val(i), &
-         &                   advance_previous = .false.)
-       else      
-         call aot_out_val(put_conf, val(i), &
-          &                   advance_previous = .true.)
-      end if
-    end do
+    nVals = size(val)
+    if (nVals > 0) then
+      ! Always put the first entry on the same line as the opening brace.
+      call aot_out_val(put_conf, val(1), advance_previous = .false.)
 
-    ! Close the table
+      do i=2,nVals
+        ! Output each entry and break the line after mpl entries on a line.
+        bline = (mod(i-1, mpl) == 0)
+        call aot_out_val(put_conf, val(i), advance_previous = bline)
+      end do
+    end if
+
+    ! Always put the closing brace on the same line as the last entry.
     call aot_out_close_table(put_conf, advance_previous = .false.)
 
   end subroutine aot_out_val_arr_long
 !******************************************************************************!
 
+
 !******************************************************************************!
-!>  Put real array variables into the Lua script.
+!> This is a vectorized version of the value output.
 !!
-  subroutine aot_out_val_arr_real(put_conf, val, vname)
+!! It takes a one-dimensional array and puts it into a table. The parameters
+!! have the usual meanings, as in the scalar routines, however and additional
+!! argument (max_per_line) allows the specification of the number of elements
+!! that might be put onto a single line.
+!! The first entry will be placed into the same line as the opening brace, and
+!! the closing brace will be put on the same line, as the last entry.
+  subroutine aot_out_val_arr_real(put_conf, val, vname, advance_previous, &
+    &                             max_per_line)
     !------------------------------------------------------------------------
+    !> Lua script to write the array into.
     type(aot_out_type), intent(inout)  :: put_conf
+
+    !> Name for this array
     character(len=*), optional, intent(in) :: vname
-    real, intent(in) :: val(:)
+
+    !> Actual data to write into the script
+    real(kind=single_k), intent(in) :: val(:)
+
+    !> Flag if this array should be put on the same line as the last entry of
+    !! the parent table.
+    logical, optional, intent(in) :: advance_previous
+
+    !> Maximal number of entries to put into a single line.
+    !! Defaults to 5.
+    integer, optional, intent(in) :: max_per_line
     !------------------------------------------------------------------------
     integer :: i
+    integer :: nVals
+    integer :: mpl
+    logical :: bline
     !------------------------------------------------------------------------
 
-    if (put_conf%level .gt. 0) then
-      ! Do not advance after writing this value, in order to allow
-      ! subsequent entries, to append the separator!
-      if (put_conf%stack(put_conf%level) .gt. 0) then
-        ! This is not the first entry in the current table, append a ',' to the
-        ! previous entry.
-      end if
-      put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1
+    if (present(max_per_line)) then
+      mpl = max_per_line
+    else
+      mpl = 5
     end if
 
     ! Opening the table(subtable for array actually)
-    call aot_out_open_table(put_conf, vname, & 
-     &                      advance_previous = .false.)
+    call aot_out_open_table(put_conf, vname, &
+      &                     advance_previous = advance_previous)
 
-    
-    ! Looping over val which is a one dimensional array
-    do i = LBOUND(val,1), UBOUND(val,1) 
-      if(mod((i-1), 10) .ne. 0)then
-        ! Call the aot_out_val_int routine to write integer values within array
-        call aot_out_val(put_conf, val(i), &
-         &                   advance_previous = .false.)
-       else      
-         call aot_out_val(put_conf, val(i), &
-          &                   advance_previous = .true.)
-      end if
-    end do
+    nVals = size(val)
+    if (nVals > 0) then
+      ! Always put the first entry on the same line as the opening brace.
+      call aot_out_val(put_conf, val(1), advance_previous = .false.)
 
-    ! Close the table
+      do i=2,nVals
+        ! Output each entry and break the line after mpl entries on a line.
+        bline = (mod(i-1, mpl) == 0)
+        call aot_out_val(put_conf, val(i), advance_previous = bline)
+      end do
+    end if
+
+    ! Always put the closing brace on the same line as the last entry.
     call aot_out_close_table(put_conf, advance_previous = .false.)
 
   end subroutine aot_out_val_arr_real
@@ -521,49 +576,68 @@ contains
 
 
 !******************************************************************************!
-!>  Put real array variables into the Lua script.
+!> This is a vectorized version of the value output.
 !!
-  subroutine aot_out_val_arr_double(put_conf, val, vname)
+!! It takes a one-dimensional array and puts it into a table. The parameters
+!! have the usual meanings, as in the scalar routines, however and additional
+!! argument (max_per_line) allows the specification of the number of elements
+!! that might be put onto a single line.
+!! The first entry will be placed into the same line as the opening brace, and
+!! the closing brace will be put on the same line, as the last entry.
+  subroutine aot_out_val_arr_double(put_conf, val, vname, advance_previous, &
+    &                               max_per_line)
     !------------------------------------------------------------------------
+    !> Lua script to write the array into.
     type(aot_out_type), intent(inout)  :: put_conf
+
+    !> Name for this array
     character(len=*), optional, intent(in) :: vname
+
+    !> Actual data to write into the script
     real(kind=double_k), intent(in) :: val(:)
+
+    !> Flag if this array should be put on the same line as the last entry of
+    !! the parent table.
+    logical, optional, intent(in) :: advance_previous
+
+    !> Maximal number of entries to put into a single line.
+    !! Defaults to 3.
+    integer, optional, intent(in) :: max_per_line
     !------------------------------------------------------------------------
     integer :: i
+    integer :: nVals
+    integer :: mpl
+    logical :: bline
     !------------------------------------------------------------------------
 
-    if (put_conf%level .gt. 0) then
-      ! Do not advance after writing this value, in order to allow
-      ! subsequent entries, to append the separator!
-      if (put_conf%stack(put_conf%level) .gt. 0) then
-        ! This is not the first entry in the current table, append a ',' to the
-        ! previous entry.
-      end if
-      put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1
+    if (present(max_per_line)) then
+      mpl = max_per_line
+    else
+      mpl = 3
     end if
 
     ! Opening the table(subtable for array actually)
-    call aot_out_open_table(put_conf, vname, & 
-     &                      advance_previous = .false.)
+    call aot_out_open_table(put_conf, vname, &
+      &                     advance_previous = advance_previous)
 
-    
-    ! Looping over val which is a one dimensional array
-    do i = LBOUND(val,1), UBOUND(val,1) 
-      if(mod((i-1), 10) .ne. 0)then
-        ! Call the aot_out_val_int routine to write integer values within array
-        call aot_out_val(put_conf, val(i), &
-         &                   advance_previous = .false.)
-       else      
-         call aot_out_val(put_conf, val(i), &
-          &                   advance_previous = .true.)
-      end if
-    end do
+    nVals = size(val)
+    if (nVals > 0) then
+      ! Always put the first entry on the same line as the opening brace.
+      call aot_out_val(put_conf, val(1), advance_previous = .false.)
 
-    ! Close the table
+      do i=2,nVals
+        ! Output each entry and break the line after mpl entries on a line.
+        bline = (mod(i-1, mpl) == 0)
+        call aot_out_val(put_conf, val(i), advance_previous = bline)
+      end do
+    end if
+
+    ! Always put the closing brace on the same line as the last entry.
     call aot_out_close_table(put_conf, advance_previous = .false.)
 
   end subroutine aot_out_val_arr_double
 !******************************************************************************!
+
 
 
 !******************************************************************************!
