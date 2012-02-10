@@ -29,6 +29,7 @@ module aot_out_module
     integer :: stack(100) !< Number of entries on each level
     integer :: level !< Current nesting level in tables
     logical :: externalOpen !< Flag if file opened outside the aot_out scope
+    integer :: in_step !< Number of spaces for each indentation level
   end type
 
   !> Put Fortran intrinsic types into the script.
@@ -47,8 +48,6 @@ module aot_out_module
 
   private
 
-  integer, parameter :: indentation = 4
-
 contains
 
 !******************************************************************************!
@@ -59,12 +58,19 @@ contains
 !! pre-connected file.
 !! If both are given, the file will be opened and connected to a new unit,
 !! outUnit is ignored in this case.
-  subroutine aot_out_open(put_conf, filename, outUnit)
+  subroutine aot_out_open(put_conf, filename, outUnit, indentation)
     !------------------------------------------------------------------------
     type(aot_out_type), intent(out) :: put_conf !< Handle for the file
     character(len=*), optional, intent(in) :: filename !< File to open
     integer, optional, intent(in) :: outUnit !< Pre-connected unit to write to
+    integer, optional, intent(in) :: indentation !< Spacer per indentation level
     !------------------------------------------------------------------------
+
+    if (present(indentation)) then
+      put_conf%in_step = indentation
+    else
+      put_conf%in_step = 4
+    end if
 
     if (present(filename)) then
       put_conf%outunit = newunit()
@@ -119,7 +125,7 @@ contains
     end if
 
     put_conf%level = put_conf%level + 1
-    put_conf%indent = put_conf%indent + indentation
+    put_conf%indent = put_conf%indent + put_conf%in_step
 
   end subroutine aot_out_open_table
 !******************************************************************************!
@@ -134,7 +140,7 @@ contains
     logical, optional, intent(in) :: advance_previous
     !------------------------------------------------------------------------
     logical :: loc_adv_prev
-    character(len=max(put_conf%indent-indentation,0)) :: indent
+    character(len=max(put_conf%indent-put_conf%in_step,0)) :: indent
     character(len=3) :: adv_string
     !------------------------------------------------------------------------
 
@@ -147,7 +153,7 @@ contains
       loc_adv_prev = .true.
     end if
 
-    put_conf%indent = max(put_conf%indent - indentation, 0)
+    put_conf%indent = max(put_conf%indent - put_conf%in_step, 0)
     put_conf%stack(put_conf%level) = 0
     put_conf%level = max(put_conf%level - 1, 0)
 
