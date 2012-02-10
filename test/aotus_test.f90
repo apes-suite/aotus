@@ -128,8 +128,6 @@ program aotus_test
   call aot_out_val(dummyOut, 0)
   call aot_out_close_table(dummyOut)
 !  call aot_out_val(dummyOut, (/0,1,2,3/))
-  !Kartik: Calling the routine to test with a 2d array
-  call aot_out_val(dummyOut, kjval)
 
   call aot_out_close_table(dummyOut)
 
