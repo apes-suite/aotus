@@ -666,7 +666,7 @@ contains
     else
       loc_adv_prev = .true.
     end if
-    
+
     lev_if: if (put_conf%level > 0) then
 
       if (put_conf%stack(put_conf%level) > 0) then
@@ -693,7 +693,7 @@ contains
 
 
 
-  
+
   !> Helper function to provide new unit, as long as F2008 newunit argument
   !! in open statement is not commonly available.
   !! To be used right in front of the open statement like this:
