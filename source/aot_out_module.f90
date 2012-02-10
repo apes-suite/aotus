@@ -423,6 +423,7 @@ contains
 
     indent = ''
     adv_string = 'yes'
+    stop
 
     if (put_conf%level .gt. 0) then
       ! Do not advance after writing this value, in order to allow
