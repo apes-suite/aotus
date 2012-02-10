@@ -109,39 +109,13 @@ contains
     character(len=*), optional, intent(in) :: tname
     logical, optional, intent(in) :: advance_previous
     !------------------------------------------------------------------------
-    character(len=put_conf%indent) :: indent
-    logical :: loc_adv_prev
-    !------------------------------------------------------------------------
 
-    indent = ''
-    if (present(advance_previous)) then
-      loc_adv_prev = advance_previous
-    else
-      loc_adv_prev = .true.
-    end if
-    
-    if(put_conf%level .gt. 0)  then
-      if( put_conf%stack( put_conf%level ) .gt. 0) then
-        ! Not the first entry in the parent table, close previous entry with
-        ! a separator.
-        write(put_conf%outunit,fmt="(a)") ','
-      endif
-      put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1
-    end if
+    call aot_out_breakline(put_conf, advance_previous)
 
     if (present(tname)) then
-      if ( .not.loc_adv_prev) then
-        write(put_conf%outunit, fmt="(a)", advance='no') &
-            & indent//trim(tname)//' = {'
-      else
-        write(put_conf%outunit, fmt="(a)") indent//trim(tname)//' = {'
-      end if
+      write(put_conf%outunit, fmt='(a)', advance='no') trim(tname)//' = {'
     else
-      if (.not. loc_adv_prev) then
-        write(put_conf%outunit, fmt="(a)", advance='no') indent//'{'
-      else        
-        write(put_conf%outunit, fmt="(a)") indent//'{'
-      end if
+      write(put_conf%outunit, fmt='(a)', advance='no') '{'
     end if
 
     put_conf%level = put_conf%level + 1
@@ -161,37 +135,35 @@ contains
     !------------------------------------------------------------------------
     logical :: loc_adv_prev
     character(len=max(put_conf%indent-indentation,0)) :: indent
+    character(len=3) :: adv_string
     !------------------------------------------------------------------------
+
+    indent = ''
+    adv_string = 'yes'
+
     if (present(advance_previous)) then
       loc_adv_prev = advance_previous
     else
       loc_adv_prev = .true.
     end if
 
-    indent = ''
     put_conf%indent = max(put_conf%indent - indentation, 0)
     put_conf%stack(put_conf%level) = 0
     put_conf%level = max(put_conf%level - 1, 0)
 
-    ! Close last entry without separator and put closing brace on a separate
-    ! line. The closing brace should be on the same line in case of array
-    if (loc_adv_prev) then
-      write(put_conf%outunit,*) ''
+    if (put_conf%level > 0) then
+      ! Do not advance, to let the next entry append the separator to the line.
+      adv_string = 'no'
     end if
 
-    if (put_conf%level == 0) then
-      if (loc_adv_prev) then
-        write(put_conf%outunit,fmt="(a)") indent//'}'
-      else
-        write(put_conf%outunit,fmt="(a)", advance='no') '}'
-      end if
+    ! Close last entry without separator.
+    if (loc_adv_prev) then
+      ! Closing brace should be on new line.
+      write(put_conf%outunit,*) ''
+      write(put_conf%outunit, fmt="(a)", advance=adv_string) indent//'}'
     else
-      ! Do not advance, to let the next entry append the separator, to the line
-      if (.not. loc_adv_prev) then
-        write(put_conf%outunit,fmt="(a)", advance='no') '}'        
-      else
-        write(put_conf%outunit,fmt="(a)", advance='no') indent//'}'
-      end if
+      ! Closing brace on same line as last entry.
+      write(put_conf%outunit, fmt="(a)", advance=adv_string) ' }'
     end if
 
   end subroutine aot_out_close_table
@@ -209,35 +181,18 @@ contains
     logical, optional, intent(in) :: advance_previous
     integer, intent(in) :: val
     !------------------------------------------------------------------------
-    character(len=put_conf%indent) :: indent
     character(len=3) :: adv_string
-    logical :: loc_adv_prev
     !------------------------------------------------------------------------
 
-    indent = ''
-    adv_string = 'yes'
-    if (present(advance_previous)) then
-      loc_adv_prev = advance_previous
+    if (put_conf%level > 0) then
+      ! Leave the advancing to the next entry in the table.
+      adv_string = 'no'
     else
-      loc_adv_prev = .true.
+      ! Not within a table, finalize the global definition with a newline.
+      adv_string = 'yes'
     end if
 
-    if (put_conf%level .gt. 0) then
-      ! Do not advance after writing this value, in order to allow
-      ! subsequent entries, to append the separator!
-      adv_string = 'no'
-      if (put_conf%stack(put_conf%level) .gt. 0) then
-        ! This is not the first entry in the current table, append a ',' to the
-        ! previous entry.
-        if (loc_adv_prev) then
-          write(put_conf%outunit, fmt="(a)") ","
-          write(put_conf%outunit, fmt="(a)", advance='no') indent
-        else
-          write(put_conf%outunit, fmt="(a)", advance='no') ", "
-        end if
-      end if
-      put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1
-    end if
+    call aot_out_breakline(put_conf, advance_previous)
 
     if (present(vname)) then
       write(put_conf%outunit, fmt="(a,i0)", advance=adv_string) &
@@ -260,40 +215,22 @@ contains
     logical, optional, intent(in) :: advance_previous
     integer(kind=long_k), intent(in) :: val
     !------------------------------------------------------------------------
-    character(len=put_conf%indent) :: indent
     character(len=3) :: adv_string
-    logical :: loc_adv_prev
     !------------------------------------------------------------------------
 
-    indent = ''
-    adv_string = 'yes'
-
-    if (present(advance_previous)) then
-      loc_adv_prev = advance_previous
-    else
-      loc_adv_prev = .true.
-    end if
-    
-    if (put_conf%level .gt. 0) then
-      ! Do not advance after writing this value, in order to allow
-      ! subsequent entries, to append the separator!
+    if (put_conf%level > 0) then
+      ! Leave the advancing to the next entry in the table.
       adv_string = 'no'
-      if (put_conf%stack(put_conf%level) .gt. 0) then
-        ! This is not the first entry in the current table, append a ',' to the
-        ! previous entry.
-        if(loc_adv_prev) then
-          write(put_conf%outunit,fmt="(a)") ","
-          write(put_conf%outunit, fmt="(a)", advance='no') indent
-        else
-          write(put_conf%outunit, fmt="(a)", advance='no') ", "
-        end if
-      end if
-      put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1
+    else
+      ! Not within a table, finalize the global definition with a newline.
+      adv_string = 'yes'
     end if
+
+    call aot_out_breakline(put_conf, advance_previous)
 
     if (present(vname)) then
       write(put_conf%outunit, fmt="(a,i0)", advance=adv_string) &
-        & indent//trim(vname)//" = ", val
+        & trim(vname)//" = ", val
     else
       write(put_conf%outunit, fmt="(i0)", advance=adv_string) val
     end if
@@ -312,40 +249,22 @@ contains
     logical, optional, intent(in) :: advance_previous
     real(kind=single_k), intent(in) :: val
     !------------------------------------------------------------------------
-    character(len=put_conf%indent) :: indent
     character(len=3) :: adv_string
-    logical :: loc_adv_prev
     !------------------------------------------------------------------------
 
-    indent = ''
-    adv_string = 'yes'
-
-    if (present(advance_previous)) then
-      loc_adv_prev = advance_previous
-    else
-      loc_adv_prev = .true.
-    end if
-    
-    if (put_conf%level .gt. 0) then
-      ! Do not advance after writing this value, in order to allow
-      ! subsequent entries, to append the separator!
+    if (put_conf%level > 0) then
+      ! Leave the advancing to the next entry in the table.
       adv_string = 'no'
-      if (put_conf%stack(put_conf%level) .gt. 0) then
-        ! This is not the first entry in the current table, append a ',' to the
-        ! previous entry.
-        if (loc_adv_prev) then
-          write(put_conf%outunit, fmt="(a)") ","
-          write(put_conf%outunit, fmt="(a)", advance='no') indent
-        else
-          write(put_conf%outunit, fmt="(a)", advance='no') ", "
-        end if
-      end if
-      put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1
+    else
+      ! Not within a table, finalize the global definition with a newline.
+      adv_string = 'yes'
     end if
+
+    call aot_out_breakline(put_conf, advance_previous)
 
     if (present(vname)) then
       write(put_conf%outunit, fmt="(a,f0.9)", advance=adv_string) &
-        & indent//trim(vname)//" = ", val
+        & trim(vname)//" = ", val
     else
       write(put_conf%outunit, fmt="(f0.9)", advance=adv_string) val
     end if
@@ -364,40 +283,22 @@ contains
     logical, optional, intent(in) :: advance_previous
     real(kind=double_k), intent(in) :: val
     !------------------------------------------------------------------------
-    character(len=put_conf%indent) :: indent
     character(len=3) :: adv_string
-    logical :: loc_adv_prev
     !------------------------------------------------------------------------
 
-    indent = ''
-    adv_string = 'yes'
-
-    if (present(advance_previous)) then
-      loc_adv_prev = advance_previous
-    else
-      loc_adv_prev = .true.
-    end if
-    
-    if (put_conf%level .gt. 0) then
-      ! Do not advance after writing this value, in order to allow
-      ! subsequent entries, to append the separator!
+    if (put_conf%level > 0) then
+      ! Leave the advancing to the next entry in the table.
       adv_string = 'no'
-      if (put_conf%stack(put_conf%level) .gt. 0) then
-        ! This is not the first entry in the current table, append a ',' to the
-        ! previous entry.
-        if (loc_adv_prev) then
-          write(put_conf%outunit, fmt="(a)") ","
-          write(put_conf%outunit, fmt="(a)", advance='no') indent
-        else
-          write(put_conf%outunit, fmt="(a)", advance='no') ", "
-        end if
-      end if
-      put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1
+    else
+      ! Not within a table, finalize the global definition with a newline.
+      adv_string = 'yes'
     end if
+
+    call aot_out_breakline(put_conf, advance_previous)
 
     if (present(vname)) then
       write(put_conf%outunit, fmt="(a,f0.9)", advance=adv_string) &
-        & indent//trim(vname)//" = ", val
+        & trim(vname)//" = ", val
     else
       write(put_conf%outunit, fmt="(f0.9)", advance=adv_string) val
     end if
@@ -409,19 +310,26 @@ contains
 !******************************************************************************!
 !>  Put logical variables into the Lua script.
 !!
-  subroutine aot_out_val_logical(put_conf, val, vname)
+  subroutine aot_out_val_logical(put_conf, val, vname, advance_previous)
     !------------------------------------------------------------------------
     type(aot_out_type), intent(inout)  :: put_conf
     character(len=*), optional, intent(in) :: vname
     logical, intent(in) :: val
+    logical, optional, intent(in) :: advance_previous
     !------------------------------------------------------------------------
-    character(len=put_conf%indent) :: indent
     character(len=3) :: adv_string
     character(len=5) :: valstring
     !------------------------------------------------------------------------
 
-    indent = ''
-    adv_string = 'yes'
+    if (put_conf%level > 0) then
+      ! Leave the advancing to the next entry in the table.
+      adv_string = 'no'
+    else
+      ! Not within a table, finalize the global definition with a newline.
+      adv_string = 'yes'
+    end if
+
+    call aot_out_breakline(put_conf, advance_previous)
 
     if (val) then
       valstring = 'true'
@@ -429,24 +337,11 @@ contains
       valstring = 'false'
     end if
 
-    if (put_conf%level .gt. 0) then
-      ! Do not advance after writing this value, in order to allow
-      ! subsequent entries, to append the separator!
-      adv_string = 'no'
-      if (put_conf%stack(put_conf%level) .gt. 0) then
-        ! This is not the first entry in the current table, append a ',' to the
-        ! previous entry.
-        write(put_conf%outunit,fmt="(a)") ","
-      end if
-      put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1
-    end if
-
     if (present(vname)) then
       write(put_conf%outunit, fmt="(a)", advance=adv_string) &
-        & indent//trim(vname)//" = "//trim(valstring)
+        &   trim(vname)//" = "//trim(valstring)
     else
-      write(put_conf%outunit, fmt="(a)", advance=adv_string) indent &
-        &                                                    //trim(valstring)
+      write(put_conf%outunit, fmt="(a)", advance=adv_string) trim(valstring)
     end if
 
   end subroutine aot_out_val_logical
@@ -456,37 +351,32 @@ contains
 !******************************************************************************!
 !>  Put string variables into the Lua script.
 !!
-  subroutine aot_out_val_string(put_conf, val, vname)
+  subroutine aot_out_val_string(put_conf, val, vname, advance_previous)
     !------------------------------------------------------------------------
     type(aot_out_type), intent(inout)  :: put_conf
     character(len=*), optional, intent(in) :: vname
     character(len=*), intent(in) :: val
+    logical, optional, intent(in) :: advance_previous
     !------------------------------------------------------------------------
-    character(len=put_conf%indent) :: indent
     character(len=3) :: adv_string
     !------------------------------------------------------------------------
 
-    indent = ''
-    adv_string = 'yes'
-
-    if (put_conf%level .gt. 0) then
-      ! Do not advance after writing this value, in order to allow
-      ! subsequent entries, to append the separator!
+    if (put_conf%level > 0) then
+      ! Leave the advancing to the next entry in the table.
       adv_string = 'no'
-      if (put_conf%stack(put_conf%level) .gt. 0) then
-        ! This is not the first entry in the current table, append a ',' to the
-        ! previous entry.
-        write(put_conf%outunit,fmt="(a)") ","
-      end if
-      put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1
+    else
+      ! Not within a table, finalize the global definition with a newline.
+      adv_string = 'yes'
     end if
+
+    call aot_out_breakline(put_conf, advance_previous)
 
     if (present(vname)) then
       write(put_conf%outunit, fmt="(a)", advance=adv_string) &
-        & indent//trim(vname)//" = '"//trim(val)//"'"
+        & trim(vname)//" = '"//trim(val)//"'"
     else
       write(put_conf%outunit, fmt="(a)", advance=adv_string) &
-        &  indent//"'"//trim(val)//"'"
+        &  "'"//trim(val)//"'"
     end if
 
   end subroutine aot_out_val_string
@@ -496,11 +386,12 @@ contains
 !******************************************************************************!
 !>  Put integer array variables into the Lua script.
 !!
-  subroutine aot_out_val_arr_int(put_conf, val, vname)
+  subroutine aot_out_val_arr_int(put_conf, val, vname, advance_previous)
     !------------------------------------------------------------------------
     type(aot_out_type), intent(inout)  :: put_conf
     character(len=*), optional, intent(in) :: vname
     integer, intent(in) :: val(:)
+    logical, optional, intent(in) :: advance_previous
     !------------------------------------------------------------------------
     integer :: i
     !------------------------------------------------------------------------
@@ -517,18 +408,18 @@ contains
 
     ! Opening the table(subtable for array actually)
     call aot_out_open_table(put_conf, vname, & 
-     &                      advance_previous = .false.)
+     &                      advance_previous = advance_previous)
 
     
     ! Looping over val which is a one dimensional array
-    do i = LBOUND(val,1), UBOUND(val,1) 
-      if(mod((i-1), 10) .ne. 0)then
+    do i = 1, size(val)
+      if (mod(i, 10) .ne. 0) then
         ! Call the aot_out_val_int routine to write integer values within array
         call aot_out_val(put_conf, val(i), &
-         &                   advance_previous = .false.)
-       else      
-         call aot_out_val(put_conf, val(i), &
-          &                   advance_previous = .true.)
+          &              advance_previous = .false.)
+      else      
+        call aot_out_val(put_conf, val(i), &
+          &              advance_previous = .true.)
       end if
     end do
 
@@ -672,6 +563,52 @@ contains
     call aot_out_close_table(put_conf, advance_previous = .false.)
 
   end subroutine aot_out_val_arr_double
+!******************************************************************************!
+
+
+!******************************************************************************!
+!> This subroutine takes care of the proper linebreaking in Lua-Tables.
+!!
+!! It takes care of a proper line-continuation, depending on the optional
+!! advance_previous flag and increases the count of elements in the current
+!! table.
+  subroutine aot_out_breakline(put_conf, advance_previous)
+    type(aot_out_type), intent(inout)  :: put_conf
+    logical, optional, intent(in) :: advance_previous
+
+    character(len=put_conf%indent) :: indent
+    character :: sep
+    logical :: loc_adv_prev
+
+    indent = ''
+    if (present(advance_previous)) then
+      loc_adv_prev = advance_previous
+    else
+      loc_adv_prev = .true.
+    end if
+    
+    lev_if: if (put_conf%level > 0) then
+
+      if (put_conf%stack(put_conf%level) > 0) then
+        ! Use the separator to close the previous entry.
+        sep = ','
+      else
+        ! First entry, nothing to separate yet.
+        sep = ''
+      end if
+
+      if (loc_adv_prev) then
+        write(put_conf%outunit, fmt='(a)') trim(sep)
+        write(put_conf%outunit, fmt='(a)', advance='no') indent
+      else
+        write(put_conf%outunit, fmt='(a)', advance='no') trim(sep)//" "
+      end if
+
+      put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1
+
+    end if lev_if
+
+  end subroutine aot_out_breakline
 !******************************************************************************!
 
 

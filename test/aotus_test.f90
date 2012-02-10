@@ -23,7 +23,6 @@ program aotus_test
   integer :: nSTLs
   real(kind=double_k) :: coord(3)
   real(kind=double_k) :: results
-  integer :: kjval(2,3)
 
   call open_config(conf = conf, filename = 'config.lua')
 
@@ -127,9 +126,10 @@ program aotus_test
   call aot_out_val(dummyOut, 100)
   call aot_out_val(dummyOut, 0)
   call aot_out_close_table(dummyOut)
-!  call aot_out_val(dummyOut, (/0,1,2,3/))
-
   call aot_out_close_table(dummyOut)
+
+  call aot_out_val(dummyOut, (/0,1,2,3/), vname='testarray')
+
 
   call aot_out_close(dummyOut)
 
