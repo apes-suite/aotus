@@ -39,7 +39,10 @@ module aot_out_module
     module procedure aot_out_val_double
     module procedure aot_out_val_logical
     module procedure aot_out_val_string
-    module procedure aot_out_val_arr_1d
+    module procedure aot_out_val_arr_int
+    module procedure aot_out_val_arr_long
+    module procedure aot_out_val_arr_real
+    module procedure aot_out_val_arr_double
   end interface
 
   private
@@ -100,14 +103,23 @@ contains
 !******************************************************************************!
 !> Start a new table to write to.
 !!
-  subroutine aot_out_open_table(put_conf, tname)
+  subroutine aot_out_open_table(put_conf, tname, advance_previous)
     !------------------------------------------------------------------------
     type(aot_out_type), intent(inout)  :: put_conf
     character(len=*), optional, intent(in) :: tname
+    logical, optional, intent(in) :: advance_previous
     !------------------------------------------------------------------------
     character(len=put_conf%indent) :: indent
+    logical :: loc_adv_prev
+    !------------------------------------------------------------------------
 
     indent = ''
+    if (present(advance_previous)) then
+      loc_adv_prev = advance_previous
+    else
+      loc_adv_prev = .true.
+    end if
+    
     if(put_conf%level .gt. 0)  then
       if( put_conf%stack( put_conf%level ) .gt. 0) then
         ! Not the first entry in the parent table, close previous entry with
@@ -118,9 +130,18 @@ contains
     end if
 
     if (present(tname)) then
-      write(put_conf%outunit, fmt="(a)") indent//trim(tname)//' = {'
+      if ( .not.loc_adv_prev) then
+        write(put_conf%outunit, fmt="(a)", advance='no') &
+            & indent//trim(tname)//' = {'
+      else
+        write(put_conf%outunit, fmt="(a)") indent//trim(tname)//' = {'
+      end if
     else
-      write(put_conf%outunit, fmt="(a)") indent//'{'
+      if (.not. loc_adv_prev) then
+        write(put_conf%outunit, fmt="(a)", advance='no') indent//'{'
+      else        
+        write(put_conf%outunit, fmt="(a)") indent//'{'
+      end if
     end if
 
     put_conf%level = put_conf%level + 1
@@ -133,11 +154,19 @@ contains
 !******************************************************************************!
 !>  Close the current table.
 !!
-  subroutine aot_out_close_table(put_conf)
+  subroutine aot_out_close_table(put_conf, advance_previous)
     !------------------------------------------------------------------------
     type(aot_out_type), intent(inout)  :: put_conf
+    logical, optional, intent(in) :: advance_previous
     !------------------------------------------------------------------------
+    logical :: loc_adv_prev
     character(len=max(put_conf%indent-indentation,0)) :: indent
+    !------------------------------------------------------------------------
+    if (present(advance_previous)) then
+      loc_adv_prev = advance_previous
+    else
+      loc_adv_prev = .true.
+    end if
 
     indent = ''
     put_conf%indent = max(put_conf%indent - indentation, 0)
@@ -145,14 +174,24 @@ contains
     put_conf%level = max(put_conf%level - 1, 0)
 
     ! Close last entry without separator and put closing brace on a separate
-    ! line.
-    write(put_conf%outunit,*) ''
+    ! line. The closing brace should be on the same line in case of array
+    if (loc_adv_prev) then
+      write(put_conf%outunit,*) ''
+    end if
 
     if (put_conf%level == 0) then
-      write(put_conf%outunit,fmt="(a)") indent//'}'
+      if (loc_adv_prev) then
+        write(put_conf%outunit,fmt="(a)") indent//'}'
+      else
+        write(put_conf%outunit,fmt="(a)", advance='no') '}'
+      end if
     else
       ! Do not advance, to let the next entry append the separator, to the line
-      write(put_conf%outunit,fmt="(a)", advance='no') indent//'}'
+      if (.not. loc_adv_prev) then
+        write(put_conf%outunit,fmt="(a)", advance='no') '}'        
+      else
+        write(put_conf%outunit,fmt="(a)", advance='no') indent//'}'
+      end if
     end if
 
   end subroutine aot_out_close_table
@@ -204,7 +243,7 @@ contains
       write(put_conf%outunit, fmt="(a,i0)", advance=adv_string) &
         & trim(vname)//" = ", val
     else
-      write(put_conf%outunit, fmt="(a,i0)", advance=adv_string) val
+      write(put_conf%outunit, fmt="(i0)", advance=adv_string) val
     end if
 
   end subroutine aot_out_val_int
@@ -214,19 +253,27 @@ contains
 !******************************************************************************!
 !>  Put long variables into the Lua script.
 !!
-  subroutine aot_out_val_long(put_conf, val, vname)
+  subroutine aot_out_val_long(put_conf, val, vname, advance_previous)
     !------------------------------------------------------------------------
     type(aot_out_type), intent(inout)  :: put_conf
     character(len=*), optional, intent(in) :: vname
+    logical, optional, intent(in) :: advance_previous
     integer(kind=long_k), intent(in) :: val
     !------------------------------------------------------------------------
     character(len=put_conf%indent) :: indent
     character(len=3) :: adv_string
+    logical :: loc_adv_prev
     !------------------------------------------------------------------------
 
     indent = ''
     adv_string = 'yes'
 
+    if (present(advance_previous)) then
+      loc_adv_prev = advance_previous
+    else
+      loc_adv_prev = .true.
+    end if
+    
     if (put_conf%level .gt. 0) then
       ! Do not advance after writing this value, in order to allow
       ! subsequent entries, to append the separator!
@@ -234,7 +281,12 @@ contains
       if (put_conf%stack(put_conf%level) .gt. 0) then
         ! This is not the first entry in the current table, append a ',' to the
         ! previous entry.
-        write(put_conf%outunit,fmt="(a)") ","
+        if(loc_adv_prev) then
+          write(put_conf%outunit,fmt="(a)") ","
+          write(put_conf%outunit, fmt="(a)", advance='no') indent
+        else
+          write(put_conf%outunit, fmt="(a)", advance='no') ", "
+        end if
       end if
       put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1
     end if
@@ -243,7 +295,7 @@ contains
       write(put_conf%outunit, fmt="(a,i0)", advance=adv_string) &
         & indent//trim(vname)//" = ", val
     else
-      write(put_conf%outunit, fmt="(a,i0)", advance=adv_string) indent, val
+      write(put_conf%outunit, fmt="(i0)", advance=adv_string) val
     end if
 
   end subroutine aot_out_val_long
@@ -253,19 +305,27 @@ contains
 !******************************************************************************!
 !>  Put real variables into the Lua script.
 !!
-  subroutine aot_out_val_real(put_conf, val, vname)
+  subroutine aot_out_val_real(put_conf, val, vname, advance_previous)
     !------------------------------------------------------------------------
     type(aot_out_type), intent(inout)  :: put_conf
     character(len=*), optional, intent(in) :: vname
+    logical, optional, intent(in) :: advance_previous
     real(kind=single_k), intent(in) :: val
     !------------------------------------------------------------------------
     character(len=put_conf%indent) :: indent
     character(len=3) :: adv_string
+    logical :: loc_adv_prev
     !------------------------------------------------------------------------
 
     indent = ''
     adv_string = 'yes'
 
+    if (present(advance_previous)) then
+      loc_adv_prev = advance_previous
+    else
+      loc_adv_prev = .true.
+    end if
+    
     if (put_conf%level .gt. 0) then
       ! Do not advance after writing this value, in order to allow
       ! subsequent entries, to append the separator!
@@ -273,7 +333,12 @@ contains
       if (put_conf%stack(put_conf%level) .gt. 0) then
         ! This is not the first entry in the current table, append a ',' to the
         ! previous entry.
-        write(put_conf%outunit,fmt="(a)") ","
+        if (loc_adv_prev) then
+          write(put_conf%outunit, fmt="(a)") ","
+          write(put_conf%outunit, fmt="(a)", advance='no') indent
+        else
+          write(put_conf%outunit, fmt="(a)", advance='no') ", "
+        end if
       end if
       put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1
     end if
@@ -282,7 +347,7 @@ contains
       write(put_conf%outunit, fmt="(a,f0.9)", advance=adv_string) &
         & indent//trim(vname)//" = ", val
     else
-      write(put_conf%outunit, fmt="(a,f0.9)", advance=adv_string) indent, val
+      write(put_conf%outunit, fmt="(f0.9)", advance=adv_string) val
     end if
 
   end subroutine aot_out_val_real
@@ -292,19 +357,27 @@ contains
 !******************************************************************************!
 !>  Put double variables into the Lua script.
 !!
-  subroutine aot_out_val_double(put_conf, val, vname)
+  subroutine aot_out_val_double(put_conf, val, vname, advance_previous)
     !------------------------------------------------------------------------
     type(aot_out_type), intent(inout)  :: put_conf
     character(len=*), optional, intent(in) :: vname
+    logical, optional, intent(in) :: advance_previous
     real(kind=double_k), intent(in) :: val
     !------------------------------------------------------------------------
     character(len=put_conf%indent) :: indent
     character(len=3) :: adv_string
+    logical :: loc_adv_prev
     !------------------------------------------------------------------------
 
     indent = ''
     adv_string = 'yes'
 
+    if (present(advance_previous)) then
+      loc_adv_prev = advance_previous
+    else
+      loc_adv_prev = .true.
+    end if
+    
     if (put_conf%level .gt. 0) then
       ! Do not advance after writing this value, in order to allow
       ! subsequent entries, to append the separator!
@@ -312,7 +385,12 @@ contains
       if (put_conf%stack(put_conf%level) .gt. 0) then
         ! This is not the first entry in the current table, append a ',' to the
         ! previous entry.
-        write(put_conf%outunit,fmt="(a)") ","
+        if (loc_adv_prev) then
+          write(put_conf%outunit, fmt="(a)") ","
+          write(put_conf%outunit, fmt="(a)", advance='no') indent
+        else
+          write(put_conf%outunit, fmt="(a)", advance='no') ", "
+        end if
       end if
       put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1
     end if
@@ -321,7 +399,7 @@ contains
       write(put_conf%outunit, fmt="(a,f0.9)", advance=adv_string) &
         & indent//trim(vname)//" = ", val
     else
-      write(put_conf%outunit, fmt="(a,f0.9)", advance=adv_string) indent, val
+      write(put_conf%outunit, fmt="(f0.9)", advance=adv_string) val
     end if
 
   end subroutine aot_out_val_double
@@ -416,15 +494,15 @@ contains
 
 
 !******************************************************************************!
-!>  Put array variables into the Lua script.
+!>  Put integer array variables into the Lua script.
 !!
-  subroutine aot_out_val_arr_1d(put_conf, val, vname)
+  subroutine aot_out_val_arr_int(put_conf, val, vname)
     !------------------------------------------------------------------------
     type(aot_out_type), intent(inout)  :: put_conf
     character(len=*), optional, intent(in) :: vname
     integer, intent(in) :: val(:)
+    !------------------------------------------------------------------------
     integer :: i
-    logical :: entries_on_lines
     !------------------------------------------------------------------------
 
     if (put_conf%level .gt. 0) then
@@ -437,30 +515,168 @@ contains
       put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1
     end if
 
-    !Opening the table(subtable for array actually)
-    call aot_out_open_table(put_conf, vname)
+    ! Opening the table(subtable for array actually)
+    call aot_out_open_table(put_conf, vname, & 
+     &                      advance_previous = .false.)
 
-    entries_on_lines = (size(val) > 10)
     
-    !Looping over val which is a one dimensional array
+    ! Looping over val which is a one dimensional array
     do i = LBOUND(val,1), UBOUND(val,1) 
-
-      !Call the aot_out_val_int routine to write integer values within array
-      call aot_out_val_int(put_conf, val(i), &
-       &                   advance_previous = entries_on_lines)
-      
+      if(mod((i-1), 10) .ne. 0)then
+        ! Call the aot_out_val_int routine to write integer values within array
+        call aot_out_val(put_conf, val(i), &
+         &                   advance_previous = .false.)
+       else      
+         call aot_out_val(put_conf, val(i), &
+          &                   advance_previous = .true.)
+      end if
     end do
 
-    !Close the table
-    call aot_out_close_table(put_conf)
+    ! Close the table
+    call aot_out_close_table(put_conf, advance_previous = .false.)
 
-  end subroutine aot_out_val_arr_1d
+  end subroutine aot_out_val_arr_int
+!******************************************************************************!
+
+!******************************************************************************!
+!>  Put long array variables into the Lua script.
+!!
+  subroutine aot_out_val_arr_long(put_conf, val, vname)
+    !------------------------------------------------------------------------
+    type(aot_out_type), intent(inout)  :: put_conf
+    character(len=*), optional, intent(in) :: vname
+    integer(kind=long_k), intent(in) :: val(:)
+    !------------------------------------------------------------------------
+    integer :: i
+    !------------------------------------------------------------------------
+
+    if (put_conf%level .gt. 0) then
+      ! Do not advance after writing this value, in order to allow
+      ! subsequent entries, to append the separator!
+      if (put_conf%stack(put_conf%level) .gt. 0) then
+        ! This is not the first entry in the current table, append a ',' to the
+        ! previous entry.
+      end if
+      put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1
+    end if
+
+    ! Opening the table(subtable for array actually)
+    call aot_out_open_table(put_conf, vname, & 
+     &                      advance_previous = .false.)
+
+    
+    ! Looping over val which is a one dimensional array
+    do i = LBOUND(val,1), UBOUND(val,1) 
+      if(mod((i-1), 10) .ne. 0)then
+        ! Call the aot_out_val_int routine to write integer values within array
+        call aot_out_val(put_conf, val(i), &
+         &                   advance_previous = .false.)
+       else      
+         call aot_out_val(put_conf, val(i), &
+          &                   advance_previous = .true.)
+      end if
+    end do
+
+    ! Close the table
+    call aot_out_close_table(put_conf, advance_previous = .false.)
+
+  end subroutine aot_out_val_arr_long
+!******************************************************************************!
+
+!******************************************************************************!
+!>  Put real array variables into the Lua script.
+!!
+  subroutine aot_out_val_arr_real(put_conf, val, vname)
+    !------------------------------------------------------------------------
+    type(aot_out_type), intent(inout)  :: put_conf
+    character(len=*), optional, intent(in) :: vname
+    real, intent(in) :: val(:)
+    !------------------------------------------------------------------------
+    integer :: i
+    !------------------------------------------------------------------------
+
+    if (put_conf%level .gt. 0) then
+      ! Do not advance after writing this value, in order to allow
+      ! subsequent entries, to append the separator!
+      if (put_conf%stack(put_conf%level) .gt. 0) then
+        ! This is not the first entry in the current table, append a ',' to the
+        ! previous entry.
+      end if
+      put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1
+    end if
+
+    ! Opening the table(subtable for array actually)
+    call aot_out_open_table(put_conf, vname, & 
+     &                      advance_previous = .false.)
+
+    
+    ! Looping over val which is a one dimensional array
+    do i = LBOUND(val,1), UBOUND(val,1) 
+      if(mod((i-1), 10) .ne. 0)then
+        ! Call the aot_out_val_int routine to write integer values within array
+        call aot_out_val(put_conf, val(i), &
+         &                   advance_previous = .false.)
+       else      
+         call aot_out_val(put_conf, val(i), &
+          &                   advance_previous = .true.)
+      end if
+    end do
+
+    ! Close the table
+    call aot_out_close_table(put_conf, advance_previous = .false.)
+
+  end subroutine aot_out_val_arr_real
+!******************************************************************************!
+
+
+!******************************************************************************!
+!>  Put real array variables into the Lua script.
+!!
+  subroutine aot_out_val_arr_double(put_conf, val, vname)
+    !------------------------------------------------------------------------
+    type(aot_out_type), intent(inout)  :: put_conf
+    character(len=*), optional, intent(in) :: vname
+    real(kind=double_k), intent(in) :: val(:)
+    !------------------------------------------------------------------------
+    integer :: i
+    !------------------------------------------------------------------------
+
+    if (put_conf%level .gt. 0) then
+      ! Do not advance after writing this value, in order to allow
+      ! subsequent entries, to append the separator!
+      if (put_conf%stack(put_conf%level) .gt. 0) then
+        ! This is not the first entry in the current table, append a ',' to the
+        ! previous entry.
+      end if
+      put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1
+    end if
+
+    ! Opening the table(subtable for array actually)
+    call aot_out_open_table(put_conf, vname, & 
+     &                      advance_previous = .false.)
+
+    
+    ! Looping over val which is a one dimensional array
+    do i = LBOUND(val,1), UBOUND(val,1) 
+      if(mod((i-1), 10) .ne. 0)then
+        ! Call the aot_out_val_int routine to write integer values within array
+        call aot_out_val(put_conf, val(i), &
+         &                   advance_previous = .false.)
+       else      
+         call aot_out_val(put_conf, val(i), &
+          &                   advance_previous = .true.)
+      end if
+    end do
+
+    ! Close the table
+    call aot_out_close_table(put_conf, advance_previous = .false.)
+
+  end subroutine aot_out_val_arr_double
 !******************************************************************************!
 
 
 
-
-
+  
   !> Helper function to provide new unit, as long as F2008 newunit argument
   !! in open statement is not commonly available.
   !! To be used right in front of the open statement like this:
