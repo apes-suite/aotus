@@ -40,7 +40,6 @@ module aot_out_module
     module procedure aot_out_val_logical
     module procedure aot_out_val_string
     module procedure aot_out_val_arr_1d
-    module procedure aot_out_val_arr_2d
   end interface
 
   private
@@ -101,12 +100,20 @@ contains
 !******************************************************************************!
 !> Start a new table to write to.
 !!
-  subroutine aot_out_open_table(put_conf, tname)
+  subroutine aot_out_open_table(put_conf, tname, linearize)
     !------------------------------------------------------------------------
     type(aot_out_type), intent(inout)  :: put_conf
     character(len=*), optional, intent(in) :: tname
+    logical, optional :: linearize
     !------------------------------------------------------------------------
     character(len=put_conf%indent) :: indent
+    character(len=3) :: adv_string
+    !------------------------------------------------------------------------
+    if(present(linearize) .and. linearize )then
+      adv_string = 'no'
+    else
+      adv_string = 'yes'
+    end if
 
     indent = ''
     if(put_conf%level .gt. 0)  then
@@ -119,9 +126,9 @@ contains
     end if
 
     if (present(tname)) then
-      write(put_conf%outunit, fmt="(a)") indent//trim(tname)//' = {'
+      write(put_conf%outunit, fmt="(a)", advance=adv_string) indent//trim(tname)//' = {'
     else
-      write(put_conf%outunit, fmt="(a)") indent//'{'
+      write(put_conf%outunit, fmt="(a)", advance=adv_string) indent//'{'
     end if
 
     put_conf%level = put_conf%level + 1
@@ -134,9 +141,10 @@ contains
 !******************************************************************************!
 !>  Close the current table.
 !!
-  subroutine aot_out_close_table(put_conf)
+  subroutine aot_out_close_table(put_conf, linearize)
     !------------------------------------------------------------------------
     type(aot_out_type), intent(inout)  :: put_conf
+    logical, optional, intent(in) :: linearize
     !------------------------------------------------------------------------
     character(len=max(put_conf%indent-indentation,0)) :: indent
 
@@ -145,13 +153,18 @@ contains
     put_conf%stack(put_conf%level) = 0
     put_conf%level = max(put_conf%level - 1, 0)
 
-    ! Close last entry without separator and put closing brace on a separate
-    ! line.
-    write(put_conf%outunit,*) ''
-
-    if (put_conf%level == 0) then
+    if(present(linearize) .and. linearize)then
+      ! put closing brace in the same line
+      write(put_conf%outunit,fmt="(a)", advance='no') '}'
+    else if (put_conf%level == 0) then
+      ! Close last entry without separator and put closing brace on a separate
+      ! line.
+      write(put_conf%outunit,*) ''
       write(put_conf%outunit,fmt="(a)") indent//'}'
     else
+      ! Close last entry without separator and put closing brace on a separate
+      ! line.
+      write(put_conf%outunit,*) ''
       ! Do not advance, to let the next entry append the separator, to the line
       write(put_conf%outunit,fmt="(a)", advance='no') indent//'}'
     end if
@@ -164,17 +177,17 @@ contains
 !******************************************************************************!
 !>  Put integer variables into the Lua script.
 !!
-  subroutine aot_out_val_int(put_conf, val, vname)
+  subroutine aot_out_val_int(put_conf, val, vname, linearize)
     !------------------------------------------------------------------------
     type(aot_out_type), intent(inout)  :: put_conf
     character(len=*), optional, intent(in) :: vname
     integer, intent(in) :: val
+    logical, optional :: linearize
     !------------------------------------------------------------------------
-    character(len=put_conf%indent) :: indent
+    character(len=:), allocatable :: indent
     character(len=3) :: adv_string
+    integer :: i
     !------------------------------------------------------------------------
-
-    indent = ''
     adv_string = 'yes'
 
     if (put_conf%level .gt. 0) then
@@ -184,9 +197,26 @@ contains
       if (put_conf%stack(put_conf%level) .gt. 0) then
         ! This is not the first entry in the current table, append a ',' to the
         ! previous entry.
-        write(put_conf%outunit,fmt="(a)") ","
+        if(present(linearize) .and. linearize )then
+          write(put_conf%outunit, fmt="(a)", advance=adv_string) ","
+        else
+          write(put_conf%outunit, fmt="(a)") ","
+        end if
       end if
       put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1
+    end if
+
+    ! if the output shall be linearized advance = 'no', indentation = ' '
+    if(present(linearize) .and. linearize )then
+      adv_string = 'no'
+      allocate(character(len=1) :: indent)
+      indent = ' '
+    else
+      allocate(character(len=put_conf%indent) :: indent)
+      indent = ''
+      do i=1, put_conf%indent
+        indent = indent//' '
+      end do
     end if
 
     if (present(vname)) then
@@ -195,6 +225,8 @@ contains
     else
       write(put_conf%outunit, fmt="(a,i0)", advance=adv_string) indent, val
     end if
+
+    deallocate(indent)
 
   end subroutine aot_out_val_int
 !******************************************************************************!
@@ -407,126 +439,40 @@ contains
 !******************************************************************************!
 !>  Put array variables into the Lua script.
 !!
-  subroutine aot_out_val_arr_1d(put_conf, val, vname, flag)
+  subroutine aot_out_val_arr_1d(put_conf, val, vname, linearize)
     !------------------------------------------------------------------------
     type(aot_out_type), intent(inout)  :: put_conf
     character(len=*), optional, intent(in) :: vname
     integer, intent(in) :: val(:)
-    integer, optional, intent(in) :: flag
+    logical, optional :: linearize
     !------------------------------------------------------------------------
-    character(len=put_conf%indent) :: indent
-    character(len=3) :: adv_string
-    character(len=1) :: comma_append
-    character(len=6) :: prepend
     integer :: i
+    logical :: local_linearize
     !------------------------------------------------------------------------
 
-    indent = ''
-    adv_string = 'yes'
-
-    if (put_conf%level .gt. 0) then
-      ! Do not advance after writing this value, in order to allow
-      ! subsequent entries, to append the separator!
-      adv_string = 'no'
-      if (put_conf%stack(put_conf%level) .gt. 0) then
-        ! This is not the first entry in the current table, append a ',' to the
-        ! previous entry.
-        ! The flag is used when this routine is called from a 2d arr routine
-        ! when it is 0, we will not write a comma
-        if ((present(flag)) .and. (flag .ne. 0)) then
-          write(put_conf%outunit,fmt="(a)") ","
-        end if
-      end if
-      put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1
-    end if
-
+    local_linearize = .false.
+    if(present(linearize)) &
+      local_linearize = linearize
     !Looping over val which is a one dimensional array
     do i = LBOUND(val,1), UBOUND(val,1) 
-      !If loop index has not reached end of array we will write commas and at the end we
-      !will put a }
-      if (i .lt. UBOUND(val,1)) then
-        comma_append = ','
-      else 
-        comma_append = '}'
-      end if
-      
       !If the vname is specified then it will be printed followed by = {
       !otherwise only { will be printed marking start of subtable
       if(i .eq. LBOUND(val,1) ) then
         if (present(vname)) then
-          prepend = indent//trim(vname)//" = {"
+          call aot_out_open_table( put_conf = put_conf, tname = trim( vname ), &
+            &                      linearize = local_linearize)
         else 
-          prepend = indent//"{"
-          write(put_conf%outunit, fmt="(a,i0,a)", advance=adv_string) &
-              & prepend, val(i), comma_append
+          call aot_out_open_table( put_conf = put_conf, linearize = local_linearize)
         end if
-      else
-        write(put_conf%outunit, fmt="(i0,a)", advance=adv_string) &
-            & val(i), comma_append
       end if
-
+      call aot_out_val(put_conf = put_conf, val = val(i), linearize = local_linearize)
     end do
+    call aot_out_close_table(put_conf = put_conf, linearize = .true.)
 
   end subroutine aot_out_val_arr_1d
 !******************************************************************************!
 
 
-!******************************************************************************!
-!>  Put array variables into the Lua script.
-!!
-  subroutine aot_out_val_arr_2d(put_conf, val, vname)
-    !------------------------------------------------------------------------
-    type(aot_out_type), intent(inout)  :: put_conf
-    character(len=*), optional, intent(in) :: vname
-    integer, intent(in) :: val(:,:)
-    !------------------------------------------------------------------------
-    character(len=put_conf%indent) :: indent
-    character(len=3) :: adv_string
-    character(len=1) :: comma_append
-    character(len=20) :: prepend
-    integer :: i, flag
-    !------------------------------------------------------------------------
-
-    indent = ''
-    flag = 0
-    adv_string = 'yes'
-
-    if (put_conf%level .gt. 0) then
-      ! Do not advance after writing this value, in order to allow
-      ! subsequent entries, to append the separator!
-      adv_string = 'no'
-      if (put_conf%stack(put_conf%level) .gt. 0) then
-        ! This is not the first entry in the current table, append a ',' to the
-        ! previous entry.
-        write(put_conf%outunit,fmt="(a)") ","
-      end if
-      put_conf%stack(put_conf%level) = put_conf%stack(put_conf%level) + 1
-    end if
-
-    do i = LBOUND(val,1), UBOUND(val,1)
-      !Write a { when loop is at starting index of array
-      if (i .eq. LBOUND(val,1)) then
-        if (present(vname)) then
-          write(put_conf%outunit, fmt="(a)", advance=adv_string) &
-               & indent//trim(vname)//" = {"
-        else
-          write(put_conf%outunit, fmt="(a)", advance=adv_string) &
-               & indent//"{"
-        end if
-      end if
-
-      !Call 1d routine to write 2nd dimension of val
-      call aot_out_val_arr_1d(put_conf, val(i,:), vname, flag)
-      flag = flag + 1
-
-      if (i .eq. UBOUND(val,1)) then
-        !At the last loop index, close the braces with }
-        write(put_conf%outunit, fmt="(a)", advance=adv_string) "}"
-      end if
-    end do
-
-  end subroutine aot_out_val_arr_2d
-!******************************************************************************!
 
 
 
