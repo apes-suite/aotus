@@ -40,7 +40,17 @@ module aot_path_module
   public :: aot_init_path, aot_fin_path
   public :: aot_path_addNode, aot_path_delNode
   public :: assignment(=)
-  public :: aot_path_open_fun, aot_path_close_fun
+  public :: aot_path_open, aot_path_close
+
+  interface aot_path_open
+    module procedure aot_path_open_fun
+    module procedure aot_path_open_table
+  end interface aot_path_open
+
+  interface aot_path_close
+    module procedure aot_path_close_fun
+    module procedure aot_path_close_table
+  end interface aot_path_close
 
 contains
 
@@ -227,6 +237,45 @@ contains
     !! an actual Lua state handle.
     logical, intent(in), optional :: openLua
 
+    integer :: myHandle
+    
+    ! open the table untill it reaches the final head node
+    call aot_path_open_table( me, conf, myHandle, openLua )
+
+    if (me%head%NodeType == 'function') then
+      select case(me%head%ID_kind)
+      case('key')
+        if (associated(me%head, me%GlobalNode)) then
+          call aot_fun_open(L=conf, fun=fun, key=me%head%key)
+        else
+          call aot_fun_open(L=conf, parent=myHandle, fun=fun, key=me%head%key)
+        end if
+      case('position')
+        call aot_fun_open(L=conf, parent=myHandle, fun=fun, pos=me%head%pos)
+      end select
+    end if
+
+  end subroutine aot_path_open_fun
+
+  !> This subroutine opens all the tables on the way to
+  !! the final head node of the given path.
+  !! The handle can be either passed in, to be used for the
+  !! look up of the path, or, when specifying the optional
+  !! openLua argument as true, it will return the handle to
+  !! the newly opened Lua script.
+  subroutine aot_path_open_table(me, conf, thandle, openLua)
+    !> The path object to open as a function
+    type(aot_path_type), intent(inout) :: me
+    !> The flu_state handle, which is either opened according to
+    !! the path, or used to open the path in.
+    type(flu_state) :: conf
+    !> return handle of the last opened table
+    integer, intent(out) :: thandle
+    !> A flag to indicate, wether to open the Lua script, default
+    !! is false, in which case the conf argument has to link to
+    !! an actual Lua state handle.
+    logical, intent(in), optional :: openLua
+
     logical :: new_conf
     type(aot_path_node_type), pointer :: curNode => NULL()
     integer :: myHandle, prevHandle
@@ -269,22 +318,12 @@ contains
 
     end do
 
-    if (me%head%NodeType == 'function') then
-      select case(me%head%ID_kind)
-      case('key')
-        if (associated(me%head, me%GlobalNode)) then
-          call aot_fun_open(L=conf, fun=fun, key=me%head%key)
-        else
-          call aot_fun_open(L=conf, parent=myHandle, fun=fun, key=me%head%key)
-        end if
-      case('position')
-        call aot_fun_open(L=conf, parent=myHandle, fun=fun, pos=me%head%pos)
-      end select
-    end if
+    thandle = myHandle
 
-  end subroutine aot_path_open_fun
+  end subroutine aot_path_open_table
 
-
+  !> This routine closes function and all other tables opened
+  !! along the path
   subroutine aot_path_close_fun(me, conf, fun, closeLua)
     !> The path object to open as a function
     type(aot_path_type), intent(inout) :: me
@@ -297,7 +336,24 @@ contains
     !! is false.
     logical, intent(in), optional :: closeLua
 
+    ! close function
     call aot_fun_close(L=conf, fun=fun)
+    ! close tables
+    call aot_path_close_table( me, conf, closeLua )
+
+  end subroutine aot_path_close_fun
+
+  !> this routine closes all the table opened in aot_path_open_table
+  subroutine aot_path_close_table(me, conf, closeLua)
+    !> The path object to open as a function
+    type(aot_path_type), intent(inout) :: me
+    !> The flu_state handle, which is either opened according to
+    !! the path, or used to open the path in.
+    type(flu_state) :: conf
+    !> A flag to indicate, wether to close the Lua script, default
+    !! is false.
+    logical, intent(in), optional :: closeLua
+
     if (me%roothandle /= 0) then
       call aot_table_close(L=conf, thandle=me%roothandle)
     end if
@@ -308,6 +364,6 @@ contains
       end if
     end if
 
-  end subroutine aot_path_close_fun
+  end subroutine aot_path_close_table
 
 end module aot_path_module
