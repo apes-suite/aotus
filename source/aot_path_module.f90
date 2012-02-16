@@ -1,6 +1,11 @@
-!> The aot_path can be used to track the position of a Lua entity
-!! in nested tables, which is mainly useful to lookup a function
-!! reference again after closing and opening the script.
+!> The aot_path can be used to track the position of a Lua entity in nested
+!! tables.
+!!
+!! It is mainly useful to lookup a function reference again after closing and
+!! opening the script.
+!! The idea is to initialize the path in the very beginning and then append a
+!! node whenever a table is opened. Thus you pass down the growing path object
+!! and store at in the level, to which you might need to return later.
 module aot_path_module
   use flu_binding, only: flu_State
   use aotus_module, only: open_config, close_config
@@ -11,27 +16,45 @@ module aot_path_module
 
   private
 
+  !> This data structure describes a node in the path through nested tables.
   type aot_path_node_type
     !> What type of node is this?
     !! Currently supported are function and table
     character(len=16) :: NodeType
+
     !> How to look up this node, by key or position?
     character(len=16) :: ID_kind
+
     !> Identifying key
     character(len=80) :: key
+
     !> Identifying position
     integer :: pos
+
     !> Link to possible child of this node
     type(aot_path_node_type), pointer :: child => NULL()
   end type
 
+  !> This type is the main data structure of the module and describes the path.
+  !!
+  !! It contains a linked list of all nodes, as well as the name of the Lua
+  !! script where this path is recorded in.
   type aot_path_type
+    !> Name of the file where this path object is found in.
     character(len=256) :: LuaFilename
+
+    !> Handle to the topmost table opened for the path.
     integer :: rootHandle
+
+    !> Entry level of the path on the global scope of the Lua script.
     type(aot_path_node_type), pointer :: GlobalNode => NULL()
+
+    !> Moving head through the linked list of path nodes.
     type(aot_path_node_type), pointer :: head => NULL()
   end type
 
+  !> Taking care of the linked list in a copying routine for the assignment of
+  !! aot_path_type.
   interface assignment(=)
     module procedure aot_path_copy
   end interface
@@ -42,11 +65,16 @@ module aot_path_module
   public :: assignment(=)
   public :: aot_path_open, aot_path_close
 
+  !> Re-open a previously recorded path through nested Lua tables.
+  !!
+  !! This opens all the tables recursively down to the last node in the path.
+  !! It might be used to open a table, or a function.
   interface aot_path_open
     module procedure aot_path_open_fun
     module procedure aot_path_open_table
   end interface aot_path_open
 
+  ! Close all tables, that were opened for the given path.
   interface aot_path_close
     module procedure aot_path_close_fun
     module procedure aot_path_close_table
@@ -54,15 +82,18 @@ module aot_path_module
 
 contains
 
-  !> This subroutine initializes a path object by setting the
-  !! given file name as reference to the script, to look the
-  !! path up in.
+  !> This subroutine initializes a path object.
+  !!
+  !! This is done by setting the given file name as reference to the script,
+  !! to look the path up in and emptying the path completely.
   subroutine aot_init_path(me, Filename)
     !> Path object to initialize
     type(aot_path_type), intent(out) :: me
     !> Filename of the Lua script, this path is located in
     character(len=*), intent(in) :: Filename
 
+    ! Finalize the path first, just in case it might have had any entries.
+    call aot_fin_path(me)
     me%LuaFilename = adjustl(trim(Filename))
     me%rootHandle = 0
   end subroutine aot_init_path
@@ -88,6 +119,7 @@ contains
 
   !> With this subroutine a node is appended to the end of
   !! the list of nodes of the given path.
+  !!
   !! You need to provide a NodeType (table or function),
   !! and either its position of key to identify it in the
   !! parent object.
@@ -127,9 +159,9 @@ contains
   end subroutine aot_path_addNode
 
 
-  !> The delNode removes the last node from the list
-  !! of nodes of the given path. With the optional
-  !! isEmpty argument, it can be tested, if the list
+  !> The delNode removes the last node from the list of nodes of the given path.
+  !!
+  !! With the optional isEmpty argument, it can be tested, if the list
   !! is completely empty after this operation.
   subroutine aot_path_delNode(me, isEmpty)
     !> Path to delet the last node from
@@ -177,8 +209,8 @@ contains
   end subroutine aot_path_delNode
 
 
-  !> Copy a given path object, this is the implementation
-  !! of the assignment left = right
+  !> Copy a given path object, this is the implementation of the
+  !! assignment left = right.
   subroutine aot_path_copy(left, right)
     !> Object to assign a path to
     type(aot_path_type), intent(inout) :: left
@@ -216,8 +248,9 @@ contains
   end subroutine aot_path_copy
 
 
-  !> This subroutine opens all the tables on the way to
-  !! the final head node, which ought to be a function.
+  !> This subroutine opens all the tables on the way to the final head node,
+  !! which ought to be a function.
+  !!
   !! The given fun object is then filled by an aot_fun_open
   !! on the head of the given path.
   !! The handle can be either passed in, to be used for the
@@ -257,8 +290,9 @@ contains
 
   end subroutine aot_path_open_fun
 
-  !> This subroutine opens all the tables on the way to
-  !! the final head node of the given path.
+  !> This subroutine opens all the tables on the way to the final head node of
+  !! the given path.
+  !!
   !! The handle can be either passed in, to be used for the
   !! look up of the path, or, when specifying the optional
   !! openLua argument as true, it will return the handle to
@@ -322,8 +356,7 @@ contains
 
   end subroutine aot_path_open_table
 
-  !> This routine closes function and all other tables opened
-  !! along the path
+  !> This routine closes function and all other tables opened along the path.
   subroutine aot_path_close_fun(me, conf, fun, closeLua)
     !> The path object to open as a function
     type(aot_path_type), intent(inout) :: me
@@ -343,7 +376,7 @@ contains
 
   end subroutine aot_path_close_fun
 
-  !> this routine closes all the table opened in aot_path_open_table
+  !> This routine closes all the table opened in aot_path_open_table.
   subroutine aot_path_close_table(me, conf, closeLua)
     !> The path object to open as a function
     type(aot_path_type), intent(inout) :: me
