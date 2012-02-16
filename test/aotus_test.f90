@@ -118,18 +118,20 @@ program aotus_test
   call close_config(conf)
 
   call aot_out_open(put_conf = dummyOut, filename = 'dummy.lua')
+
   call aot_out_open_table(dummyOut, 'screen')
   call aot_out_val(dummyOut, 123, 'width')
   call aot_out_val(dummyOut, 456, 'height')
 
-  call aot_out_open_table(dummyOut, 'origin')  
-  call aot_out_val(dummyOut, 100)
-  call aot_out_val(dummyOut, 0)
-  call aot_out_close_table(dummyOut)
+!!  call aot_out_open_table(dummyOut, 'origin')  
+!!  call aot_out_val(dummyOut, 100)
+!!  call aot_out_val(dummyOut, 0)
+!!  call aot_out_close_table(dummyOut)
+  call aot_out_val(dummyOut, [100.0, 0.0], vname='origin')
+
   call aot_out_close_table(dummyOut)
 
-  call aot_out_val(dummyOut, (/0,1,2,3/), vname='testarray')
-
+  call aot_out_val(dummyOut, (/ 0, 1, 2, 3 /), vname='testarray')
 
   call aot_out_close(dummyOut)
 
