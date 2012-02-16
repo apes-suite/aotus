@@ -188,7 +188,7 @@ contains
       not_retrievable = .true.
     else
       if (flu_isNumber(conf, -1)) then
-        top_val = int(flu_toNumber(conf, -1))
+        top_val = int(flu_toDouble(conf, -1))
       else
         ErrCode = ibSet(ErrCode, aoterr_WrongType)
         ErrCode = ibSet(ErrCode, aoterr_Fatal)
@@ -223,7 +223,7 @@ contains
       not_retrievable = .true.
     else
       if (flu_isNumber(conf, -1)) then
-        top_val = int(flu_toNumber(conf, -1),kind=long_k)
+        top_val = int(flu_toDouble(conf, -1),kind=long_k)
       else
         ErrCode = ibSet(ErrCode, aoterr_WrongType)
         ErrCode = ibSet(ErrCode, aoterr_Fatal)
@@ -363,6 +363,7 @@ contains
 
     call flu_getglobal(conf, var)
     call get_top_val(conf, conf_val, ErrCode, default)
+    write(*,*) 'get config long:',conf_val
 
   end subroutine get_config_long
 
