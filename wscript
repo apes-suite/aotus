@@ -39,8 +39,7 @@ def configure(conf):
     conf.env['FCSHLIB_MARKER'] = ''
     conf.vars = ['FC_NAME', 'FC_VERSION', 'FCFLAGS'] # Recompilation if any of these change
     conf.check_fortran()
-    conf.check_cc(function_name='mkstemp', header_name=['stdlib.h', 'unistd.h'], define_name='LUA_USE_MKSTEMP', mandatory=False)
-    conf.check_cc(function_name='popen', header_name=['stdio.h'], define_name='LUA_USE_POPEN', mandatory=False)
+    subconf(conf)
 
     # Flags for the default (production) variant
     conf.env['FCFLAGS'] = fcopts[conf.env.FC_NAME, 'optimize'] + fcopts[conf.env.FC_NAME, 'warn']
@@ -50,6 +49,18 @@ def configure(conf):
     conf.setenv('debug',conf.env)
     conf.env['FCFLAGS'] = fcopts[conf.env.FC_NAME, 'standard'] + fcopts[conf.env.FC_NAME, 'warn'] + fcopts[conf.env.FC_NAME, 'w2e'] + fcopts[conf.env.FC_NAME, 'debug']
     conf.env['LINKFLAGS'] = conf.env['FCFLAGS']
+
+def subconf(conf):
+    conf.check_cc(function_name='mkstemp',
+                  header_name=['stdlib.h', 'unistd.h'],
+                  defines=['LUA_USE_MKSTEMP=1'],
+                  define_name='HASLUA',
+                  uselib_store='MKSTEMP', mandatory=False)
+    conf.check_cc(function_name='popen',
+                  header_name=['stdio.h'],
+                  defines=['LUA_USE_POPEN=1'],
+                  define_name='HASLUA',
+                  uselib_store='POPEN', mandatory=False)
 
 def build(bld):
     core_sources = ['external/lua-5.2.0/src/lapi.c',
@@ -103,6 +114,7 @@ def build(bld):
         features = 'c',
         source = core_sources + lib_sources,
         defines = ['LUA_ANSI'],
+        use = ['MKSTEMP', 'POPEN'],
         target = 'luaobjs')
 
     bld(
