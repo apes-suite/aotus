@@ -41,6 +41,15 @@ module aot_vector_module
     module procedure get_config_logical_vvect
   end interface
 
+  interface get_top_val
+    module procedure get_top_real_vvect
+    module procedure get_top_double_vvect
+    module procedure get_top_integer_vvect
+    module procedure get_top_long_vvect
+    module procedure get_top_logical_vvect
+  end interface get_top_val
+
+
   !> Use these routines to obtain a vector of known length.
   !!
   !! The given vector has to exist already and will be filled by
@@ -62,12 +71,6 @@ module aot_vector_module
   end interface
 
   interface get_top_val
-    module procedure get_top_real_vvect
-    module procedure get_top_double_vvect
-    module procedure get_top_integer_vvect
-    module procedure get_top_long_vvect
-    module procedure get_top_logical_vvect
-
     module procedure get_top_real_v
     module procedure get_top_double_v
     module procedure get_top_integer_v
@@ -892,12 +895,12 @@ contains
 
 
 
-  subroutine get_top_real_vvect(conf, tab_val, ErrCode, maxlength, default)
+  subroutine get_top_real_vvect(conf, top_val, ErrCode, maxlength, default)
     type(flu_State) :: conf !< Handle to the lua script
 
     !> Vector read from the Lua table, will have the same length as the table
     !! but not exceed maxlength, if provided.
-    real(kind=single_k), intent(out), allocatable :: tab_val(:)
+    real(kind=single_k), intent(out), allocatable :: top_val(:)
 
     !> Error code describing problems encountered in each of the components.
     !! Will be allocated with the same length as the returned vector.
@@ -930,21 +933,21 @@ contains
 
     ! Now parse the table with the vector entries.
     if (aot_table_first(conf, vect_handle)) then
-      allocate(tab_val(vect_len))
+      allocate(top_val(vect_len))
       allocate(errCode(vect_len))
 
       ! Only if the vector table actually exists, and has at least one entry,
       ! this parsing has to be done.
       if (present(default).and.(def_len > 0)) then
-        call get_top_val(conf, tab_val(1), ErrCode(1), default(1))
+        call get_top_val(conf, top_val(1), ErrCode(1), default(1))
       else
-        call get_top_val(conf, tab_val(1), ErrCode(1))
+        call get_top_val(conf, top_val(1), ErrCode(1))
       end if
 
       ! Up to the length of the default value, provide the default settings.
       do iComp=2,def_len
         if (.not. flu_next(conf, vect_handle)) exit
-        call get_top_val(conf, tab_val(iComp), ErrCode(iComp), default(iComp))
+        call get_top_val(conf, top_val(iComp), ErrCode(iComp), default(iComp))
       end do
 
       vect_lb = max(2, def_len)
@@ -952,19 +955,19 @@ contains
       ! available anymore, proceed without a default setting for the rest.
       do iComp=vect_lb,vect_len
         if (.not. flu_next(conf, vect_handle)) exit
-        call get_top_val(conf, tab_val(iComp), ErrCode(iComp))
+        call get_top_val(conf, top_val(iComp), ErrCode(iComp))
       end do
     else
       ! No vector definition found in the Lua script, use the default.
       if (present(default)) then
-        allocate(tab_val(def_len))
+        allocate(top_val(def_len))
         allocate(errCode(vect_len))
-        tab_val = default
+        top_val = default
         ErrCode = ibSet(ErrCode, aoterr_NonExistent)
       else
         ! No vector definition in the Lua script and no default provided,
         ! return an empty array.
-        allocate(tab_val(0))
+        allocate(top_val(0))
         allocate(errCode(0))
       end if
     end if
@@ -974,12 +977,12 @@ contains
 
 
 
-  subroutine get_top_double_vvect(conf, tab_val, ErrCode, maxlength, default)
+  subroutine get_top_double_vvect(conf, top_val, ErrCode, maxlength, default)
     type(flu_State) :: conf !< Handle to the lua script
 
     !> Vector read from the Lua table, will have the same length as the table
     !! but not exceed maxlength, if provided.
-    real(kind=double_k), intent(out), allocatable :: tab_val(:)
+    real(kind=double_k), intent(out), allocatable :: top_val(:)
 
     !> Error code describing problems encountered in each of the components.
     !! Will be allocated with the same length as the returned vector.
@@ -1012,21 +1015,21 @@ contains
 
     ! Now parse the table with the vector entries.
     if (aot_table_first(conf, vect_handle)) then
-      allocate(tab_val(vect_len))
+      allocate(top_val(vect_len))
       allocate(errCode(vect_len))
 
       ! Only if the vector table actually exists, and has at least one entry,
       ! this parsing has to be done.
       if (present(default).and.(def_len > 0)) then
-        call get_top_val(conf, tab_val(1), ErrCode(1), default(1))
+        call get_top_val(conf, top_val(1), ErrCode(1), default(1))
       else
-        call get_top_val(conf, tab_val(1), ErrCode(1))
+        call get_top_val(conf, top_val(1), ErrCode(1))
       end if
 
       ! Up to the length of the default value, provide the default settings.
       do iComp=2,def_len
         if (.not. flu_next(conf, vect_handle)) exit
-        call get_top_val(conf, tab_val(iComp), ErrCode(iComp), default(iComp))
+        call get_top_val(conf, top_val(iComp), ErrCode(iComp), default(iComp))
       end do
 
       vect_lb = max(2, def_len)
@@ -1034,19 +1037,19 @@ contains
       ! available anymore, proceed without a default setting for the rest.
       do iComp=vect_lb,vect_len
         if (.not. flu_next(conf, vect_handle)) exit
-        call get_top_val(conf, tab_val(iComp), ErrCode(iComp))
+        call get_top_val(conf, top_val(iComp), ErrCode(iComp))
       end do
     else
       ! No vector definition found in the Lua script, use the default.
       if (present(default)) then
-        allocate(tab_val(def_len))
+        allocate(top_val(def_len))
         allocate(errCode(vect_len))
-        tab_val = default
+        top_val = default
         ErrCode = ibSet(ErrCode, aoterr_NonExistent)
       else
         ! No vector definition in the Lua script and no default provided,
         ! return an empty array.
-        allocate(tab_val(0))
+        allocate(top_val(0))
         allocate(errCode(0))
       end if
     end if
@@ -1055,12 +1058,12 @@ contains
   end subroutine get_top_double_vvect
 
 
-  subroutine get_top_integer_vvect(conf, tab_val, ErrCode, maxlength, default)
+  subroutine get_top_integer_vvect(conf, top_val, ErrCode, maxlength, default)
     type(flu_State) :: conf !< Handle to the lua script
 
     !> Vector read from the Lua table, will have the same length as the table
     !! but not exceed maxlength, if provided.
-    integer, intent(out), allocatable :: tab_val(:)
+    integer, intent(out), allocatable :: top_val(:)
 
     !> Error code describing problems encountered in each of the components.
     !! Will be allocated with the same length as the returned vector.
@@ -1093,21 +1096,21 @@ contains
 
     ! Now parse the table with the vector entries.
     if (aot_table_first(conf, vect_handle)) then
-      allocate(tab_val(vect_len))
+      allocate(top_val(vect_len))
       allocate(errCode(vect_len))
 
       ! Only if the vector table actually exists, and has at least one entry,
       ! this parsing has to be done.
       if (present(default).and.(def_len > 0)) then
-        call get_top_val(conf, tab_val(1), ErrCode(1), default(1))
+        call get_top_val(conf, top_val(1), ErrCode(1), default(1))
       else
-        call get_top_val(conf, tab_val(1), ErrCode(1))
+        call get_top_val(conf, top_val(1), ErrCode(1))
       end if
 
       ! Up to the length of the default value, provide the default settings.
       do iComp=2,def_len
         if (.not. flu_next(conf, vect_handle)) exit
-        call get_top_val(conf, tab_val(iComp), ErrCode(iComp), default(iComp))
+        call get_top_val(conf, top_val(iComp), ErrCode(iComp), default(iComp))
       end do
 
       vect_lb = max(2, def_len)
@@ -1115,19 +1118,19 @@ contains
       ! available anymore, proceed without a default setting for the rest.
       do iComp=vect_lb,vect_len
         if (.not. flu_next(conf, vect_handle)) exit
-        call get_top_val(conf, tab_val(iComp), ErrCode(iComp))
+        call get_top_val(conf, top_val(iComp), ErrCode(iComp))
       end do
     else
       ! No vector definition found in the Lua script, use the default.
       if (present(default)) then
-        allocate(tab_val(def_len))
+        allocate(top_val(def_len))
         allocate(errCode(vect_len))
-        tab_val = default
+        top_val = default
         ErrCode = ibSet(ErrCode, aoterr_NonExistent)
       else
         ! No vector definition in the Lua script and no default provided,
         ! return an empty array.
-        allocate(tab_val(0))
+        allocate(top_val(0))
         allocate(errCode(0))
       end if
     end if
@@ -1136,12 +1139,12 @@ contains
   end subroutine get_top_integer_vvect
 
 
-  subroutine get_top_long_vvect(conf, tab_val, ErrCode, maxlength, default)
+  subroutine get_top_long_vvect(conf, top_val, ErrCode, maxlength, default)
     type(flu_State) :: conf !< Handle to the lua script
 
     !> Vector read from the Lua table, will have the same length as the table
     !! but not exceed maxlength, if provided.
-    integer(kind=long_k), intent(out), allocatable :: tab_val(:)
+    integer(kind=long_k), intent(out), allocatable :: top_val(:)
 
     !> Error code describing problems encountered in each of the components.
     !! Will be allocated with the same length as the returned vector.
@@ -1174,21 +1177,21 @@ contains
 
     ! Now parse the table with the vector entries.
     if (aot_table_first(conf, vect_handle)) then
-      allocate(tab_val(vect_len))
+      allocate(top_val(vect_len))
       allocate(errCode(vect_len))
 
       ! Only if the vector table actually exists, and has at least one entry,
       ! this parsing has to be done.
       if (present(default).and.(def_len > 0)) then
-        call get_top_val(conf, tab_val(1), ErrCode(1), default(1))
+        call get_top_val(conf, top_val(1), ErrCode(1), default(1))
       else
-        call get_top_val(conf, tab_val(1), ErrCode(1))
+        call get_top_val(conf, top_val(1), ErrCode(1))
       end if
 
       ! Up to the length of the default value, provide the default settings.
       do iComp=2,def_len
         if (.not. flu_next(conf, vect_handle)) exit
-        call get_top_val(conf, tab_val(iComp), ErrCode(iComp), default(iComp))
+        call get_top_val(conf, top_val(iComp), ErrCode(iComp), default(iComp))
       end do
 
       vect_lb = max(2, def_len)
@@ -1196,19 +1199,19 @@ contains
       ! available anymore, proceed without a default setting for the rest.
       do iComp=vect_lb,vect_len
         if (.not. flu_next(conf, vect_handle)) exit
-        call get_top_val(conf, tab_val(iComp), ErrCode(iComp))
+        call get_top_val(conf, top_val(iComp), ErrCode(iComp))
       end do
     else
       ! No vector definition found in the Lua script, use the default.
       if (present(default)) then
-        allocate(tab_val(def_len))
+        allocate(top_val(def_len))
         allocate(errCode(vect_len))
-        tab_val = default
+        top_val = default
         ErrCode = ibSet(ErrCode, aoterr_NonExistent)
       else
         ! No vector definition in the Lua script and no default provided,
         ! return an empty array.
-        allocate(tab_val(0))
+        allocate(top_val(0))
         allocate(errCode(0))
       end if
     end if
@@ -1217,12 +1220,12 @@ contains
   end subroutine get_top_long_vvect
 
 
-  subroutine get_top_logical_vvect(conf, tab_val, ErrCode, maxlength, default)
+  subroutine get_top_logical_vvect(conf, top_val, ErrCode, maxlength, default)
     type(flu_State) :: conf !< Handle to the lua script
 
     !> Vector read from the Lua table, will have the same length as the table
     !! but not exceed maxlength, if provided.
-    logical, intent(out), allocatable :: tab_val(:)
+    logical, intent(out), allocatable :: top_val(:)
 
     !> Error code describing problems encountered in each of the components.
     !! Will be allocated with the same length as the returned vector.
@@ -1255,21 +1258,21 @@ contains
 
     ! Now parse the table with the vector entries.
     if (aot_table_first(conf, vect_handle)) then
-      allocate(tab_val(vect_len))
+      allocate(top_val(vect_len))
       allocate(errCode(vect_len))
 
       ! Only if the vector table actually exists, and has at least one entry,
       ! this parsing has to be done.
       if (present(default).and.(def_len > 0)) then
-        call get_top_val(conf, tab_val(1), ErrCode(1), default(1))
+        call get_top_val(conf, top_val(1), ErrCode(1), default(1))
       else
-        call get_top_val(conf, tab_val(1), ErrCode(1))
+        call get_top_val(conf, top_val(1), ErrCode(1))
       end if
 
       ! Up to the length of the default value, provide the default settings.
       do iComp=2,def_len
         if (.not. flu_next(conf, vect_handle)) exit
-        call get_top_val(conf, tab_val(iComp), ErrCode(iComp), default(iComp))
+        call get_top_val(conf, top_val(iComp), ErrCode(iComp), default(iComp))
       end do
 
       vect_lb = max(2, def_len)
@@ -1277,19 +1280,19 @@ contains
       ! available anymore, proceed without a default setting for the rest.
       do iComp=vect_lb,vect_len
         if (.not. flu_next(conf, vect_handle)) exit
-        call get_top_val(conf, tab_val(iComp), ErrCode(iComp))
+        call get_top_val(conf, top_val(iComp), ErrCode(iComp))
       end do
     else
       ! No vector definition found in the Lua script, use the default.
       if (present(default)) then
-        allocate(tab_val(def_len))
+        allocate(top_val(def_len))
         allocate(errCode(vect_len))
-        tab_val = default
+        top_val = default
         ErrCode = ibSet(ErrCode, aoterr_NonExistent)
       else
         ! No vector definition in the Lua script and no default provided,
         ! return an empty array.
-        allocate(tab_val(0))
+        allocate(top_val(0))
         allocate(errCode(0))
       end if
     end if
@@ -1299,14 +1302,14 @@ contains
 
 
 
-  subroutine get_top_real_v(conf, tab_val, ErrCode,  default)
+  subroutine get_top_real_v(conf, top_val, ErrCode,  default)
     type(flu_State) :: conf !< Handle to the lua script
 
     !> Vector read from the Lua table.
-    real(kind=single_k), intent(out) :: tab_val(:)
+    real(kind=single_k), intent(out) :: top_val(:)
 
     !> Error code describing problems encountered in each of the components.
-    !! This array has to have the same length as tab_val.
+    !! This array has to have the same length as top_val.
     integer, intent(out) :: ErrCode(:)
 
     !> A default vector to use, if no proper definition is found.
@@ -1322,7 +1325,7 @@ contains
     vect_handle = aot_table_top(L=conf)
     table_len = aot_table_length(L=conf, thandle=vect_handle)
 
-    vect_len = min(table_len, size(tab_val))
+    vect_len = min(table_len, size(top_val))
 
     ! Find the length of the default value, if it is not provided, its 0.
     def_len = 0
@@ -1334,15 +1337,15 @@ contains
       ! Only if the vector table actually exists, and has at least one entry,
       ! this parsing has to be done.
       if (present(default).and.(def_len > 0)) then
-        call get_top_val(conf, tab_val(1), ErrCode(1), default(1))
+        call get_top_val(conf, top_val(1), ErrCode(1), default(1))
       else
-        call get_top_val(conf, tab_val(1), ErrCode(1))
+        call get_top_val(conf, top_val(1), ErrCode(1))
       end if
 
       ! Up to the length of the default value, provide the default settings.
       do iComp=2,def_len
         if (.not. flu_next(conf, vect_handle)) exit
-        call get_top_val(conf, tab_val(iComp), ErrCode(iComp), default(iComp))
+        call get_top_val(conf, top_val(iComp), ErrCode(iComp), default(iComp))
       end do
 
       vect_lb = max(2, def_len)
@@ -1350,14 +1353,14 @@ contains
       ! available anymore, proceed without a default setting for the rest.
       do iComp=vect_lb,vect_len
         if (.not. flu_next(conf, vect_handle)) exit
-        call get_top_val(conf, tab_val(iComp), ErrCode(iComp))
+        call get_top_val(conf, top_val(iComp), ErrCode(iComp))
       end do
 
       ! If the table in the Lua script is not long enough, fill the remaining
       ! components with the default components, as far as they are defined.
       do iComp=vect_len+1,def_len
         ErrCode(iComp) = ibSet(ErrCode(iComp), aoterr_NonExistent)
-        tab_val(iComp) = default(iComp)
+        top_val(iComp) = default(iComp)
       end do
       vect_lb = max(vect_len+1, def_len)
       do iComp=vect_lb,vect_len
@@ -1368,7 +1371,7 @@ contains
       ErrCode = ibSet(ErrCode, aoterr_NonExistent)
       if (present(default)) then
         minub = min(vect_len, def_len)
-        tab_val(:minub) = default(:minub)
+        top_val(:minub) = default(:minub)
         if (minub < vect_len) then
           ErrCode(minub+1:) = ibSet(ErrCode(minub+1:), aoterr_Fatal)
         end if
@@ -1382,14 +1385,14 @@ contains
   end subroutine get_top_real_v
 
 
-  subroutine get_top_double_v(conf, tab_val, ErrCode,  default)
+  subroutine get_top_double_v(conf, top_val, ErrCode,  default)
     type(flu_State) :: conf !< Handle to the lua script
 
     !> Vector read from the Lua table.
-    real(kind=double_k), intent(out) :: tab_val(:)
+    real(kind=double_k), intent(out) :: top_val(:)
 
     !> Error code describing problems encountered in each of the components.
-    !! This array has to have the same length as tab_val.
+    !! This array has to have the same length as top_val.
     integer, intent(out) :: ErrCode(:)
 
     !> A default vector to use, if no proper definition is found.
@@ -1405,7 +1408,7 @@ contains
     vect_handle = aot_table_top(L=conf)
     table_len = aot_table_length(L=conf, thandle=vect_handle)
 
-    vect_len = min(table_len, size(tab_val))
+    vect_len = min(table_len, size(top_val))
 
     ! Find the length of the default value, if it is not provided, its 0.
     def_len = 0
@@ -1417,15 +1420,15 @@ contains
       ! Only if the vector table actually exists, and has at least one entry,
       ! this parsing has to be done.
       if (present(default).and.(def_len > 0)) then
-        call get_top_val(conf, tab_val(1), ErrCode(1), default(1))
+        call get_top_val(conf, top_val(1), ErrCode(1), default(1))
       else
-        call get_top_val(conf, tab_val(1), ErrCode(1))
+        call get_top_val(conf, top_val(1), ErrCode(1))
       end if
 
       ! Up to the length of the default value, provide the default settings.
       do iComp=2,def_len
         if (.not. flu_next(conf, vect_handle)) exit
-        call get_top_val(conf, tab_val(iComp), ErrCode(iComp), default(iComp))
+        call get_top_val(conf, top_val(iComp), ErrCode(iComp), default(iComp))
       end do
 
       vect_lb = max(2, def_len)
@@ -1433,14 +1436,14 @@ contains
       ! available anymore, proceed without a default setting for the rest.
       do iComp=vect_lb,vect_len
         if (.not. flu_next(conf, vect_handle)) exit
-        call get_top_val(conf, tab_val(iComp), ErrCode(iComp))
+        call get_top_val(conf, top_val(iComp), ErrCode(iComp))
       end do
 
       ! If the table in the Lua script is not long enough, fill the remaining
       ! components with the default components, as far as they are defined.
       do iComp=vect_len+1,def_len
         ErrCode(iComp) = ibSet(ErrCode(iComp), aoterr_NonExistent)
-        tab_val(iComp) = default(iComp)
+        top_val(iComp) = default(iComp)
       end do
       vect_lb = max(vect_len+1, def_len)
       do iComp=vect_lb,vect_len
@@ -1451,7 +1454,7 @@ contains
       ErrCode = ibSet(ErrCode, aoterr_NonExistent)
       if (present(default)) then
         minub = min(vect_len, def_len)
-        tab_val(:minub) = default(:minub)
+        top_val(:minub) = default(:minub)
         if (minub < vect_len) then
           ErrCode(minub+1:) = ibSet(ErrCode(minub+1:), aoterr_Fatal)
         end if
@@ -1465,14 +1468,14 @@ contains
   end subroutine get_top_double_v
 
 
-  subroutine get_top_integer_v(conf, tab_val, ErrCode,  default)
+  subroutine get_top_integer_v(conf, top_val, ErrCode,  default)
     type(flu_State) :: conf !< Handle to the lua script
 
     !> Vector read from the Lua table.
-    integer, intent(out) :: tab_val(:)
+    integer, intent(out) :: top_val(:)
 
     !> Error code describing problems encountered in each of the components.
-    !! This array has to have the same length as tab_val.
+    !! This array has to have the same length as top_val.
     integer, intent(out) :: ErrCode(:)
 
     !> A default vector to use, if no proper definition is found.
@@ -1488,7 +1491,7 @@ contains
     vect_handle = aot_table_top(L=conf)
     table_len = aot_table_length(L=conf, thandle=vect_handle)
 
-    vect_len = min(table_len, size(tab_val))
+    vect_len = min(table_len, size(top_val))
 
     ! Find the length of the default value, if it is not provided, its 0.
     def_len = 0
@@ -1500,15 +1503,15 @@ contains
       ! Only if the vector table actually exists, and has at least one entry,
       ! this parsing has to be done.
       if (present(default).and.(def_len > 0)) then
-        call get_top_val(conf, tab_val(1), ErrCode(1), default(1))
+        call get_top_val(conf, top_val(1), ErrCode(1), default(1))
       else
-        call get_top_val(conf, tab_val(1), ErrCode(1))
+        call get_top_val(conf, top_val(1), ErrCode(1))
       end if
 
       ! Up to the length of the default value, provide the default settings.
       do iComp=2,def_len
         if (.not. flu_next(conf, vect_handle)) exit
-        call get_top_val(conf, tab_val(iComp), ErrCode(iComp), default(iComp))
+        call get_top_val(conf, top_val(iComp), ErrCode(iComp), default(iComp))
       end do
 
       vect_lb = max(2, def_len)
@@ -1516,14 +1519,14 @@ contains
       ! available anymore, proceed without a default setting for the rest.
       do iComp=vect_lb,vect_len
         if (.not. flu_next(conf, vect_handle)) exit
-        call get_top_val(conf, tab_val(iComp), ErrCode(iComp))
+        call get_top_val(conf, top_val(iComp), ErrCode(iComp))
       end do
 
       ! If the table in the Lua script is not long enough, fill the remaining
       ! components with the default components, as far as they are defined.
       do iComp=vect_len+1,def_len
         ErrCode(iComp) = ibSet(ErrCode(iComp), aoterr_NonExistent)
-        tab_val(iComp) = default(iComp)
+        top_val(iComp) = default(iComp)
       end do
       vect_lb = max(vect_len+1, def_len)
       do iComp=vect_lb,vect_len
@@ -1534,7 +1537,7 @@ contains
       ErrCode = ibSet(ErrCode, aoterr_NonExistent)
       if (present(default)) then
         minub = min(vect_len, def_len)
-        tab_val(:minub) = default(:minub)
+        top_val(:minub) = default(:minub)
         if (minub < vect_len) then
           ErrCode(minub+1:) = ibSet(ErrCode(minub+1:), aoterr_Fatal)
         end if
@@ -1548,14 +1551,14 @@ contains
   end subroutine get_top_integer_v
 
 
-  subroutine get_top_long_v(conf, tab_val, ErrCode,  default)
+  subroutine get_top_long_v(conf, top_val, ErrCode,  default)
     type(flu_State) :: conf !< Handle to the lua script
 
     !> Vector read from the Lua table.
-    integer(kind=long_k), intent(out) :: tab_val(:)
+    integer(kind=long_k), intent(out) :: top_val(:)
 
     !> Error code describing problems encountered in each of the components.
-    !! This array has to have the same length as tab_val.
+    !! This array has to have the same length as top_val.
     integer, intent(out) :: ErrCode(:)
 
     !> A default vector to use, if no proper definition is found.
@@ -1571,7 +1574,7 @@ contains
     vect_handle = aot_table_top(L=conf)
     table_len = aot_table_length(L=conf, thandle=vect_handle)
 
-    vect_len = min(table_len, size(tab_val))
+    vect_len = min(table_len, size(top_val))
 
     ! Find the length of the default value, if it is not provided, its 0.
     def_len = 0
@@ -1583,15 +1586,15 @@ contains
       ! Only if the vector table actually exists, and has at least one entry,
       ! this parsing has to be done.
       if (present(default).and.(def_len > 0)) then
-        call get_top_val(conf, tab_val(1), ErrCode(1), default(1))
+        call get_top_val(conf, top_val(1), ErrCode(1), default(1))
       else
-        call get_top_val(conf, tab_val(1), ErrCode(1))
+        call get_top_val(conf, top_val(1), ErrCode(1))
       end if
 
       ! Up to the length of the default value, provide the default settings.
       do iComp=2,def_len
         if (.not. flu_next(conf, vect_handle)) exit
-        call get_top_val(conf, tab_val(iComp), ErrCode(iComp), default(iComp))
+        call get_top_val(conf, top_val(iComp), ErrCode(iComp), default(iComp))
       end do
 
       vect_lb = max(2, def_len)
@@ -1599,14 +1602,14 @@ contains
       ! available anymore, proceed without a default setting for the rest.
       do iComp=vect_lb,vect_len
         if (.not. flu_next(conf, vect_handle)) exit
-        call get_top_val(conf, tab_val(iComp), ErrCode(iComp))
+        call get_top_val(conf, top_val(iComp), ErrCode(iComp))
       end do
 
       ! If the table in the Lua script is not long enough, fill the remaining
       ! components with the default components, as far as they are defined.
       do iComp=vect_len+1,def_len
         ErrCode(iComp) = ibSet(ErrCode(iComp), aoterr_NonExistent)
-        tab_val(iComp) = default(iComp)
+        top_val(iComp) = default(iComp)
       end do
       vect_lb = max(vect_len+1, def_len)
       do iComp=vect_lb,vect_len
@@ -1617,7 +1620,7 @@ contains
       ErrCode = ibSet(ErrCode, aoterr_NonExistent)
       if (present(default)) then
         minub = min(vect_len, def_len)
-        tab_val(:minub) = default(:minub)
+        top_val(:minub) = default(:minub)
         if (minub < vect_len) then
           ErrCode(minub+1:) = ibSet(ErrCode(minub+1:), aoterr_Fatal)
         end if
@@ -1631,14 +1634,14 @@ contains
   end subroutine get_top_long_v
 
 
-  subroutine get_top_logical_v(conf, tab_val, ErrCode,  default)
+  subroutine get_top_logical_v(conf, top_val, ErrCode,  default)
     type(flu_State) :: conf !< Handle to the lua script
 
     !> Vector read from the Lua table.
-    logical, intent(out) :: tab_val(:)
+    logical, intent(out) :: top_val(:)
 
     !> Error code describing problems encountered in each of the components.
-    !! This array has to have the same length as tab_val.
+    !! This array has to have the same length as top_val.
     integer, intent(out) :: ErrCode(:)
 
     !> A default vector to use, if no proper definition is found.
@@ -1654,7 +1657,7 @@ contains
     vect_handle = aot_table_top(L=conf)
     table_len = aot_table_length(L=conf, thandle=vect_handle)
 
-    vect_len = min(table_len, size(tab_val))
+    vect_len = min(table_len, size(top_val))
 
     ! Find the length of the default value, if it is not provided, its 0.
     def_len = 0
@@ -1666,15 +1669,15 @@ contains
       ! Only if the vector table actually exists, and has at least one entry,
       ! this parsing has to be done.
       if (present(default).and.(def_len > 0)) then
-        call get_top_val(conf, tab_val(1), ErrCode(1), default(1))
+        call get_top_val(conf, top_val(1), ErrCode(1), default(1))
       else
-        call get_top_val(conf, tab_val(1), ErrCode(1))
+        call get_top_val(conf, top_val(1), ErrCode(1))
       end if
 
       ! Up to the length of the default value, provide the default settings.
       do iComp=2,def_len
         if (.not. flu_next(conf, vect_handle)) exit
-        call get_top_val(conf, tab_val(iComp), ErrCode(iComp), default(iComp))
+        call get_top_val(conf, top_val(iComp), ErrCode(iComp), default(iComp))
       end do
 
       vect_lb = max(2, def_len)
@@ -1682,14 +1685,14 @@ contains
       ! available anymore, proceed without a default setting for the rest.
       do iComp=vect_lb,vect_len
         if (.not. flu_next(conf, vect_handle)) exit
-        call get_top_val(conf, tab_val(iComp), ErrCode(iComp))
+        call get_top_val(conf, top_val(iComp), ErrCode(iComp))
       end do
 
       ! If the table in the Lua script is not long enough, fill the remaining
       ! components with the default components, as far as they are defined.
       do iComp=vect_len+1,def_len
         ErrCode(iComp) = ibSet(ErrCode(iComp), aoterr_NonExistent)
-        tab_val(iComp) = default(iComp)
+        top_val(iComp) = default(iComp)
       end do
       vect_lb = max(vect_len+1, def_len)
       do iComp=vect_lb,vect_len
@@ -1700,7 +1703,7 @@ contains
       ErrCode = ibSet(ErrCode, aoterr_NonExistent)
       if (present(default)) then
         minub = min(vect_len, def_len)
-        tab_val(:minub) = default(:minub)
+        top_val(:minub) = default(:minub)
         if (minub < vect_len) then
           ErrCode(minub+1:) = ibSet(ErrCode(minub+1:), aoterr_Fatal)
         end if
