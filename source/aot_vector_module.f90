@@ -18,7 +18,7 @@ module aot_vector_module
 
   implicit none
 
-  public :: get_table_val, get_config_val
+  public :: get_table_val, get_config_val, get_top_val
 
   !> Use these routines to obtain a vector whose length is unknown.
   !!
@@ -61,8 +61,6 @@ module aot_vector_module
     module procedure get_config_logical_v
   end interface
 
-  private
-
   interface get_top_val
     module procedure get_top_real_vvect
     module procedure get_top_double_vvect
@@ -76,6 +74,9 @@ module aot_vector_module
     module procedure get_top_long_v
     module procedure get_top_logical_v
   end interface get_top_val
+
+
+  private
 
 
 contains
