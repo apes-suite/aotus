@@ -363,6 +363,7 @@ contains
 
     call flu_getglobal(conf, var)
     call get_top_val(conf, conf_val, ErrCode, default)
+    write(*,*) 'get config long:',conf_val
 
   end subroutine get_config_long
 
