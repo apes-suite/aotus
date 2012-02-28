@@ -15,7 +15,6 @@ def options(opt):
     opt.load('compiler_c')
 
 def configure(conf):
-    from waflib import Utils
     # The fcopts provide some sane flag combinations
     # for different variants in the various compilers.
     # They are found in apes/sys_env, and included in
@@ -29,8 +28,6 @@ def configure(conf):
     # * 'optimize': turn optimization on
     # * 'profile': activate profiling facilities
     # * 'double': promote default reals to double precision
-
-    buildsys = Utils.unversioned_sys_platform()
 
     # Load the compiler informations
     conf.load('compiler_fc')
