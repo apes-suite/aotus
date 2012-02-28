@@ -39,15 +39,26 @@ def configure(conf):
     subconf(conf)
 
     # Flags for the default (production) variant
-    conf.env['FCFLAGS'] = fcopts[conf.env.FC_NAME, 'optimize'] + fcopts[conf.env.FC_NAME, 'warn']
+    conf.env['FCFLAGS'] = ( fcopts[conf.env.FC_NAME, 'optimize']
+                          + fcopts[conf.env.FC_NAME, 'warn'] )
     conf.env['LINKFLAGS'] = conf.env['FCFLAGS']
 
     # Set flags for the debugging variant
+    # DEBUG Variant
     conf.setenv('debug',conf.env)
-    conf.env['FCFLAGS'] = fcopts[conf.env.FC_NAME, 'standard'] + fcopts[conf.env.FC_NAME, 'warn'] + fcopts[conf.env.FC_NAME, 'w2e'] + fcopts[conf.env.FC_NAME, 'debug']
+    conf.env['FCFLAGS'] = ( fcopts[conf.env.FC_NAME, 'standard']
+                          + fcopts[conf.env.FC_NAME, 'warn']
+                          + fcopts[conf.env.FC_NAME, 'w2e']
+                          + fcopts[conf.env.FC_NAME, 'debug'] )
     conf.env['LINKFLAGS'] = conf.env['FCFLAGS']
 
 def subconf(conf):
+    """
+    Configure parts, which are relevant, even when called
+    from parent wscripts.
+    Useful to restrict parent recursions to just this part
+    of the configuration.
+    """
     conf.check_cc(function_name='mkstemp',
                   header_name=['stdlib.h', 'unistd.h'],
                   defines=['LUA_USE_MKSTEMP=1'],
