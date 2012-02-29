@@ -152,14 +152,23 @@ def build(bld):
         features = 'fc fcprogram',
         source = ['test/aotus_test.f90'],
         use = 'aotus',
-        target = 'aotus_test')
+        target = 'aotus_sample')
 
     bld(
         features = 'fc fcprogram',
         source = ['LuaFortran/examples/test.f90'],
         use = 'flu',
-        target = 'sample')
+        target = 'flu_sample')
 
+    if bld.cmd == 'test':
+        for utest in bld.path.ant_glob('utests/*_test.f90'):
+            bld(
+                features = 'fc fcprogram',
+                source = utest,
+                use = 'aotus',
+                target = utest.change_ext(''))
+
+### Building the lua interpreter, usually not needed.
 #    bld(
 #        features = 'c cprogram',
 #        use = 'lualib',
@@ -174,3 +183,7 @@ class debug(BuildContext):
     "Build a debug executable"
     cmd = 'debug'
     variant = 'debug'
+
+class test(BuildContext):
+    "Tests"
+    cmd = 'test'
