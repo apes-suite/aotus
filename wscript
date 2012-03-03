@@ -132,7 +132,6 @@ def build(bld):
         features = 'c cstlib',
         defines = ['LUA_ANSI'],
         use = 'luaobjs',
-        name = 'lualib',
         target = 'lua')
 
     bld(
