@@ -34,7 +34,8 @@ def configure(conf):
     conf.load('compiler_c')
     conf.env['FCSTLIB_MARKER'] = ''
     conf.env['FCSHLIB_MARKER'] = ''
-    conf.vars = ['FC_NAME', 'FC_VERSION', 'FCFLAGS'] # Recompilation if any of these change
+    # Recompilation if any of these change:
+    conf.vars = ['FC_NAME', 'FC_VERSION', 'FCFLAGS']
     conf.check_fortran()
     subconf(conf)
 
@@ -59,16 +60,18 @@ def subconf(conf):
     Useful to restrict parent recursions to just this part
     of the configuration.
     """
+    # Do not change the DEFINES themselves, use the lib_store instead
+    tmpDEF = conf.env.DEFINES
     conf.check_cc(function_name='mkstemp',
                   header_name=['stdlib.h', 'unistd.h'],
                   defines=['LUA_USE_MKSTEMP=1'],
-                  define_name='HASLUA',
                   uselib_store='MKSTEMP', mandatory=False)
     conf.check_cc(function_name='popen',
                   header_name=['stdio.h'],
                   defines=['LUA_USE_POPEN=1'],
-                  define_name='HASLUA',
                   uselib_store='POPEN', mandatory=False)
+    # Cleanup the DEFINES again
+    conf.env.DEFINES = tmpDEF
 
 def build(bld):
     core_sources = ['external/lua-5.2.0/src/lapi.c',
