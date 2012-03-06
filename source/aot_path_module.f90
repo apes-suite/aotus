@@ -121,7 +121,7 @@ contains
   !! the list of nodes of the given path.
   !!
   !! You need to provide a NodeType (table or function),
-  !! and either its position of key to identify it in the
+  !! and either its position or key to identify it in the
   !! parent object.
   subroutine aot_path_addNode(me, NodeType, pos, key)
     !> Path to append the node to
