@@ -950,7 +950,7 @@ contains
         call get_top_val(conf, top_val(iComp), ErrCode(iComp), default(iComp))
       end do
 
-      vect_lb = max(2, def_len)
+      vect_lb = max(2, def_len+1)
       ! After def_len entries no default values for the components are
       ! available anymore, proceed without a default setting for the rest.
       do iComp=vect_lb,vect_len
@@ -1032,7 +1032,7 @@ contains
         call get_top_val(conf, top_val(iComp), ErrCode(iComp), default(iComp))
       end do
 
-      vect_lb = max(2, def_len)
+      vect_lb = max(2, def_len+1)
       ! After def_len entries no default values for the components are
       ! available anymore, proceed without a default setting for the rest.
       do iComp=vect_lb,vect_len
@@ -1113,7 +1113,7 @@ contains
         call get_top_val(conf, top_val(iComp), ErrCode(iComp), default(iComp))
       end do
 
-      vect_lb = max(2, def_len)
+      vect_lb = max(2, def_len+1)
       ! After def_len entries no default values for the components are
       ! available anymore, proceed without a default setting for the rest.
       do iComp=vect_lb,vect_len
@@ -1194,7 +1194,7 @@ contains
         call get_top_val(conf, top_val(iComp), ErrCode(iComp), default(iComp))
       end do
 
-      vect_lb = max(2, def_len)
+      vect_lb = max(2, def_len+1)
       ! After def_len entries no default values for the components are
       ! available anymore, proceed without a default setting for the rest.
       do iComp=vect_lb,vect_len
@@ -1275,7 +1275,7 @@ contains
         call get_top_val(conf, top_val(iComp), ErrCode(iComp), default(iComp))
       end do
 
-      vect_lb = max(2, def_len)
+      vect_lb = max(2, def_len+1)
       ! After def_len entries no default values for the components are
       ! available anymore, proceed without a default setting for the rest.
       do iComp=vect_lb,vect_len
@@ -1348,7 +1348,7 @@ contains
         call get_top_val(conf, top_val(iComp), ErrCode(iComp), default(iComp))
       end do
 
-      vect_lb = max(2, def_len)
+      vect_lb = max(2, def_len+1)
       ! After def_len entries no default values for the components are
       ! available anymore, proceed without a default setting for the rest.
       do iComp=vect_lb,vect_len
@@ -1431,7 +1431,7 @@ contains
         call get_top_val(conf, top_val(iComp), ErrCode(iComp), default(iComp))
       end do
 
-      vect_lb = max(2, def_len)
+      vect_lb = max(2, def_len+1)
       ! After def_len entries no default values for the components are
       ! available anymore, proceed without a default setting for the rest.
       do iComp=vect_lb,vect_len
@@ -1514,7 +1514,7 @@ contains
         call get_top_val(conf, top_val(iComp), ErrCode(iComp), default(iComp))
       end do
 
-      vect_lb = max(2, def_len)
+      vect_lb = max(2, def_len+1)
       ! After def_len entries no default values for the components are
       ! available anymore, proceed without a default setting for the rest.
       do iComp=vect_lb,vect_len
@@ -1597,7 +1597,7 @@ contains
         call get_top_val(conf, top_val(iComp), ErrCode(iComp), default(iComp))
       end do
 
-      vect_lb = max(2, def_len)
+      vect_lb = max(2, def_len+1)
       ! After def_len entries no default values for the components are
       ! available anymore, proceed without a default setting for the rest.
       do iComp=vect_lb,vect_len
@@ -1680,7 +1680,7 @@ contains
         call get_top_val(conf, top_val(iComp), ErrCode(iComp), default(iComp))
       end do
 
-      vect_lb = max(2, def_len)
+      vect_lb = max(2, def_len+1)
       ! After def_len entries no default values for the components are
       ! available anymore, proceed without a default setting for the rest.
       do iComp=vect_lb,vect_len
