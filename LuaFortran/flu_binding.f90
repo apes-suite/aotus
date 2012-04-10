@@ -15,7 +15,8 @@ module flu_binding
 
   public :: flu_close
   public :: flu_getField, flu_getGlobal, flu_getTable, flu_getTop
-  public :: flu_isFunction, flu_isNumber, flu_isNoneOrNil, flu_isTable
+  public :: flu_isFunction, flu_isNumber, flu_isTable
+  public :: flu_isNone, flu_isNoneOrNil, flu_isNil
   public :: flu_isBoolean
   public :: flu_pcall
   public :: flu_next
@@ -151,6 +152,32 @@ contains
     !! Only defined as a Macro, using lua_type:
     is_NoneOrNil = (lua_Type(L%state, c_index) <= 0)
   end function flu_isNoneOrNil
+
+
+  function flu_isNil(L, index) result(is_Nil)
+    type(flu_State) :: L
+    integer         :: index
+    logical         :: is_Nil
+
+    integer(kind=c_int) :: c_index
+
+    c_index = int(index, kind = c_int)
+    !! Only defined as a Macro, using lua_type:
+    is_Nil = (lua_Type(L%state, c_index) .eq. LUA_TNIL)
+  end function flu_isNil
+
+
+  function flu_isNone(L, index) result(is_None)
+    type(flu_State) :: L
+    integer         :: index
+    logical         :: is_None
+
+    integer(kind=c_int) :: c_index
+
+    c_index = int(index, kind = c_int)
+    !! Only defined as a Macro, using lua_type:
+    is_None = (lua_Type(L%state, c_index) .eq. LUA_TNONE)
+  end function flu_isNone
 
 
   function flu_next(L, index) result(exists)
