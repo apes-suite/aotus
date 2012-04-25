@@ -14,6 +14,7 @@ module aotus_module
   public :: get_top_val, get_table_val
 
   !> Some parameters for the error handling.
+  !!
   !! They indicate the bits to set in case of
   !! the corresponding error, to allow appropiate
   !! reactions of the calling application.
@@ -22,6 +23,7 @@ module aotus_module
   integer, parameter :: aoterr_WrongType = 2
 
   !> Get the value on top of the stack
+  !!
   !! This is the most basic operation to
   !! retrieve a value.
   !! It is also most flexible in the sense,
@@ -38,6 +40,7 @@ module aotus_module
   end interface
 
   !> Get a global configuration value from the script.
+  !!
   !! This provides a convenient direct access to
   !! global variables from the Lua script.
   !! \todo unify the arguments and naming with the rest
@@ -52,10 +55,11 @@ module aotus_module
     module procedure get_config_logical
   end interface
 
-  !> Get a value from a table, first the given
-  !! key is looked up, if this fails, the value
-  !! at the given position is looked up, and if
-  !! this also fails, the default value is returned.
+  !> Get a value from a table.
+  !!
+  !! First the given !! key is looked up, if this fails, the value
+  !! at the given position is looked up, and if this also fails,
+  !! the default value is returned.
   !! Positional addressing is only valid, as long,
   !! as no value was provided by an explicit key
   !! in the list before the entry in question.
@@ -78,14 +82,16 @@ contains
     conf = fluL_newstate()
 
     if (fluL_loadfile(conf, filename) .ne. 0) then
-      write(*,*) "cannot load configuration file: ", flu_tolstring(conf, -1, str_len)
+      write(*,*) "cannot load configuration file: ", &
+        &        flu_tolstring(conf, -1, str_len)
       STOP
     end if
 
     call fluL_openlibs(conf)
 
     if (flu_pcall(conf, 0, 0, 0) .ne. 0) then
-      write(*,*) "cannot run configuration file: ", flu_tolstring(conf, -1, str_len)
+      write(*,*) "cannot run configuration file: ", &
+        &        flu_tolstring(conf, -1, str_len)
       STOP
     end if
 
@@ -410,7 +416,8 @@ contains
   end subroutine get_table_real
 
 
-  subroutine get_table_double(conf, thandle, tab_val, ErrCode, var, pos, default)
+  subroutine get_table_double(conf, thandle, tab_val, ErrCode, var, pos, &
+    &                         default)
     type(flu_State) :: conf
     integer, intent(in) :: thandle
     real(kind=double_k), intent(out) :: tab_val
@@ -427,7 +434,8 @@ contains
   end subroutine get_table_double
 
 
-  subroutine get_table_integer(conf, thandle, tab_val, ErrCode, var, pos, default)
+  subroutine get_table_integer(conf, thandle, tab_val, ErrCode, var, pos, &
+    &                          default)
     type(flu_State) :: conf
     integer, intent(in) :: thandle
     integer, intent(out) :: tab_val
@@ -459,7 +467,8 @@ contains
 
   end subroutine get_table_long
 
-  subroutine get_table_logical(conf, thandle, tab_val, ErrCode, var, pos, default)
+  subroutine get_table_logical(conf, thandle, tab_val, ErrCode, var, pos, &
+    &                          default)
     type(flu_State) :: conf
     integer, intent(in) :: thandle
     logical, intent(out) :: tab_val
@@ -476,7 +485,8 @@ contains
   end subroutine get_table_logical
 
 
-  subroutine get_table_string(conf, thandle, tab_val, ErrCode, var, pos, default)
+  subroutine get_table_string(conf, thandle, tab_val, ErrCode, var, pos, &
+    &                         default)
     type(flu_State) :: conf
     integer, intent(in) :: thandle
     character(len=*) :: tab_val
