@@ -864,6 +864,7 @@ contains
 
   !> Helper function to provide new unit, as long as F2008 newunit argument
   !! in open statement is not commonly available.
+  !!
   !! To be used right in front of the open statement like this:
   !!  myUnit = newunit()
   !!  open(myUnit, ...)

@@ -1,4 +1,5 @@
 !> A module providing access to Lua functions
+!!
 !! Intended usage:
 !! First open a function with aot_fun_open
 !! Then put required parameters inot it with
@@ -21,6 +22,7 @@ module aot_fun_module
   end type
 
   !> Open a Lua function for evaluation.
+  !!
   !! After it is opened, arguments might be
   !! put into the function, and it might be
   !! executed. This might be repeated for
@@ -33,6 +35,7 @@ module aot_fun_module
   end interface aot_fun_open
 
   !> Put an argument into the lua function.
+  !!
   !! Arguments have to be in order, first put
   !! the first argument then the second and so on.
   interface aot_fun_put
@@ -42,6 +45,7 @@ module aot_fun_module
 contains
 
   !> Return the stack of the top as a function.
+  !!
   !! If it actually is not a Lua function, its handle
   !! will be set to 0.
   function aot_fun_top(L) result(fun)

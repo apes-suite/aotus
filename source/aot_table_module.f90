@@ -18,9 +18,11 @@ module aot_table_module
 contains
 
   !> Return the position at the top of the stack as a
-  !! table handle for further operations on that table,
-  !! if it actually exists and is a table. Otherwise
-  !! 0 will be returned.
+  !! table handle.
+  !!
+  !! If it actually exists and is a table, this handle can be used
+  !! for further operations on that table.
+  !! Otherwise a 0 will be returned.
   function aot_table_top(L) result(thandle)
     type(flu_state) :: L
     integer :: thandle
@@ -32,8 +34,10 @@ contains
     end if
   end function aot_table_top
 
-  !> Load a globally defined table into the top of the stack
-  !! and return its position in the stack as a handle for this
+
+  !> Load a globally defined table into the top of the stack.
+  !!
+  !! Return its position in the stack as a handle for this
   !! table. If it does not exist or the global variable is not
   !! a table, the handle will be set to 0.
   subroutine aot_table_global(L, thandle, key)
@@ -45,6 +49,7 @@ contains
 
     thandle = aot_table_top(L)
   end subroutine aot_table_global
+
 
   !> This subroutine tries to get a table in a table, and
   !! return a handle for it.
@@ -59,14 +64,17 @@ contains
     thandle = aot_table_top(L)
   end subroutine aot_table_table
 
-  !> Close a table again, by popping all values above and itself
-  !! from the stack.
+
+  !> Close a table again.
+  !!
+  !! This is done by popping all values above and itself from the stack.
   subroutine aot_table_close(L, thandle)
     type(flu_state) :: L
     integer, intent(in) :: thandle
 
     if (thandle > 0) call flu_settop(L, thandle-1)
   end subroutine aot_table_close
+
 
   !> This subroutine tries to push the value of table thandle on
   !! the lua stack, or if this fails, the entry at position pos
@@ -114,8 +122,11 @@ contains
 
   end subroutine aot_table_getval
 
+
   !> Load the first key-value pair of table thandle on the
-  !! stack. This serves as an entry point, further traversal
+  !! stack.
+  !!
+  !! This serves as an entry point, further traversal
   !! can be done by flu_next(L, thandle).
   !! If there are no entries in the table the function
   !! returns false, otherwise the result will be true.
@@ -131,6 +142,7 @@ contains
       exists = .false.
     end if
   end function aot_table_first
+
 
   !> Count the entries in a lua table.
   function aot_table_length(L, thandle) result(length)
