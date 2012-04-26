@@ -16,6 +16,10 @@ module aot_fun_module
 
   implicit none
 
+  private
+
+  public :: aot_fun_type, aot_fun_open, aot_fun_close, aot_fun_put, aot_fun_do
+
   type aot_fun_type
     integer :: handle = 0
     integer :: arg_count = 0

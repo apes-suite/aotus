@@ -1,4 +1,5 @@
 program aotus_test
+  use flu_binding, only: flu_State
   use aot_kinds_module, only: double_k
   use aotus_module
   use aot_table_module
@@ -95,9 +96,9 @@ program aotus_test
   
   !> Then put required parameters into it with
   !! aot_fun_put
-  call aot_fun_put_double(L = conf, fun = foo, arg = coord(1))
-  call aot_fun_put_double(L = conf, fun = foo, arg = coord(2))
-  call aot_fun_put_double(L = conf, fun = foo, arg = coord(3))
+  call aot_fun_put(L = conf, fun = foo, arg = coord(1))
+  call aot_fun_put(L = conf, fun = foo, arg = coord(2))
+  call aot_fun_put(L = conf, fun = foo, arg = coord(3))
 
 
   !> Execute the function with aot_fun_do

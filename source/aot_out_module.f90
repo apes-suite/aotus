@@ -8,8 +8,7 @@
 !! output methods. Thus this module could stand alone, along with the
 !! aot_kinds_module without the Lua library.
 module aot_out_module
-
-  use aot_kinds_module
+  use aot_kinds_module, only: double_k, single_k, long_k
 
   implicit none
 
