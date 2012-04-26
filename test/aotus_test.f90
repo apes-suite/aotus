@@ -26,7 +26,11 @@ program aotus_test
   real(kind=double_k) :: coord(3)
   real(kind=double_k) :: results
 
-  call open_config(L = conf, filename = 'config.lua')
+  call open_config(L = conf, filename = 'config.lua', ErrCode = iError)
+  if (iError /= 0) then
+    write(*,*) 'FATAL Error when opening the Lua config file'
+    STOP
+  end if
 
   call aot_get_val(L = conf, key = 'width', &
     &              val = width, ErrCode = iError)

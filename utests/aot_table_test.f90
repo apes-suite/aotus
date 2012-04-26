@@ -17,11 +17,21 @@ program aot_table_test
   integer :: tablen
   integer :: iError
   integer :: i
+  character(len=80) :: ErrString
 
   call create_script('aot_table_test_config.lua')
+
   write(*,*)
   write(*,*) 'Running aot_table_test...'
-  call open_config(L = conf, filename = 'aot_table_test_config.lua')
+
+  call open_config(L = conf, filename = 'aot_table_test_config.lua', &
+    &              ErrCode = iError, ErrString = ErrString)
+  if (iError /= 0) then
+    write(*,*) 'Unexpected FATAL Error occured !!!'
+    write(*,*) 'Could not open the config file aot_table_test_config.lua:'
+    write(*,*) trim(ErrString)
+    STOP
+  end if
 
   ! Testing for global Table
   write(*,*) ' * opening a global table'

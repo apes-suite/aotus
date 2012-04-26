@@ -14,12 +14,20 @@ program aotus_test
   real :: glob_real
   logical :: glob_log
   character(len=20) :: glob_string
+  character(len=80) :: ErrString
 
   call create_script('aotus_test_config.lua')
   write(*,*)
   write(*,*) 'Running aotus_test...'
   write(*,*) ' * open_config (aotus_test_config.lua)'
-  call open_config(L = conf, filename = 'aotus_test_config.lua')
+  call open_config(L = conf, filename = 'aotus_test_config.lua', &
+    &              ErrCode = iError, ErrString = ErrString)
+  if (iError /= 0) then
+    write(*,*) ' : unexpected FATAL Error occured !!!'
+    write(*,*) ' : Could not open the config file aotus_test_config.lua:'
+    write(*,*) trim(ErrString)
+    STOP
+  end if
   write(*,*) '  : success.'
 
   ! Testing for global INTEGER

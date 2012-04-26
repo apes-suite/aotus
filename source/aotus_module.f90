@@ -26,25 +26,70 @@ module aotus_module
 
 contains
 
-  subroutine open_config(L, filename)
+  subroutine open_config(L, filename, ErrCode, ErrString)
     type(flu_State) :: L
     character(len=*), intent(in) :: filename
+    integer, intent(out), optional :: ErrCode
+    character(len=*), intent(out), optional :: ErrString
+
+    character, pointer, dimension(:) :: string
     integer :: str_len
+    integer :: err
+    integer :: i
+    logical :: stop_on_error
+
+    stop_on_error = .not.(present(ErrString) .or. present(ErrCode))
 
     L = fluL_newstate()
 
-    if (fluL_loadfile(L, filename) .ne. 0) then
-      write(*,*) "cannot load configuration file: ", &
-        &        flu_tolstring(L, -1, str_len)
-      STOP
+    err = fluL_loadfile(L, filename)
+
+    if (present(ErrCode)) then
+      ErrCode = err
+    end if
+
+    if (err .ne. 0) then
+
+      string => flu_tolstring(L, -1, str_len)
+      if (present(ErrString)) then
+        do i=1,min(str_len, len(ErrString))
+          ErrString(i:i) = string(i)
+        end do
+      end if
+
+      if (stop_on_error) then
+        write(*,*) "cannot load configuration file: ", string
+        STOP
+      else
+        return
+      end if
+
     end if
 
     call fluL_openlibs(L)
 
-    if (flu_pcall(L, 0, 0, 0) .ne. 0) then
-      write(*,*) "cannot run configuration file: ", &
-        &        flu_tolstring(L, -1, str_len)
-      STOP
+    err = flu_pcall(L, 0, 0, 0)
+
+    if (present(ErrCode)) then
+      ErrCode = err
+    end if
+
+    if (err .ne. 0) then
+
+      string => flu_tolstring(L, -1, str_len)
+      if (present(ErrString)) then
+        do i=1,min(str_len, len(ErrString))
+          ErrString(i:i) = string(i)
+        end do
+      end if
+
+      if (stop_on_error) then
+        write(*,*) "cannot run configuration file: ", string
+        STOP
+      else
+        return
+      end if
+
     end if
 
   end subroutine open_config
