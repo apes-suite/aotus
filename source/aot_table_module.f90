@@ -2,8 +2,15 @@
 !! on lua tables.
 module aot_table_module
   use flu_binding
+  use aot_kinds_module, only: double_k, single_k, long_k
+  use aot_top_module, only: aot_top_get_val
 
   implicit none
+
+  private
+
+  public :: aot_table_top, aot_table_length, aot_table_first, aot_table_push
+  public :: aot_table_open, aot_table_close, aot_table_get_val
 
   !> This routine provides a way to open a table
   !! either as a globally defined one, are as a
@@ -14,6 +21,24 @@ module aot_table_module
     module procedure aot_table_global
     module procedure aot_table_table
   end interface
+
+  !> Get a value from a table.
+  !!
+  !! First the given !! key is looked up, if this fails, the value
+  !! at the given position is looked up, and if this also fails,
+  !! the default value is returned.
+  !! Positional addressing is only valid, as long,
+  !! as no value was provided by an explicit key
+  !! in the list before the entry in question.
+  interface aot_table_get_val
+    module procedure get_table_real
+    module procedure get_table_double
+    module procedure get_table_integer
+    module procedure get_table_long
+    module procedure get_table_string
+    module procedure get_table_logical
+  end interface
+
 
 contains
 
@@ -60,7 +85,7 @@ contains
     character(len=*), intent(in), optional :: key
     integer, intent(in), optional :: pos
 
-    call aot_table_getval(L, parent, key, pos)
+    call aot_table_push(L, parent, key, pos)
     thandle = aot_table_top(L)
   end subroutine aot_table_table
 
@@ -80,7 +105,7 @@ contains
   !! the lua stack, or if this fails, the entry at position pos
   !! of the table. If no corresponding value is found, a nil
   !! value is pushed to the stack.
-  subroutine aot_table_getval(L, thandle, key, pos)
+  subroutine aot_table_push(L, thandle, key, pos)
     type(flu_state) :: L
     integer :: thandle
     character(len=*), intent(in), optional :: key
@@ -120,7 +145,7 @@ contains
 
     end if
 
-  end subroutine aot_table_getval
+  end subroutine aot_table_push
 
 
   !> Load the first key-value pair of table thandle on the
@@ -159,5 +184,110 @@ contains
       end do
     end if
   end function aot_table_length
+
+
+  subroutine get_table_real(L, thandle, val, ErrCode, key, pos, default)
+    type(flu_State) :: L
+    integer, intent(in) :: thandle
+    real(kind=single_k), intent(out) :: val
+    integer, intent(out) :: ErrCode
+
+    character(len=*), intent(in), optional :: key
+    integer, intent(in), optional :: pos
+    real(kind=single_k), intent(in), optional :: default
+
+    call aot_table_push(L=L, thandle=thandle, &
+      &                   key=key, pos=pos)
+    call aot_top_get_val(L, val, ErrCode, default)
+
+  end subroutine get_table_real
+
+
+  subroutine get_table_double(L, thandle, val, ErrCode, key, pos, &
+    &                         default)
+    type(flu_State) :: L
+    integer, intent(in) :: thandle
+    real(kind=double_k), intent(out) :: val
+    integer, intent(out) :: ErrCode
+
+    character(len=*), intent(in), optional :: key
+    integer, intent(in), optional :: pos
+    real(kind=double_k), intent(in), optional :: default
+
+    call aot_table_push(L=L, thandle=thandle, &
+      &                   key=key, pos=pos)
+    call aot_top_get_val(L, val, ErrCode, default)
+
+  end subroutine get_table_double
+
+
+  subroutine get_table_integer(L, thandle, val, ErrCode, key, pos, &
+    &                          default)
+    type(flu_State) :: L
+    integer, intent(in) :: thandle
+    integer, intent(out) :: val
+    integer, intent(out) :: ErrCode
+
+    character(len=*), intent(in), optional :: key
+    integer, intent(in), optional :: pos
+    integer, intent(in), optional :: default
+
+    call aot_table_push(L=L, thandle=thandle, &
+      &                   key=key, pos=pos)
+    call aot_top_get_val(L, val, ErrCode, default)
+
+  end subroutine get_table_integer
+
+  subroutine get_table_long(L, thandle, val, ErrCode, key, pos, default)
+    type(flu_State) :: L
+    integer, intent(in) :: thandle
+    integer(kind=long_k), intent(out) :: val
+    integer, intent(out) :: ErrCode
+
+    character(len=*), intent(in), optional :: key
+    integer, intent(in), optional :: pos
+    integer(kind=long_k), intent(in), optional :: default
+
+    call aot_table_push(L=L, thandle=thandle, &
+      &                   key=key, pos=pos)
+    call aot_top_get_val(L, val, ErrCode, default)
+
+  end subroutine get_table_long
+
+  subroutine get_table_logical(L, thandle, val, ErrCode, key, pos, &
+    &                          default)
+    type(flu_State) :: L
+    integer, intent(in) :: thandle
+    logical, intent(out) :: val
+    integer, intent(out) :: ErrCode
+
+    character(len=*), intent(in), optional :: key
+    integer, intent(in), optional :: pos
+    logical, intent(in), optional :: default
+
+    call aot_table_push(L=L, thandle=thandle, &
+      &                   key=key, pos=pos)
+    call aot_top_get_val(L, val, ErrCode, default)
+
+  end subroutine get_table_logical
+
+
+  subroutine get_table_string(L, thandle, val, ErrCode, key, pos, &
+    &                         default)
+    type(flu_State) :: L
+    integer, intent(in) :: thandle
+    character(len=*) :: val
+    integer, intent(out) :: ErrCode
+
+    character(len=*), intent(in), optional :: key
+    integer, intent(in), optional :: pos
+    character(len=*), intent(in), optional :: default
+
+    call aot_table_push(L=L, thandle=thandle, &
+      &                   key=key, pos=pos)
+    call aot_top_get_val(L, val, ErrCode, default)
+
+  end subroutine get_table_string
+
 
 end module aot_table_module

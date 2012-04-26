@@ -2,6 +2,7 @@ program aotus_test
   use aot_kinds_module, only: double_k
   use aotus_module
   use aot_table_module
+  use aot_top_module
   use aot_fun_module
   use aot_vector_module
   use aot_out_module
@@ -24,10 +25,10 @@ program aotus_test
   real(kind=double_k) :: coord(3)
   real(kind=double_k) :: results
 
-  call open_config(conf = conf, filename = 'config.lua')
+  call open_config(L = conf, filename = 'config.lua')
 
-  call get_config_val(conf = conf, var = 'width', &
-    &                 conf_val = width, ErrCode = iError)
+  call aot_get_val(L = conf, key = 'width', &
+    &              val = width, ErrCode = iError)
 
   if (btest(iError, aoterr_Fatal)) then
     write(*,*) 'FATAL Error occured, while retrieving width:'
@@ -37,9 +38,9 @@ program aotus_test
     write(*,*) 'width =', width
   end if
 
-  call get_config_val(conf = conf, var = 'height', &
-    &                 conf_val = width, ErrCode = iError, &
-    &                 default = 100.0)
+  call aot_get_val(L = conf, key = 'height', &
+    &              val = width, ErrCode = iError, &
+    &              default = 100.0)
 
   if (btest(iError, aoterr_Fatal)) then
     write(*,*) 'FATAL Error occured, while retrieving height:'
@@ -65,9 +66,9 @@ program aotus_test
         &                 pos=stl)
       stl_tab_len = aot_table_length(L=conf, thandle=desc_table)
       do i=1,min(3, stl_tab_len)
-        call get_table_val(conf = conf, thandle = desc_table, &
-          &                tab_val = buffer, ErrCode = iError, &
-          &                var = trim(keys(i)), pos = i)
+        call aot_table_get_val(L = conf, thandle = desc_table, &
+          &                val = buffer, ErrCode = iError, &
+          &                key = trim(keys(i)), pos = i)
         if (btest(iError, aoterr_Fatal)) then
           write(*,*) 'FATAL Error occured, while retrieving'//trim(keys(i))
           if (btest(iError, aoterr_NonExistent)) write(*,*) 'Variable not existent!'
@@ -85,9 +86,9 @@ program aotus_test
   call aot_table_close(L = conf, thandle = stl_table)
 
   !> Get a vector, describing the coordinate from the script
-  call get_config_val(conf = conf, var = 'coord', conf_val = coord, &
-    &                 ErrCode = vErr, &
-    &                 default = [0.0_double_k, 0.0_double_k, 0.0_double_k])
+  call aot_get_val(L = conf, key = 'coord', val = coord, &
+    &              ErrCode = vErr, &
+    &              default = [0.0_double_k, 0.0_double_k, 0.0_double_k])
 
   !> First open a function with aot_fun_open
   call aot_fun_open(L = conf, fun = foo, key = 'ic_density')
@@ -104,7 +105,7 @@ program aotus_test
 
   !> Retrieve the possibly multiple results with
   !! get_top_val.
-  call get_top_val(conf = conf, top_val = results , ErrCode = iError)
+  call aot_top_get_val(L = conf, val = results , ErrCode = iError)
 
   write(*,"(a,3f5.2,a)") "result of ic_density at ",  coord, ':'
   write(*,"(EN16.7)") results

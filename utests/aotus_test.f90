@@ -2,8 +2,8 @@ program aotus_test
   use flu_binding, only: flu_State
 
   use aot_kinds_module, only: double_k, long_k
-  use aotus_module, only: open_config, close_config, get_config_val, &
-    &                     aoterr_Fatal, aoterr_NonExistent, aoterr_WrongType
+  use aotus_module, only: open_config, close_config, aot_get_val
+  use aot_top_module, only: aoterr_Fatal, aoterr_NonExistent, aoterr_WrongType
 
   implicit none
 
@@ -19,13 +19,13 @@ program aotus_test
   write(*,*)
   write(*,*) 'Running aotus_test...'
   write(*,*) ' * open_config (aotus_test_config.lua)'
-  call open_config(conf = conf, filename = 'aotus_test_config.lua')
+  call open_config(L = conf, filename = 'aotus_test_config.lua')
   write(*,*) '  : success.'
 
   ! Testing for global INTEGER
   write(*,*) ' * reading a global integer'
-  call get_config_val(conf = conf, var = 'int_test', &
-    &                 conf_val = glob_int, ErrCode = iError)
+  call aot_get_val(L = conf, key = 'int_test', &
+    &                 val = glob_int, ErrCode = iError)
 
   if (btest(iError, aoterr_Fatal)) then
     write(*,*) '  : unexpected FATAL Error occured !!!'
@@ -46,8 +46,8 @@ program aotus_test
 
   ! Testing for global LONG
   write(*,*) ' * reading a global long'
-  call get_config_val(conf = conf, var = 'long_test', &
-    &                 conf_val = glob_long, ErrCode = iError)
+  call aot_get_val(L = conf, key = 'long_test', &
+    &                 val = glob_long, ErrCode = iError)
 
   if (btest(iError, aoterr_Fatal)) then
     write(*,*) '  : unexpected FATAL Error occured !!!'
@@ -68,8 +68,8 @@ program aotus_test
 
   ! Testing for global REAL
   write(*,*) ' * reading a global real'
-  call get_config_val(conf = conf, var = 'real_test', &
-    &                 conf_val = glob_real, ErrCode = iError)
+  call aot_get_val(L = conf, key = 'real_test', &
+    &                 val = glob_real, ErrCode = iError)
 
   if (btest(iError, aoterr_Fatal)) then
     write(*,*) '  : unexpected FATAL Error occured !!!'
@@ -90,8 +90,8 @@ program aotus_test
   ! Testing for global LOGICAL
   glob_log = .false.
   write(*,*) ' * reading a global logical'
-  call get_config_val(conf = conf, var = 'log_test', &
-    &                 conf_val = glob_log, ErrCode = iError)
+  call aot_get_val(L = conf, key = 'log_test', &
+    &                 val = glob_log, ErrCode = iError)
 
   if (btest(iError, aoterr_Fatal)) then
     write(*,*) '  : unexpected FATAL Error occured !!!'
@@ -111,8 +111,8 @@ program aotus_test
 
   ! Testing for global STRING
   write(*,*) ' * reading a global string'
-  call get_config_val(conf = conf, var = 'string_test', &
-    &                 conf_val = glob_string, ErrCode = iError)
+  call aot_get_val(L = conf, key = 'string_test', &
+    &                 val = glob_string, ErrCode = iError)
 
   if (btest(iError, aoterr_Fatal)) then
     write(*,*) '  : unexpected FATAL Error occured !!!'
@@ -132,8 +132,8 @@ program aotus_test
 
   ! Testing for global non-fatal NONEXISTENT
   write(*,*) ' * reading a nonexistent global integer with default'
-  call get_config_val(conf = conf, var = 'nonexist', &
-    &                 conf_val = glob_int, ErrCode = iError, &
+  call aot_get_val(L = conf, key = 'nonexist', &
+    &                 val = glob_int, ErrCode = iError, &
     &                 default = 1)
 
   if (btest(iError, aoterr_Fatal)) then
@@ -159,8 +159,8 @@ program aotus_test
 
   ! Testing for global fatal NONEXISTENT
   write(*,*) ' * reading a nonexistent global integer NO default'
-  call get_config_val(conf = conf, var = 'nonexist', &
-    &                 conf_val = glob_int, ErrCode = iError)
+  call aot_get_val(L = conf, key = 'nonexist', &
+    &                 val = glob_int, ErrCode = iError)
 
   if (btest(iError, aoterr_Fatal)) then
     if (btest(iError, aoterr_NonExistent)) then
@@ -175,8 +175,8 @@ program aotus_test
 
   ! Testing for global wrong type
   write(*,*) ' * reading a global integer from variable with wrong type'
-  call get_config_val(conf = conf, var = 'string_test', &
-    &                 conf_val = glob_int, ErrCode = iError)
+  call aot_get_val(L = conf, key = 'string_test', &
+    &                 val = glob_int, ErrCode = iError)
 
   if (btest(iError, aoterr_Fatal)) then
     if (btest(iError, aoterr_WrongType)) then

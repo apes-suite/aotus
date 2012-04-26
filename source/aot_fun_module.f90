@@ -12,7 +12,7 @@
 module aot_fun_module
   use flu_binding
   use aot_kinds_module, only: double_k, single_k
-  use aot_table_module
+  use aot_table_module, only: aot_table_push
 
   implicit none
 
@@ -78,7 +78,7 @@ contains
     character(len=*), intent(in), optional :: key
     integer, intent(in), optional :: pos
 
-    call aot_table_getval(L, parent, key, pos)
+    call aot_table_push(L, parent, key, pos)
     fun = aot_fun_top(L)
   end subroutine aot_fun_table
 

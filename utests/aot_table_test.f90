@@ -2,10 +2,10 @@ program aot_table_test
   use flu_binding, only: flu_State
 
   use aot_kinds_module, only: double_k, long_k
-  use aotus_module, only: open_config, close_config, get_table_val, &
-    &                     aoterr_Fatal, aoterr_NonExistent, aoterr_WrongType
+  use aotus_module, only: open_config, close_config
+  use aot_top_module, only: aoterr_Fatal, aoterr_NonExistent, aoterr_WrongType
   use aot_table_module, only: aot_table_open, aot_table_close, &
-    &                         aot_table_length
+    &                         aot_table_length, aot_table_get_val
 
   implicit none
 
@@ -21,7 +21,7 @@ program aot_table_test
   call create_script('aot_table_test_config.lua')
   write(*,*)
   write(*,*) 'Running aot_table_test...'
-  call open_config(conf = conf, filename = 'aot_table_test_config.lua')
+  call open_config(L = conf, filename = 'aot_table_test_config.lua')
 
   ! Testing for global Table
   write(*,*) ' * opening a global table'
@@ -41,9 +41,9 @@ program aot_table_test
       write(*,*) '  : success.'
       write(*,*) ' * retrieving entries of table by position'
       do i=1,5
-        call get_table_val(conf = conf, thandle = globhandle, &
+        call aot_table_get_val(L = conf, thandle = globhandle, &
           &                pos = i, &
-          &                tab_val = tabint, ErrCode = iError)
+          &                val = tabint, ErrCode = iError)
         if (btest(iError, aoterr_Fatal)) then
           write(*,*) '  : unexpected FATAL Error occured !!!'
           if (btest(iError, aoterr_NonExistent)) &
@@ -62,9 +62,9 @@ program aot_table_test
       end do
       if (iError == 0) write(*,*) '  : success.'
       write(*,*) ' * Attempting read of nonexistent entry'
-      call get_table_val(conf = conf, thandle = globhandle, &
+      call aot_table_get_val(L = conf, thandle = globhandle, &
         &                pos = 10, &
-        &                tab_val = tabint, ErrCode = iError)
+        &                val = tabint, ErrCode = iError)
       if (btest(iError, aoterr_Fatal)) then
         write(*,*) '  : success.'
       else
