@@ -153,7 +153,7 @@ def build(bld):
 
     bld(
         features = 'fc fcprogram',
-        source = ['test/aotus_test.f90'],
+        source = ['sample/aotus_sample.f90'],
         use = 'aotus',
         target = 'aotus_sample')
 

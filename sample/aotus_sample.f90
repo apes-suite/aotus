@@ -1,4 +1,4 @@
-program aotus_test
+program aotus_sample
   use aot_kinds_module, only: double_k
   use aotus_module, only: flu_State, open_config, close_config, aot_get_val, &
     &                     aot_top_get_val, &
@@ -143,4 +143,4 @@ program aotus_test
 
   call aot_out_close(dummyOut)
 
-end program aotus_test
+end program aotus_sample
