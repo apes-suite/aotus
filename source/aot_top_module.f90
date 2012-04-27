@@ -36,11 +36,20 @@ module aot_top_module
     module procedure aot_top_get_logical
   end interface
 
+  interface aot_get_val
+    module procedure aot_top_get_real
+    module procedure aot_top_get_double
+    module procedure aot_top_get_integer
+    module procedure aot_top_get_long
+    module procedure aot_top_get_string
+    module procedure aot_top_get_logical
+  end interface
+
 
 contains
 
 
-  subroutine aot_top_get_real(L, val, ErrCode, default)
+  subroutine aot_top_get_real(val, ErrCode, L, default)
     type(flu_State) :: L
     real(kind=single_k), intent(out) :: val
     integer, intent(out) :: ErrCode
@@ -76,7 +85,7 @@ contains
   end subroutine aot_top_get_real
 
 
-  subroutine aot_top_get_double(L, val, ErrCode, default)
+  subroutine aot_top_get_double(val, ErrCode, L, default)
     type(flu_State) :: L
     real(kind=double_k), intent(out) :: val
     integer, intent(out) :: ErrCode
@@ -112,7 +121,7 @@ contains
   end subroutine aot_top_get_double
 
 
-  subroutine aot_top_get_integer(L, val, ErrCode, default)
+  subroutine aot_top_get_integer(val, ErrCode, L, default)
     type(flu_State) :: L
     integer, intent(out) :: val
     integer, intent(out) :: ErrCode
@@ -147,7 +156,7 @@ contains
 
   end subroutine aot_top_get_integer
 
-  subroutine aot_top_get_long(L, val, ErrCode, default)
+  subroutine aot_top_get_long(val, ErrCode, L, default)
     type(flu_State) :: L
     integer(kind=long_k), intent(out) :: val
     integer, intent(out) :: ErrCode
@@ -182,7 +191,7 @@ contains
 
   end subroutine aot_top_get_long
 
-  subroutine aot_top_get_logical(L, val, ErrCode, default)
+  subroutine aot_top_get_logical(val, ErrCode, L, default)
     type(flu_State) :: L
     logical, intent(out) :: val
     integer, intent(out) :: ErrCode
@@ -218,7 +227,7 @@ contains
   end subroutine aot_top_get_logical
 
 
-  subroutine aot_top_get_string(L, val, ErrCode, default)
+  subroutine aot_top_get_string(val, ErrCode, L, default)
     type(flu_State) :: L
     character(len=*) :: val
     integer, intent(out) :: ErrCode

@@ -11,6 +11,7 @@ module aot_table_module
 
   public :: aot_table_top, aot_table_length, aot_table_first, aot_table_push
   public :: aot_table_open, aot_table_close, aot_table_get_val
+  public :: aot_get_val
 
   !> This routine provides a way to open a table
   !! either as a globally defined one, are as a
@@ -31,6 +32,15 @@ module aot_table_module
   !! as no value was provided by an explicit key
   !! in the list before the entry in question.
   interface aot_table_get_val
+    module procedure get_table_real
+    module procedure get_table_double
+    module procedure get_table_integer
+    module procedure get_table_long
+    module procedure get_table_string
+    module procedure get_table_logical
+  end interface
+
+  interface aot_get_val
     module procedure get_table_real
     module procedure get_table_double
     module procedure get_table_integer
@@ -186,7 +196,7 @@ contains
   end function aot_table_length
 
 
-  subroutine get_table_real(L, thandle, val, ErrCode, key, pos, default)
+  subroutine get_table_real(val, ErrCode, L, thandle, key, pos, default)
     type(flu_State) :: L
     integer, intent(in) :: thandle
     real(kind=single_k), intent(out) :: val
@@ -198,12 +208,12 @@ contains
 
     call aot_table_push(L=L, thandle=thandle, &
       &                   key=key, pos=pos)
-    call aot_top_get_val(L, val, ErrCode, default)
+    call aot_top_get_val(val, ErrCode, L, default)
 
   end subroutine get_table_real
 
 
-  subroutine get_table_double(L, thandle, val, ErrCode, key, pos, &
+  subroutine get_table_double(val, ErrCode, L, thandle, key, pos, &
     &                         default)
     type(flu_State) :: L
     integer, intent(in) :: thandle
@@ -216,12 +226,12 @@ contains
 
     call aot_table_push(L=L, thandle=thandle, &
       &                   key=key, pos=pos)
-    call aot_top_get_val(L, val, ErrCode, default)
+    call aot_top_get_val(val, ErrCode, L, default)
 
   end subroutine get_table_double
 
 
-  subroutine get_table_integer(L, thandle, val, ErrCode, key, pos, &
+  subroutine get_table_integer(val, ErrCode, L, thandle, key, pos, &
     &                          default)
     type(flu_State) :: L
     integer, intent(in) :: thandle
@@ -234,11 +244,11 @@ contains
 
     call aot_table_push(L=L, thandle=thandle, &
       &                   key=key, pos=pos)
-    call aot_top_get_val(L, val, ErrCode, default)
+    call aot_top_get_val(val, ErrCode, L, default)
 
   end subroutine get_table_integer
 
-  subroutine get_table_long(L, thandle, val, ErrCode, key, pos, default)
+  subroutine get_table_long(val, ErrCode, L, thandle, key, pos, default)
     type(flu_State) :: L
     integer, intent(in) :: thandle
     integer(kind=long_k), intent(out) :: val
@@ -250,11 +260,11 @@ contains
 
     call aot_table_push(L=L, thandle=thandle, &
       &                   key=key, pos=pos)
-    call aot_top_get_val(L, val, ErrCode, default)
+    call aot_top_get_val(val, ErrCode, L, default)
 
   end subroutine get_table_long
 
-  subroutine get_table_logical(L, thandle, val, ErrCode, key, pos, &
+  subroutine get_table_logical(val, ErrCode, L, thandle, key, pos, &
     &                          default)
     type(flu_State) :: L
     integer, intent(in) :: thandle
@@ -267,12 +277,12 @@ contains
 
     call aot_table_push(L=L, thandle=thandle, &
       &                   key=key, pos=pos)
-    call aot_top_get_val(L, val, ErrCode, default)
+    call aot_top_get_val(val, ErrCode, L, default)
 
   end subroutine get_table_logical
 
 
-  subroutine get_table_string(L, thandle, val, ErrCode, key, pos, &
+  subroutine get_table_string(val, ErrCode, L, thandle, key, pos, &
     &                         default)
     type(flu_State) :: L
     integer, intent(in) :: thandle
@@ -285,7 +295,7 @@ contains
 
     call aot_table_push(L=L, thandle=thandle, &
       &                   key=key, pos=pos)
-    call aot_top_get_val(L, val, ErrCode, default)
+    call aot_top_get_val(val, ErrCode, L, default)
 
   end subroutine get_table_string
 

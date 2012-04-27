@@ -3,13 +3,25 @@
 module aotus_module
   use flu_binding
   use aot_kinds_module, only: double_k, single_k, long_k
-  use aot_top_module, only: aot_top_get_val
+  use aot_top_module, only: aot_top_get_val, aoterr_Fatal, aoterr_NonExistent, &
+    &                       aoterr_WrongType
+  use aot_table_module, only: aot_get_val
+  use aot_vector_module, only: aot_get_val, aot_top_get_val
 
   implicit none
 
   private
 
-  public :: aot_get_val, open_config, close_config
+  public :: aot_get_val
+  public :: open_config, close_config
+
+  ! Entities inherited from aot_top_module, published here to
+  ! allow most functionality by "use aotus_module".
+  public :: aoterr_Fatal, aoterr_NonExistent, aoterr_WrongType
+  public :: aot_top_get_val
+
+  ! Inherited from the flu_binding module, publish for convenience.
+  public :: flu_State
 
   !> Get a global configuration value from the script.
   !!
@@ -103,7 +115,7 @@ contains
   end subroutine close_config
 
 
-  subroutine get_config_real(L, val, ErrCode, key, default)
+  subroutine get_config_real(val, ErrCode, L, key, default)
     type(flu_State) :: L
     character(len=*), intent(in) :: key
     real(kind=single_k), intent(out) :: val
@@ -111,12 +123,12 @@ contains
     real(kind=single_k), optional, intent(in) :: default
 
     call flu_getglobal(L, key)
-    call aot_top_get_val(L, val, ErrCode, default)
+    call aot_top_get_val(val, ErrCode, L, default)
 
   end subroutine get_config_real
 
 
-  subroutine get_config_double(L, val, ErrCode, key, default)
+  subroutine get_config_double(val, ErrCode, L, key, default)
     type(flu_State) :: L
     character(len=*), intent(in) :: key
     real(kind=double_k), intent(out) :: val
@@ -124,12 +136,12 @@ contains
     real(kind=double_k), optional, intent(in) :: default
 
     call flu_getglobal(L, key)
-    call aot_top_get_val(L, val, ErrCode, default)
+    call aot_top_get_val(val, ErrCode, L, default)
 
   end subroutine get_config_double
 
 
-  subroutine get_config_integer(L, val, ErrCode, key, default)
+  subroutine get_config_integer(val, ErrCode, L, key, default)
     type(flu_State) :: L
     character(len=*), intent(in) :: key
     integer, intent(out) :: val
@@ -137,12 +149,12 @@ contains
     integer, optional, intent(in) :: default
 
     call flu_getglobal(L, key)
-    call aot_top_get_val(L, val, ErrCode, default)
+    call aot_top_get_val(val, ErrCode, L, default)
 
   end subroutine get_config_integer
 
 
-  subroutine get_config_long(L, val, ErrCode, key, default)
+  subroutine get_config_long(val, ErrCode, L, key, default)
     type(flu_State) :: L
     character(len=*), intent(in) :: key
     integer(kind=long_k), intent(out) :: val
@@ -150,12 +162,12 @@ contains
     integer(kind=long_k), optional, intent(in) :: default
 
     call flu_getglobal(L, key)
-    call aot_top_get_val(L, val, ErrCode, default)
+    call aot_top_get_val(val, ErrCode, L, default)
 
   end subroutine get_config_long
 
 
-  subroutine get_config_logical(L, val, ErrCode, key, default)
+  subroutine get_config_logical(val, ErrCode, L, key, default)
     type(flu_State) :: L
     character(len=*), intent(in) :: key
     logical, intent(out) :: val
@@ -163,12 +175,12 @@ contains
     logical, optional, intent(in) :: default
 
     call flu_getglobal(L, key)
-    call aot_top_get_val(L, val, ErrCode, default)
+    call aot_top_get_val(val, ErrCode, L, default)
 
   end subroutine get_config_logical
 
 
-  subroutine get_config_string(L, val, ErrCode, key, default)
+  subroutine get_config_string(val, ErrCode, L, key, default)
     type(flu_State) :: L
     character(len=*), intent(in) :: key
     character(len=*) :: val
@@ -176,7 +188,7 @@ contains
     character(len=*), optional, intent(in) :: default
 
     call flu_getglobal(L, key)
-    call aot_top_get_val(L, val, ErrCode, default)
+    call aot_top_get_val(val, ErrCode, L, default)
 
   end subroutine get_config_string
 

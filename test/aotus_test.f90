@@ -1,12 +1,14 @@
 program aotus_test
-  use flu_binding, only: flu_State
   use aot_kinds_module, only: double_k
-  use aotus_module
-  use aot_table_module
-  use aot_top_module
-  use aot_fun_module
-  use aot_vector_module
-  use aot_out_module
+  use aotus_module, only: flu_State, open_config, close_config, aot_get_val, &
+    &                     aot_top_get_val, &
+    &                     aoterr_Fatal, aoterr_WrongType, aoterr_NonExistent
+  use aot_table_module, only: aot_table_open, aot_table_close, aot_table_length
+  use aot_fun_module, only: aot_fun_type, aot_fun_open, aot_fun_put, &
+    &                       aot_fun_do, aot_fun_close
+  use aot_out_module, only: aot_out_type, aot_out_open, aot_out_close, &
+    &                       aot_out_open_table, aot_out_close_table, &
+    &                       aot_out_val
 
   implicit none
 
@@ -71,9 +73,9 @@ program aotus_test
         &                 pos=stl)
       stl_tab_len = aot_table_length(L=conf, thandle=desc_table)
       do i=1,min(3, stl_tab_len)
-        call aot_table_get_val(L = conf, thandle = desc_table, &
-          &                val = buffer, ErrCode = iError, &
-          &                key = trim(keys(i)), pos = i)
+        call aot_get_val(L = conf, thandle = desc_table, &
+          &              val = buffer, ErrCode = iError, &
+          &              key = trim(keys(i)), pos = i)
         if (btest(iError, aoterr_Fatal)) then
           write(*,*) 'FATAL Error occured, while retrieving'//trim(keys(i))
           if (btest(iError, aoterr_NonExistent)) write(*,*) 'Variable not existent!'

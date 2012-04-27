@@ -25,7 +25,13 @@ module aot_vector_module
   !! Arrays will be allocated as needed to read the data from the
   !! Lua script with these routines. A maximal length has to be
   !! specified to limit the allocated memory by this loading.
-  interface aot_table_get_val
+  interface aot_get_val
+    module procedure get_config_real_vvect
+    module procedure get_config_double_vvect
+    module procedure get_config_integer_vvect
+    module procedure get_config_long_vvect
+    module procedure get_config_logical_vvect
+
     module procedure get_table_real_vvect
     module procedure get_table_double_vvect
     module procedure get_table_integer_vvect
@@ -33,12 +39,12 @@ module aot_vector_module
     module procedure get_table_logical_vvect
   end interface
 
-  interface aot_get_val
-    module procedure get_config_real_vvect
-    module procedure get_config_double_vvect
-    module procedure get_config_integer_vvect
-    module procedure get_config_long_vvect
-    module procedure get_config_logical_vvect
+  interface aot_table_get_val
+    module procedure get_table_real_vvect
+    module procedure get_table_double_vvect
+    module procedure get_table_integer_vvect
+    module procedure get_table_long_vvect
+    module procedure get_table_logical_vvect
   end interface
 
   interface aot_top_get_val
@@ -54,7 +60,13 @@ module aot_vector_module
   !!
   !! The given vector has to exist already and will be filled by
   !! values from the Lua table, as far as they exist.
-  interface aot_table_get_val
+  interface aot_get_val
+    module procedure get_config_real_v
+    module procedure get_config_double_v
+    module procedure get_config_integer_v
+    module procedure get_config_long_v
+    module procedure get_config_logical_v
+
     module procedure get_table_real_v
     module procedure get_table_double_v
     module procedure get_table_integer_v
@@ -62,12 +74,12 @@ module aot_vector_module
     module procedure get_table_logical_v
   end interface
 
-  interface aot_get_val
-    module procedure get_config_real_v
-    module procedure get_config_double_v
-    module procedure get_config_integer_v
-    module procedure get_config_long_v
-    module procedure get_config_logical_v
+  interface aot_table_get_val
+    module procedure get_table_real_v
+    module procedure get_table_double_v
+    module procedure get_table_integer_v
+    module procedure get_table_long_v
+    module procedure get_table_logical_v
   end interface
 
   interface aot_top_get_val
@@ -91,8 +103,8 @@ contains
   !! capsulating the parsing of the Lua table internally.
   !! For the dynamically sized array, which will be allocated, a upper limit
   !! to allocate has to be specified.
-  subroutine get_table_real_vvect(L, thandle, val, ErrCode, &
-    &                             maxlength, key, pos, default)
+  subroutine get_table_real_vvect(val, ErrCode, maxlength, L, thandle, &
+    &                             key, pos, default)
     type(flu_State) :: L !< Handle to the lua script
     integer, intent(in) :: thandle !< Handle of the parent table
 
@@ -123,7 +135,7 @@ contains
     call aot_table_push(L=L, thandle=thandle, &
       &                   key=key, pos=pos)
 
-    call aot_top_get_val(L, val, ErrCode, maxlength, default)
+    call aot_top_get_val(val, ErrCode, maxlength, L, default)
 
   end subroutine get_table_real_vvect
 
@@ -135,8 +147,8 @@ contains
   !! capsulating the parsing of the Lua table internally.
   !! For the dynamically sized array, which will be allocated, a upper limit
   !! to allocate has to be specified.
-  subroutine get_table_double_vvect(L, thandle, val, ErrCode, &
-    &                             maxlength, key, pos, default)
+  subroutine get_table_double_vvect(val, ErrCode, maxlength, L, thandle, &
+    &                               key, pos, default)
     type(flu_State) :: L !< Handle to the lua script
     integer, intent(in) :: thandle !< Handle of the parent table
 
@@ -167,7 +179,7 @@ contains
     call aot_table_push(L=L, thandle=thandle, &
       &                   key=key, pos=pos)
 
-    call aot_top_get_val(L, val, ErrCode, maxlength, default)
+    call aot_top_get_val(val, ErrCode, maxlength, L, default)
 
   end subroutine get_table_double_vvect
 
@@ -179,8 +191,8 @@ contains
   !! capsulating the parsing of the Lua table internally.
   !! For the dynamically sized array, which will be allocated, a upper limit
   !! to allocate has to be specified.
-  subroutine get_table_integer_vvect(L, thandle, val, ErrCode, &
-    &                             maxlength, key, pos, default)
+  subroutine get_table_integer_vvect(val, ErrCode, maxlength, L, thandle, &
+    &                                key, pos, default)
     type(flu_State) :: L !< Handle to the lua script
     integer, intent(in) :: thandle !< Handle of the parent table
 
@@ -211,7 +223,7 @@ contains
     call aot_table_push(L=L, thandle=thandle, &
       &                   key=key, pos=pos)
 
-    call aot_top_get_val(L, val, ErrCode, maxlength, default)
+    call aot_top_get_val(val, ErrCode, maxlength, L, default)
 
   end subroutine get_table_integer_vvect
 
@@ -223,8 +235,8 @@ contains
   !! capsulating the parsing of the Lua table internally.
   !! For the dynamically sized array, which will be allocated, a upper limit
   !! to allocate has to be specified.
-  subroutine get_table_long_vvect(L, thandle, val, ErrCode, &
-    &                             maxlength, key, pos, default)
+  subroutine get_table_long_vvect(val, ErrCode, maxlength, L, thandle, &
+    &                             key, pos, default)
     type(flu_State) :: L !< Handle to the lua script
     integer, intent(in) :: thandle !< Handle of the parent table
 
@@ -255,7 +267,7 @@ contains
     call aot_table_push(L=L, thandle=thandle, &
       &                   key=key, pos=pos)
 
-    call aot_top_get_val(L, val, ErrCode, maxlength, default)
+    call aot_top_get_val(val, ErrCode, maxlength, L, default)
 
   end subroutine get_table_long_vvect
 
@@ -267,8 +279,8 @@ contains
   !! capsulating the parsing of the Lua table internally.
   !! For the dynamically sized array, which will be allocated, a upper limit
   !! to allocate has to be specified.
-  subroutine get_table_logical_vvect(L, thandle, val, ErrCode, &
-    &                             maxlength, key, pos, default)
+  subroutine get_table_logical_vvect(val, ErrCode, maxlength, L, thandle, &
+    &                                key, pos, default)
     type(flu_State) :: L !< Handle to the lua script
     integer, intent(in) :: thandle !< Handle of the parent table
 
@@ -299,7 +311,7 @@ contains
     call aot_table_push(L=L, thandle=thandle, &
       &                   key=key, pos=pos)
 
-    call aot_top_get_val(L, val, ErrCode, maxlength, default)
+    call aot_top_get_val(val, ErrCode, maxlength, L, default)
 
   end subroutine get_table_logical_vvect
 
@@ -312,7 +324,7 @@ contains
   !! capsulating the parsing of the Lua table internally.
   !! For the dynamically sized array, which will be allocated, a upper limit
   !! to allocate has to be specified.
-  subroutine get_config_real_vvect(L, val, ErrCode, maxlength, &
+  subroutine get_config_real_vvect(val, ErrCode, maxlength, L, &
     &                              key, default)
     type(flu_State) :: L !< Handle to the lua script
 
@@ -330,7 +342,7 @@ contains
     integer, intent(in) :: maxlength
 
     !> Name of the variable (vector) to read.
-    character(len=*), intent(in), optional :: key
+    character(len=*), intent(in) :: key
 
     !> A default vector to use, if no proper definition is found.
     !! Components will be filled with the help of this default definition.
@@ -339,7 +351,7 @@ contains
     ! Get the requeseted global variable
     call flu_getglobal(L, key)
 
-    call aot_top_get_val(L, val, ErrCode, maxlength, default)
+    call aot_top_get_val(val, ErrCode, maxlength, L, default)
 
   end subroutine get_config_real_vvect
 
@@ -351,7 +363,7 @@ contains
   !! capsulating the parsing of the Lua table internally.
   !! For the dynamically sized array, which will be allocated, a upper limit
   !! to allocate has to be specified.
-  subroutine get_config_double_vvect(L, val, ErrCode, maxlength, &
+  subroutine get_config_double_vvect(val, ErrCode, maxlength, L, &
     &                                key, default)
     type(flu_State) :: L !< Handle to the lua script
 
@@ -369,7 +381,7 @@ contains
     integer, intent(in) :: maxlength
 
     !> Name of the variable (vector) to read.
-    character(len=*), intent(in), optional :: key
+    character(len=*), intent(in) :: key
 
     !> A default vector to use, if no proper definition is found.
     !! Components will be filled with the help of this default definition.
@@ -378,7 +390,7 @@ contains
     ! Get the requeseted global variable
     call flu_getglobal(L, key)
 
-    call aot_top_get_val(L, val, ErrCode, maxlength, default)
+    call aot_top_get_val(val, ErrCode, maxlength, L, default)
 
   end subroutine get_config_double_vvect
 
@@ -390,7 +402,7 @@ contains
   !! capsulating the parsing of the Lua table internally.
   !! For the dynamically sized array, which will be allocated, a upper limit
   !! to allocate has to be specified.
-  subroutine get_config_integer_vvect(L, val, ErrCode, maxlength, &
+  subroutine get_config_integer_vvect(val, ErrCode, maxlength, L, &
     &                                 key, default)
     type(flu_State) :: L !< Handle to the lua script
 
@@ -408,7 +420,7 @@ contains
     integer, intent(in) :: maxlength
 
     !> Name of the variable (vector) to read.
-    character(len=*), intent(in), optional :: key
+    character(len=*), intent(in) :: key
 
     !> A default vector to use, if no proper definition is found.
     !! Components will be filled with the help of this default definition.
@@ -417,7 +429,7 @@ contains
     ! Get the requeseted global variable
     call flu_getglobal(L, key)
 
-    call aot_top_get_val(L, val, ErrCode, maxlength, default)
+    call aot_top_get_val(val, ErrCode, maxlength, L, default)
 
   end subroutine get_config_integer_vvect
 
@@ -429,7 +441,7 @@ contains
   !! capsulating the parsing of the Lua table internally.
   !! For the dynamically sized array, which will be allocated, a upper limit
   !! to allocate has to be specified.
-  subroutine get_config_long_vvect(L, val, ErrCode, maxlength, &
+  subroutine get_config_long_vvect(val, ErrCode, maxlength, L, &
     &                              key, default)
     type(flu_State) :: L !< Handle to the lua script
 
@@ -447,7 +459,7 @@ contains
     integer, intent(in) :: maxlength
 
     !> Name of the variable (vector) to read.
-    character(len=*), intent(in), optional :: key
+    character(len=*), intent(in) :: key
 
     !> A default vector to use, if no proper definition is found.
     !! Components will be filled with the help of this default definition.
@@ -456,7 +468,7 @@ contains
     ! Get the requeseted global variable
     call flu_getglobal(L, key)
 
-    call aot_top_get_val(L, val, ErrCode, maxlength, default)
+    call aot_top_get_val(val, ErrCode, maxlength, L, default)
 
   end subroutine get_config_long_vvect
 
@@ -468,7 +480,7 @@ contains
   !! capsulating the parsing of the Lua table internally.
   !! For the dynamically sized array, which will be allocated, a upper limit
   !! to allocate has to be specified.
-  subroutine get_config_logical_vvect(L, val, ErrCode, maxlength, &
+  subroutine get_config_logical_vvect(val, ErrCode, maxlength, L, &
     &                                 key, default)
     type(flu_State) :: L !< Handle to the lua script
 
@@ -486,7 +498,7 @@ contains
     integer, intent(in) :: maxlength
 
     !> Name of the variable (vector) to read.
-    character(len=*), intent(in), optional :: key
+    character(len=*), intent(in) :: key
 
     !> A default vector to use, if no proper definition is found.
     !! Components will be filled with the help of this default definition.
@@ -495,7 +507,7 @@ contains
     ! Get the requeseted global variable
     call flu_getglobal(L, key)
 
-    call aot_top_get_val(L, val, ErrCode, maxlength, default)
+    call aot_top_get_val(val, ErrCode, maxlength, L, default)
 
   end subroutine get_config_logical_vvect
 
@@ -512,7 +524,7 @@ contains
   !! as non-existent.
   !! Components, which are neither defined in the Lua script, nor in the
   !! default will be marked with the aoterr_Fatal flag.
-  subroutine get_table_real_v(L, thandle, val, ErrCode, key, &
+  subroutine get_table_real_v(val, ErrCode, L, thandle, key, &
     &                         pos, default)
     type(flu_State) :: L !< Handle to the lua script
     integer, intent(in) :: thandle !< Handle of the parent table
@@ -538,7 +550,7 @@ contains
     call aot_table_push(L=L, thandle=thandle, &
       &                   key=key, pos=pos)
 
-    call aot_top_get_val(L, val, ErrCode, default)
+    call aot_top_get_val(val, ErrCode, L, default)
   end subroutine get_table_real_v
 
 
@@ -554,7 +566,7 @@ contains
   !! as non-existent.
   !! Components, which are neither defined in the Lua script, nor in the
   !! default will be marked with the aoterr_Fatal flag.
-  subroutine get_table_double_v(L, thandle, val, ErrCode, key, &
+  subroutine get_table_double_v(val, ErrCode, L, thandle, key, &
     &                         pos, default)
     type(flu_State) :: L !< Handle to the lua script
     integer, intent(in) :: thandle !< Handle of the parent table
@@ -580,7 +592,7 @@ contains
     call aot_table_push(L=L, thandle=thandle, &
       &                   key=key, pos=pos)
 
-    call aot_top_get_val(L, val, ErrCode, default)
+    call aot_top_get_val(val, ErrCode, L, default)
   end subroutine get_table_double_v
 
 
@@ -596,7 +608,7 @@ contains
   !! as non-existent.
   !! Components, which are neither defined in the Lua script, nor in the
   !! default will be marked with the aoterr_Fatal flag.
-  subroutine get_table_integer_v(L, thandle, val, ErrCode, key, &
+  subroutine get_table_integer_v(val, ErrCode, L, thandle, key, &
     &                         pos, default)
     type(flu_State) :: L !< Handle to the lua script
     integer, intent(in) :: thandle !< Handle of the parent table
@@ -622,7 +634,7 @@ contains
     call aot_table_push(L=L, thandle=thandle, &
       &                   key=key, pos=pos)
 
-    call aot_top_get_val(L, val, ErrCode, default)
+    call aot_top_get_val(val, ErrCode, L, default)
   end subroutine get_table_integer_v
 
 
@@ -638,7 +650,7 @@ contains
   !! as non-existent.
   !! Components, which are neither defined in the Lua script, nor in the
   !! default will be marked with the aoterr_Fatal flag.
-  subroutine get_table_long_v(L, thandle, val, ErrCode, key, &
+  subroutine get_table_long_v(val, ErrCode, L, thandle, key, &
     &                         pos, default)
     type(flu_State) :: L !< Handle to the lua script
     integer, intent(in) :: thandle !< Handle of the parent table
@@ -664,7 +676,7 @@ contains
     call aot_table_push(L=L, thandle=thandle, &
       &                   key=key, pos=pos)
 
-    call aot_top_get_val(L, val, ErrCode, default)
+    call aot_top_get_val(val, ErrCode, L, default)
   end subroutine get_table_long_v
 
 
@@ -680,7 +692,7 @@ contains
   !! as non-existent.
   !! Components, which are neither defined in the Lua script, nor in the
   !! default will be marked with the aoterr_Fatal flag.
-  subroutine get_table_logical_v(L, thandle, val, ErrCode, key, &
+  subroutine get_table_logical_v(val, ErrCode, L, thandle, key, &
     &                         pos, default)
     type(flu_State) :: L !< Handle to the lua script
     integer, intent(in) :: thandle !< Handle of the parent table
@@ -706,7 +718,7 @@ contains
     call aot_table_push(L=L, thandle=thandle, &
       &                   key=key, pos=pos)
 
-    call aot_top_get_val(L, val, ErrCode, default)
+    call aot_top_get_val(val, ErrCode, L, default)
   end subroutine get_table_logical_v
 
 
@@ -724,7 +736,7 @@ contains
   !! as non-existent.
   !! Components, which are neither defined in the Lua script, nor in the
   !! default will be marked with the aoterr_Fatal flag.
-  subroutine get_config_real_v(L, val, ErrCode, key, default)
+  subroutine get_config_real_v(val, ErrCode, L, key, default)
     type(flu_State) :: L !< Handle to the lua script
 
     !> Vector read from the Lua table.
@@ -735,7 +747,7 @@ contains
     integer, intent(out) :: ErrCode(:)
 
     !> Name of the variable (vector) to read.
-    character(len=*), intent(in), optional :: key
+    character(len=*), intent(in) :: key
 
     !> A default vector to use, if no proper definition is found.
     !! Components will be filled with the help of this default definition.
@@ -744,7 +756,7 @@ contains
     ! Get the requeseted value from the provided table
     call flu_getglobal(L, key)
 
-    call aot_top_get_val(L, val, ErrCode, default)
+    call aot_top_get_val(val, ErrCode, L, default)
   end subroutine get_config_real_v
 
 
@@ -760,7 +772,7 @@ contains
   !! as non-existent.
   !! Components, which are neither defined in the Lua script, nor in the
   !! default will be marked with the aoterr_Fatal flag.
-  subroutine get_config_double_v(L, val, ErrCode, key, default)
+  subroutine get_config_double_v(val, ErrCode, L, key, default)
     type(flu_State) :: L !< Handle to the lua script
 
     !> Vector read from the Lua table.
@@ -771,7 +783,7 @@ contains
     integer, intent(out) :: ErrCode(:)
 
     !> Name of the variable (vector) to read.
-    character(len=*), intent(in), optional :: key
+    character(len=*), intent(in) :: key
 
     !> A default vector to use, if no proper definition is found.
     !! Components will be filled with the help of this default definition.
@@ -780,7 +792,7 @@ contains
     ! Get the requeseted value from the provided table
     call flu_getglobal(L, key)
 
-    call aot_top_get_val(L, val, ErrCode, default)
+    call aot_top_get_val(val, ErrCode, L, default)
   end subroutine get_config_double_v
 
 
@@ -796,7 +808,7 @@ contains
   !! as non-existent.
   !! Components, which are neither defined in the Lua script, nor in the
   !! default will be marked with the aoterr_Fatal flag.
-  subroutine get_config_integer_v(L, val, ErrCode, key, default)
+  subroutine get_config_integer_v(val, ErrCode, L, key, default)
     type(flu_State) :: L !< Handle to the lua script
 
     !> Vector read from the Lua table.
@@ -807,7 +819,7 @@ contains
     integer, intent(out) :: ErrCode(:)
 
     !> Name of the variable (vector) to read.
-    character(len=*), intent(in), optional :: key
+    character(len=*), intent(in) :: key
 
     !> A default vector to use, if no proper definition is found.
     !! Components will be filled with the help of this default definition.
@@ -816,7 +828,7 @@ contains
     ! Get the requeseted value from the provided table
     call flu_getglobal(L, key)
 
-    call aot_top_get_val(L, val, ErrCode, default)
+    call aot_top_get_val(val, ErrCode, L, default)
   end subroutine get_config_integer_v
 
 
@@ -832,7 +844,7 @@ contains
   !! as non-existent.
   !! Components, which are neither defined in the Lua script, nor in the
   !! default will be marked with the aoterr_Fatal flag.
-  subroutine get_config_long_v(L, val, ErrCode, key, default)
+  subroutine get_config_long_v(val, ErrCode, L, key, default)
     type(flu_State) :: L !< Handle to the lua script
 
     !> Vector read from the Lua table.
@@ -843,7 +855,7 @@ contains
     integer, intent(out) :: ErrCode(:)
 
     !> Name of the variable (vector) to read.
-    character(len=*), intent(in), optional :: key
+    character(len=*), intent(in) :: key
 
     !> A default vector to use, if no proper definition is found.
     !! Components will be filled with the help of this default definition.
@@ -852,7 +864,7 @@ contains
     ! Get the requeseted value from the provided table
     call flu_getglobal(L, key)
 
-    call aot_top_get_val(L, val, ErrCode, default)
+    call aot_top_get_val(val, ErrCode, L, default)
   end subroutine get_config_long_v
 
 
@@ -868,7 +880,7 @@ contains
   !! as non-existent.
   !! Components, which are neither defined in the Lua script, nor in the
   !! default will be marked with the aoterr_Fatal flag.
-  subroutine get_config_logical_v(L, val, ErrCode, key, default)
+  subroutine get_config_logical_v(val, ErrCode, L, key, default)
     type(flu_State) :: L !< Handle to the lua script
 
     !> Vector read from the Lua table.
@@ -879,7 +891,7 @@ contains
     integer, intent(out) :: ErrCode(:)
 
     !> Name of the variable (vector) to read.
-    character(len=*), intent(in), optional :: key
+    character(len=*), intent(in) :: key
 
     !> A default vector to use, if no proper definition is found.
     !! Components will be filled with the help of this default definition.
@@ -888,14 +900,14 @@ contains
     ! Get the requeseted value from the provided table
     call flu_getglobal(L, key)
 
-    call aot_top_get_val(L, val, ErrCode, default)
+    call aot_top_get_val(val, ErrCode, L, default)
   end subroutine get_config_logical_v
 
 
 
 
 
-  subroutine get_top_real_vvect(L, val, ErrCode, maxlength, default)
+  subroutine get_top_real_vvect(val, ErrCode, maxlength, L, default)
     type(flu_State) :: L !< Handle to the lua script
 
     !> Vector read from the Lua table, will have the same length as the table
@@ -939,15 +951,15 @@ contains
       ! Only if the vector table actually exists, and has at least one entry,
       ! this parsing has to be done.
       if (present(default).and.(def_len > 0)) then
-        call aot_top_get_val(L, val(1), ErrCode(1), default(1))
+        call aot_top_get_val(val(1), ErrCode(1), L, default(1))
       else
-        call aot_top_get_val(L, val(1), ErrCode(1))
+        call aot_top_get_val(val(1), ErrCode(1), L)
       end if
 
       ! Up to the length of the default value, provide the default settings.
       do iComp=2,def_len
         if (.not. flu_next(L, vect_handle)) exit
-        call aot_top_get_val(L, val(iComp), ErrCode(iComp), &
+        call aot_top_get_val(val(iComp), ErrCode(iComp), L, &
           &                  default(iComp))
       end do
 
@@ -956,7 +968,7 @@ contains
       ! available anymore, proceed without a default setting for the rest.
       do iComp=vect_lb,vect_len
         if (.not. flu_next(L, vect_handle)) exit
-        call aot_top_get_val(L, val(iComp), ErrCode(iComp))
+        call aot_top_get_val(val(iComp), ErrCode(iComp), L)
       end do
     else
       ! No vector definition found in the Lua script, use the default.
@@ -978,7 +990,7 @@ contains
 
 
 
-  subroutine get_top_double_vvect(L, val, ErrCode, maxlength, default)
+  subroutine get_top_double_vvect(val, ErrCode, maxlength, L, default)
     type(flu_State) :: L !< Handle to the lua script
 
     !> Vector read from the Lua table, will have the same length as the table
@@ -1022,15 +1034,15 @@ contains
       ! Only if the vector table actually exists, and has at least one entry,
       ! this parsing has to be done.
       if (present(default).and.(def_len > 0)) then
-        call aot_top_get_val(L, val(1), ErrCode(1), default(1))
+        call aot_top_get_val(val(1), ErrCode(1), L, default(1))
       else
-        call aot_top_get_val(L, val(1), ErrCode(1))
+        call aot_top_get_val(val(1), ErrCode(1), L)
       end if
 
       ! Up to the length of the default value, provide the default settings.
       do iComp=2,def_len
         if (.not. flu_next(L, vect_handle)) exit
-        call aot_top_get_val(L, val(iComp), ErrCode(iComp), &
+        call aot_top_get_val(val(iComp), ErrCode(iComp), L, &
           &                  default(iComp))
       end do
 
@@ -1039,7 +1051,7 @@ contains
       ! available anymore, proceed without a default setting for the rest.
       do iComp=vect_lb,vect_len
         if (.not. flu_next(L, vect_handle)) exit
-        call aot_top_get_val(L, val(iComp), ErrCode(iComp))
+        call aot_top_get_val(val(iComp), ErrCode(iComp), L)
       end do
     else
       ! No vector definition found in the Lua script, use the default.
@@ -1060,7 +1072,7 @@ contains
   end subroutine get_top_double_vvect
 
 
-  subroutine get_top_integer_vvect(L, val, ErrCode, maxlength, default)
+  subroutine get_top_integer_vvect(val, ErrCode, maxlength, L, default)
     type(flu_State) :: L !< Handle to the lua script
 
     !> Vector read from the Lua table, will have the same length as the table
@@ -1104,15 +1116,15 @@ contains
       ! Only if the vector table actually exists, and has at least one entry,
       ! this parsing has to be done.
       if (present(default).and.(def_len > 0)) then
-        call aot_top_get_val(L, val(1), ErrCode(1), default(1))
+        call aot_top_get_val(val(1), ErrCode(1), L, default(1))
       else
-        call aot_top_get_val(L, val(1), ErrCode(1))
+        call aot_top_get_val(val(1), ErrCode(1), L)
       end if
 
       ! Up to the length of the default value, provide the default settings.
       do iComp=2,def_len
         if (.not. flu_next(L, vect_handle)) exit
-        call aot_top_get_val(L, val(iComp), ErrCode(iComp), &
+        call aot_top_get_val(val(iComp), ErrCode(iComp), L, &
           &                  default(iComp))
       end do
 
@@ -1121,7 +1133,7 @@ contains
       ! available anymore, proceed without a default setting for the rest.
       do iComp=vect_lb,vect_len
         if (.not. flu_next(L, vect_handle)) exit
-        call aot_top_get_val(L, val(iComp), ErrCode(iComp))
+        call aot_top_get_val(val(iComp), ErrCode(iComp), L)
       end do
     else
       ! No vector definition found in the Lua script, use the default.
@@ -1142,7 +1154,7 @@ contains
   end subroutine get_top_integer_vvect
 
 
-  subroutine get_top_long_vvect(L, val, ErrCode, maxlength, default)
+  subroutine get_top_long_vvect(val, ErrCode, maxlength, L, default)
     type(flu_State) :: L !< Handle to the lua script
 
     !> Vector read from the Lua table, will have the same length as the table
@@ -1186,15 +1198,15 @@ contains
       ! Only if the vector table actually exists, and has at least one entry,
       ! this parsing has to be done.
       if (present(default).and.(def_len > 0)) then
-        call aot_top_get_val(L, val(1), ErrCode(1), default(1))
+        call aot_top_get_val(val(1), ErrCode(1), L, default(1))
       else
-        call aot_top_get_val(L, val(1), ErrCode(1))
+        call aot_top_get_val(val(1), ErrCode(1), L)
       end if
 
       ! Up to the length of the default value, provide the default settings.
       do iComp=2,def_len
         if (.not. flu_next(L, vect_handle)) exit
-        call aot_top_get_val(L, val(iComp), ErrCode(iComp), &
+        call aot_top_get_val(val(iComp), ErrCode(iComp), L, &
           &                  default(iComp))
       end do
 
@@ -1203,7 +1215,7 @@ contains
       ! available anymore, proceed without a default setting for the rest.
       do iComp=vect_lb,vect_len
         if (.not. flu_next(L, vect_handle)) exit
-        call aot_top_get_val(L, val(iComp), ErrCode(iComp))
+        call aot_top_get_val(val(iComp), ErrCode(iComp), L)
       end do
     else
       ! No vector definition found in the Lua script, use the default.
@@ -1224,7 +1236,7 @@ contains
   end subroutine get_top_long_vvect
 
 
-  subroutine get_top_logical_vvect(L, val, ErrCode, maxlength, default)
+  subroutine get_top_logical_vvect(val, ErrCode, maxlength, L, default)
     type(flu_State) :: L !< Handle to the lua script
 
     !> Vector read from the Lua table, will have the same length as the table
@@ -1268,15 +1280,15 @@ contains
       ! Only if the vector table actually exists, and has at least one entry,
       ! this parsing has to be done.
       if (present(default).and.(def_len > 0)) then
-        call aot_top_get_val(L, val(1), ErrCode(1), default(1))
+        call aot_top_get_val(val(1), ErrCode(1), L, default(1))
       else
-        call aot_top_get_val(L, val(1), ErrCode(1))
+        call aot_top_get_val(val(1), ErrCode(1), L)
       end if
 
       ! Up to the length of the default value, provide the default settings.
       do iComp=2,def_len
         if (.not. flu_next(L, vect_handle)) exit
-        call aot_top_get_val(L, val(iComp), ErrCode(iComp), &
+        call aot_top_get_val(val(iComp), ErrCode(iComp), L, &
           &                  default(iComp))
       end do
 
@@ -1285,7 +1297,7 @@ contains
       ! available anymore, proceed without a default setting for the rest.
       do iComp=vect_lb,vect_len
         if (.not. flu_next(L, vect_handle)) exit
-        call aot_top_get_val(L, val(iComp), ErrCode(iComp))
+        call aot_top_get_val(val(iComp), ErrCode(iComp), L)
       end do
     else
       ! No vector definition found in the Lua script, use the default.
@@ -1307,7 +1319,7 @@ contains
 
 
 
-  subroutine get_top_real_v(L, val, ErrCode,  default)
+  subroutine get_top_real_v(val, ErrCode, L,  default)
     type(flu_State) :: L !< Handle to the lua script
 
     !> Vector read from the Lua table.
@@ -1342,15 +1354,15 @@ contains
       ! Only if the vector table actually exists, and has at least one entry,
       ! this parsing has to be done.
       if (present(default).and.(def_len > 0)) then
-        call aot_top_get_val(L, val(1), ErrCode(1), default(1))
+        call aot_top_get_val(val(1), ErrCode(1), L, default(1))
       else
-        call aot_top_get_val(L, val(1), ErrCode(1))
+        call aot_top_get_val(val(1), ErrCode(1), L)
       end if
 
       ! Up to the length of the default value, provide the default settings.
       do iComp=2,def_len
         if (.not. flu_next(L, vect_handle)) exit
-        call aot_top_get_val(L, val(iComp), ErrCode(iComp), &
+        call aot_top_get_val(val(iComp), ErrCode(iComp), L, &
           &                  default(iComp))
       end do
 
@@ -1359,7 +1371,7 @@ contains
       ! available anymore, proceed without a default setting for the rest.
       do iComp=vect_lb,vect_len
         if (.not. flu_next(L, vect_handle)) exit
-        call aot_top_get_val(L, val(iComp), ErrCode(iComp))
+        call aot_top_get_val(val(iComp), ErrCode(iComp), L)
       end do
 
       ! If the table in the Lua script is not long enough, fill the remaining
@@ -1391,7 +1403,7 @@ contains
   end subroutine get_top_real_v
 
 
-  subroutine get_top_double_v(L, val, ErrCode,  default)
+  subroutine get_top_double_v(val, ErrCode, L,  default)
     type(flu_State) :: L !< Handle to the lua script
 
     !> Vector read from the Lua table.
@@ -1426,15 +1438,15 @@ contains
       ! Only if the vector table actually exists, and has at least one entry,
       ! this parsing has to be done.
       if (present(default).and.(def_len > 0)) then
-        call aot_top_get_val(L, val(1), ErrCode(1), default(1))
+        call aot_top_get_val(val(1), ErrCode(1), L, default(1))
       else
-        call aot_top_get_val(L, val(1), ErrCode(1))
+        call aot_top_get_val(val(1), ErrCode(1), L)
       end if
 
       ! Up to the length of the default value, provide the default settings.
       do iComp=2,def_len
         if (.not. flu_next(L, vect_handle)) exit
-        call aot_top_get_val(L, val(iComp), ErrCode(iComp), &
+        call aot_top_get_val(val(iComp), ErrCode(iComp), L, &
           &                  default(iComp))
       end do
 
@@ -1443,7 +1455,7 @@ contains
       ! available anymore, proceed without a default setting for the rest.
       do iComp=vect_lb,vect_len
         if (.not. flu_next(L, vect_handle)) exit
-        call aot_top_get_val(L, val(iComp), ErrCode(iComp))
+        call aot_top_get_val(val(iComp), ErrCode(iComp), L)
       end do
 
       ! If the table in the Lua script is not long enough, fill the remaining
@@ -1475,7 +1487,7 @@ contains
   end subroutine get_top_double_v
 
 
-  subroutine get_top_integer_v(L, val, ErrCode,  default)
+  subroutine get_top_integer_v(val, ErrCode, L,  default)
     type(flu_State) :: L !< Handle to the lua script
 
     !> Vector read from the Lua table.
@@ -1510,15 +1522,15 @@ contains
       ! Only if the vector table actually exists, and has at least one entry,
       ! this parsing has to be done.
       if (present(default).and.(def_len > 0)) then
-        call aot_top_get_val(L, val(1), ErrCode(1), default(1))
+        call aot_top_get_val(val(1), ErrCode(1), L, default(1))
       else
-        call aot_top_get_val(L, val(1), ErrCode(1))
+        call aot_top_get_val(val(1), ErrCode(1), L)
       end if
 
       ! Up to the length of the default value, provide the default settings.
       do iComp=2,def_len
         if (.not. flu_next(L, vect_handle)) exit
-        call aot_top_get_val(L, val(iComp), ErrCode(iComp), &
+        call aot_top_get_val(val(iComp), ErrCode(iComp), L, &
           &                  default(iComp))
       end do
 
@@ -1527,7 +1539,7 @@ contains
       ! available anymore, proceed without a default setting for the rest.
       do iComp=vect_lb,vect_len
         if (.not. flu_next(L, vect_handle)) exit
-        call aot_top_get_val(L, val(iComp), ErrCode(iComp))
+        call aot_top_get_val(val(iComp), ErrCode(iComp), L)
       end do
 
       ! If the table in the Lua script is not long enough, fill the remaining
@@ -1559,7 +1571,7 @@ contains
   end subroutine get_top_integer_v
 
 
-  subroutine get_top_long_v(L, val, ErrCode,  default)
+  subroutine get_top_long_v(val, ErrCode, L,  default)
     type(flu_State) :: L !< Handle to the lua script
 
     !> Vector read from the Lua table.
@@ -1594,15 +1606,15 @@ contains
       ! Only if the vector table actually exists, and has at least one entry,
       ! this parsing has to be done.
       if (present(default).and.(def_len > 0)) then
-        call aot_top_get_val(L, val(1), ErrCode(1), default(1))
+        call aot_top_get_val(val(1), ErrCode(1), L, default(1))
       else
-        call aot_top_get_val(L, val(1), ErrCode(1))
+        call aot_top_get_val(val(1), ErrCode(1), L)
       end if
 
       ! Up to the length of the default value, provide the default settings.
       do iComp=2,def_len
         if (.not. flu_next(L, vect_handle)) exit
-        call aot_top_get_val(L, val(iComp), ErrCode(iComp), &
+        call aot_top_get_val(val(iComp), ErrCode(iComp), L, &
           &                  default(iComp))
       end do
 
@@ -1611,7 +1623,7 @@ contains
       ! available anymore, proceed without a default setting for the rest.
       do iComp=vect_lb,vect_len
         if (.not. flu_next(L, vect_handle)) exit
-        call aot_top_get_val(L, val(iComp), ErrCode(iComp))
+        call aot_top_get_val(val(iComp), ErrCode(iComp), L)
       end do
 
       ! If the table in the Lua script is not long enough, fill the remaining
@@ -1643,7 +1655,7 @@ contains
   end subroutine get_top_long_v
 
 
-  subroutine get_top_logical_v(L, val, ErrCode,  default)
+  subroutine get_top_logical_v(val, ErrCode, L,  default)
     type(flu_State) :: L !< Handle to the lua script
 
     !> Vector read from the Lua table.
@@ -1678,15 +1690,15 @@ contains
       ! Only if the vector table actually exists, and has at least one entry,
       ! this parsing has to be done.
       if (present(default).and.(def_len > 0)) then
-        call aot_top_get_val(L, val(1), ErrCode(1), default(1))
+        call aot_top_get_val(val(1), ErrCode(1), L, default(1))
       else
-        call aot_top_get_val(L, val(1), ErrCode(1))
+        call aot_top_get_val(val(1), ErrCode(1), L)
       end if
 
       ! Up to the length of the default value, provide the default settings.
       do iComp=2,def_len
         if (.not. flu_next(L, vect_handle)) exit
-        call aot_top_get_val(L, val(iComp), ErrCode(iComp), &
+        call aot_top_get_val(val(iComp), ErrCode(iComp), L, &
           &                  default(iComp))
       end do
 
@@ -1695,7 +1707,7 @@ contains
       ! available anymore, proceed without a default setting for the rest.
       do iComp=vect_lb,vect_len
         if (.not. flu_next(L, vect_handle)) exit
-        call aot_top_get_val(L, val(iComp), ErrCode(iComp))
+        call aot_top_get_val(val(iComp), ErrCode(iComp), L)
       end do
 
       ! If the table in the Lua script is not long enough, fill the remaining
