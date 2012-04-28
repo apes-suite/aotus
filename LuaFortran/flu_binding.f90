@@ -8,7 +8,7 @@ module flu_binding
 
   type :: flu_State
     private
-    type(c_ptr) :: state => c_null_ptr
+    type(c_ptr) :: state = c_null_ptr
   end type flu_State
 
   public :: flu_State
