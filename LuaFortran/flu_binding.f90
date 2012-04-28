@@ -8,12 +8,12 @@ module flu_binding
 
   type :: flu_State
     private
-    type(c_ptr) :: state
+    type(c_ptr) :: state => c_null_ptr
   end type flu_State
 
   public :: flu_State
 
-  public :: flu_close
+  public :: flu_close, flu_isopen
   public :: flu_getField, flu_getGlobal, flu_getTable, flu_getTop
   public :: flu_isFunction, flu_isNumber, flu_isTable
   public :: flu_isNone, flu_isNoneOrNil, flu_isNil
@@ -44,6 +44,7 @@ contains
     type(flu_State) :: L
 
     call lua_close(L%state)
+    L%state = c_null_ptr
   end subroutine flu_close
 
 
@@ -389,6 +390,19 @@ contains
     
     call luaL_openlibs(L%state)
   end subroutine fluL_openlibs
-    
+
+
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  ! Routines for probing the Lua state
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+  function flu_isopen(L) result(is_open)
+      logical :: is_open
+      type(flu_State), intent(in) :: L
+
+      is_open = c_associated(L%state)
+  end function flu_isopen
+
+
 end module flu_binding
 
