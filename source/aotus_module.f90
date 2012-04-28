@@ -52,7 +52,7 @@ contains
 
     stop_on_error = .not.(present(ErrString) .or. present(ErrCode))
 
-    L = fluL_newstate()
+    if (.not.flu_isopen(L)) L = fluL_newstate()
 
     err = fluL_loadfile(L, filename)
 
