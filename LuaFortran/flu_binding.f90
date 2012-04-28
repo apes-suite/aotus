@@ -280,6 +280,20 @@ contains
     call lua_settop(L%state, n_c)
   end subroutine flu_settop
 
+
+  subroutine flu_setglobal(L, k)
+      type(flu_State) :: L
+      character(len=*), intent(in) :: k
+
+      character(len=len_trim(k)+1) :: c_k
+
+      c_k = trim(k) // c_null_char
+
+      call lua_setglobal(L%state, c_k)
+
+  end subroutine flu_setglobal
+
+
   function flu_tolstring(L, index, len) result(string)
     type(flu_State) :: L
     integer :: index
