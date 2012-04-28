@@ -98,6 +98,12 @@ module lua_fif
       integer(kind=c_int), value :: index
     end subroutine lua_settop
 
+    subroutine lua_setglobal(L, k) bind(c, name="lua_setglobal")
+      use, intrinsic :: iso_c_binding
+      type(c_ptr), value :: L
+      character(kind=c_char), dimension(*) :: k
+    end subroutine lua_setglobal
+
     function lua_tolstring(L, index, len) bind(c, name="lua_tolstring")
       use, intrinsic :: iso_c_binding
       type(c_ptr), value :: L
