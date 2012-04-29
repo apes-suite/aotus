@@ -28,7 +28,7 @@ module flu_binding
   public :: flu_pushinteger, flu_pushnil, flu_pushnumber
   public :: flu_pushvalue
 
-  public :: fluL_loadfile, fluL_newstate, fluL_openlibs
+  public :: fluL_loadfile, fluL_newstate, fluL_openlibs, fluL_loadstring
 
   interface flu_pushnumber
     module procedure flu_pushreal
@@ -377,6 +377,22 @@ contains
     c_errcode = luaL_loadfilex(L%state, c_filename, c_mode)
     errcode = c_errcode
   end function fluL_loadfile
+
+
+  function fluL_loadstring(L, string) result(errcode)
+    type(flu_State) :: L
+    character(len=*) :: string
+    integer :: errcode
+
+    character(len=len_trim(string)+1) :: c_string
+    integer(kind=c_int) :: c_errcode
+
+    c_string = trim(string) // c_null_char
+    write (6,*) 'c_str:', c_string
+    c_errcode = luaL_loadstring(L%state, c_string)
+    errcode = c_errcode
+
+  end function fluL_loadstring
 
 
   function fluL_newstate() result(new_state)
