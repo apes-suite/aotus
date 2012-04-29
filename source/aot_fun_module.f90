@@ -6,7 +6,7 @@
 !! aot_fun_put
 !! Execute the function with aot_fun_do
 !! Retrieve the possibly multiple results with
-!! get_top_val.
+!! aot_top_get_val.
 !! Repeat putting and retrieving if needed.
 !! Close the function again with aot_fun_close.
 module aot_fun_module
@@ -117,7 +117,7 @@ contains
 
   !> Execute a given function and put its results
   !! on the stack, where it is retrievable with
-  !! get_top_val.
+  !! aot_top_get_val.
   subroutine aot_fun_do(L, fun, nresults)
     type(flu_state) :: L
     type(aot_fun_type) :: fun
