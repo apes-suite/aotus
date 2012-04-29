@@ -22,6 +22,14 @@ to build the aotus library.
 If you want to select a specific Fortran compiler, set the environment variable
 *FC*.
 And for a specific C compiler, set the environment variable *CC*.
+The Fortran compiler flags are set with the help of fc_flags, which provide
+a set of compiler flag combinations for various compilers.
+They are found in the waflib/extras directory, and the waflib directory is
+created upon execution of waf in a::
+
+.waf-*
+
+directory, if you need to have a look at them.
 
 
 What is Built
@@ -32,12 +40,29 @@ For your convenience the lua library is included in version 5.2.0 (released
 Its objects are completely gathered into the final *libaotus* library, so it is
 only necessary to link against this single static library to gain the
 configuration features of aotus in your Fortran application.
+Due to the compiler specific module informations required by any application
+using the libaotus, the suggested approach to incorporate libaotus is to include
+its building in the build process of the final application. This is straight
+forward if waf is used for the complete project. But also in other build
+environments it should not be too hard to make use of the generated *build*
+directory.
+Yet if you would rather install the *libaotus.a* and the module files into a
+*$PREFIX* directory, you can make use of::
+
+./waf install
+
+The doxygen documentation can be built by running::
+
+./waf doxy
+
+This will build a html directory in the build directory with the resulting
+documentation. Note, that this requires an installed doxygen.
 
 Example
 -------
 
-There is an example program built, called aotus_test, which you will find in the
-*build* directory.
+There is an example program built, called aotus_sample, which you will find in
+the *build* directory.
 It can be used with the provided *config.lua* in the *test* directory, where
 also the source of this small program is found.
 

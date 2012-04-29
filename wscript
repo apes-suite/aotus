@@ -15,6 +15,7 @@ def options(opt):
     opt.load('compiler_c')
 
 def configure(conf):
+    from waflib import Logs
     # The fcopts provide some sane flag combinations
     # for different variants in the various compilers.
     # They are found in apes/sys_env, and included in
@@ -32,10 +33,16 @@ def configure(conf):
     # Load the compiler informations
     conf.load('compiler_fc')
     conf.load('compiler_c')
+    conf.env.stash()
+    try:
+        conf.load('doxygen')
+    except conf.errors.ConfigurationError, e:
+        Logs.debug('doxygen: %r' % e)
+        conf.env.revert()
+
     conf.env['FCSTLIB_MARKER'] = ''
     conf.env['FCSHLIB_MARKER'] = ''
-    # Recompilation if any of these change:
-    conf.vars = ['FC_NAME', 'FC_VERSION', 'FCFLAGS']
+
     conf.check_fortran()
     subconf(conf)
 
@@ -171,6 +178,13 @@ def build(bld):
                 use = 'aotus',
                 target = utest.change_ext(''))
 
+    if bld.cmd == 'doxy':
+        bld(features = 'doxygen',
+            doxyfile = 'Doxyfile')
+
+    bld.install_files('${PREFIX}/include', bld.path.get_bld().ant_glob('*.mod'))
+    bld.install_files('${PREFIX}/lib', 'libaotus.a')
+
 ### Building the lua interpreter, usually not needed.
 #    bld(
 #        features = 'c cprogram',
@@ -188,5 +202,9 @@ class debug(BuildContext):
     variant = 'debug'
 
 class test(BuildContext):
-    "Tests"
+    "Unit Tests"
     cmd = 'test'
+
+class doxy(BuildContext):
+    "Doxygen documentation"
+    cmd = 'doxy'

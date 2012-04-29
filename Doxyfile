@@ -51,7 +51,9 @@ PROJECT_LOGO           =
 # If a relative path is entered, it will be relative to the location 
 # where doxygen was started. If left blank the current directory will be used.
 
-OUTPUT_DIRECTORY       = Documentation
+# Use "./waf doxy" to build the documentation, in this case, the output
+# directory will be set by waf!
+#OUTPUT_DIRECTORY       = Documentation
 
 # If the CREATE_SUBDIRS tag is set to YES, then doxygen will create 
 # 4096 sub-directories (in 2 levels) under the output directory of each output 

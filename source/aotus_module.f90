@@ -1,5 +1,9 @@
-!> This module provides high level Fortran interfaces
-!! to retrieve values from a Lua script.
+!> This module provides high level Fortran interfaces to retrieve values from a
+!! Lua script.
+!!
+!! Its central interface is aot_get_val, which is a generic interface that
+!! allows access to scalars and vectors in global Lua variables as well as
+!! nested tables.
 module aotus_module
   use flu_binding
   use aot_kinds_module, only: double_k, single_k, long_k
