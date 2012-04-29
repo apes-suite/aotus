@@ -15,6 +15,7 @@ module flu_binding
 
   public :: flu_close, flu_isopen
   public :: flu_getField, flu_getGlobal, flu_getTable, flu_getTop
+  public :: flu_setGlobal
   public :: flu_isFunction, flu_isNumber, flu_isTable
   public :: flu_isNone, flu_isNoneOrNil, flu_isNil
   public :: flu_isBoolean
