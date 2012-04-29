@@ -63,7 +63,7 @@ Example
 
 There is an example program built, called aotus_sample, which you will find in
 the *build* directory.
-It can be used with the provided *config.lua* in the *test* directory, where
+It can be used with the provided *config.lua* in the *sample* directory, where
 also the source of this small program is found.
 
 Related Projects
