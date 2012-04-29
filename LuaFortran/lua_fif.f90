@@ -165,6 +165,13 @@ module lua_fif
       integer(kind=c_int) :: luaL_loadfilex
     end function luaL_loadfilex
 
+    function luaL_loadstring(L, string) bind(c, name="luaL_loadstring")
+      use, intrinsic :: iso_c_binding
+      type(c_ptr), value :: L
+      character(kind=c_char), dimension(*) :: string
+      integer(kind=c_int) :: luaL_loadstring
+    end function luaL_loadstring
+
   end interface
 
 end module lua_fif
