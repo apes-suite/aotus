@@ -18,6 +18,7 @@ module aotus_module
 
   public :: aot_get_val
   public :: open_config, close_config
+  public :: load_chunk
 
   ! Entities inherited from aot_top_module, published here to
   ! allow most functionality by "use aotus_module".
@@ -195,5 +196,73 @@ contains
     call aot_top_get_val(val, ErrCode, L, default)
 
   end subroutine get_config_string
+
+
+  subroutine load_chunk(L, chunk, ErrCode, ErrString)
+    type(flu_State) :: L
+    character(len=*), intent(in) :: chunk
+    integer, intent(out), optional :: ErrCode
+    character(len=*), intent(out), optional :: ErrString
+
+    character, pointer, dimension(:) :: string
+    integer :: str_len
+    integer :: err
+    integer :: i
+    logical :: stop_on_error
+
+    stop_on_error = .not.(present(ErrString) .or. present(ErrCode))
+
+    if (.not.flu_isopen(L)) L = fluL_newstate()
+
+    err = fluL_loadstring(L, chunk)
+
+    if (present(ErrCode)) then
+      ErrCode = err
+    end if
+
+    if (err .ne. 0) then
+
+      string => flu_tolstring(L, -1, str_len)
+      if (present(ErrString)) then
+        do i=1,min(str_len, len(ErrString))
+          ErrString(i:i) = string(i)
+        end do
+      end if
+
+      if (stop_on_error) then
+        write(*,*) "cannot load chunk: ", string
+        STOP
+      else
+        return
+      end if
+
+    end if
+
+    call fluL_openlibs(L)
+
+    err = flu_pcall(L, 0, 0, 0)
+
+    if (present(ErrCode)) then
+      ErrCode = err
+    end if
+
+    if (err .ne. 0) then
+
+      string => flu_tolstring(L, -1, str_len)
+      if (present(ErrString)) then
+        do i=1,min(str_len, len(ErrString))
+          ErrString(i:i) = string(i)
+        end do
+      end if
+
+      if (stop_on_error) then
+        write(*,*) "cannot run chunk: ", string
+        STOP
+      end if
+
+    end if
+
+  end subroutine load_chunk
+
 
 end module aotus_module
