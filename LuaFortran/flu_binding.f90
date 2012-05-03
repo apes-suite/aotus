@@ -388,7 +388,6 @@ contains
     integer(kind=c_int) :: c_errcode
 
     c_string = trim(string) // c_null_char
-    write (6,*) 'c_str:', c_string
     c_errcode = luaL_loadstring(L%state, c_string)
     errcode = c_errcode
 
