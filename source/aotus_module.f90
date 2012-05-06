@@ -49,65 +49,17 @@ contains
     integer, intent(out), optional :: ErrCode
     character(len=*), intent(out), optional :: ErrString
 
-    character, pointer, dimension(:) :: string
-    integer :: str_len
     integer :: err
-    integer :: i
-    logical :: stop_on_error
-
-    stop_on_error = .not.(present(ErrString) .or. present(ErrCode))
 
     if (.not.flu_isopen(L)) L = fluL_newstate()
 
     err = fluL_loadfile(L, filename)
-
-    if (present(ErrCode)) then
-      ErrCode = err
-    end if
-
-    if (err .ne. 0) then
-
-      string => flu_tolstring(L, -1, str_len)
-      if (present(ErrString)) then
-        do i=1,min(str_len, len(ErrString))
-          ErrString(i:i) = string(i)
-        end do
-      end if
-
-      if (stop_on_error) then
-        write(*,*) "cannot load configuration file: ", string
-        STOP
-      else
-        return
-      end if
-
-    end if
+    call aot_config_err_handler(L, err, 'Cannot load configuration file:', ErrString, ErrCode)
 
     call fluL_openlibs(L)
 
     err = flu_pcall(L, 0, 0, 0)
-
-    if (present(ErrCode)) then
-      ErrCode = err
-    end if
-
-    if (err .ne. 0) then
-
-      string => flu_tolstring(L, -1, str_len)
-      if (present(ErrString)) then
-        do i=1,min(str_len, len(ErrString))
-          ErrString(i:i) = string(i)
-        end do
-      end if
-
-      if (stop_on_error) then
-        write(*,*) "cannot run configuration file: ", string
-        STOP
-      else
-        return
-      end if
-
-    end if
+    call aot_config_err_handler(L, err, 'Cannot run configuration file:', ErrString, ErrCode)
 
   end subroutine open_config_file
 
@@ -204,44 +156,37 @@ contains
     integer, intent(out), optional :: ErrCode
     character(len=*), intent(out), optional :: ErrString
 
-    character, pointer, dimension(:) :: string
-    integer :: str_len
     integer :: err
-    integer :: i
-    logical :: stop_on_error
-
-    stop_on_error = .not.(present(ErrString) .or. present(ErrCode))
 
     if (.not.flu_isopen(L)) L = fluL_newstate()
 
     err = fluL_loadstring(L, chunk)
 
-    if (present(ErrCode)) then
-      ErrCode = err
-    end if
-
-    if (err .ne. 0) then
-
-      string => flu_tolstring(L, -1, str_len)
-      if (present(ErrString)) then
-        do i=1,min(str_len, len(ErrString))
-          ErrString(i:i) = string(i)
-        end do
-      end if
-
-      if (stop_on_error) then
-        write(*,*) "cannot load chunk: ", string
-        STOP
-      else
-        return
-      end if
-
-    end if
+    call aot_config_err_handler(L, err, 'Cannot load chunk:', ErrString, ErrCode)
 
     call fluL_openlibs(L)
 
     err = flu_pcall(L, 0, 0, 0)
 
+    call aot_config_err_handler(L, err, 'Cannot run chunk:', ErrString, ErrCode)
+
+  end subroutine open_config_chunk
+
+  subroutine aot_config_err_handler(L, err, msg, ErrString, ErrCode)
+
+    type(flu_State) :: L
+    integer, intent(in) :: err
+    character(len=*), intent(in) :: msg
+    character(len=*), intent(out), optional :: ErrString
+    integer, intent(out), optional :: ErrCode
+
+    logical :: stop_on_error
+    character, pointer, dimension(:) :: string
+    integer :: str_len
+    integer :: i
+
+    stop_on_error = .not.(present(ErrString) .or. present(ErrCode))
+
     if (present(ErrCode)) then
       ErrCode = err
     end if
@@ -256,13 +201,13 @@ contains
       end if
 
       if (stop_on_error) then
-        write(*,*) "cannot run chunk: ", string
+        write(*,*) msg, string
         STOP
       end if
 
     end if
 
-  end subroutine open_config_chunk
+  end subroutine aot_config_err_handler
 
 
 end module aotus_module
