@@ -2,7 +2,7 @@ program aot_table_test
   use flu_binding, only: flu_State
 
   use aot_kinds_module, only: double_k, long_k
-  use aotus_module, only: open_config, close_config
+  use aotus_module, only: open_config_file, close_config
   use aot_top_module, only: aoterr_Fatal, aoterr_NonExistent, aoterr_WrongType
   use aot_table_module, only: aot_table_open, aot_table_close, &
     &                         aot_table_length, aot_table_get_val
@@ -24,8 +24,8 @@ program aot_table_test
   write(*,*)
   write(*,*) 'Running aot_table_test...'
 
-  call open_config(L = conf, filename = 'aot_table_test_config.lua', &
-    &              ErrCode = iError, ErrString = ErrString)
+  call open_config_file(L = conf, filename = 'aot_table_test_config.lua', &
+    &                   ErrCode = iError, ErrString = ErrString)
   if (iError /= 0) then
     write(*,*) 'Unexpected FATAL Error occured !!!'
     write(*,*) 'Could not open the config file aot_table_test_config.lua:'

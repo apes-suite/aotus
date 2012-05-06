@@ -2,7 +2,7 @@ program aotus_test
   use flu_binding, only: flu_State
 
   use aot_kinds_module, only: double_k, long_k
-  use aotus_module, only: open_config, close_config, aot_get_val
+  use aotus_module, only: open_config_file, close_config, aot_get_val
   use aot_top_module, only: aoterr_Fatal, aoterr_NonExistent, aoterr_WrongType
 
   implicit none
@@ -19,9 +19,9 @@ program aotus_test
   call create_script('aotus_test_config.lua')
   write(*,*)
   write(*,*) 'Running aotus_test...'
-  write(*,*) ' * open_config (aotus_test_config.lua)'
-  call open_config(L = conf, filename = 'aotus_test_config.lua', &
-    &              ErrCode = iError, ErrString = ErrString)
+  write(*,*) ' * open_config_file (aotus_test_config.lua)'
+  call open_config_file(L = conf, filename = 'aotus_test_config.lua', &
+    &                   ErrCode = iError, ErrString = ErrString)
   if (iError /= 0) then
     write(*,*) ' : unexpected FATAL Error occured !!!'
     write(*,*) ' : Could not open the config file aotus_test_config.lua:'
