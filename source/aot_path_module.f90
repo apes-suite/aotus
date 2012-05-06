@@ -8,7 +8,7 @@
 !! and store at in the level, to which you might need to return later.
 module aot_path_module
   use flu_binding, only: flu_State
-  use aotus_module, only: open_config, close_config
+  use aotus_module, only: open_config_file, close_config
   use aot_table_module, only: aot_table_open, aot_table_close
   use aot_fun_module, only: aot_fun_type, aot_fun_open, aot_fun_close
 
@@ -322,7 +322,7 @@ contains
     end if
 
     if (new_conf) then
-      call open_config(conf, me%LuaFilename)
+      call open_config_file(conf, me%LuaFilename)
     end if
 
     curNode => me%GlobalNode

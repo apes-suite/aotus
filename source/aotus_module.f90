@@ -17,8 +17,8 @@ module aotus_module
   private
 
   public :: aot_get_val
-  public :: open_config, close_config
-  public :: load_chunk
+  public :: open_config_file, close_config
+  public :: open_config_chunk
 
   ! Entities inherited from aot_top_module, published here to
   ! allow most functionality by "use aotus_module".
@@ -43,7 +43,7 @@ module aotus_module
 
 contains
 
-  subroutine open_config(L, filename, ErrCode, ErrString)
+  subroutine open_config_file(L, filename, ErrCode, ErrString)
     type(flu_State) :: L
     character(len=*), intent(in) :: filename
     integer, intent(out), optional :: ErrCode
@@ -109,7 +109,7 @@ contains
 
     end if
 
-  end subroutine open_config
+  end subroutine open_config_file
 
 
   subroutine close_config(L)
@@ -198,7 +198,7 @@ contains
   end subroutine get_config_string
 
 
-  subroutine load_chunk(L, chunk, ErrCode, ErrString)
+  subroutine open_config_chunk(L, chunk, ErrCode, ErrString)
     type(flu_State) :: L
     character(len=*), intent(in) :: chunk
     integer, intent(out), optional :: ErrCode
@@ -262,7 +262,7 @@ contains
 
     end if
 
-  end subroutine load_chunk
+  end subroutine open_config_chunk
 
 
 end module aotus_module

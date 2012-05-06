@@ -1,6 +1,6 @@
 program aotus_sample
   use aot_kinds_module, only: double_k
-  use aotus_module, only: flu_State, open_config, close_config, aot_get_val, &
+  use aotus_module, only: flu_State, open_config_file, close_config, aot_get_val, &
     &                     aot_top_get_val, &
     &                     aoterr_Fatal, aoterr_WrongType, aoterr_NonExistent
   use aot_table_module, only: aot_table_open, aot_table_close, aot_table_length
@@ -28,7 +28,7 @@ program aotus_sample
   real(kind=double_k) :: coord(3)
   real(kind=double_k) :: results
 
-  call open_config(L = conf, filename = 'config.lua', ErrCode = iError)
+  call open_config_file(L = conf, filename = 'config.lua', ErrCode = iError)
   if (iError /= 0) then
     write(*,*) 'FATAL Error when opening the Lua config file'
     STOP
