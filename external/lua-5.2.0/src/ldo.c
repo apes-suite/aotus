@@ -402,8 +402,6 @@ static void finishCcall (lua_State *L) {
   int n;
   lua_assert(ci->u.c.k != NULL);  /* must have a continuation */
   lua_assert(L->nny == 0);
-  /* finish 'luaD_call' */
-  L->nCcalls--;
   /* finish 'lua_callk' */
   adjustresults(L, ci->nresults);
   /* call continuation function */
@@ -513,7 +511,6 @@ static void resume (lua_State *L, void *ud) {
         api_checknelems(L, n);
         firstArg = L->top - n;  /* yield results come from continuation */
       }
-      L->nCcalls--;  /* finish 'luaD_call' */
       luaD_poscall(L, firstArg);  /* finish 'luaD_precall' */
     }
     unroll(L, NULL);
