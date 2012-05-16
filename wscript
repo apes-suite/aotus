@@ -182,8 +182,13 @@ def build(bld):
         bld(features = 'doxygen',
             doxyfile = 'Doxyfile')
 
-    bld.install_files('${PREFIX}/include', bld.path.get_bld().ant_glob('*.mod'))
-    bld.install_files('${PREFIX}/lib', 'libaotus.a')
+    # install_files actually only done, if in install mode
+    # however the if here, protects the ant_glob in the build directory
+    # to be run if not in the install phase...
+    if bld.cmd == 'install':
+        bld.install_files('${PREFIX}/include',
+                          bld.path.get_bld().ant_glob('*.mod'))
+        bld.install_files('${PREFIX}/lib', 'libaotus.a')
 
 ### Building the lua interpreter, usually not needed.
 #    bld(
