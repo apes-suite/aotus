@@ -297,10 +297,10 @@ contains
     call aot_out_breakline(put_conf, advance_previous)
 
     if (present(vname)) then
-      write(put_conf%outunit, fmt="(a,f0.8)", advance=adv_string) &
+      write(put_conf%outunit, fmt="(a,f16.7)", advance=adv_string) &
         & trim(vname)//" = ", val
     else
-      write(put_conf%outunit, fmt="(f0.8)", advance=adv_string) val
+      write(put_conf%outunit, fmt="(EN16.7)", advance=adv_string) val
     end if
 
   end subroutine aot_out_val_real
@@ -334,10 +334,10 @@ contains
     call aot_out_breakline(put_conf, advance_previous)
 
     if (present(vname)) then
-      write(put_conf%outunit, fmt="(a,f0.12)", advance=adv_string) &
+      write(put_conf%outunit, fmt="(a,EN24.15)", advance=adv_string) &
         & trim(vname)//" = ", val
     else
-      write(put_conf%outunit, fmt="(f0.12)", advance=adv_string) val
+      write(put_conf%outunit, fmt="(EN24.15)", advance=adv_string) val
     end if
 
   end subroutine aot_out_val_double
