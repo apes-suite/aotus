@@ -1335,7 +1335,7 @@ contains
 
     integer :: vect_handle
     integer :: table_len, vect_len, def_len
-    integer :: vect_lb, minub
+    integer :: vect_lb
     integer :: iComp
 
     ! Try to interpret it as table.
@@ -1388,10 +1388,9 @@ contains
       ! No vector definition found in the Lua script, use the default.
       ErrCode = ibSet(ErrCode, aoterr_NonExistent)
       if (present(default)) then
-        minub = min(vect_len, def_len)
-        val(:minub) = default(:minub)
-        if (minub < vect_len) then
-          ErrCode(minub+1:) = ibSet(ErrCode(minub+1:), aoterr_Fatal)
+        val(:def_len) = default(:def_len)
+        if (def_len < vect_len) then
+          ErrCode(def_len+1:) = ibSet(ErrCode(def_len+1:), aoterr_Fatal)
         end if
       else
         ! No vector definition in the Lua script and no default provided.
@@ -1419,7 +1418,7 @@ contains
 
     integer :: vect_handle
     integer :: table_len, vect_len, def_len
-    integer :: vect_lb, minub
+    integer :: vect_lb
     integer :: iComp
 
     ! Try to interpret it as table.
@@ -1472,10 +1471,9 @@ contains
       ! No vector definition found in the Lua script, use the default.
       ErrCode = ibSet(ErrCode, aoterr_NonExistent)
       if (present(default)) then
-        minub = min(vect_len, def_len)
-        val(:minub) = default(:minub)
-        if (minub < vect_len) then
-          ErrCode(minub+1:) = ibSet(ErrCode(minub+1:), aoterr_Fatal)
+        val(:def_len) = default(:def_len)
+        if (def_len < vect_len) then
+          ErrCode(def_len+1:) = ibSet(ErrCode(def_len+1:), aoterr_Fatal)
         end if
       else
         ! No vector definition in the Lua script and no default provided.
@@ -1503,7 +1501,7 @@ contains
 
     integer :: vect_handle
     integer :: table_len, vect_len, def_len
-    integer :: vect_lb, minub
+    integer :: vect_lb
     integer :: iComp
 
     ! Try to interpret it as table.
@@ -1556,10 +1554,10 @@ contains
       ! No vector definition found in the Lua script, use the default.
       ErrCode = ibSet(ErrCode, aoterr_NonExistent)
       if (present(default)) then
-        minub = min(vect_len, def_len)
-        val(:minub) = default(:minub)
-        if (minub < vect_len) then
-          ErrCode(minub+1:) = ibSet(ErrCode(minub+1:), aoterr_Fatal)
+        def_len = def_len
+        val(:def_len) = default(:def_len)
+        if (def_len < vect_len) then
+          ErrCode(def_len+1:) = ibSet(ErrCode(def_len+1:), aoterr_Fatal)
         end if
       else
         ! No vector definition in the Lua script and no default provided.
@@ -1587,7 +1585,7 @@ contains
 
     integer :: vect_handle
     integer :: table_len, vect_len, def_len
-    integer :: vect_lb, minub
+    integer :: vect_lb
     integer :: iComp
 
     ! Try to interpret it as table.
@@ -1640,10 +1638,9 @@ contains
       ! No vector definition found in the Lua script, use the default.
       ErrCode = ibSet(ErrCode, aoterr_NonExistent)
       if (present(default)) then
-        minub = min(vect_len, def_len)
-        val(:minub) = default(:minub)
-        if (minub < vect_len) then
-          ErrCode(minub+1:) = ibSet(ErrCode(minub+1:), aoterr_Fatal)
+        val(:def_len) = default(:def_len)
+        if (def_len < vect_len) then
+          ErrCode(def_len+1:) = ibSet(ErrCode(def_len+1:), aoterr_Fatal)
         end if
       else
         ! No vector definition in the Lua script and no default provided.
@@ -1671,7 +1668,7 @@ contains
 
     integer :: vect_handle
     integer :: table_len, vect_len, def_len
-    integer :: vect_lb, minub
+    integer :: vect_lb
     integer :: iComp
 
     ! Try to interpret it as table.
@@ -1724,10 +1721,9 @@ contains
       ! No vector definition found in the Lua script, use the default.
       ErrCode = ibSet(ErrCode, aoterr_NonExistent)
       if (present(default)) then
-        minub = min(vect_len, def_len)
-        val(:minub) = default(:minub)
-        if (minub < vect_len) then
-          ErrCode(minub+1:) = ibSet(ErrCode(minub+1:), aoterr_Fatal)
+        val(:def_len) = default(:def_len)
+        if (def_len < vect_len) then
+          ErrCode(def_len+1:) = ibSet(ErrCode(def_len+1:), aoterr_Fatal)
         end if
       else
         ! No vector definition in the Lua script and no default provided.
