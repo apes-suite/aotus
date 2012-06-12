@@ -80,9 +80,6 @@ contains
     integer, optional, intent(in) :: outUnit !< Pre-connected unit to write to
     integer, optional, intent(in) :: indentation !< Spacer per indentation level
     !------------------------------------------------------------------------
-    integer :: std_recl
-    !------------------------------------------------------------------------
-    std_recl = 360
 
     if (present(indentation)) then
       put_conf%in_step = indentation
@@ -93,8 +90,7 @@ contains
     if (present(filename)) then
       put_conf%outunit = newunit()
       open(unit = put_conf%outunit, file = trim(filename), action = 'write', &
-        &  status='replace')
-      inquire(unit = put_conf%outunit, recl = std_recl)
+        &  status='replace', recl = 360)
       put_conf%externalOpen = .false.
     else if (present(outUnit)) then
       put_conf%externalOpen = .true.
