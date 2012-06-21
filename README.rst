@@ -35,8 +35,8 @@ directory, if you need to have a look at them.
 What is Built
 =============
 
-For your convenience the lua library is included in version 5.2.0 (released
-2011-12-16).
+For your convenience the lua library is included in version 5.2.1 (released
+2012-06-08).
 Its objects are completely gathered into the final *libaotus* library, so it is
 only necessary to link against this single static library to gain the
 configuration features of aotus in your Fortran application.
