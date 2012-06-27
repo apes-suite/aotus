@@ -40,7 +40,7 @@ module aot_path_module
   !! It contains a linked list of all nodes, as well as the name of the Lua
   !! script where this path is recorded in.
   type aot_path_type
-    private
+!    private
     !> Name of the file where this path object is found in.
     character(len=256) :: LuaFilename
 
@@ -144,13 +144,11 @@ contains
       me%head => me%head%child
     end if
 
+    ! check for key and position
     if (present(pos)) then
       me%head%ID_kind = 'position'
       me%head%pos = pos
-    end if
-
-    ! Specified keys overwrite positions
-    if (present(key)) then
+    else if(present(key)) then
       me%head%ID_kind = 'key'
       me%head%key = key
     end if
