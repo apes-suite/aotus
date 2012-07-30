@@ -266,7 +266,6 @@ contains
 
 
   subroutine aot_err_handler(L, err, msg, ErrString, ErrCode)
-
     type(flu_State) :: L
     integer, intent(in) :: err
     character(len=*), intent(in) :: msg
