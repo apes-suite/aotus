@@ -13,6 +13,7 @@ module aot_fun_module
   use flu_binding
   use aot_kinds_module, only: double_k, single_k
   use aot_table_module, only: aot_table_push
+  use aot_top_module, only: aot_err_handler
 
   implicit none
 
