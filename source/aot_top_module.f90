@@ -9,6 +9,7 @@ module aot_top_module
 
   public :: aoterr_Fatal, aoterr_NonExistent, aoterr_WrongType
   public :: aot_top_get_val
+  public :: aot_err_handler
 
   !> Some parameters for the error handling.
   !!
@@ -262,6 +263,44 @@ contains
     call flu_pop(L)
 
   end subroutine aot_top_get_string
+
+
+  subroutine aot_err_handler(L, err, msg, ErrString, ErrCode)
+
+    type(flu_State) :: L
+    integer, intent(in) :: err
+    character(len=*), intent(in) :: msg
+    character(len=*), intent(out), optional :: ErrString
+    integer, intent(out), optional :: ErrCode
+
+    logical :: stop_on_error
+    character, pointer, dimension(:) :: string
+    integer :: str_len
+    integer :: i
+
+    stop_on_error = .not.(present(ErrString) .or. present(ErrCode))
+
+    if (present(ErrCode)) then
+      ErrCode = err
+    end if
+
+    if (err .ne. 0) then
+
+      string => flu_tolstring(L, -1, str_len)
+      if (present(ErrString)) then
+        do i=1,min(str_len, len(ErrString))
+          ErrString(i:i) = string(i)
+        end do
+      end if
+
+      if (stop_on_error) then
+        write(*,*) msg, string
+        STOP
+      end if
+
+    end if
+
+  end subroutine aot_err_handler
 
 
 end module aot_top_module
