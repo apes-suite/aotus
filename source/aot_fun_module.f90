@@ -118,15 +118,19 @@ contains
   !> Execute a given function and put its results
   !! on the stack, where it is retrievable with
   !! aot_top_get_val.
-  subroutine aot_fun_do(L, fun, nresults)
+  subroutine aot_fun_do(L, fun, nresults, ErrCode, ErrString)
     type(flu_state) :: L
     type(aot_fun_type) :: fun
-    integer :: nresults
+    integer, intent(in) :: nresults
+    integer, intent(out), optional :: ErrCode
+    character(len=*), intent(out), optional :: ErrString
 
-    integer :: errcode
+    integer :: err
 
     if (fun%handle /= 0) then
-      errcode = flu_pcall(L, fun%arg_count, nresults, 0)
+      err = flu_pcall(L, fun%arg_count, nresults, 0)
+      call aot_err_handler(L=L, err=err, msg="Failed aot_fun_do! ", &
+        &                  ErrCode = ErrCode, ErrString = ErrString)
       fun%arg_count = -1
     end if
   end subroutine aot_fun_do
