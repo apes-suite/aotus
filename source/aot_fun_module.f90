@@ -8,7 +8,7 @@
 !! - Retrieve the possibly multiple results with
 !!   AOT_top_module::aot_top_get_val.
 !! - Repeat putting and retrieving if needed.
-!! - Close the function finally with aot_fun_close.
+!! - Close the function finally with aot_fun_close().
 module aot_fun_module
   use flu_binding
   use aot_kinds_module, only: double_k, single_k
