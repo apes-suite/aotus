@@ -37,7 +37,7 @@ module aot_top_module
   !!
   !! The interface looks like this:
   !! `call aot_top_get_val(val, errCode, L, default)`.
-  !! See for example aot_top_get_real for a more detailed
+  !! See for example aot_top_get_real() for a more detailed
   !! description of the parameters.
   !!
   !! The aot_top_get_val can not be in the same generic interface as the other
