@@ -280,3 +280,55 @@ contains
   end subroutine get_config_string
 
 end module aotus_module
+
+!> \mainpage Aotus
+!!
+!! Aotus stands for *Advanced Options in Tables and Universal Scripting*.
+!!
+!! It is a Fortran wrapper for the [Lua](http://www.lua.org/) scripting
+!! language.
+!! The aim of this wrapper is to provide flexible configuration files to Fortran
+!! applications with the full user experience provided by Lua.
+!! Aotus is also known as the
+!! [night monkey](http://en.wikipedia.org/wiki/Night_monkey), living in south
+!! america.
+!! Thus we saw the name as fitting as it interacts with the moon (Lua, provided
+!! by the Pontifical Catholic University of Rio de Janeiro in Brazil).
+!!
+!! The most prominent data structure in Lua are
+!! [tables](http://www.lua.org/manual/5.2/manual.html#2), which provide the
+!! possibility to store complex data structures.
+!! Thus the configuration is mainly done in global variables in the lua script
+!! or tables.
+!!
+!! Aotus provides several layers, encapsulating the bare
+!! [Lua C-API](http://www.lua.org/manual/5.2/manual.html#4):
+!! - Lua_fif: this just provides the
+!!   [ISO_C_Binding](http://www.fortran.bcs.org/2002/interop.htm)
+!!   interface declarations.
+!! - Flu_binding: this the actural Fortran binding wrapped around Lua_fif, to
+!!   provide a more Fortran like interface.
+!!   Especially the Flu_binding::flu_state type is declared which maintains the
+!!   handle for the
+!!   [Lua state](http://www.lua.org/manual/5.2/manual.html#lua_state).
+!! - AOT_table_module: provides some convenience functions to work on Lua tables
+!!   in Fortran.
+!! - AOT_fun_module: provides some convenience functions to work with Lua
+!!   functions in Fortran.
+!! - Aotus_module: provides the high end level to easily retrieve data from a
+!!   Lua script.
+!! - On top of those there is an additional AOT_vector_module, which allows the
+!!   concise reading of values into arrays of rank one.
+!! - Finally there is and additional AOT_out_module, that allows output of
+!!   Fortran values into nested Lua tables.
+!!
+!! The library can be compiled by various modern Fortran compilers as described
+!! in \ref compiler_support "Compiler Support".
+!!
+!! An example showing the usage of the library in a Fortran application is given
+!! in sample/aotus_sample.f90 in the Aotus main directory.
+!! The corresponding Lua script used as input is given in sample/config.lua.
+!!
+!! *Please see also the README.rst.*
+!!
+!! *Sources are available at <https://bitbucket.org/haraldkl/aotus/overview>.*
