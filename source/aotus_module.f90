@@ -281,7 +281,7 @@ contains
 
 end module aotus_module
 
-!> \mainpage Aotus
+!> \page Aotus
 !!
 !! Aotus stands for *Advanced Options in Tables and Universal Scripting*.
 !!
