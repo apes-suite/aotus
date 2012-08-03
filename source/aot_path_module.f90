@@ -291,6 +291,7 @@ contains
 
   end subroutine aot_path_open_fun
 
+
   !> This subroutine opens all the tables on the way to the final head node of
   !! the given path.
   !!
@@ -357,6 +358,7 @@ contains
 
   end subroutine aot_path_open_table
 
+
   !> This routine closes function and all other tables opened along the path.
   subroutine aot_path_close_fun(me, conf, fun, closeLua)
     !> The path object to open as a function
@@ -376,6 +378,7 @@ contains
     call aot_path_close_table( me, conf, closeLua )
 
   end subroutine aot_path_close_fun
+
 
   !> This routine closes all the table opened in aot_path_open_table.
   subroutine aot_path_close_table(me, conf, closeLua)

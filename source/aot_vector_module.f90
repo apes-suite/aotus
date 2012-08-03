@@ -1,7 +1,7 @@
 !> This module provides some convenience functions to access complete vectors
 !! from a lua table at once.
 !!
-!! It provides to generic interfaces, one for vectors inside tables, and one
+!! It provides two generic interfaces, one for vectors inside tables, and one
 !! for vectors defined as global variables (get_config_val).
 !! Vectors might be accessed with a variable length, to be defined by the
 !! Lua table and allocated in the get_ routines or with a fixed length.
@@ -24,7 +24,8 @@ module aot_vector_module
   !!
   !! Arrays will be allocated as needed to read the data from the
   !! Lua script with these routines. A maximal length has to be
-  !! specified to limit the allocated memory by this loading.
+  !! specified to limit the allocated memory by these routines (and make the
+  !! interfaces distinguishable).
   interface aot_get_val
     module procedure get_config_real_vvect
     module procedure get_config_double_vvect
@@ -60,6 +61,8 @@ module aot_vector_module
   !!
   !! The given vector has to exist already and will be filled by
   !! values from the Lua table, as far as they exist.
+  !! If the Lua table is longer than the available elements in the array
+  !! only the first elements from the table will be stored in the array.
   interface aot_get_val
     module procedure get_config_real_v
     module procedure get_config_double_v

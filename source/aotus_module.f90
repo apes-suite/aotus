@@ -49,11 +49,11 @@ module aotus_module
   !!                    the requested data type
   !!
   !! For example a check for a fatal error can be done by
-  !! <tt>btest(errCode, aoterr_fatal)</tt>.
+  !! `btest(errCode, aoterr_fatal)`.
   !!
   !! For the access to global variables in the Lua script the interface
   !! therefore looks like:
-  !! <tt>call aot_get_val(val, errCode, L, key, default)</tt>.
+  !! `call aot_get_val(val, errCode, L, key, default)`.
   !! See for example aotus_module#get_config_real for a more detailed
   !! description of the parameters.
   interface aot_get_val

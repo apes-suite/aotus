@@ -1,4 +1,8 @@
-!> Module for interaction with topmost element of Luas stack.
+!> Module for interaction with topmost element of the Lua stack.
+!!
+!! This is a basic module which provides the fundamental functionality to
+!! access the topmost element in the stack of the Lua API.
+!! All intrinsic variables except complex numbers can be accessed this way.
 module aot_top_module
   use flu_binding
   use aot_kinds_module, only: double_k, single_k, long_k
@@ -16,6 +20,8 @@ module aot_top_module
   !! They indicate the bits to set in case of
   !! the corresponding error, to allow appropiate
   !! reactions of the calling application.
+  !! As a bitmask is used to encode the error, and combination of them
+  !! might be returned.
   integer, parameter :: aoterr_Fatal = 0
   integer, parameter :: aoterr_NonExistent = 1
   integer, parameter :: aoterr_WrongType = 2
@@ -28,6 +34,14 @@ module aot_top_module
   !! that it does not matter how the value
   !! actually gets on top of the stack by
   !! previous Lua operations.
+  !!
+  !! The interface looks like this:
+  !! `call aot_top_get_val(val, errCode, L, default)`.
+  !! See for example aot_top_get_real() for a more detailed
+  !! description of the parameters.
+  !!
+  !! The aot_top_get_val can not be in the same generic interface as the other
+  !! aot_get_val routines, as it results in ambiguities of the interfaces.
   interface aot_top_get_val
     module procedure aot_top_get_real
     module procedure aot_top_get_double
@@ -37,23 +51,20 @@ module aot_top_module
     module procedure aot_top_get_logical
   end interface
 
-  interface aot_get_val
-    module procedure aot_top_get_real
-    module procedure aot_top_get_double
-    module procedure aot_top_get_integer
-    module procedure aot_top_get_long
-    module procedure aot_top_get_string
-    module procedure aot_top_get_logical
-  end interface
-
-
 contains
 
-
+  !> Interpret topmost entry on Lua stack as a single precision real.
   subroutine aot_top_get_real(val, ErrCode, L, default)
-    type(flu_State) :: L
+    type(flu_State) :: L !< Handle to the Lua script
+
+    !> Value of the Variable in the script
     real(kind=single_k), intent(out) :: val
+
+    !> Error code to indicate what kind of problem might have occured.
     integer, intent(out) :: ErrCode
+
+    !> Some default value, that should be used, if the variable is not set in
+    !! the Lua script.
     real(kind=single_k), optional, intent(in) :: default
 
     logical :: not_retrievable
@@ -86,10 +97,18 @@ contains
   end subroutine aot_top_get_real
 
 
+  !> Interpret topmost entry on Lua stack as a double precision real.
   subroutine aot_top_get_double(val, ErrCode, L, default)
-    type(flu_State) :: L
+    type(flu_State) :: L !< Handle to the Lua script
+
+    !> Value of the Variable in the script
     real(kind=double_k), intent(out) :: val
+
+    !> Error code to indicate what kind of problem might have occured.
     integer, intent(out) :: ErrCode
+
+    !> Some default value, that should be used, if the variable is not set in
+    !! the Lua script.
     real(kind=double_k), optional, intent(in) :: default
 
     logical :: not_retrievable
@@ -122,10 +141,18 @@ contains
   end subroutine aot_top_get_double
 
 
+  !> Interpret topmost entry on Lua stack as a default integer.
   subroutine aot_top_get_integer(val, ErrCode, L, default)
-    type(flu_State) :: L
+    type(flu_State) :: L !< Handle to the Lua script
+
+    !> Value of the Variable in the script
     integer, intent(out) :: val
+
+    !> Error code to indicate what kind of problem might have occured.
     integer, intent(out) :: ErrCode
+
+    !> Some default value, that should be used, if the variable is not set in
+    !! the Lua script.
     integer, optional, intent(in) :: default
 
     logical :: not_retrievable
@@ -157,10 +184,19 @@ contains
 
   end subroutine aot_top_get_integer
 
+
+  !> Interpret topmost entry on Lua stack as a single precision real.
   subroutine aot_top_get_long(val, ErrCode, L, default)
-    type(flu_State) :: L
+    type(flu_State) :: L !< Handle to the Lua script
+
+    !> Value of the Variable in the script
     integer(kind=long_k), intent(out) :: val
+
+    !> Error code to indicate what kind of problem might have occured.
     integer, intent(out) :: ErrCode
+
+    !> Some default value, that should be used, if the variable is not set in
+    !! the Lua script.
     integer(kind=long_k), optional, intent(in) :: default
 
     logical :: not_retrievable
@@ -192,10 +228,19 @@ contains
 
   end subroutine aot_top_get_long
 
+
+  !> Interpret topmost entry on Lua stack as a single precision real.
   subroutine aot_top_get_logical(val, ErrCode, L, default)
-    type(flu_State) :: L
+    type(flu_State) :: L !< Handle to the Lua script
+
+    !> Value of the Variable in the script
     logical, intent(out) :: val
+
+    !> Error code to indicate what kind of problem might have occured.
     integer, intent(out) :: ErrCode
+
+    !> Some default value, that should be used, if the variable is not set in
+    !! the Lua script.
     logical, optional, intent(in) :: default
 
     logical :: not_retrievable
@@ -228,10 +273,18 @@ contains
   end subroutine aot_top_get_logical
 
 
+  !> Interpret topmost entry on Lua stack as a single precision real.
   subroutine aot_top_get_string(val, ErrCode, L, default)
-    type(flu_State) :: L
+    type(flu_State) :: L !< Handle to the Lua script
+
+    !> Value of the Variable in the script
     character(len=*) :: val
+
+    !> Error code to indicate what kind of problem might have occured.
     integer, intent(out) :: ErrCode
+
+    !> Some default value, that should be used, if the variable is not set in
+    !! the Lua script.
     character(len=*), optional, intent(in) :: default
 
     logical :: not_retrievable
@@ -265,11 +318,33 @@ contains
   end subroutine aot_top_get_string
 
 
+  !> Error handler to capture Lua errors.
+  !!
+  !! This routine encapsulates the retrieval of error messages from the Lua
+  !! stack upon a failing Lua operation.
+  !! It should be be used after all flu functions, that return an err as result.
+  !! Such as flu_binding::fluL_loadfile and flu_binding::flu_pcall.
+  !! The ErrString and ErrCode parameters are both optional if none of them are
+  !! provided, the execution will be stopped if an error had occured and err is
+  !! not 0. The error message will be written to standard output in this case.
+  !!
+  !! If either of them are provide, the application will continue, and the
+  !! calling side has to deal with the occured error.
   subroutine aot_err_handler(L, err, msg, ErrString, ErrCode)
-    type(flu_State) :: L
+    type(flu_State) :: L !< Handle to the Lua script
+
+    !> Lua error code to evaluate
     integer, intent(in) :: err
+
+    !> Some additional message that should be prepended to the Lua error
+    !! message.
     character(len=*), intent(in) :: msg
+
+    !> Resulting error string obtained by combination of msg and the error
+    !! description on the Lua stack.
     character(len=*), intent(out), optional :: ErrString
+
+    !> The Lua error code, just the same as err.
     integer, intent(out), optional :: ErrCode
 
     logical :: stop_on_error
