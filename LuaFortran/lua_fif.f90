@@ -13,6 +13,18 @@ module lua_fif
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   interface
 
+    subroutine lua_close(L) bind(c, name="lua_close")
+      use, intrinsic :: iso_c_binding
+      type(c_ptr), value :: L
+    end subroutine lua_close
+
+    subroutine lua_createtable(L, narr, nrec) bind(c, name="lua_createtable")
+      use, intrinsic :: iso_c_binding
+      type(c_ptr), value :: L
+      integer(kind=c_int), value :: narr
+      integer(kind=c_int), value :: nrec
+    end subroutine lua_createtable
+
     subroutine lua_getglobal(L, k) bind(c, name="lua_getglobal")
       use, intrinsic :: iso_c_binding
       type(c_ptr), value :: L
@@ -37,11 +49,6 @@ module lua_fif
       type(c_ptr), value :: L
       integer(kind=c_int) :: lua_gettop
     end function lua_gettop
-
-    subroutine lua_close(L) bind(c, name="lua_close")
-      use, intrinsic :: iso_c_binding
-      type(c_ptr), value :: L
-    end subroutine lua_close
 
     function lua_isNumber(L, index) bind(c, name="lua_isnumber")
       use, intrinsic :: iso_c_binding

@@ -49,6 +49,21 @@ contains
   end subroutine flu_close
 
 
+  subroutine flu_createtable(L, narr, nrec)
+    type(flu_State) :: L
+    integer :: narr
+    integer :: nrec
+
+    integer(kind=c_int) :: c_narr
+    integer(kind=c_int) :: c_nrec
+
+    c_narr = narr
+    c_nrec = nrec
+
+    call lua_createtable(L%state, c_narr, c_nrec)
+  end subroutine flu_createtable
+
+
   subroutine flu_getfield(L, index, k)
     type(flu_State)  :: L
     integer          :: index
