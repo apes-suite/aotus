@@ -7,6 +7,8 @@
 !! - Execute the function with aot_fun_do().
 !! - Retrieve the possibly multiple results with
 !!   AOT_top_module::aot_top_get_val.
+!!   if there are multiple results to be retrieved from the function, kep
+!!   in mind, that they will be in reversed order on the stack!
 !! - Repeat putting and retrieving if needed.
 !! - Close the function finally with aot_fun_close().
 module aot_fun_module
@@ -42,6 +44,7 @@ module aot_fun_module
   !!
   !! Arguments have to be in order, first put the first argument then the second
   !! and so on.
+  !! Currently only double precision arguments are supported.
   interface aot_fun_put
     module procedure aot_fun_put_double
   end interface aot_fun_put
@@ -61,7 +64,12 @@ contains
     fun%handle = 0
     fun%arg_count = 0
     if (flu_isFunction(L, -1)) then
+      ! Keep a handle to this function.
       fun%handle = flu_gettop(L)
+      ! Push a copy of the function right after it, the function will
+      ! be popped from the stack upon execution. Thus this copy is
+      ! used to ensure the reference to the function is kept across
+      ! several executions of the function.
       call flu_pushvalue(L, -1)
     end if
   end function aot_fun_top
@@ -121,8 +129,6 @@ contains
 
 
   !> Put an argument of type double into the list of arguments for the function.
-  !!
-  !! Currently only double precision reals are supported.
   subroutine aot_fun_put_double(L, fun, arg)
     type(flu_state) :: L !< Handle for the Lua script.
 
@@ -132,15 +138,28 @@ contains
     !> Actual argument to hand over to the Lua function.
     real(kind=double_k), intent(in) :: arg
 
+    ! Only do something, if the function is actually properly defined.
     if (fun%handle /= 0) then
+
+      ! If the function was executed before this call, it has to be
+      ! reset.
       if (fun%arg_count == -1) then
+        ! Set the top of the stack to the reference of the function.
+        ! Discarding anything above it.
         call flu_settop(L, fun%handle)
+        ! Push a copy of the function itself on the stack again, before
+        ! adding arguments, to savely survive popping of the function
+        ! upon execution.
         call flu_pushvalue(L, fun%handle)
+        ! Increase the argument count to 0 again (really start counting
+        ! arguments afterwards.
         fun%arg_count = fun%arg_count+1
       end if
+
       call flu_pushNumber(L, arg)
       fun%arg_count = fun%arg_count+1
     end if
+
   end subroutine aot_fun_put_double
 
 
@@ -151,6 +170,9 @@ contains
   !! success of the function execution.
   !! If none of them are in the argument list, the execution of the application
   !! will be stopped, and the error will be printed to the standard output.
+  !! You have to provide the number of results to obtain in nresults. Keep in
+  !! mind, that multiple results have to obtained in reverse order from the
+  !! stack.
   subroutine aot_fun_do(L, fun, nresults, ErrCode, ErrString)
     type(flu_state) :: L !< Handle for the Lua script.
 
