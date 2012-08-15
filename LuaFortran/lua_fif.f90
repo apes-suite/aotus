@@ -1,10 +1,10 @@
+!> This module provides a direct translation of some
+!! Lua 5.2.1
+!! C-Interfaces to Fortran 2003 interfaces using the
+!! ISO_C_BINDING facilities.
 module lua_fif
   use, intrinsic :: iso_c_binding
   use lua_parameters
-  ! This module provides a direct translation of the
-  ! lua 5.1.4
-  ! C-Interfaces to Fortran 2003 interfaces using the
-  ! ISO_C_BINDING facilities.
 
   implicit none
 
@@ -99,17 +99,23 @@ module lua_fif
       integer(kind=c_int), value :: index
     end subroutine lua_pushvalue
 
-    subroutine lua_settop(L, index) bind(c, name="lua_settop")
-      use, intrinsic :: iso_c_binding
-      type(c_ptr), value :: L
-      integer(kind=c_int), value :: index
-    end subroutine lua_settop
-
     subroutine lua_setglobal(L, k) bind(c, name="lua_setglobal")
       use, intrinsic :: iso_c_binding
       type(c_ptr), value :: L
       character(kind=c_char), dimension(*) :: k
     end subroutine lua_setglobal
+
+    subroutine lua_settable(L, index) bind(c, name="lua_settable")
+      use, intrinsic :: iso_c_binding
+      type(c_ptr), value :: L
+      integer(kind=c_int), value :: index
+    end subroutine lua_settable
+
+    subroutine lua_settop(L, index) bind(c, name="lua_settop")
+      use, intrinsic :: iso_c_binding
+      type(c_ptr), value :: L
+      integer(kind=c_int), value :: index
+    end subroutine lua_settop
 
     function lua_tolstring(L, index, len) bind(c, name="lua_tolstring")
       use, intrinsic :: iso_c_binding

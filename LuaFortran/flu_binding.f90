@@ -1,3 +1,10 @@
+!> This module provides the Fortran Lua interface.
+!!
+!! It defines a flu_state which encapsulates the
+!! Lua state and is used to reference a Lua script.
+!! The main content are then the wrapper implementations
+!! which ease the usage of the Lua functions declared
+!! in the lua_fif module.
 module flu_binding
   use, intrinsic :: iso_c_binding
   use lua_fif
@@ -14,6 +21,7 @@ module flu_binding
   public :: flu_State
 
   public :: flu_close, flu_isopen
+  public :: flu_createTable
   public :: flu_getField, flu_getGlobal, flu_getTable, flu_getTop
   public :: flu_setGlobal
   public :: flu_isFunction, flu_isNumber, flu_isTable
@@ -22,6 +30,7 @@ module flu_binding
   public :: flu_pcall
   public :: flu_next
   public :: flu_setTop
+  public :: flu_setTable
   public :: flu_todouble
   public :: flu_tolstring, flu_tonumber, flu_toboolean
   public :: flu_pop
@@ -285,6 +294,17 @@ contains
     c_index = index
     call lua_pushvalue(L%state, c_index)
   end subroutine flu_pushvalue
+
+
+  subroutine flu_settable(L, n)
+    type(flu_State) :: L
+    integer, intent(in) :: n
+
+    integer(kind=c_int) :: n_c
+
+    n_c = n
+    call lua_settable(L%state, n_c)
+  end subroutine flu_settable
 
 
   subroutine flu_settop(L, n)
