@@ -99,6 +99,13 @@ module lua_fif
       integer(kind=c_int), value :: index
     end subroutine lua_pushvalue
 
+    subroutine lua_setfield(L, index, k) bind(c, name="lua_setfield")
+      use, intrinsic :: iso_c_binding
+      type(c_ptr), value :: L
+      integer(kind=c_int), value :: index
+      character(kind=c_char), dimension(*) :: k
+    end subroutine lua_setfield
+
     subroutine lua_setglobal(L, k) bind(c, name="lua_setglobal")
       use, intrinsic :: iso_c_binding
       type(c_ptr), value :: L

@@ -30,7 +30,7 @@ module flu_binding
   public :: flu_pcall
   public :: flu_next
   public :: flu_setTop
-  public :: flu_setTable
+  public :: flu_setTable, flu_setField
   public :: flu_todouble
   public :: flu_tolstring, flu_tonumber, flu_toboolean
   public :: flu_pop
@@ -316,6 +316,20 @@ contains
     n_c = n
     call lua_settop(L%state, n_c)
   end subroutine flu_settop
+
+
+  subroutine flu_setfield(L, index, k)
+    type(flu_State)  :: L
+    integer          :: index
+    character(len=*) :: k
+
+    integer(kind=c_int) :: c_index
+    character(len=len_trim(k)+1) :: c_k
+
+    c_k = trim(k) // c_null_char
+    c_index = index
+    call lua_setfield(L%state, c_index, c_k)
+  end subroutine flu_setfield
 
 
   subroutine flu_setglobal(L, k)
