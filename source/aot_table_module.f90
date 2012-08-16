@@ -11,6 +11,7 @@ module aot_table_module
   public :: aot_table_top, aot_table_length, aot_table_first, aot_table_push
   public :: aot_table_open, aot_table_close, aot_table_get_val
   public :: aot_table_from_1Darray
+  public :: aot_table_set_val, aot_table_set_top
   public :: aot_get_val
 
   !> This routine provides a way to open a table either as a globally defined
@@ -39,6 +40,21 @@ module aot_table_module
     module procedure get_table_long
     module procedure get_table_string
     module procedure get_table_logical
+  end interface
+
+  !> Set a value in a table.
+  !!
+  !! The given value will be put at the entry named by key into the table
+  !! provided in thandle.
+  !! Alternatively you can also put the value by position into the table by
+  !! providing the pos argument.
+  !! If both, pos and key are provided, the key will be used.
+  !! Though, both of them are optional, at least one of them has to be provided.
+  interface aot_table_set_val
+    module procedure set_table_real
+    module procedure set_table_double
+    module procedure set_table_integer
+    module procedure set_table_long
   end interface
 
   !> Get a value from a table.
@@ -509,6 +525,239 @@ contains
     call aot_top_get_val(val, ErrCode, L, default)
 
   end subroutine get_table_string
+
+
+  !===========================================================================!
+
+
+  !> Put the top of the stack into a table.
+  subroutine aot_table_set_top(L, thandle, key, pos)
+    type(flu_State) :: L !< Handle to the Lua script.
+
+    !> Handle to the table to look the value up in.
+    integer, intent(in) :: thandle
+
+    !> Name of the entry to look for.
+    !!
+    !! Key and pos are both optional, however at least one of them has to be
+    !! supplied.
+    !! The key takes precedence over the pos if both are given.
+    character(len=*), intent(in), optional :: key
+
+    !> Position of the entry to look for in the table.
+    !!
+    !! It allows the access to unnamed arrays in the Lua tables.
+    integer, intent(in), optional :: pos
+
+    integer :: indpos
+
+    if (thandle > 0) then
+      if (present(key)) then
+        ! Now put it into the table
+        call flu_setField(L, thandle, trim(key))
+      else
+        ! No key given, try to put the value by position
+        if (present(pos)) then
+          ! First store the current top of the stack for later reference, to
+          ! move the desired position infront of it.
+          indpos = flu_gettop(L)
+          ! First put the index, where to write the value into the table, on the
+          ! stack.
+          call flu_pushInteger(L, pos)
+          ! Now move this position infront of the actual argument, which was
+          ! at the top previously..
+          call flu_insert(L, indpos)
+          ! Get the two entries from the stack into the table.
+          call flu_setTable(L, thandle)
+        end if
+      end if
+    end if
+
+  end subroutine aot_table_set_top
+
+
+  !> Put a single precision real value into a table.
+  subroutine set_table_real(val, L, thandle, key, pos)
+    type(flu_State) :: L !< Handle to the Lua script.
+
+    !> Handle to the table to look the value up in.
+    integer, intent(in) :: thandle
+
+    !> Value of the table entry if it exists.
+    real(kind=single_k), intent(in) :: val
+
+    !> Name of the entry to look for.
+    !!
+    !! Key and pos are both optional, however at least one of them has to be
+    !! supplied.
+    !! The key takes precedence over the pos if both are given.
+    character(len=*), intent(in), optional :: key
+
+    !> Position of the entry to look for in the table.
+    !!
+    !! It allows the access to unnamed arrays in the Lua tables.
+    integer, intent(in), optional :: pos
+
+    if (thandle > 0) then
+      if (present(key)) then
+        ! If there is a key, use that.
+        ! First put the value on the top of the stack
+        call flu_pushNumber(L, val)
+        ! Now put it into the table
+        call flu_setField(L, thandle, trim(key))
+      else
+        ! No key given, try to put the value by position
+        if (present(pos)) then
+          ! First put the index, where to write the value into the table, on the
+          ! stack.
+          call flu_pushInteger(L, pos)
+          ! Now put the actual value on the top of the stack.
+          call flu_pushNumber(L, val)
+          ! Get the two entries from the stack into the table.
+          call flu_setTable(L, thandle)
+        end if
+      end if
+    end if
+
+  end subroutine set_table_real
+
+
+  !> Put a double precision real value into a table.
+  subroutine set_table_double(val, L, thandle, key, pos)
+    type(flu_State) :: L !< Handle to the Lua script.
+
+    !> Handle to the table to look the value up in.
+    integer, intent(in) :: thandle
+
+    !> Value of the table entry if it exists.
+    real(kind=double_k), intent(in) :: val
+
+    !> Name of the entry to look for.
+    !!
+    !! Key and pos are both optional, however at least one of them has to be
+    !! supplied.
+    !! The key takes precedence over the pos if both are given.
+    character(len=*), intent(in), optional :: key
+
+    !> Position of the entry to look for in the table.
+    !!
+    !! It allows the access to unnamed arrays in the Lua tables.
+    integer, intent(in), optional :: pos
+
+    if (thandle > 0) then
+      if (present(key)) then
+        ! If there is a key, use that.
+        ! First put the value on the top of the stack
+        call flu_pushNumber(L, val)
+        ! Now put it into the table
+        call flu_setField(L, thandle, trim(key))
+      else
+        ! No key given, try to put the value by position
+        if (present(pos)) then
+          ! First put the index, where to write the value into the table, on the
+          ! stack.
+          call flu_pushInteger(L, pos)
+          ! Now put the actual value on the top of the stack.
+          call flu_pushNumber(L, val)
+          ! Get the two entries from the stack into the table.
+          call flu_setTable(L, thandle)
+        end if
+      end if
+    end if
+
+  end subroutine set_table_double
+
+
+  !> Put a default integer value into a table.
+  subroutine set_table_integer(val, L, thandle, key, pos)
+    type(flu_State) :: L !< Handle to the Lua script.
+
+    !> Handle to the table to look the value up in.
+    integer, intent(in) :: thandle
+
+    !> Value of the table entry if it exists.
+    integer, intent(in) :: val
+
+    !> Name of the entry to look for.
+    !!
+    !! Key and pos are both optional, however at least one of them has to be
+    !! supplied.
+    !! The key takes precedence over the pos if both are given.
+    character(len=*), intent(in), optional :: key
+
+    !> Position of the entry to look for in the table.
+    !!
+    !! It allows the access to unnamed arrays in the Lua tables.
+    integer, intent(in), optional :: pos
+
+    if (thandle > 0) then
+      if (present(key)) then
+        ! If there is a key, use that.
+        ! First put the value on the top of the stack
+        call flu_pushInteger(L, val)
+        ! Now put it into the table
+        call flu_setField(L, thandle, trim(key))
+      else
+        ! No key given, try to put the value by position
+        if (present(pos)) then
+          ! First put the index, where to write the value into the table, on the
+          ! stack.
+          call flu_pushInteger(L, pos)
+          ! Now put the actual value on the top of the stack.
+          call flu_pushInteger(L, val)
+          ! Get the two entries from the stack into the table.
+          call flu_setTable(L, thandle)
+        end if
+      end if
+    end if
+
+  end subroutine set_table_integer
+
+
+  !> Put a long integer value into a table.
+  subroutine set_table_long(val, L, thandle, key, pos)
+    type(flu_State) :: L !< Handle to the Lua script.
+
+    !> Handle to the table to look the value up in.
+    integer, intent(in) :: thandle
+
+    !> Value of the table entry if it exists.
+    integer(kind=long_k), intent(in) :: val
+
+    !> Name of the entry to look for.
+    !!
+    !! Key and pos are both optional, however at least one of them has to be
+    !! supplied.
+    !! The key takes precedence over the pos if both are given.
+    character(len=*), intent(in), optional :: key
+
+    !> Position of the entry to look for in the table.
+    !!
+    !! It allows the access to unnamed arrays in the Lua tables.
+    integer, intent(in), optional :: pos
+
+    if (thandle > 0) then
+      if (present(key)) then
+        ! If there is a key, use that.
+        ! First put the value on the top of the stack
+        call flu_pushInteger(L, int(val))
+        ! Now put it into the table
+        call flu_setField(L, thandle, trim(key))
+      else
+        ! No key given, try to put the value by position
+        if (present(pos)) then
+          ! First put the index, where to write the value into the table, on the
+          ! stack.
+          call flu_pushInteger(L, pos)
+          ! Now put the actual value on the top of the stack.
+          call flu_pushInteger(L, int(val))
+          ! Get the two entries from the stack into the table.
+          call flu_setTable(L, thandle)
+        end if
+      end if
+    end if
+
+  end subroutine set_table_long
 
 
   !> This subroutine takes a one dimensional array, and puts it as a table

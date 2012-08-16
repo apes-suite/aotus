@@ -24,6 +24,7 @@ module flu_binding
   public :: flu_createTable
   public :: flu_getField, flu_getGlobal, flu_getTable, flu_getTop
   public :: flu_setGlobal
+  public :: flu_insert
   public :: flu_isFunction, flu_isNumber, flu_isTable
   public :: flu_isNone, flu_isNoneOrNil, flu_isNil
   public :: flu_isBoolean
@@ -115,6 +116,17 @@ contains
 
     stacktop = int(lua_gettop(L%state), kind=kind(stacktop))
   end function flu_gettop
+
+
+  subroutine flu_insert(L, index)
+    type(flu_state) :: L
+    integer :: index
+
+    integer(kind=c_int) :: c_index
+
+    c_index = int(index, kind = c_int)
+    call lua_insert(L%state, c_index)
+  end subroutine flu_insert
 
 
   function flu_isBoolean(L, index) result(is_boolean)

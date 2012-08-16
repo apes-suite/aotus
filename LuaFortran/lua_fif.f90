@@ -50,6 +50,12 @@ module lua_fif
       integer(kind=c_int) :: lua_gettop
     end function lua_gettop
 
+    subroutine lua_insert(L, index) bind(c, name="lua_insert")
+      use, intrinsic :: iso_c_binding
+      type(c_ptr), value :: L
+      integer(kind=c_int) :: index
+    end subroutine lua_insert
+
     function lua_isNumber(L, index) bind(c, name="lua_isnumber")
       use, intrinsic :: iso_c_binding
       type(c_ptr), value :: L
