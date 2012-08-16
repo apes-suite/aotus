@@ -10,16 +10,18 @@ module aot_table_module
 
   public :: aot_table_top, aot_table_length, aot_table_first, aot_table_push
   public :: aot_table_open, aot_table_close, aot_table_get_val
+  public :: aot_table_from_1Darray
   public :: aot_get_val
 
-  !> This routine provides a way to open a table
-  !! either as a globally defined one, are as a
-  !! table within another table.
-  !! After the table is opened, the returned
-  !! handle can be used to access its components.
+  !> This routine provides a way to open a table either as a globally defined
+  !! one, a table within another table or a newly defined one.
+  !!
+  !! After the table is opened, the returned handle can be used to access its
+  !! components.
   interface aot_table_open
     module procedure aot_table_global
     module procedure aot_table_table
+    module procedure aot_table_new
   end interface
 
   !> Get a value from a table.
@@ -75,6 +77,15 @@ module aot_table_module
     module procedure get_table_logical
   end interface
 
+  !> This interface enables the simple creation of uniform one dimensional
+  !! arrays as tables in the Lua context.
+  !!
+  !! It takes an one dimensional array of values and returns a thandle to
+  !! identify the newly generated table.
+  interface aot_table_from_1Darray
+    module procedure create_1Darray_real
+    module procedure create_1Darray_double
+  end interface
 
 contains
 
@@ -149,6 +160,20 @@ contains
     thandle = aot_table_top(L)
   end subroutine aot_table_table
 
+
+  !> Open a new, empty table to fill it subsequently.
+  !!
+  !! Return its position in the stack as a handle for this
+  !! table.
+  subroutine aot_table_new(L, thandle)
+    type(flu_state) :: L !< Handle for the Lua script.
+
+    !> A handle for the table to access it.
+    integer, intent(out) :: thandle
+
+    call flu_createtable(L, 0, 0)
+    thandle = flu_gettop(L)
+  end subroutine aot_table_new
 
   !> Close a table again.
   !!
@@ -485,5 +510,68 @@ contains
 
   end subroutine get_table_string
 
+
+  !> This subroutine takes a one dimensional array, and puts it as a table
+  !! into the Lua context.
+  !!
+  !! The returned thandle provides the index to access this newly created
+  !! table.
+  subroutine create_1Darray_real(L, thandle, val)
+    type(flu_State) :: L !< Handle to the Lua script.
+
+    !> Handle to access the newly created table.
+    integer, intent(out) :: thandle
+
+    !> Values to put into the new table.
+    real(kind=single_k), intent(in) :: val(:)
+
+    integer :: tab
+    integer :: nvals
+    integer :: i
+
+    nVals = size(val)
+    call flu_createtable(L, nVals, 0)
+    thandle = flu_gettop(L)
+    tab = thandle
+
+    do i=1,nVals
+      call flu_pushInteger(L, i)
+      call flu_pushNumber(L, val(i))
+      call flu_settable(L, tab)
+    end do
+
+  end subroutine create_1Darray_real
+
+
+  !> This subroutine takes a one dimensional array, and puts it as a table
+  !! into the Lua context.
+  !!
+  !! The returned thandle provides the index to access this newly created
+  !! table.
+  subroutine create_1Darray_double(L, thandle, val)
+    type(flu_State) :: L !< Handle to the Lua script.
+
+    !> Handle to access the newly created table.
+    integer, intent(out) :: thandle
+
+    !> Values to put into the new table.
+    real(kind=double_k), intent(in) :: val(:)
+
+    integer :: tab
+    integer :: nvals
+    integer :: i
+
+    nVals = size(val)
+    call flu_createtable(L, nVals, 0)
+    thandle = flu_gettop(L)
+    tab = thandle
+
+    do i=1,nVals
+      call flu_pushInteger(L, i)
+      call flu_pushNumber(L, val(i))
+      call flu_settable(L, tab)
+    end do
+
+  end subroutine create_1Darray_double
 
 end module aot_table_module
