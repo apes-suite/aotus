@@ -46,6 +46,7 @@ module aot_fun_module
   !! and so on.
   !! Currently only double precision arguments are supported.
   interface aot_fun_put
+    module procedure aot_fun_put_top
     module procedure aot_fun_put_double
   end interface aot_fun_put
 
@@ -126,6 +127,50 @@ contains
     fun%handle = 0
     fun%arg_count = 0
   end subroutine aot_fun_close
+
+
+  !> Put the top of the stack as argument into the list of arguments for the
+  !! function.
+  subroutine aot_fun_put_top(L, fun)
+    type(flu_state) :: L !< Handle for the Lua script.
+
+    !> Handle of the function, this argument should be put into.
+    type(aot_fun_type) :: fun
+
+    integer :: curtop
+
+    ! Only do something, if the function is actually properly defined.
+    if (fun%handle /= 0) then
+
+      ! Get position of current top of the stack.
+      curtop = flu_gettop(L)
+
+      ! If the function was executed before this call, it has to be
+      ! reset.
+      if (fun%arg_count == -1) then
+        ! Only procede, if curtop is exactly one above the function reference,
+        ! that is after executing the function previously, only one item was
+        ! put into the stack, which should now be used as an argument.
+        if (curtop == fun%handle+1) then
+          ! Push a copy of the function itself on the stack again, before
+          ! adding arguments, to savely survive popping of the function
+          ! upon execution. (insert this copy before the already added argument)
+          call flu_insert(L, fun%handle+1)
+          ! Increase the argument count to 0 again (really start counting
+          ! arguments afterwards.
+          fun%arg_count = fun%arg_count+1
+          curtop = curtop + 1
+        end if
+      end if
+
+      ! Only proceed, if the current top is actually a new argument (that is, it
+      ! is especially not the function copy at fun%handle + 1 itself).
+      if ((curtop - fun%arg_count) == (fun%handle + 2)) then
+        fun%arg_count = fun%arg_count+1
+      end if
+    end if
+
+  end subroutine aot_fun_put_top
 
 
   !> Put an argument of type double into the list of arguments for the function.
