@@ -551,26 +551,32 @@ contains
 
     integer :: indpos
 
-    if (thandle > 0) then
+    ! First store the current top of the stack for later reference, to
+    ! move the desired position infront of it.
+    indpos = flu_gettop(L)
+
+    ! Only put the top into the given table, if it is a valid reference,
+    ! and the top is not the table itself.
+    if ( (thandle > 0) .and. (thandle < indpos) ) then
+
       if (present(key)) then
-        ! Now put it into the table
+        ! There is a key, given, use it to put the value into the table.
         call flu_setField(L, thandle, trim(key))
       else
         ! No key given, try to put the value by position
         if (present(pos)) then
-          ! First store the current top of the stack for later reference, to
-          ! move the desired position infront of it.
-          indpos = flu_gettop(L)
           ! First put the index, where to write the value into the table, on the
           ! stack.
           call flu_pushInteger(L, pos)
           ! Now move this position infront of the actual argument, which was
-          ! at the top previously..
+          ! at the top previously.
           call flu_insert(L, indpos)
-          ! Get the two entries from the stack into the table.
+          ! Use the two entries from the stack to put the value at the given
+          ! position into the table.
           call flu_setTable(L, thandle)
         end if
       end if
+
     end if
 
   end subroutine aot_table_set_top
