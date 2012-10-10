@@ -402,7 +402,11 @@ static void finishCcall (lua_State *L) {
   int n;
   lua_assert(ci->u.c.k != NULL);  /* must have a continuation */
   lua_assert(L->nny == 0);
-  /* finish 'lua_callk' */
+  if (ci->callstatus & CIST_YPCALL) {  /* was inside a pcall? */
+    ci->callstatus &= ~CIST_YPCALL;  /* finish 'lua_pcall' */
+    L->errfunc = ci->u.c.old_errfunc;
+  }
+  /* finish 'lua_callk'/'lua_pcall' */
   adjustresults(L, ci->nresults);
   /* call continuation function */
   if (!(ci->callstatus & CIST_STAT))  /* no call status? */
