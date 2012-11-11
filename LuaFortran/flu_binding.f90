@@ -46,6 +46,15 @@ module flu_binding
     module procedure flu_pushdouble
   end interface flu_pushnumber
 
+  ! Interoperable interface required for a function that is callable from Lua.
+  abstract interface
+    function lua_Function(s) result(val) bind(c)
+      use, intrinsic :: iso_c_binding
+      integer(c_int) :: val 
+      type(c_ptr), value :: s
+    end function lua_Function
+  end interface
+
 contains
 
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -414,6 +423,21 @@ contains
     c_index = index
     bool = (lua_toBoolean(L%state, c_index) == 1)
   end function flu_toBoolean
+
+  subroutine flu_pushcclosure(L, fn, n)
+    type(flu_State), value :: L 
+    procedure(lua_Function) :: fn
+    integer :: n 
+
+    integer(c_int) :: c_n
+    type(c_funptr) :: c_fn
+
+    c_n = n 
+    c_fn = c_funloc(fn)
+
+    call lua_pushcclosure(L%state, c_fn, c_n)
+
+  end subroutine flu_pushcclosure
 
 
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

@@ -161,6 +161,13 @@ module lua_fif
       integer(kind=c_int) :: lua_type
     end function lua_type
 
+    subroutine lua_pushcclosure(L, c_fn, n) bind(c, name="lua_pushcclosure")
+      use, intrinsic :: iso_c_binding
+      type(c_ptr), value :: L
+      type(c_funptr), value :: c_fn
+      integer(c_int), value :: n
+    end subroutine lua_pushcclosure
+
   end interface
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
