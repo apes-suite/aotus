@@ -39,6 +39,7 @@ module flu_binding
   public :: flu_pushvalue
 
   public :: fluL_loadfile, fluL_newstate, fluL_openlibs, fluL_loadstring
+  public :: flu_copyptr
 
   interface flu_pushnumber
     module procedure flu_pushreal
@@ -468,6 +469,19 @@ contains
     call luaL_openlibs(L%state)
   end subroutine fluL_openlibs
 
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  ! Routines for using existing Lua states with 
+  ! flu_binding
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+  function flu_copyptr(lua_state) result(L)
+      ! WARNING: this copies the pointer to an existing Lua state, not the Lua
+      ! state itself.  Modifying L via the flu bindings will modify the same Lua
+      ! state as pointed to by lua_state.
+      type(flu_State) :: L
+      type(c_ptr), intent(in) :: lua_state
+      L%state = lua_state
+  end function flu_copyptr
 
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   ! Routines for probing the Lua state
