@@ -40,6 +40,7 @@ module flu_binding
 
   public :: fluL_loadfile, fluL_newstate, fluL_openlibs, fluL_loadstring
   public :: flu_copyptr
+  public :: flu_register
 
   interface flu_pushnumber
     module procedure flu_pushreal
@@ -439,6 +440,19 @@ contains
 
   end subroutine flu_pushcclosure
 
+  subroutine flu_register(L, fn_name, fn) 
+
+    ! lua_register is defined as a macro in lua.h and isn't accessible from Fortran.
+    ! Re-implement macro explictly.
+
+    type(flu_State) :: L
+    character(len=*), intent(in) :: fn_name
+    procedure(lua_Function) :: fn
+
+    call flu_pushcclosure(L, fn, 0)
+    call flu_setglobal(L, fn_name)
+
+  end subroutine flu_register
 
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
