@@ -13,6 +13,8 @@ def options(opt):
     from waflib.Tools.compiler_fc import fc_compiler
     opt.load('compiler_fc')
     opt.load('compiler_c')
+    opt.load('waf_unit_test')
+    opt.load('utest_results')
 
 def configure(conf):
     from waflib import Logs
@@ -33,6 +35,8 @@ def configure(conf):
     # Load the compiler informations
     conf.load('compiler_fc')
     conf.load('compiler_c')
+    conf.load('waf_unit_test')
+
     conf.env.stash()
     try:
         conf.load('doxygen')
@@ -170,13 +174,14 @@ def build(bld):
         use = 'flu',
         target = 'flu_sample')
 
-    if bld.cmd == 'test':
-        for utest in bld.path.ant_glob('utests/*_test.f90'):
-            bld(
-                features = 'fc fcprogram',
-                source = utest,
-                use = 'aotus',
-                target = utest.change_ext(''))
+    for utest in bld.path.ant_glob('utests/*_test.f90'):
+        bld(
+            features = 'fc fcprogram test',
+            source = utest,
+            use = 'aotus',
+            target = utest.change_ext(''))
+    from waflib.extras import utest_results
+    bld.add_post_fun(utest_results.summary)
 
     if bld.cmd == 'doxy':
         bld(features = 'doxygen',

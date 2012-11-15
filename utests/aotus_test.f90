@@ -15,6 +15,9 @@ program aotus_test
   logical :: glob_log
   character(len=20) :: glob_string
   character(len=80) :: ErrString
+  logical :: passed
+
+  passed = .true.
 
   call create_script('aotus_test_config.lua')
   write(*,*)
@@ -41,12 +44,14 @@ program aotus_test
       &   write(*,*) '  : Variable not existent!'
     if (btest(iError, aoterr_WrongType)) &
       &   write(*,*) '  : Variable has wrong type!'
+    passed = .false.
   else
     if (glob_int == 5) then
       write(*,*) '  : success.'
     else
       write(*,*) '  : unexpected ERROR, value mismatch, got: ', glob_int
       write(*,*) '  :                             should be: ', 5
+      passed = .false.
     end if
   end if
   ! -------------------------------- !
@@ -63,6 +68,7 @@ program aotus_test
       &   write(*,*) '  : Variable not existent!'
     if (btest(iError, aoterr_WrongType)) &
       &   write(*,*) '  : Variable has wrong type!'
+    passed = .false.
   else
     if (glob_long == 5000000000_long_k) then
       write(*,*) '  : success.'
@@ -70,6 +76,7 @@ program aotus_test
       write(*,*) '  : unexpected ERROR, value mismatch, got: ', glob_long
       write(*,*) '  :                             should be: ', &
         &                                         5000000000_long_k
+      passed = .false.
     end if
   end if
   ! -------------------------------- !
@@ -85,12 +92,14 @@ program aotus_test
       &   write(*,*) '  : Variable not existent!'
     if (btest(iError, aoterr_WrongType)) &
       &   write(*,*) '  : Variable has wrong type!'
+    passed = .false.
   else
     if (glob_real == 0.5) then
       write(*,*) '  : success.'
     else
       write(*,*) '  : unexpected ERROR, value mismatch, got: ', glob_real
       write(*,*) '  :                             should be: ', 0.5
+      passed = .false.
     end if
   end if
   ! -------------------------------- !
@@ -107,12 +116,14 @@ program aotus_test
       &   write(*,*) '  : Variable not existent!'
     if (btest(iError, aoterr_WrongType)) &
       &   write(*,*) '  : Variable has wrong type!'
+    passed = .false.
   else
     if (glob_log) then
       write(*,*) '  : success.'
     else
       write(*,*) '  : unexpected ERROR, value mismatch, got: ', glob_log
       write(*,*) '  :                             should be: ', .true.
+      passed = .false.
     end if
   end if
   ! -------------------------------- !
@@ -128,12 +139,14 @@ program aotus_test
       &   write(*,*) '  : Variable not existent!'
     if (btest(iError, aoterr_WrongType)) &
       &   write(*,*) '  : Variable has wrong type!'
+    passed = .false.
   else
     if (trim(glob_string) == 'last words') then
       write(*,*) '  : success.'
     else
       write(*,*) '  : unexpected ERROR, value mismatch, got: ', glob_string
       write(*,*) '  :                             should be: ', 'last words'
+      passed = .false.
     end if
   end if
   ! -------------------------------- !
@@ -146,9 +159,11 @@ program aotus_test
 
   if (btest(iError, aoterr_Fatal)) then
     write(*,*) '  : unexpected FATAL Error occured !!!'
+    passed = .false.
   else
     if (btest(iError, aoterr_WrongType)) then
       write(*,*) '  : unexpected ERROR, found WrongType !!!'
+      passed = .false.
     else
       if (btest(iError, aoterr_NonExistent)) then
         if (glob_int == 1) then
@@ -156,10 +171,12 @@ program aotus_test
         else
           write(*,*) '  : unexpected ERROR, value mismatch, got: ', glob_int
           write(*,*) '  :                             should be: ', 1
+          passed = .false.
         end if
       else
         write(*,*) '  : ERROR: missing aoterr_NonExistent !!!'
         write(*,*) '  :        should receive error when looking up "nonexist"'
+        passed = .false.
       end if
     end if
   end if
@@ -175,9 +192,11 @@ program aotus_test
       write(*,*) '  : success.'
     else
       write(*,*) '  : ERROR no aoterr_NonExistent returned !!!'
+      passed = .false.
     end if
   else
     write(*,*) '  : ERROR unexpectly no fatal Error code returned !!!'
+    passed = .false.
   end if
   ! -------------------------------- !
 
@@ -191,9 +210,11 @@ program aotus_test
       write(*,*) '  : success.'
     else
       write(*,*) '  : ERROR no aoterr_WrongType returned !!!'
+      passed = .false.
     end if
   else
     write(*,*) '  : ERROR unexpectly no fatal Error code returned !!!'
+    passed = .false.
   end if
   ! -------------------------------- !
 
@@ -202,6 +223,11 @@ program aotus_test
   call close_config(conf)
   write(*,*) '  : success.'
   write(*,*) '... Done with aotus_test.'
+  if (passed) then
+    write(*,*) 'PASSED'
+  else
+    write(*,*) 'FAILED'
+  end if
 
 contains
 

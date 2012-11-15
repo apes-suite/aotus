@@ -18,12 +18,14 @@ program aot_table_test
   integer :: iError
   integer :: i
   character(len=80) :: ErrString
+  logical :: passed
 
   call create_script('aot_table_test_config.lua')
 
   write(*,*)
   write(*,*) 'Running aot_table_test...'
 
+  passed = .true.
   call open_config_file(L = conf, filename = 'aot_table_test_config.lua', &
     &                   ErrCode = iError, ErrString = ErrString)
   if (iError /= 0) then
@@ -39,6 +41,7 @@ program aot_table_test
   if (globhandle == 0) then
     write(*,*) '  : unexpected FATAL Error occured !!!'
     write(*,*) '  : could not open global table primes.'
+    passed = .false.
   else
     write(*,*) '  : success.'
     write(*,*) ' * getting the length of the table'
@@ -47,6 +50,7 @@ program aot_table_test
       write(*,*) '  : unexpected FATAL Error occured !!!'
       write(*,*) '  : found a table length of ', tablen
       write(*,*) '  :    but should have been ', 5
+      passed = .false.
     else
       write(*,*) '  : success.'
       write(*,*) ' * retrieving entries of table by position'
@@ -56,6 +60,7 @@ program aot_table_test
           &                val = tabint, ErrCode = iError)
         if (btest(iError, aoterr_Fatal)) then
           write(*,*) '  : unexpected FATAL Error occured !!!'
+          passed = .false.
           if (btest(iError, aoterr_NonExistent)) &
             &   write(*,*) '  : Variable not existent!'
           if (btest(iError, aoterr_WrongType)) &
@@ -65,6 +70,7 @@ program aot_table_test
           if (tabint /= primes(i)) then
             write(*,*) '  : unexpected ERROR, value mismatch, got: ', tabint
             write(*,*) '  :                             should be: ', primes(i)
+            passed = .false.
             iError = 42
             exit
           end if
@@ -78,6 +84,7 @@ program aot_table_test
       if (btest(iError, aoterr_Fatal)) then
         write(*,*) '  : success.'
       else
+        passed = .false.
         write(*,*) '  : ERROR, unexpected success in reading nonexistent entry'
         if (btest(iError, aoterr_NonExistent)) &
           &   write(*,*) '  : Variable not existent, but should be fatal!'
@@ -93,6 +100,12 @@ program aot_table_test
 
   call close_config(conf)
   write(*,*) '... Done with aot_table_test.'
+
+  if (passed) then
+    write(*,*) 'PASSED'
+  else
+    write(*,*) 'FAILED'
+  end if
 
 contains
 
