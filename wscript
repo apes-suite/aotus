@@ -174,13 +174,8 @@ def build(bld):
         use = 'flu',
         target = 'flu_sample')
 
-    for utest in bld.path.ant_glob('utests/*_test.f90'):
-        bld(
-            features = 'fc fcprogram test',
-            source = utest,
-            use = 'aotus',
-            target = utest.change_ext(''))
     from waflib.extras import utest_results
+    utest_results.utests(bld, 'aotus')
     bld.add_post_fun(utest_results.summary)
 
     if bld.cmd == 'doxy':
