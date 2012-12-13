@@ -125,6 +125,7 @@ def build(bld):
                    'LuaFortran/flu_binding.f90']
 
     aotus_sources = ['source/aotus_module.f90',
+                     'source/aot_err_module.f90',
                      'source/aot_fun_module.f90',
                      'source/aot_kinds_module.f90',
                      'source/aot_table_module.f90',
