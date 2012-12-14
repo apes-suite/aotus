@@ -200,6 +200,8 @@ def build(bld):
 
     from waflib.extras import utest_results
     utest_results.utests(bld, 'aotus')
+    if bld.env['quad_support']:
+        utest_results.utests(bld, use = 'aotus', path = 'utests/quadruple')
     bld.add_post_fun(utest_results.summary)
 
     if bld.cmd == 'doxy':
