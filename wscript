@@ -143,6 +143,7 @@ def build(bld):
                      'source/aot_table_ops_module.f90',
                      'source/aot_top_module.f90',
 		     'source/aot_out_module.f90',
+		     'source/aot_out_general_module.f90',
                      'source/aot_path_module.f90',
                      'source/aot_vector_module.f90']
 
