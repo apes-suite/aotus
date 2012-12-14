@@ -150,12 +150,14 @@ def build(bld):
 
     if bld.env['quad_support']:
         aotus_sources += ['source/quadruple/aot_quadruple_module.f90']
+        aotus_sources += ['source/quadruple/aot_quadruple_fun_module.f90']
         aotus_sources += ['source/quadruple/aot_quadruple_table_module.f90']
         aotus_sources += ['source/quadruple/aot_quadruple_top_module.f90']
         aotus_sources += ['source/quadruple/aot_quadruple_out_module.f90']
         aotus_sources += ['source/quadruple/aot_quadruple_vector_module.f90']
     else:
         aotus_sources += ['source/quadruple/dummy_quadruple_module.f90']
+        aotus_sources += ['source/quadruple/dummy_quadruple_fun_module.f90']
         aotus_sources += ['source/quadruple/dummy_quadruple_table_module.f90']
         aotus_sources += ['source/quadruple/dummy_quadruple_top_module.f90']
         aotus_sources += ['source/quadruple/dummy_quadruple_out_module.f90']

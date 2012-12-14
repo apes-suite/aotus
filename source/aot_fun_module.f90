@@ -18,6 +18,9 @@ module aot_fun_module
   use aot_table_module, only: aot_table_push
   use aot_top_module, only: aot_err_handler
 
+  ! Include quadruple precision interfaces if available
+  use aot_quadruple_fun_module
+
   implicit none
 
   private
@@ -44,6 +47,7 @@ module aot_fun_module
   interface aot_fun_put
     module procedure aot_fun_put_top
     module procedure aot_fun_put_double
+    module procedure aot_fun_put_single
   end interface aot_fun_put
 
 contains
@@ -202,6 +206,45 @@ contains
     end if
 
   end subroutine aot_fun_put_double
+
+
+  !> Put an argument of type single into the list of arguments for the function.
+  subroutine aot_fun_put_single(L, fun, arg)
+    type(flu_state) :: L !< Handle for the Lua script.
+
+    !> Handle of the function, this argument should be put into.
+    type(aot_fun_type) :: fun
+
+    !> Actual argument to hand over to the Lua function.
+    real(kind=single_k), intent(in) :: arg
+
+    real(kind=double_k) :: locarg
+
+    ! Only do something, if the function is actually properly defined.
+    if (fun%handle /= 0) then
+
+      locarg = real(arg, kind=double_k)
+
+      ! If the function was executed before this call, it has to be
+      ! reset.
+      if (fun%arg_count == -1) then
+        ! Set the top of the stack to the reference of the function.
+        ! Discarding anything above it.
+        call flu_settop(L, fun%handle)
+        ! Push a copy of the function itself on the stack again, before
+        ! adding arguments, to savely survive popping of the function
+        ! upon execution.
+        call flu_pushvalue(L, fun%handle)
+        ! Increase the argument count to 0 again (really start counting
+        ! arguments afterwards.
+        fun%arg_count = fun%arg_count+1
+      end if
+
+      call flu_pushNumber(L, locarg)
+      fun%arg_count = fun%arg_count+1
+    end if
+
+  end subroutine aot_fun_put_single
 
 
   !> Execute a given function and put its results on the stack, where it is
