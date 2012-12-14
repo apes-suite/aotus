@@ -13,6 +13,9 @@ module aot_out_module
     &                               aot_out_open_table, aot_out_close_table, &
     &                               aot_out_breakline
 
+  ! Include interfaces for quadruple precision if available.
+  use aot_quadruple_out_module
+
   implicit none
 
   public :: aot_out_type
