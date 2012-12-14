@@ -9,6 +9,12 @@ module aot_top_module
   use aot_err_module, only: aoterr_Fatal, aoterr_NonExistent, &
     &                       aoterr_WrongType, aot_err_handler
 
+  ! The following module enables an interface for quadruple precision numbers,
+  ! if the compiler supports them. However, you should be aware, that this is
+  ! merely a convenience interface, as the values provided by Lua are only
+  ! double precision.
+  use aot_quadruple_top_module
+
   implicit none
 
   private

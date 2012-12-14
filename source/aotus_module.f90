@@ -12,6 +12,12 @@ module aotus_module
   use aot_table_module, only: aot_get_val
   use aot_vector_module, only: aot_get_val, aot_top_get_val
 
+  ! The following module enables an interface for quadruple precision numbers,
+  ! if the compiler supports them. However, you should be aware, that this is
+  ! merely a convenience interface, as the values provided by Lua are only
+  ! double precision.
+  use aot_quadruple_module
+
   implicit none
 
   private

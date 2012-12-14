@@ -11,10 +11,16 @@
 module aot_vector_module
   use flu_binding
   use aot_kinds_module, only: double_k, single_k, long_k
-  use aot_table_module, only: aot_table_close, aot_table_top, &
-    &                         aot_table_length, aot_table_push, &
-    &                         aot_table_first
+  use aot_table_ops_module, only: aot_table_close, aot_table_top, &
+    &                             aot_table_length, aot_table_push, &
+    &                             aot_table_first
   use aot_top_module, only: aot_top_get_val, aoterr_NonExistent, aoterr_Fatal
+
+  ! The following module enables an interface for quadruple precision numbers,
+  ! if the compiler supports them. However, you should be aware, that this is
+  ! merely a convenience interface, as the values provided by Lua are only
+  ! double precision.
+  use aot_quadruple_vector_module
 
   implicit none
 

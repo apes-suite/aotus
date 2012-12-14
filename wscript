@@ -81,8 +81,19 @@ def subconf(conf):
                   header_name=['stdio.h'],
                   defines=['LUA_USE_POPEN=1'],
                   uselib_store='POPEN', mandatory=False)
+
+    conf.check_fc(fragment = '''
+       program checkquad
+         implicit none
+         integer, parameter :: quad_k = selected_real_kind(33)
+         real(kind=quad_k) :: a_quad_real
+       end program checkquad''',
+                  msg = 'Checking for Quadruple Precision',
+                  mandatory=False, define_name='quadruple')
+    conf.env['quad_support'] = conf.is_defined('quadruple')
     # Cleanup the DEFINES again
     conf.env.DEFINES = tmpDEF
+
 
 def build(bld):
     core_sources = ['external/lua-5.2.1/src/lapi.c',
@@ -129,10 +140,22 @@ def build(bld):
                      'source/aot_fun_module.f90',
                      'source/aot_kinds_module.f90',
                      'source/aot_table_module.f90',
+                     'source/aot_table_ops_module.f90',
                      'source/aot_top_module.f90',
 		     'source/aot_out_module.f90',
                      'source/aot_path_module.f90',
                      'source/aot_vector_module.f90']
+
+    if bld.env['quad_support']:
+        aotus_sources += ['source/quadruple/aot_quadruple_module.f90']
+        aotus_sources += ['source/quadruple/aot_quadruple_table_module.f90']
+        aotus_sources += ['source/quadruple/aot_quadruple_top_module.f90']
+        aotus_sources += ['source/quadruple/aot_quadruple_vector_module.f90']
+    else:
+        aotus_sources += ['source/quadruple/dummy_quadruple_module.f90']
+        aotus_sources += ['source/quadruple/dummy_quadruple_table_module.f90']
+        aotus_sources += ['source/quadruple/dummy_quadruple_top_module.f90']
+        aotus_sources += ['source/quadruple/dummy_quadruple_vector_module.f90']
 
     bld(
         features = 'c',
