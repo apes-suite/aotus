@@ -22,6 +22,9 @@ module aot_vector_module
   ! double precision.
   use aot_quadruple_vector_module
 
+  ! Support for extended double precision.
+  use aot_extdouble_vector_module
+
   implicit none
 
   public :: aot_table_get_val, aot_get_val, aot_top_get_val

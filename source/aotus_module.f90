@@ -18,6 +18,9 @@ module aotus_module
   ! double precision.
   use aot_quadruple_module
 
+  ! Support for extdouble precision.
+  use aot_extdouble_module
+
   implicit none
 
   private
