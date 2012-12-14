@@ -14,6 +14,7 @@
 module aot_fun_module
   use flu_binding
   use aot_kinds_module, only: double_k, single_k
+  use aot_fun_declaration_module, only: aot_fun_type
   use aot_table_module, only: aot_table_push
   use aot_top_module, only: aot_err_handler
 
@@ -22,11 +23,6 @@ module aot_fun_module
   private
 
   public :: aot_fun_type, aot_fun_open, aot_fun_close, aot_fun_put, aot_fun_do
-
-  type aot_fun_type
-    integer :: handle = 0
-    integer :: arg_count = 0
-  end type
 
   !> Open a Lua function for evaluation.
   !!
