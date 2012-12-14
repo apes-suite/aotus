@@ -10,6 +10,9 @@ module aot_quadruple_table_module
 
   private
 
+  public :: aot_table_get_val, aot_table_set_val, aot_table_from_1Darray, &
+    &       aot_get_val
+
   !> Get a value from a table.
   !!
   !! First the given key is looked up, if this fails, the value

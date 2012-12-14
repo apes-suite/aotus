@@ -3,6 +3,7 @@ program quadruple_test
 
   use aotus_module, only: open_config_file, close_config, aot_get_val
   use aot_top_module, only: aoterr_Fatal, aoterr_NonExistent, aoterr_WrongType
+  use aot_table_module, only: aot_table_open, aot_table_close
 
   implicit none
 
@@ -11,6 +12,8 @@ program quadruple_test
   type(flu_State) :: conf
   integer :: iError
   real(kind=quad_k) :: glob_quad
+  real(kind=quad_k) :: tab_quad
+  integer :: thandle
   character(len=80) :: ErrString
   logical :: passed
 
@@ -52,6 +55,39 @@ program quadruple_test
     end if
   end if
 
+  ! Testing for global Table
+  write(*,*) ' * opening a global table'
+  call aot_table_open(L = conf, thandle = thandle, key = 'tab')
+  if (thandle == 0) then
+    write(*,*) '  : unexpected FATAL Error occured !!!'
+    write(*,*) '  : could not open global table primes.'
+    passed = .false.
+  end if
+
+  call aot_get_val(L = conf, thandle = thandle, &
+    &              key = 'real_in_tab', &
+    &              val = tab_quad, ErrCode = iError)
+  if (btest(iError, aoterr_Fatal)) then
+    write(*,*) '  : unexpected FATAL Error occured !!!'
+    passed = .false.
+    if (btest(iError, aoterr_NonExistent)) &
+      &   write(*,*) '  : Variable not existent!'
+    if (btest(iError, aoterr_WrongType)) &
+      &   write(*,*) '  : Variable has wrong type!'
+  else
+    if (tab_quad /= 2.0_quad_k) then
+      write(*,*) '  : unexpected ERROR, value mismatch, got: ', tab_quad
+      write(*,*) '  :                             should be: ', 2.0
+      passed = .false.
+      iError = 42
+    end if
+  end if
+  if (iError == 0) write(*,*) '  : success.'
+
+  write(*,*) ' * Closing table'
+  call aot_table_close(L = conf, thandle = thandle)
+  write(*,*) '  : success.'
+
   write(*,*) ' * close_conf'
   call close_config(conf)
   write(*,*) '  : success.'
@@ -72,6 +108,7 @@ contains
     write(22,*) 'int_test = 5'
     write(22,*) 'long_test = 5000000000'
     write(22,*) 'real_test = 0.5'
+    write(22,*) 'tab = {real_in_tab = 2.0}'
     write(22,*) 'log_test = true'
     write(22,*) "string_test = 'last words'"
     close(22)

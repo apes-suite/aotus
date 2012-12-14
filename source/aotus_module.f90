@@ -17,9 +17,6 @@ module aotus_module
   ! merely a convenience interface, as the values provided by Lua are only
   ! double precision.
   use aot_quadruple_module
-  use aot_quadruple_table_module
-  use aot_quadruple_top_module
-  use aot_quadruple_vector_module
 
   implicit none
 
