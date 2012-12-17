@@ -21,6 +21,9 @@ module aot_fun_module
   ! Include quadruple precision interfaces if available
   use aot_quadruple_fun_module
 
+  ! Support for extended double precision
+  use aot_extdouble_fun_module
+
   implicit none
 
   private

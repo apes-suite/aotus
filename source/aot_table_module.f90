@@ -13,6 +13,9 @@ module aot_table_module
   ! double precision.
   use aot_quadruple_table_module
 
+  ! Support for extended double precision.
+  use aot_extdouble_table_module
+
   implicit none
 
   private

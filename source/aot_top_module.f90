@@ -15,6 +15,9 @@ module aot_top_module
   ! double precision.
   use aot_quadruple_top_module
 
+  ! Support for extended double precision.
+  use aot_extdouble_top_module
+
   implicit none
 
   private

@@ -16,6 +16,9 @@ module aot_out_module
   ! Include interfaces for quadruple precision if available.
   use aot_quadruple_out_module
 
+  ! Support for extended double precision.
+  use aot_extdouble_out_module
+
   implicit none
 
   public :: aot_out_type

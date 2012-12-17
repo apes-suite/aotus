@@ -91,6 +91,16 @@ def subconf(conf):
                   msg = 'Checking for Quadruple Precision',
                   mandatory=False, define_name='quadruple')
     conf.env['quad_support'] = conf.is_defined('quadruple')
+
+    conf.check_fc(fragment = '''
+       program checkxdble
+         implicit none
+         integer, parameter :: xdble_k = selected_real_kind(18)
+         real(kind=xdble_k) :: a_xdble_real
+       end program checkxdble''',
+                  msg = 'Checking for Extended Double Precision',
+                  mandatory=False, define_name='extdouble')
+    conf.env['xdble_support'] = conf.is_defined('extdouble')
     # Cleanup the DEFINES again
     conf.env.DEFINES = tmpDEF
 
@@ -162,6 +172,21 @@ def build(bld):
         aotus_sources += ['source/quadruple/dummy_quadruple_top_module.f90']
         aotus_sources += ['source/quadruple/dummy_quadruple_out_module.f90']
         aotus_sources += ['source/quadruple/dummy_quadruple_vector_module.f90']
+
+    if bld.env['xdble_support']:
+        aotus_sources += ['source/extdouble/aot_extdouble_module.f90']
+        aotus_sources += ['source/extdouble/aot_extdouble_fun_module.f90']
+        aotus_sources += ['source/extdouble/aot_extdouble_table_module.f90']
+        aotus_sources += ['source/extdouble/aot_extdouble_top_module.f90']
+        aotus_sources += ['source/extdouble/aot_extdouble_out_module.f90']
+        aotus_sources += ['source/extdouble/aot_extdouble_vector_module.f90']
+    else:
+        aotus_sources += ['source/extdouble/dummy_extdouble_module.f90']
+        aotus_sources += ['source/extdouble/dummy_extdouble_fun_module.f90']
+        aotus_sources += ['source/extdouble/dummy_extdouble_table_module.f90']
+        aotus_sources += ['source/extdouble/dummy_extdouble_top_module.f90']
+        aotus_sources += ['source/extdouble/dummy_extdouble_out_module.f90']
+        aotus_sources += ['source/extdouble/dummy_extdouble_vector_module.f90']
 
     bld(
         features = 'c',
