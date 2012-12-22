@@ -198,6 +198,16 @@ module lua_fif
       integer(kind=c_int) :: luaL_loadfilex
     end function luaL_loadfilex
 
+    function luaL_loadbufferx(L, buff, sz, name, mode) bind(c, name="luaL_loadbufferx")
+      use, intrinsic :: iso_c_binding
+      type(c_ptr), value :: L
+      character(kind=c_char), dimension(*) :: buff
+      integer(kind=c_size_t), value :: sz
+      character(kind=c_char), dimension(*) :: name
+      character(kind=c_char), dimension(*) :: mode
+      integer(kind=c_int) :: luaL_loadbufferx
+    end function luaL_loadbufferx
+
     function luaL_loadstring(L, string) bind(c, name="luaL_loadstring")
       use, intrinsic :: iso_c_binding
       type(c_ptr), value :: L

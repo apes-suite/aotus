@@ -151,7 +151,10 @@ def build(bld):
     lua_sources = ['external/lua-5.2.1/src/lua.c']
     luac_sources = ['external/lua-5.2.1/src/luac.c']
 
+    wrap_sources = ['LuaFortran/wrap_lua_dump.c']
+
     flu_sources = ['LuaFortran/lua_fif.f90',
+                   'LuaFortran/dump_lua_fif_module.f90',
                    'LuaFortran/lua_parameters.f90',
                    'LuaFortran/flu_binding.f90']
 
@@ -212,19 +215,26 @@ def build(bld):
         target = 'lua')
 
     bld(
+        features = 'c',
+        source = wrap_sources,
+        use = 'lua',
+        includes = 'external/lua-5.2.1/src',
+        target = 'wrapobjs')
+
+    bld(
         features = 'fc',
         source = flu_sources,
         target = 'fluobjs')
 
     bld(
         features = 'fc fcstlib',
-        use = ['luaobjs', 'fluobjs'],
+        use = ['luaobjs', 'fluobjs', 'wrapobjs'],
         target = 'flu')
 
     bld(
         features = 'fc fcstlib',
         source = aotus_sources,
-        use = ['luaobjs', 'fluobjs'],
+        use = ['luaobjs', 'fluobjs', 'wrapobjs'],
         target = 'aotus')
 
     bld(

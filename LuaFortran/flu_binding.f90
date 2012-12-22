@@ -8,6 +8,7 @@
 module flu_binding
   use, intrinsic :: iso_c_binding
   use lua_fif
+  use dump_lua_fif_module
 
   implicit none
 
@@ -39,13 +40,21 @@ module flu_binding
   public :: flu_pushvalue
 
   public :: fluL_loadfile, fluL_newstate, fluL_openlibs, fluL_loadstring
+  public :: fluL_loadbuffer
   public :: flu_copyptr
   public :: flu_register
+
+  public :: flu_dump
 
   interface flu_pushnumber
     module procedure flu_pushreal
     module procedure flu_pushdouble
   end interface flu_pushnumber
+
+  interface flu_dump
+    module procedure flu_dump_toBuf
+  end interface flu_dump
+
 
   ! Interoperable interface required for a function that is callable from Lua.
   abstract interface
@@ -479,6 +488,29 @@ contains
   end function fluL_loadfile
 
 
+  function fluL_loadbuffer(L, buffer, bufName) result(errcode)
+    type(flu_State) :: L
+    character :: buffer(:)
+    character(len=*), optional :: bufName
+    integer :: errcode
+
+    character(len=33) :: label
+    character(len=3) :: c_mode
+    integer(kind=c_int) :: c_errcode
+    integer(kind=c_size_t) :: nChars
+
+    if (present(bufName)) then
+      label = trim(bufName) // c_null_char
+    else
+      label = 'ScriptBuffer' // c_null_char
+    end if
+    nChars = int(size(buffer),kind=kind(nChars))
+    c_mode = "bt" // c_null_char
+    c_errcode = luaL_loadbufferx(L%state, buffer, nChars, label, c_mode)
+    errcode = c_errcode
+  end function fluL_loadbuffer
+
+
   function fluL_loadstring(L, string) result(errcode)
     type(flu_State) :: L
     character(len=*) :: string
@@ -533,5 +565,30 @@ contains
   end function flu_isopen
 
 
-end module flu_binding
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  !!! Wrapper implementation for lua_dump !!!
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+  !> Dump to a buffer and return the pointer to the resulting string.
+  subroutine flu_dump_toBuf(L, buf, length, iError)
+    type(flu_State) :: L
+    character, pointer :: buf(:)
+    integer :: length
+    integer :: iError
+
+    type(c_ptr) :: string_c
+    integer(kind=c_int) :: length_c
+    integer(kind=c_int) :: iErr
+
+    nullify(buf)
+    string_c = dump_lua_toBuf(L%state, length_c, iErr)
+    iError = int(iErr)
+    if (iError == 0) then
+      length = int(length_c)
+      call c_f_pointer(string_c, buf, [length])
+    else
+      length = 0
+    end if
+  end subroutine flu_dump_toBuf
+
+end module flu_binding
