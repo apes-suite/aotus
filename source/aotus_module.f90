@@ -27,7 +27,8 @@ module aotus_module
 
   public :: aot_get_val
   public :: open_config_file, close_config
-  public :: open_config_chunk
+  public :: open_config_chunk, open_config_buffer
+  public :: aot_file_to_buffer
 
   ! Entities inherited from aot_top_module, published here to
   ! allow most functionality by "use aotus_module".
@@ -160,6 +161,49 @@ contains
   end subroutine open_config_chunk
 
 
+  !> Subroutine to load and execute a script given in a buffer
+  !! (might be bytecode).
+  subroutine open_config_buffer(L, buffer, ErrCode, ErrString)
+    type(flu_State) :: L !< Handle to the Lua script
+
+    !> String with Lua code to load.
+    character, intent(in) :: buffer(:)
+
+    !> Error code returned by Lua during loading or executing the file.
+    !!
+    !! This optional parameter might be used to react on errors in the calling
+    !! side. If neither ErrCode nor ErrString are given, this subroutine will
+    !! stop the program execution and print the error message from Lua to the
+    !! stdout.
+    integer, intent(out), optional :: ErrCode
+
+    !> Obtained error description from the Lua stack.
+    !!
+    !! This optional argument holds the Lua error message in case somehting
+    !! went wrong. It can be used to provide some feedback to the user in the
+    !! calling routine. If neither ErrCode nor ErrString are provided,
+    !! open_config() will print the error message and stop program execution.
+    character(len=*), intent(out), optional :: ErrString
+
+    integer :: err
+
+    if (.not.flu_isopen(L)) L = fluL_newstate()
+
+    err = fluL_loadbuffer(L, buffer)
+
+    call aot_err_handler(L, err, 'Cannot load buffer:', ErrString, ErrCode)
+
+    if (err == 0) then
+      call fluL_openlibs(L)
+
+      err = flu_pcall(L, 0, 0, 0)
+
+      call aot_err_handler(L, err, 'Cannot run buffer:', ErrString, ErrCode)
+    end if
+
+  end subroutine open_config_buffer
+
+
   !> Close an opened Lua script again.
   subroutine close_config(L)
     type(flu_State) :: L !< Handle to the Lua script to close.
@@ -287,6 +331,65 @@ contains
     call aot_top_get_val(val, ErrCode, L, default)
 
   end subroutine get_config_string
+
+
+  !> Subroutine to load a script from a file and put it into a character buffer.
+  subroutine aot_file_to_buffer(filename, buffer, ErrCode, ErrString)
+    !> Name of file to load the Lua code from
+    character(len=*), intent(in) :: filename
+
+    !> Buffer to store the script in the given file in
+    character, pointer :: buffer(:)
+
+    !> Error code returned by Lua during loading or executing the file.
+    !!
+    !! This optional parameter might be used to react on errors in the calling
+    !! side. If neither ErrCode nor ErrString are given, this subroutine will
+    !! stop the program execution and print the error message from Lua to the
+    !! stdout.
+    integer, intent(out), optional :: ErrCode
+
+    !> Obtained error description from the Lua stack.
+    !!
+    !! This optional argument holds the Lua error message in case somehting
+    !! went wrong. It can be used to provide some feedback to the user in the
+    !! calling routine. If neither ErrCode nor ErrString are provided,
+    !! open_config() will print the error message and stop program execution.
+    character(len=*), intent(out), optional :: ErrString
+
+    type(flu_State) :: L
+    integer :: err
+    integer :: buflen
+
+    L = fluL_newstate()
+
+    err = fluL_loadfile(L, filename)
+    call aot_err_handler(L, err, 'Cannot load configuration file:', ErrString, &
+      &                  ErrCode)
+
+    if (err == 0) then
+
+      call flu_dump(L = L, buf = buffer, length = buflen, iError = err)
+
+      if (err /= 0) then
+        if (present(ErrCode)) then
+           ErrCode = err
+           if (present(ErrString)) then
+             ErrString = 'Error while dumping the Lua script into a buffer!'
+           end if
+        else
+          write(*,*) 'Error while dumping the Lua script into a buffer!'
+          write(*,*) 'STOPPING'
+          STOP
+        end if
+      end if
+
+    end if
+
+    call close_config(L)
+
+  end subroutine aot_file_to_buffer
+
 
 end module aotus_module
 

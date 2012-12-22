@@ -1,7 +1,7 @@
 program aot_buffer_test
-  use flu_binding, only: flu_State, fluL_newstate, fluL_loadfile, flu_dump, &
-    &                    fluL_loadbuffer, flu_pcall, flu_pop
+  use flu_binding, only: flu_State, fluL_newstate, fluL_loadfile, flu_dump
   use aotus_module, only: aot_get_val, aot_err_handler, &
+    &                     open_config_buffer, close_config, &
     &                     aoterr_Fatal, aoterr_NonExistent, aoterr_WrongType
 
   implicit none
@@ -31,16 +31,11 @@ program aot_buffer_test
     write(*,*) '  : success'
   end if
 
-  ! Pop the script itself from the stack
-  call flu_pop(L)
+  ! Completely close the state to reopen it with the buffered code.
+  call close_config(L)
 
   write(*,*) 'Reading the script back from a buffer'
-  err = fluL_loadbuffer(L, scriptbuffer)
-  call aot_err_handler(L, err, 'Cannot load script from buffer again:')
-
-  write(*,*) 'Executing the script'
-  err = flu_pcall(L, 0, 0, 0)
-  call aot_err_handler(L, err, 'Cannot run script from buffer:')
+  call open_config_buffer(L, scriptbuffer)
 
   ! Testing for global INTEGER
   write(*,*) ' * reading a global integer'
@@ -64,6 +59,8 @@ program aot_buffer_test
     end if
   end if
   ! -------------------------------- !
+
+  call close_config(L)
 
   if (passed) then
     write(*,*) 'PASSED'
