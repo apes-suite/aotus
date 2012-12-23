@@ -163,11 +163,14 @@ contains
 
   !> Subroutine to load and execute a script given in a buffer
   !! (might be bytecode).
-  subroutine open_config_buffer(L, buffer, ErrCode, ErrString)
+  subroutine open_config_buffer(L, buffer, bufName, ErrCode, ErrString)
     type(flu_State) :: L !< Handle to the Lua script
 
     !> String with Lua code to load.
     character, intent(in) :: buffer(:)
+
+    !> Name for the buffer to use in debug messages.
+    character(len=*), intent(in), optional :: bufName
 
     !> Error code returned by Lua during loading or executing the file.
     !!
@@ -189,7 +192,7 @@ contains
 
     if (.not.flu_isopen(L)) L = fluL_newstate()
 
-    err = fluL_loadbuffer(L, buffer)
+    err = fluL_loadbuffer(L, buffer, bufName)
 
     call aot_err_handler(L, err, 'Cannot load buffer:', ErrString, ErrCode)
 
