@@ -9,7 +9,8 @@ module aotus_module
   use aot_kinds_module, only: double_k, single_k, long_k
   use aot_top_module, only: aot_top_get_val, aot_err_handler, &
     &                       aoterr_Fatal, aoterr_NonExistent, aoterr_WrongType
-  use aot_table_module, only: aot_get_val
+  use aot_table_module, only: aot_get_val, aot_table_set_val, &
+    &                         aot_table_open, aot_table_close
   use aot_vector_module, only: aot_get_val, aot_top_get_val
 
   ! The following module enables an interface for quadruple precision numbers,
@@ -28,6 +29,7 @@ module aotus_module
   public :: aot_get_val
   public :: open_config_file, close_config
   public :: open_config_chunk, open_config_buffer
+  public :: aot_require_buffer
   public :: aot_file_to_buffer
 
   ! Entities inherited from aot_top_module, published here to
@@ -393,6 +395,26 @@ contains
 
   end subroutine aot_file_to_buffer
 
+
+  !> Load and execute a given buffer and register it in the package table as
+  !! the given module name.
+  subroutine aot_require_buffer(L, buffer, modname)
+    type(flu_State) :: L !< Lua State to set load the buffer into.
+    character, intent(in) :: buffer(:) !< Buffer to load.
+    character(len=*), intent(in) :: modname !< Module name to set.
+
+    integer :: pac_handle
+    integer :: ld_handle
+
+    call open_config_buffer(L = L, buffer = buffer, bufName = trim(modname))
+    call aot_table_open(L, thandle = pac_handle, key = "package")
+    call aot_table_open(L, parent = pac_handle, &
+      &                 thandle = ld_handle, key = "loaded")
+    call aot_table_set_val(val = .true., L = L, thandle = ld_handle, &
+      &                    key = trim(modname))
+    call aot_table_close(L, ld_handle)
+    call aot_table_close(L, pac_handle)
+  end subroutine aot_require_buffer
 
 end module aotus_module
 
