@@ -36,15 +36,16 @@ module flu_binding
   public :: flu_todouble
   public :: flu_tolstring, flu_tonumber, flu_toboolean
   public :: flu_pop
-  public :: flu_pushinteger, flu_pushnil, flu_pushnumber
+  public :: flu_pushinteger, flu_pushnil, flu_pushnumber, flu_pushboolean
   public :: flu_pushvalue
 
-  public :: fluL_loadfile, fluL_newstate, fluL_openlibs, fluL_loadstring
-  public :: fluL_loadbuffer
   public :: flu_copyptr
   public :: flu_register
 
   public :: flu_dump
+
+  public :: fluL_loadfile, fluL_newstate, fluL_openlibs, fluL_loadstring
+  public :: fluL_loadbuffer
 
   interface flu_pushnumber
     module procedure flu_pushreal
@@ -293,6 +294,20 @@ contains
     n_c = int(n, lua_int)
     call lua_pushinteger(L%state, n_c)
   end subroutine flu_pushinteger
+
+  subroutine flu_pushboolean(L, b)
+    type(flu_State) :: L
+    logical :: b
+
+    integer(kind=lua_int) :: n_c
+
+    if (b) then
+      n_c = 1_lua_int
+    else
+      n_c = 0_lua_int
+    end if
+    call lua_pushboolean(L%state, n_c)
+  end subroutine flu_pushboolean
 
   subroutine flu_pushreal(L, n)
     type(flu_State) :: L

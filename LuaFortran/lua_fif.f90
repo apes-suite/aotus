@@ -88,6 +88,13 @@ module lua_fif
       integer(kind=lua_int), value :: n
     end subroutine lua_pushinteger
 
+    subroutine lua_pushboolean(L, n) bind(c, name="lua_pushboolean")
+      use, intrinsic :: iso_c_binding
+      use lua_parameters, only: lua_int
+      type(c_ptr), value :: L
+      integer(kind=lua_int), value :: n
+    end subroutine lua_pushboolean
+
     subroutine lua_pushnil(L) bind(c, name="lua_pushnil")
       use, intrinsic :: iso_c_binding
       type(c_ptr), value :: L
