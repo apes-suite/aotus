@@ -212,12 +212,12 @@ def build(bld):
         features = 'c cstlib',
         defines = ['LUA_ANSI'],
         use = 'luaobjs',
-        target = 'lua')
+        target = 'lualib')
 
     bld(
         features = 'c',
         source = wrap_sources,
-        use = 'lua',
+        use = 'luaobjs',
         includes = 'external/lua-5.2.1/src',
         target = 'wrapobjs')
 
