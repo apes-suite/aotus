@@ -17,6 +17,7 @@ module flu_binding
   type :: flu_State
     private
     type(c_ptr) :: state = c_null_ptr
+    logical :: opened_libs = .false.
   end type flu_State
 
   public :: flu_State
@@ -551,7 +552,10 @@ contains
   subroutine fluL_openlibs(L)
     type(flu_State) :: L
     
-    call luaL_openlibs(L%state)
+    if (.not. L%opened_libs) then
+      call luaL_openlibs(L%state)
+      L%opened_libs = .true.
+    end if
   end subroutine fluL_openlibs
 
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
