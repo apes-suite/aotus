@@ -106,6 +106,14 @@ module lua_fif
       real(kind=c_double), value :: n
     end subroutine lua_pushnumber
 
+    function lua_pushlstring(L, s, len) bind(c, name="lua_pushlstring")
+      use, intrinsic :: iso_c_binding
+      type(c_ptr), value :: L
+      character(kind=c_char), dimension(*) :: s
+      integer(kind=c_size_t), value :: len
+      type(c_ptr) :: lua_pushlstring
+    end function lua_pushlstring
+
     subroutine lua_pushvalue(L, index) bind(c, name="lua_pushvalue")
       use, intrinsic :: iso_c_binding
       type(c_ptr), value :: L

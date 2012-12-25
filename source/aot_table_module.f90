@@ -56,6 +56,7 @@ module aot_table_module
     module procedure set_table_double
     module procedure set_table_integer
     module procedure set_table_long
+    module procedure set_table_string
     module procedure set_table_logical
   end interface
 
@@ -611,6 +612,52 @@ contains
     end if
 
   end subroutine set_table_logical
+
+
+  !> Put a string value into a table.
+  subroutine set_table_string(val, L, thandle, key, pos)
+    type(flu_State) :: L !< Handle to the Lua script.
+
+    !> Handle to the table to look the value up in.
+    integer, intent(in) :: thandle
+
+    !> Value to set in the table.
+    character(len=*), intent(in) :: val
+
+    !> Name of the entry to set.
+    !!
+    !! Key and pos are both optional, however at least one of them has to be
+    !! supplied.
+    !! The key takes precedence over the pos if both are given.
+    character(len=*), intent(in), optional :: key
+
+    !> Position of the entry to set in the table.
+    !!
+    !! It allows the access to unnamed arrays in the Lua tables.
+    integer, intent(in), optional :: pos
+
+    if (thandle > 0) then
+      if (present(key)) then
+        ! If there is a key, use that.
+        ! First put the value on the top of the stack
+        call flu_pushString(L, val)
+        ! Now put it into the table
+        call flu_setField(L, thandle, trim(key))
+      else
+        ! No key given, try to put the value by position
+        if (present(pos)) then
+          ! First put the index, where to write the value into the table, on the
+          ! stack.
+          call flu_pushInteger(L, pos)
+          ! Now put the actual value on the top of the stack.
+          call flu_pushString(L, val)
+          ! Get the two entries from the stack into the table.
+          call flu_setTable(L, thandle)
+        end if
+      end if
+    end if
+
+  end subroutine set_table_string
 
 
   !> This subroutine takes a one dimensional array, and puts it as a table

@@ -38,7 +38,7 @@ module flu_binding
   public :: flu_tolstring, flu_tonumber, flu_toboolean
   public :: flu_pop
   public :: flu_pushinteger, flu_pushnil, flu_pushnumber, flu_pushboolean
-  public :: flu_pushvalue
+  public :: flu_pushstring, flu_pushvalue
 
   public :: flu_copyptr
   public :: flu_register
@@ -309,6 +309,17 @@ contains
     end if
     call lua_pushboolean(L%state, n_c)
   end subroutine flu_pushboolean
+
+  subroutine flu_pushstring(L, string)
+    type(flu_State) :: L
+    character(len=*), intent(in) :: string
+
+    integer(kind=c_size_t) :: c_len
+    type(c_ptr) :: ret
+
+    c_len = len(string)
+    ret = lua_pushlstring(L%state, string, c_len)
+  end subroutine flu_pushstring
 
   subroutine flu_pushreal(L, n)
     type(flu_State) :: L
