@@ -80,7 +80,7 @@ module aotus_module
 contains
 
   !> Subroutine to load and execute a script from a file.
-  subroutine open_config_file(L, filename, ErrCode, ErrString)
+  subroutine open_config_file(L, filename, ErrCode, ErrString, buffer)
     type(flu_State) :: L !< Handle to the Lua script
 
     !> Name of file to load the Lua code from
@@ -102,7 +102,16 @@ contains
     !! open_config() will print the error message and stop program execution.
     character(len=*), intent(out), optional :: ErrString
 
+    !> Optional argument, to return the compiled script after loading it to
+    !! the caller.
+    !!
+    !! It might be handy to reuse the loaded script later on, this argument
+    !! allows you to obtain the script in compiled form, before it is executed.
+    !! The pointer will be allocated and filled with the Lua data.
+    character, pointer, optional :: buffer(:)
+
     integer :: err
+    integer :: length
 
     if (.not.flu_isopen(L)) L = fluL_newstate()
 
@@ -111,6 +120,9 @@ contains
       &                  ErrCode)
 
     if (err == 0) then
+      if (present(buffer)) then
+        call flu_dump(L, buffer, length, err)
+      end if
       call fluL_openlibs(L)
 
       err = flu_pcall(L, 0, 0, 0)
