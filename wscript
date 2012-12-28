@@ -283,10 +283,6 @@ class debug(BuildContext):
     cmd = 'debug'
     variant = 'debug'
 
-class test(BuildContext):
-    "Unit Tests"
-    cmd = 'test'
-
 class doxy(BuildContext):
     "Doxygen documentation"
     cmd = 'doxy'

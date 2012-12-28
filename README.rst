@@ -2,7 +2,7 @@
 AOTUS
 =====
 
-The AOTUS library provides a wrapper around the C-API of the Lua scripting
+The AOTUS library provides a wrapper around the C-API of the Lua_ scripting
 language, allowing a convenient usage of Lua scripts as configuration files in
 Fortran applications.
 Please have look at the Wiki_ for usage informations.
@@ -30,17 +30,22 @@ created upon execution of waf in a::
 .waf-*
 
 directory, if you need to have a look at them.
+By running::
+
+./waf --help
+
+you get a list of available options to the waf script.
 
 
 What is Built
 =============
 
-For your convenience the lua library is included in version 5.2.1 (released
+For your convenience the Lua library is included in version 5.2.1 (released
 2012-06-08).
 Its objects are completely gathered into the final *libaotus* library, so it is
 only necessary to link against this single static library to gain the
 configuration features of aotus in your Fortran application.
-Due to the compiler specific module informations required by any application
+Due to the compiler specific module information required by any application
 using the libaotus, the suggested approach to incorporate libaotus is to include
 its building in the build process of the final application. This is straight
 forward if waf is used for the complete project. But also in other build
@@ -50,6 +55,9 @@ Yet if you would rather install the *libaotus.a* and the module files into a
 *$PREFIX* directory, you can make use of::
 
 ./waf install
+
+The default build process will also create some unit test executables and
+execute them to ensure functionality of the various parts in the library.
 
 The doxygen documentation can be built by running::
 
@@ -74,6 +82,7 @@ Some projects with similar goals or related information:
 * f2k3-lua_
 * FortLua_
 
+.. _Lua: http://www.lua.org
 .. _Wiki: https://bitbucket.org/haraldkl/aotus/wiki/Home
 .. _waf: http://code.google.com/p/waf/
 .. _f2k3-lua: https://github.com/MaikBeckmann/f2k3-lua/tree/simple
