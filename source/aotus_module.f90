@@ -102,7 +102,7 @@ contains
     !! open_config() will print the error message and stop program execution.
     character(len=*), intent(out), optional :: ErrString
 
-    !> Optional argument, to return the compiled script after loading it to
+    !> Optional argument to return the compiled script after loading it to
     !! the caller.
     !!
     !! It might be handy to reuse the loaded script later on, this argument
@@ -176,7 +176,7 @@ contains
 
 
   !> Subroutine to load and execute a script given in a buffer
-  !! (might be bytecode).
+  !! (bytecode).
   subroutine open_config_buffer(L, buffer, bufName, ErrCode, ErrString)
     type(flu_State) :: L !< Handle to the Lua script
 
@@ -230,6 +230,7 @@ contains
   end subroutine close_config
 
 
+  !> Obtain a global real valued variable by its name.
   subroutine get_config_real(val, ErrCode, L, key, default)
     type(flu_State) :: L !< Handle for the Lua script to get the value from.
     character(len=*), intent(in) :: key !< Variable name to look for.
@@ -250,6 +251,7 @@ contains
   end subroutine get_config_real
 
 
+  !> Obtain a global double valued variable by its name.
   subroutine get_config_double(val, ErrCode, L, key, default)
     type(flu_State) :: L !< Handle for the Lua script to get the value from.
     character(len=*), intent(in) :: key !< Variable name to look for.
@@ -270,6 +272,7 @@ contains
   end subroutine get_config_double
 
 
+  !> Obtain a global integer valued variable by its name.
   subroutine get_config_integer(val, ErrCode, L, key, default)
     type(flu_State) :: L !< Handle for the Lua script to get the value from.
     character(len=*), intent(in) :: key !< Variable name to look for.
@@ -290,6 +293,7 @@ contains
   end subroutine get_config_integer
 
 
+  !> Obtain a global long valued variable by its name.
   subroutine get_config_long(val, ErrCode, L, key, default)
     type(flu_State) :: L !< Handle for the Lua script to get the value from.
     character(len=*), intent(in) :: key !< Variable name to look for.
@@ -310,6 +314,7 @@ contains
   end subroutine get_config_long
 
 
+  !> Obtain a global logical variable by its name.
   subroutine get_config_logical(val, ErrCode, L, key, default)
     type(flu_State) :: L !< Handle for the Lua script to get the value from.
     character(len=*), intent(in) :: key !< Variable name to look for.
@@ -330,6 +335,7 @@ contains
   end subroutine get_config_logical
 
 
+  !> Obtain a global string variable by its name.
   subroutine get_config_string(val, ErrCode, L, key, default)
     type(flu_State) :: L !< Handle for the Lua script to get the value from.
     character(len=*), intent(in) :: key !< Variable name to look for.
@@ -351,6 +357,9 @@ contains
 
 
   !> Subroutine to load a script from a file and put it into a character buffer.
+  !!
+  !! This is useful to rerun a given code in a file without the need to touch
+  !! the file itself again.
   subroutine aot_file_to_buffer(filename, buffer, ErrCode, ErrString)
     !> Name of file to load the Lua code from
     character(len=*), intent(in) :: filename
