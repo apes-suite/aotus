@@ -20,9 +20,10 @@ static int buf_writer(lua_State *L, const void* p, size_t sz, void* ud)
 
   if ( sz + dat->length > dat->space ) {
     // Increase the size of the buffer, if needed.
-    dat->container = realloc(dat->container, dat->space*2);
+    dat->space = ((dat->space*2) > (sz + dat->length))
+               ? (dat->space*2) : (sz + dat->length);
+    dat->container = realloc(dat->container, dat->space);
     if (!dat->container) return -10;
-    dat->space = dat->space*2;
   }
 
   // Append the data to write into the buffer.
@@ -45,7 +46,7 @@ const char* dump_lua_toBuf(lua_State *L, int *length, int *ierr)
   size_t sz;
 
   dat.length = 0;
-  dat.space = 4096;
+  dat.space = 1024;
   dat.container = malloc(dat.space);
 
   errcode = lua_dump(L, buf_writer, &dat);
