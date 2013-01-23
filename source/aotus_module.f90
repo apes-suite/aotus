@@ -107,8 +107,10 @@ contains
     !!
     !! It might be handy to reuse the loaded script later on, this argument
     !! allows you to obtain the script in compiled form, before it is executed.
-    !! The pointer will be allocated and filled with the Lua data.
-    character, pointer, optional :: buffer(:)
+    !! The buffer will be allocated and filled with the Lua data.
+    !! It contains the actual string in buffer%buffer which is a character
+    !! pointer, and the original c_ptr to this 
+    type(cbuf_type), intent(out), optional :: buffer
 
     integer :: err
     integer :: length
@@ -365,7 +367,7 @@ contains
     character(len=*), intent(in) :: filename
 
     !> Buffer to store the script in the given file in
-    character, pointer :: buffer(:)
+    type(cbuf_type), intent(out) :: buffer
 
     !> Error code returned by Lua during loading or executing the file.
     !!

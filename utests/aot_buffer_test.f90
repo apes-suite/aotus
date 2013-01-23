@@ -1,5 +1,6 @@
 program aot_buffer_test
-  use flu_binding, only: flu_State, fluL_newstate, fluL_loadfile, flu_dump
+  use flu_binding, only: flu_State, cbuf_type, fluL_newstate, fluL_loadfile, &
+    &                    flu_dump
   use aotus_module, only: aot_get_val, aot_err_handler, &
     &                     open_config_buffer, close_config, &
     &                     aoterr_Fatal, aoterr_NonExistent, aoterr_WrongType
@@ -11,7 +12,7 @@ program aot_buffer_test
   integer :: glob_int
   integer :: iError
   logical :: passed
-  character, pointer :: scriptBuffer(:)
+  type(cbuf_type) :: scriptBuffer
   type(flu_State) :: L
 
   passed = .true.
@@ -35,7 +36,7 @@ program aot_buffer_test
   call close_config(L)
 
   write(*,*) 'Reading the script back from a buffer'
-  call open_config_buffer(L, scriptbuffer)
+  call open_config_buffer(L, scriptbuffer%buffer)
 
   ! Testing for global INTEGER
   write(*,*) ' * reading a global integer'

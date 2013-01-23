@@ -20,7 +20,13 @@ module flu_binding
     logical :: opened_libs = .false.
   end type flu_State
 
+  type :: cbuf_type
+    type(c_ptr) :: ptr = c_null_ptr
+    character, pointer :: buffer(:) => NULL()
+  end type cbuf_type
+
   public :: flu_State
+  public :: cbuf_type
 
   public :: flu_close, flu_isopen
   public :: flu_createTable
@@ -44,6 +50,7 @@ module flu_binding
   public :: flu_register
 
   public :: flu_dump
+  public :: flu_free_cbuf
 
   public :: fluL_loadfile, fluL_newstate, fluL_openlibs, fluL_loadstring
   public :: fluL_loadbuffer
@@ -66,6 +73,14 @@ module flu_binding
       type(c_ptr), value :: s
     end function lua_Function
   end interface
+
+  interface
+    subroutine c_free(ptr) bind(c, name="free")
+      use, intrinsic :: iso_c_binding, only: c_ptr
+      type(c_ptr), value :: ptr
+    end subroutine c_free
+  end interface
+
 
 contains
 
@@ -602,7 +617,7 @@ contains
   !> Dump to a buffer and return the pointer to the resulting string.
   subroutine flu_dump_toBuf(L, buf, length, iError)
     type(flu_State) :: L
-    character, pointer :: buf(:)
+    type(cbuf_type), intent(out) :: buf
     integer :: length
     integer :: iError
 
@@ -610,15 +625,27 @@ contains
     integer(kind=c_int) :: length_c
     integer(kind=c_int) :: iErr
 
-    nullify(buf)
     string_c = dump_lua_toBuf(L%state, length_c, iErr)
     iError = int(iErr)
     if (iError == 0) then
       length = int(length_c)
-      call c_f_pointer(string_c, buf, [length])
+      buf%ptr = string_c
+      call c_f_pointer(string_c, buf%buffer, [length])
     else
       length = 0
     end if
   end subroutine flu_dump_toBuf
+
+
+  !> Free an allocated cbuf.
+  !!
+  !! This is a helping routine to deallocate memory that was allocated for
+  !! the cbuf by C. (Cray compiler complained about its deallocation in Fortran)
+  subroutine flu_free_cbuf(buf)
+    type(cbuf_type) :: buf
+
+    call c_free(buf%ptr)
+    nullify(buf%buffer)
+  end subroutine flu_free_cbuf
 
 end module flu_binding
