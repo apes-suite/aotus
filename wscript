@@ -90,8 +90,7 @@ def subconf(conf):
          write(*,*) quad_k
        end program checkquad''',
                   msg = 'Checking for Quadruple Precision',
-                  mandatory=False, define_name='quadruple',
-                  execute = True, define_ret = True)
+                  mandatory=False, define_name='quadruple')
     conf.env['quad_support'] = conf.is_defined('quadruple')
     if conf.env['quad_support']:
        conf.env['quad_k'] = int(conf.get_define('quadruple').replace('"', '').strip())
@@ -104,8 +103,7 @@ def subconf(conf):
          write(*,*) xdble_k
        end program checkxdble''',
                   msg = 'Checking for Extended Double Precision',
-                  mandatory=False, define_name='extdouble',
-                  execute = True, define_ret = True)
+                  mandatory=False, define_name='extdouble')
     conf.env['xdble_support'] = False
     if conf.is_defined('extdouble'):
        conf.env['xdble_k'] = int(conf.get_define('extdouble').replace('"', '').strip())
