@@ -4,11 +4,12 @@ Advanced Options and Tables in Universal Scripting
 The AOTUS library provides a Fortran wrapper around the C-API of the
 [Lua](http://www.lua.org) scripting language, allowing a convenient usage of Lua
 scripts as configuration files in Fortran applications.
-Please have look at the [Wiki](https://bitbucket.org/haraldkl/aotus/wiki/Home)
+Please have a look at the [Wiki](https://bitbucket.org/haraldkl/aotus/wiki/Home)
 for more information on its usage.
+And for a detailed interface reference visit its
+[Doxygen generated documentation](https://geb.sts.nt.uni-siegen.de/aotus)
 
-This library is released under a simplified MIT licence, please have look at the
-COPYRIGHT file for details.
+*This library is released under a simplified MIT licence, please have a look into the COPYRIGHT file for details.*
 
 How To Build
 ------------
@@ -75,7 +76,7 @@ The doxygen documentation can be built by running:
 
 This will build a html directory in the build directory with the resulting
 documentation. Note, that this requires an installed doxygen.
-It is also online available as
+It is also online available at
 [Aotus documentation](https://geb.sts.nt.uni-siegen.de/aotus).
 
 ### Example
