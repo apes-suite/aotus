@@ -1,22 +1,24 @@
-=====
-AOTUS
+AOTUS                                                       {#mainpage}
 =====
 
-The AOTUS library provides a wrapper around the C-API of the Lua_ scripting
-language, allowing a convenient usage of Lua scripts as configuration files in
-Fortran applications.
-Please have look at the Wiki_ for usage informations.
+The AOTUS library provides a wrapper around the C-API of the
+[Lua](http://www.lua.org)scripting language, allowing a convenient usage of Lua
+scripts as configuration files in Fortran applications.
+Please have look at the [Wiki](https://bitbucket.org/haraldkl/aotus/wiki/Home)
+for more information on its usage.
 
 This library is released under a simplified MIT licence, please have look at the
 COPYRIGHT file for details.
 
 How To Build
-============
+------------
 
-waf_ is used as build system.
-Run::
+[Waf](http://code.google.com/p/waf/) is used as build system.
+Run:
 
+~~~~~~~~~~~{.sh}
 ./waf configure build
+~~~~~~~~~~~
 
 to build the aotus library.
 If you want to select a specific Fortran compiler, set the environment variable
@@ -25,20 +27,24 @@ And for a specific C compiler, set the environment variable *CC*.
 The Fortran compiler flags are set with the help of fc_flags, which provide
 a set of compiler flag combinations for various compilers.
 They are found in the waflib/extras directory, and the waflib directory is
-created upon execution of waf in a::
+created upon execution of waf in a:
 
+~~~~~~~~~~~{.sh}
 .waf-*
+~~~~~~~~~~~
 
 directory, if you need to have a look at them.
-By running::
+By running:
 
+~~~~~~~~~~~{.sh}
 ./waf --help
+~~~~~~~~~~~
 
 you get a list of available options to the waf script.
 
 
 What is Built
-=============
+-------------
 
 For your convenience the Lua library is included in version 5.2.1 (released
 2012-06-08).
@@ -52,23 +58,27 @@ forward if waf is used for the complete project. But also in other build
 environments it should not be too hard to make use of the generated *build*
 directory.
 Yet if you would rather install the *libaotus.a* and the module files into a
-*$PREFIX* directory, you can make use of::
+*$PREFIX* directory, you can make use of:
 
+~~~~~~~~~~~{.sh}
 ./waf install
+~~~~~~~~~~~
 
 The default build process will also create some unit test executables and
 execute them to ensure functionality of the various parts in the library.
 
-The doxygen documentation can be built by running::
+The doxygen documentation can be built by running:
 
+~~~~~~~~~~~{.sh}
 ./waf doxy
+~~~~~~~~~~~
 
 This will build a html directory in the build directory with the resulting
 documentation. Note, that this requires an installed doxygen.
-It is also online available at aotus_dox_.
+It is also online available as
+[Aotus documentation](https://geb.sts.nt.uni-siegen.de/aotus).
 
-Example
--------
+### Example
 
 There is an example program built, called aotus_sample, which you will find in
 the *build* directory.
@@ -76,16 +86,9 @@ It can be used with the provided *config.lua* in the *sample* directory, where
 also the source of this small program is found.
 
 Related Projects
-================
+----------------
 
 Some projects with similar goals or related information:
 
-* f2k3-lua_
-* FortLua_
-
-.. _Lua: http://www.lua.org
-.. _Wiki: https://bitbucket.org/haraldkl/aotus/wiki/Home
-.. _waf: http://code.google.com/p/waf/
-.. _aotus_dox: https://geb.sts.nt.uni-siegen.de/aotus/_aotus.html
-.. _f2k3-lua: https://github.com/MaikBeckmann/f2k3-lua/tree/simple
-.. _FortLua: https://github.com/adolgert/FortLua
+* [f2k3-lua](https://github.com/MaikBeckmann/f2k3-lua/tree/simple)
+* [FortLua](https://github.com/adolgert/FortLua)
