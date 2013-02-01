@@ -65,6 +65,7 @@ The doxygen documentation can be built by running::
 
 This will build a html directory in the build directory with the resulting
 documentation. Note, that this requires an installed doxygen.
+It is also online available at aotus_dox_.
 
 Example
 -------
@@ -85,5 +86,6 @@ Some projects with similar goals or related information:
 .. _Lua: http://www.lua.org
 .. _Wiki: https://bitbucket.org/haraldkl/aotus/wiki/Home
 .. _waf: http://code.google.com/p/waf/
+.. _aotus_dox: https://geb.sts.nt.uni-siegen.de/aotus/_aotus.html
 .. _f2k3-lua: https://github.com/MaikBeckmann/f2k3-lua/tree/simple
 .. _FortLua: https://github.com/adolgert/FortLua
