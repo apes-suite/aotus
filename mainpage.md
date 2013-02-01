@@ -1,4 +1,4 @@
-Advanced Options and Tables in Universal Scripting
+Advanced Options and Tables in Universal Scripting {#mainpage}
 ==================================================
 
 The AOTUS library provides a Fortran wrapper around the C-API of the
