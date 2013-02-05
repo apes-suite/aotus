@@ -83,6 +83,15 @@ def subconf(conf):
                   uselib_store='POPEN', mandatory=False)
 
     conf.check_fc(fragment = '''
+       program check_iso_c
+         use, intrinsic :: iso_c_binding
+         implicit none
+         write(*,*) c_int
+       end program check_iso_c''',
+                  msg = "Checking for ISO_C_Binding support",
+                  mandatory = 'true')
+
+    conf.check_fc(fragment = '''
        program checkquad
          implicit none
          integer, parameter :: quad_k = selected_real_kind(33)
