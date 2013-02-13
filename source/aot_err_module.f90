@@ -1,3 +1,7 @@
+! Copyright (C) 2011-2013 German Research School for Simulation Sciences GmbH,
+!              Aachen and others.
+! Please see the COPYRIGHT file in this directory for details.
+
 !> This module provides the handling of errors.
 module aot_err_module
   use flu_binding

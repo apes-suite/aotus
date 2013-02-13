@@ -1,15 +1,8 @@
-Aotus License
--------------
+This LuaFortran interface is provided by the German Research School for
+Simulation Sciences GmbH, Aachen and licensed under the same terms as Lua
+which is available under the MIT license reproduced below.
 
-Aotus is licensed under the terms of the MIT license reproduced below.
-This means that Aotus is free software and can be used for both academic and
-commercial purposes at absolutely no cost. You are free to do with the code
-whatever you want.
-The only requirement is that some credit to the authors is given by putting this
-copyright notice somewhere in your project.
-The MIT license is chosen for full compatibility with Lua.
-
-For the license of the underlying Lua library have a look at
+See also:
 http://www.lua.org/license.html.
 
 ===============================================================================

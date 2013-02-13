@@ -1,3 +1,7 @@
+! Copyright (C) 2011-2013 German Research School for Simulation Sciences GmbH,
+!              Aachen and others.
+! Please see the COPYRIGHT file in this directory for details.
+
 !> The aot_path can be used to track the position of a Lua entity in nested
 !! tables.
 !!

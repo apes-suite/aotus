@@ -1,3 +1,7 @@
+! Copyright (C) 2011-2013 German Research School for Simulation Sciences GmbH,
+!              Aachen and others.
+! Please see the COPYRIGHT file in this directory for details.
+
 !> This module provides general operations on Lua tables.
 !!
 !! These operations are a common set of actions, that are used by the various

@@ -117,7 +117,8 @@ For the license of the underlying Lua library have a look at
 http://www.lua.org/license.html.
 
 ---
-Copyright (C) 2011-2013 German Research School for Simulation Sciences GmbH, Aachen.
+Copyright (C) 2011-2013 German Research School for Simulation Sciences GmbH,
+                        Aachen and others.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

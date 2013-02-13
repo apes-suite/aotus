@@ -1,3 +1,7 @@
+! Copyright (C) 2011-2013 German Research School for Simulation Sciences GmbH,
+!              Aachen and others.
+! Please see the COPYRIGHT file in this directory for details.
+
 !> A module to produce Lua scripts with nested tables.
 !!
 !! This module eases the output of readable Lua scripts.

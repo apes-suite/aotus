@@ -1,3 +1,7 @@
+! Copyright (C) 2011-2013 German Research School for Simulation Sciences GmbH,
+!              Aachen and others.
+! Please see the ../COPYRIGHT file one directory above for details.
+
 !> A module providing extdouble number input to Lua functions
 !!
 !! Note that Lua actually only handles double precision, and the numbers are

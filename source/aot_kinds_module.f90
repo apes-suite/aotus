@@ -1,3 +1,7 @@
+! Copyright (C) 2011-2013 German Research School for Simulation Sciences GmbH,
+!              Aachen and others.
+! Please see the COPYRIGHT file in this directory for details.
+
 !> Global definitions of some handy kind declarations
 !! with the help of the intrinsic selected_*_kind
 !! functions.
