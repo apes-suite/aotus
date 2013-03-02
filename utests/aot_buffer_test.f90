@@ -77,7 +77,6 @@ contains
     open(file=trim(filename), unit=22, action='write', status='replace')
     write(22,*) '-- test script for aotus_test'
     write(22,*) 'int_test = 5'
-    write(22,*) 'long_test = 5000000000'
     write(22,*) 'real_test = 0.5'
     write(22,*) 'log_test = true'
     write(22,*) "string_test = 'last words'"
