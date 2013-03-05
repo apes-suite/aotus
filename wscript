@@ -276,14 +276,14 @@ def build(bld):
                           bld.path.get_bld().ant_glob('*.mod'))
         bld.install_files('${PREFIX}/lib', 'libaotus.a')
 
-### Building the lua interpreter, usually not needed.
-#    bld(
-#        features = 'c cprogram',
-#        use = 'lualib',
-#        source = lua_sources,
-#        defines = ['LUA_ANSI'],
-#        stlib = bld.env['STLIBS'],
-#        target = 'lua')
+## Building the lua interpreter, usually not needed.
+    bld(
+        features = 'c cprogram',
+        use = 'lualib',
+        source = lua_sources,
+        defines = ['LUA_ANSI'],
+        stlib = bld.env['STLIBS'],
+        target = 'lua')
 
 
 from waflib.Build import BuildContext
