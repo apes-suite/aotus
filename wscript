@@ -40,8 +40,8 @@ def configure(conf):
     conf.env.stash()
     try:
         conf.load('doxygen')
-    except conf.errors.ConfigurationError, e:
-        Logs.debug('doxygen: %r' % e)
+    except conf.errors.ConfigurationError:
+        Logs.debug('doxygen: %r' % conf.errors.ConfigurationError)
         conf.env.revert()
 
     conf.env['FCSTLIB_MARKER'] = ''
