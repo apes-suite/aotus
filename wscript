@@ -81,6 +81,7 @@ def subconf(conf):
                   header_name=['stdio.h'],
                   defines=['LUA_USE_POPEN=1'],
                   uselib_store='POPEN', mandatory=False)
+    conf.check_cc(lib='m', uselib_store='MATH')
 
     conf.check_fc(fragment = '''
        program check_iso_c
@@ -279,7 +280,7 @@ def build(bld):
 ## Building the lua interpreter, usually not needed.
     bld(
         features = 'c cprogram',
-        use = 'lualib',
+        use = ['lualib', 'MATH'],
         source = lua_sources,
         defines = ['LUA_ANSI'],
         stlib = bld.env['STLIBS'],
