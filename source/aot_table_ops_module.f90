@@ -18,17 +18,6 @@ module aot_table_ops_module
   public :: aot_table_open, aot_table_close
   public :: aot_table_top, aot_table_length, aot_table_first, aot_table_push
 
-  !> This routine provides a way to open a table either as a globally defined
-  !! one, a table within another table or a newly defined one.
-  !!
-  !! After the table is opened, the returned handle can be used to access its
-  !! components.
-  interface aot_table_open
-    module procedure aot_table_global
-    module procedure aot_table_table
-    module procedure aot_table_new
-  end interface
-
 contains
 
   !> Return the position at the top of the stack as a
@@ -52,38 +41,24 @@ contains
   end function aot_table_top
 
 
-  !> Load a globally defined table into the top of the stack.
+  !> This subroutine tries to open a table, and returns a handle for it.
   !!
-  !! Return its position in the stack as a handle for this
-  !! table. If it does not exist or the global variable is not
-  !! a table, the handle will be set to 0.
-  subroutine aot_table_global(L, thandle, key)
-    type(flu_state) :: L !< Handle for the Lua script.
-
-    !> A handle for the table to access it, 0 if no table available.
-    integer, intent(out) :: thandle
-
-    !> Name of the global table to access.
-    character(len=*), intent(in) :: key
-
-    call flu_getglobal(L, key)
-
-    thandle = aot_table_top(L)
-  end subroutine aot_table_global
-
-
-  !> This subroutine tries to get a table in a table, and
-  !! return a handle for it.
-  !!
+  !! If parent is present, the table is tried to open within that table.
   !! Return its position in the stack as a handle for this
   !! table. If it does not exist or the table entry is not
   !! a table itself, the handle will be set to 0.
   !! The table can be looked up either by position or name.
-  subroutine aot_table_table(L, parent, thandle, key, pos)
+  !!
+  !! If a key is present but no parent, a global table is opened.
+  !! If neither key nor parent is present, a new table is created.
+  !!
+  !! After the table is opened, the returned handle can be used to access its
+  !! components.
+  subroutine aot_table_open(L, parent, thandle, key, pos)
     type(flu_state) :: L !< Handle for the Lua script.
 
     !> Handle of the table containing the requested table.
-    integer, intent(in) :: parent
+    integer, intent(in), optional :: parent
 
     !> A handle for the table to access it, 0 if no table available.
     integer, intent(out) :: thandle
@@ -98,24 +73,21 @@ contains
     !> Position of the entry in the parent table to access.
     integer, intent(in), optional :: pos
 
-    call aot_table_push(L, parent, key, pos)
-    thandle = aot_table_top(L)
-  end subroutine aot_table_table
+    if (present(parent)) then
+      call aot_table_push(L, parent, key, pos)
+      thandle = aot_table_top(L)
+    else
+      if (present(key)) then
+        call flu_getglobal(L, key)
+        thandle = aot_table_top(L)
+      else
+        call flu_createtable(L, 0, 0)
+        thandle = flu_gettop(L)
+      end if
+    end if
 
+  end subroutine aot_table_open
 
-  !> Open a new, empty table to fill it subsequently.
-  !!
-  !! Return its position in the stack as a handle for this
-  !! table.
-  subroutine aot_table_new(L, thandle)
-    type(flu_state) :: L !< Handle for the Lua script.
-
-    !> A handle for the table to access it.
-    integer, intent(out) :: thandle
-
-    call flu_createtable(L, 0, 0)
-    thandle = flu_gettop(L)
-  end subroutine aot_table_new
 
   !> Close a table again.
   !!
