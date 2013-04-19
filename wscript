@@ -182,14 +182,12 @@ def build(bld):
                      'source/aot_vector_module.f90']
 
     if bld.env['quad_support']:
-        aotus_sources += ['source/quadruple/aot_quadruple_module.f90']
         aotus_sources += ['source/quadruple/aot_quadruple_fun_module.f90']
         aotus_sources += ['source/quadruple/aot_quadruple_table_module.f90']
         aotus_sources += ['source/quadruple/aot_quadruple_top_module.f90']
         aotus_sources += ['source/quadruple/aot_quadruple_out_module.f90']
         aotus_sources += ['source/quadruple/aot_quadruple_vector_module.f90']
     else:
-        aotus_sources += ['source/quadruple/dummy_quadruple_module.f90']
         aotus_sources += ['source/quadruple/dummy_quadruple_fun_module.f90']
         aotus_sources += ['source/quadruple/dummy_quadruple_table_module.f90']
         aotus_sources += ['source/quadruple/dummy_quadruple_top_module.f90']
@@ -197,14 +195,12 @@ def build(bld):
         aotus_sources += ['source/quadruple/dummy_quadruple_vector_module.f90']
 
     if bld.env['xdble_support']:
-        aotus_sources += ['source/extdouble/aot_extdouble_module.f90']
         aotus_sources += ['source/extdouble/aot_extdouble_fun_module.f90']
         aotus_sources += ['source/extdouble/aot_extdouble_table_module.f90']
         aotus_sources += ['source/extdouble/aot_extdouble_top_module.f90']
         aotus_sources += ['source/extdouble/aot_extdouble_out_module.f90']
         aotus_sources += ['source/extdouble/aot_extdouble_vector_module.f90']
     else:
-        aotus_sources += ['source/extdouble/dummy_extdouble_module.f90']
         aotus_sources += ['source/extdouble/dummy_extdouble_fun_module.f90']
         aotus_sources += ['source/extdouble/dummy_extdouble_table_module.f90']
         aotus_sources += ['source/extdouble/dummy_extdouble_top_module.f90']

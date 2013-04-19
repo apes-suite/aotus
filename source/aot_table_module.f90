@@ -6,6 +6,8 @@
 module aot_table_module
   use flu_binding
   use aot_kinds_module, only: double_k, single_k, long_k
+  use aot_err_module, only: aoterr_Fatal, aoterr_NonExistent, &
+    &                       aoterr_WrongType
   use aot_top_module, only: aot_top_get_val
   use aot_table_ops_module, only: aot_table_open, aot_table_close, &
     &                             aot_table_length, aot_table_first, &
@@ -64,8 +66,29 @@ module aot_table_module
     module procedure set_table_logical
   end interface
 
-  !> Get a value from a table.
+  !> Get a value from the script.
   !!
+  !! This is the central interface to retrieve values from a Lua script,
+  !! its general shape looks like
+  !! <tt>call aot_{top}_get_val(<outputs>, <id>, default)</tt>.
+  !! Where the "outputs" are <tt>val</tt> and <tt>errCode</tt>. While "id" is
+  !! at least the Lua context <tt>L</tt>. For the global variables there has to
+  !! be a <tt>key</tt> for the identification of the variable.
+  !!
+  !! The <tt>errCode</tt> returns an error code with various bits set for
+  !! different errors, that might happen while retrieving the variable.
+  !! They can be checked by <tt>btest</tt> and the different error codes are:
+  !!- aoterr_fatal: Something went irrecoverably wrong
+  !!- aoterr_nonExistent: The requested variable is not set in the Lua script
+  !!- aoterr_wrongType: The requested variable in the Lua script does not meet
+  !!                    the requested data type
+  !!
+  !! For example a check for a fatal error can be done by
+  !! `btest(errCode, aoterr_fatal)`.
+  !!
+  !! For the access to global variables in the Lua script the interface
+  !! therefore looks like:
+  !! `call aot_get_val(val, errCode, L, key, default)`.
   !! First the given key is looked up, if this fails, the value
   !! at the given position is looked up, and if this also fails,
   !! the default value is returned.
@@ -81,7 +104,7 @@ module aot_table_module
   !! See for example get_table_real() for a more detailed
   !! description of the parameters.
   !!
-  !! Note that positional addressing only works intuitively as long as there
+  !! Note, that positional addressing only works intuitively as long as there
   !! have been no entries specified by keys in the table.
   !! This kind of resembles the behavior of Fortran interfaces with named or
   !! unnamed arguments, as soon as you provide a name, all following arguments
@@ -91,6 +114,9 @@ module aot_table_module
   !!
   !! The reason for this is, that positional addressing in Lua refers only to
   !! the unnamed entries of the tables.
+  !!
+  !! See for example aot_table_module#get_table_real for a more detailed
+  !! description of the parameters.
   interface aot_get_val
     module procedure get_table_real
     module procedure get_table_double
@@ -117,7 +143,7 @@ contains
     type(flu_State) :: L !< Handle to the Lua script.
 
     !> Handle to the table to look the value up in.
-    integer, intent(in) :: thandle
+    integer, intent(in), optional :: thandle
 
     !> Value of the table entry if it exists.
     real(kind=single_k), intent(out) :: val
@@ -141,9 +167,25 @@ contains
     !! the Lua script.
     real(kind=single_k), intent(in), optional :: default
 
-    call aot_table_push(L=L, thandle=thandle, &
-      &                   key=key, pos=pos)
-    call aot_top_get_val(val, ErrCode, L, default)
+    logical :: valid_args
+
+    valid_args = .true.
+    if (present(thandle)) then
+      call aot_table_push(L=L, thandle=thandle, &
+        &                 key=key, pos=pos)
+    else
+      if (present(key)) then
+        call flu_getglobal(L, key)
+      else
+        valid_args = .false.
+      end if
+    end if
+    if (valid_args) then
+      call aot_top_get_val(val, ErrCode, L, default)
+    else
+      ErrCode = ibSet(0, aoterr_NonExistent)
+      ErrCode = ibSet(ErrCode, aoterr_Fatal)
+    end if
 
   end subroutine get_table_real
 
@@ -154,7 +196,7 @@ contains
     type(flu_State) :: L !< Handle to the Lua script.
 
     !> Handle to the table to look the value up in.
-    integer, intent(in) :: thandle
+    integer, intent(in), optional :: thandle
 
     !> Value of the table entry if it exists.
     real(kind=double_k), intent(out) :: val
@@ -178,9 +220,25 @@ contains
     !! the Lua script.
     real(kind=double_k), intent(in), optional :: default
 
-    call aot_table_push(L=L, thandle=thandle, &
-      &                   key=key, pos=pos)
-    call aot_top_get_val(val, ErrCode, L, default)
+    logical :: valid_args
+
+    valid_args = .true.
+    if (present(thandle)) then
+      call aot_table_push(L=L, thandle=thandle, &
+        &                 key=key, pos=pos)
+    else
+      if (present(key)) then
+        call flu_getglobal(L, key)
+      else
+        valid_args = .false.
+      end if
+    end if
+    if (valid_args) then
+      call aot_top_get_val(val, ErrCode, L, default)
+    else
+      ErrCode = ibSet(0, aoterr_NonExistent)
+      ErrCode = ibSet(ErrCode, aoterr_Fatal)
+    end if
 
   end subroutine get_table_double
 
@@ -191,7 +249,7 @@ contains
     type(flu_State) :: L !< Handle to the Lua script.
 
     !> Handle to the table to look the value up in.
-    integer, intent(in) :: thandle
+    integer, intent(in), optional :: thandle
 
     !> Value of the table entry if it exists.
     integer, intent(out) :: val
@@ -216,9 +274,25 @@ contains
     !! the Lua script.
     integer, intent(in), optional :: default
 
-    call aot_table_push(L=L, thandle=thandle, &
-      &                   key=key, pos=pos)
-    call aot_top_get_val(val, ErrCode, L, default)
+    logical :: valid_args
+
+    valid_args = .true.
+    if (present(thandle)) then
+      call aot_table_push(L=L, thandle=thandle, &
+        &                 key=key, pos=pos)
+    else
+      if (present(key)) then
+        call flu_getglobal(L, key)
+      else
+        valid_args = .false.
+      end if
+    end if
+    if (valid_args) then
+      call aot_top_get_val(val, ErrCode, L, default)
+    else
+      ErrCode = ibSet(0, aoterr_NonExistent)
+      ErrCode = ibSet(ErrCode, aoterr_Fatal)
+    end if
 
   end subroutine get_table_integer
 
@@ -228,7 +302,7 @@ contains
     type(flu_State) :: L !< Handle to the Lua script.
 
     !> Handle to the table to look the value up in.
-    integer, intent(in) :: thandle
+    integer, intent(in), optional :: thandle
 
     !> Value of the table entry if it exists.
     integer(kind=long_k), intent(out) :: val
@@ -252,9 +326,25 @@ contains
     !! the Lua script.
     integer(kind=long_k), intent(in), optional :: default
 
-    call aot_table_push(L=L, thandle=thandle, &
-      &                   key=key, pos=pos)
-    call aot_top_get_val(val, ErrCode, L, default)
+    logical :: valid_args
+
+    valid_args = .true.
+    if (present(thandle)) then
+      call aot_table_push(L=L, thandle=thandle, &
+        &                 key=key, pos=pos)
+    else
+      if (present(key)) then
+        call flu_getglobal(L, key)
+      else
+        valid_args = .false.
+      end if
+    end if
+    if (valid_args) then
+      call aot_top_get_val(val, ErrCode, L, default)
+    else
+      ErrCode = ibSet(0, aoterr_NonExistent)
+      ErrCode = ibSet(ErrCode, aoterr_Fatal)
+    end if
 
   end subroutine get_table_long
 
@@ -265,7 +355,7 @@ contains
     type(flu_State) :: L !< Handle to the Lua script.
 
     !> Handle to the table to look the value up in.
-    integer, intent(in) :: thandle
+    integer, intent(in), optional :: thandle
 
     !> Value of the table entry if it exists.
     logical, intent(out) :: val
@@ -289,9 +379,25 @@ contains
     !! the Lua script.
     logical, intent(in), optional :: default
 
-    call aot_table_push(L=L, thandle=thandle, &
-      &                   key=key, pos=pos)
-    call aot_top_get_val(val, ErrCode, L, default)
+    logical :: valid_args
+
+    valid_args = .true.
+    if (present(thandle)) then
+      call aot_table_push(L=L, thandle=thandle, &
+        &                 key=key, pos=pos)
+    else
+      if (present(key)) then
+        call flu_getglobal(L, key)
+      else
+        valid_args = .false.
+      end if
+    end if
+    if (valid_args) then
+      call aot_top_get_val(val, ErrCode, L, default)
+    else
+      ErrCode = ibSet(0, aoterr_NonExistent)
+      ErrCode = ibSet(ErrCode, aoterr_Fatal)
+    end if
 
   end subroutine get_table_logical
 
@@ -302,7 +408,7 @@ contains
     type(flu_State) :: L !< Handle to the Lua script.
 
     !> Handle to the table to look the value up in.
-    integer, intent(in) :: thandle
+    integer, intent(in), optional :: thandle
 
     !> Value of the table entry if it exists.
     character(len=*) :: val
@@ -326,9 +432,25 @@ contains
     !! the Lua script.
     character(len=*), intent(in), optional :: default
 
-    call aot_table_push(L=L, thandle=thandle, &
-      &                   key=key, pos=pos)
-    call aot_top_get_val(val, ErrCode, L, default)
+    logical :: valid_args
+
+    valid_args = .true.
+    if (present(thandle)) then
+      call aot_table_push(L=L, thandle=thandle, &
+        &                 key=key, pos=pos)
+    else
+      if (present(key)) then
+        call flu_getglobal(L, key)
+      else
+        valid_args = .false.
+      end if
+    end if
+    if (valid_args) then
+      call aot_top_get_val(val, ErrCode, L, default)
+    else
+      ErrCode = ibSet(0, aoterr_NonExistent)
+      ErrCode = ibSet(ErrCode, aoterr_Fatal)
+    end if
 
   end subroutine get_table_string
 

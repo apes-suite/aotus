@@ -5,9 +5,9 @@
 !> This module provides high level Fortran interfaces to retrieve values from a
 !! Lua script.
 !!
-!! Its central interface is aot_get_val, which is a generic interface that
-!! allows access to scalars and vectors in global Lua variables as well as
-!! nested tables.
+!! Its central interface is aot_table_module#aot_get_val, which is a generic
+!! interface that allows access to scalars and vectors in global Lua variables
+!! as well as nested tables.
 !!
 !! In the \ref aot_overview "overview page" there are some more general
 !! remarks and further pointers.
@@ -18,16 +18,7 @@ module aotus_module
     &                       aoterr_Fatal, aoterr_NonExistent, aoterr_WrongType
   use aot_table_module, only: aot_get_val, aot_table_set_val, &
     &                         aot_table_open, aot_table_close
-  use aot_vector_module, only: aot_get_val, aot_top_get_val
-
-  ! The following module enables an interface for quadruple precision numbers,
-  ! if the compiler supports them. However, you should be aware, that this is
-  ! merely a convenience interface, as the values provided by Lua are only
-  ! double precision.
-  use aot_quadruple_module
-
-  ! Support for extdouble precision.
-  use aot_extdouble_module
+  use aot_vector_module, only: aot_top_get_val, aot_get_val
 
   implicit none
 
@@ -47,42 +38,6 @@ module aotus_module
 
   ! Inherited from the flu_binding module, publish for convenience.
   public :: flu_State
-
-  !> Get a global configuration value from the script.
-  !!
-  !! This provides a convenient direct access to
-  !! global variables from the Lua script.
-  !! The interface is also used for other values than the global ones, and the
-  !! general shape of it looks like
-  !! <tt>call aot_{top}_get_val(<outputs>, <id>, default)</tt>.
-  !! Where the "outputs" are <tt>val</tt> and <tt>errCode</tt>. While "id" is
-  !! at least the Lua context <tt>L</tt>. For the global variables there has to
-  !! be a <tt>key</tt> for the identification of the variable.
-  !!
-  !! The <tt>errCode</tt> returns an error code with various bits set for
-  !! different errors, that might happen while retrieving the variable.
-  !! They can be checked by <tt>btest</tt> and the different error codes are:
-  !!- aoterr_fatal: Something went irrecoverably wrong
-  !!- aoterr_nonExistent: The requested variable is not set in the Lua script
-  !!- aoterr_wrongType: The requested variable in the Lua script does not meet
-  !!                    the requested data type
-  !!
-  !! For example a check for a fatal error can be done by
-  !! `btest(errCode, aoterr_fatal)`.
-  !!
-  !! For the access to global variables in the Lua script the interface
-  !! therefore looks like:
-  !! `call aot_get_val(val, errCode, L, key, default)`.
-  !! See for example aotus_module#get_config_real for a more detailed
-  !! description of the parameters.
-  interface aot_get_val
-    module procedure get_config_real
-    module procedure get_config_double
-    module procedure get_config_integer
-    module procedure get_config_long
-    module procedure get_config_string
-    module procedure get_config_logical
-  end interface
 
 contains
 
@@ -237,132 +192,6 @@ contains
     call flu_close(L)
 
   end subroutine close_config
-
-
-  !> Obtain a global real valued variable by its name.
-  subroutine get_config_real(val, ErrCode, L, key, default)
-    type(flu_State) :: L !< Handle for the Lua script to get the value from.
-    character(len=*), intent(in) :: key !< Variable name to look for.
-
-    !> Value of the Variable in the script
-    real(kind=single_k), intent(out) :: val
-
-    !> ErrorCode to indicate what kind of problem might have occured.
-    integer, intent(out) :: ErrCode
-
-    !> Some default value that should be used, if the variable is not set in the
-    !! Lua script.
-    real(kind=single_k), optional, intent(in) :: default
-
-    call flu_getglobal(L, key)
-    call aot_top_get_val(val, ErrCode, L, default)
-
-  end subroutine get_config_real
-
-
-  !> Obtain a global double valued variable by its name.
-  subroutine get_config_double(val, ErrCode, L, key, default)
-    type(flu_State) :: L !< Handle for the Lua script to get the value from.
-    character(len=*), intent(in) :: key !< Variable name to look for.
-
-    !> Value of the Variable in the script
-    real(kind=double_k), intent(out) :: val
-
-    !> ErrorCode to indicate what kind of problem might have occured.
-    integer, intent(out) :: ErrCode
-
-    !> Some default value that should be used, if the variable is not set in the
-    !! Lua script.
-    real(kind=double_k), optional, intent(in) :: default
-
-    call flu_getglobal(L, key)
-    call aot_top_get_val(val, ErrCode, L, default)
-
-  end subroutine get_config_double
-
-
-  !> Obtain a global integer valued variable by its name.
-  subroutine get_config_integer(val, ErrCode, L, key, default)
-    type(flu_State) :: L !< Handle for the Lua script to get the value from.
-    character(len=*), intent(in) :: key !< Variable name to look for.
-
-    !> Value of the Variable in the script
-    integer, intent(out) :: val
-
-    !> ErrorCode to indicate what kind of problem might have occured.
-    integer, intent(out) :: ErrCode
-
-    !> Some default value that should be used, if the variable is not set in the
-    !! Lua script.
-    integer, optional, intent(in) :: default
-
-    call flu_getglobal(L, key)
-    call aot_top_get_val(val, ErrCode, L, default)
-
-  end subroutine get_config_integer
-
-
-  !> Obtain a global long valued variable by its name.
-  subroutine get_config_long(val, ErrCode, L, key, default)
-    type(flu_State) :: L !< Handle for the Lua script to get the value from.
-    character(len=*), intent(in) :: key !< Variable name to look for.
-
-    !> Value of the Variable in the script
-    integer(kind=long_k), intent(out) :: val
-
-    !> ErrorCode to indicate what kind of problem might have occured.
-    integer, intent(out) :: ErrCode
-
-    !> Some default value that should be used, if the variable is not set in the
-    !! Lua script.
-    integer(kind=long_k), optional, intent(in) :: default
-
-    call flu_getglobal(L, key)
-    call aot_top_get_val(val, ErrCode, L, default)
-
-  end subroutine get_config_long
-
-
-  !> Obtain a global logical variable by its name.
-  subroutine get_config_logical(val, ErrCode, L, key, default)
-    type(flu_State) :: L !< Handle for the Lua script to get the value from.
-    character(len=*), intent(in) :: key !< Variable name to look for.
-
-    !> Value of the Variable in the script
-    logical, intent(out) :: val
-
-    !> ErrorCode to indicate what kind of problem might have occured.
-    integer, intent(out) :: ErrCode
-
-    !> Some default value that should be used, if the variable is not set in the
-    !! Lua script.
-    logical, optional, intent(in) :: default
-
-    call flu_getglobal(L, key)
-    call aot_top_get_val(val, ErrCode, L, default)
-
-  end subroutine get_config_logical
-
-
-  !> Obtain a global string variable by its name.
-  subroutine get_config_string(val, ErrCode, L, key, default)
-    type(flu_State) :: L !< Handle for the Lua script to get the value from.
-    character(len=*), intent(in) :: key !< Variable name to look for.
-
-    !> Value of the Variable in the script
-    character(len=*) :: val
-
-    !> ErrorCode to indicate what kind of problem might have occured.
-    integer, intent(out) :: ErrCode
-
-    !> Some default value that should be used, if the variable is not set in the
-    !! Lua script.
-    character(len=*), optional, intent(in) :: default
-
-    call flu_getglobal(L, key)
-    call aot_top_get_val(val, ErrCode, L, default)
-
-  end subroutine get_config_string
 
 
   !> Subroutine to load a script from a file and put it into a character buffer.

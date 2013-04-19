@@ -5,6 +5,7 @@
 module aot_quadruple_table_module
   use flu_binding
   use aot_kinds_module, only: double_k
+  use aot_err_module, only: aoterr_Fatal, aoterr_NonExistent
   use aot_quadruple_top_module, only: quad_k
   use aot_top_module, only: aot_top_get_val
   use aot_table_ops_module, only: aot_table_open, aot_table_close, &
@@ -93,7 +94,7 @@ contains
     type(flu_State) :: L !< Handle to the Lua script.
 
     !> Handle to the table to look the value up in.
-    integer, intent(in) :: thandle
+    integer, intent(in), optional :: thandle
 
     !> Value of the table entry if it exists.
     real(kind=quad_k), intent(out) :: val
@@ -117,9 +118,25 @@ contains
     !! the Lua script.
     real(kind=quad_k), intent(in), optional :: default
 
-    call aot_table_push(L=L, thandle=thandle, &
-      &                   key=key, pos=pos)
-    call aot_top_get_val(val, ErrCode, L, default)
+    logical :: valid_args
+
+    valid_args = .true.
+    if (present(thandle)) then
+      call aot_table_push(L=L, thandle=thandle, &
+        &                 key=key, pos=pos)
+    else
+      if (present(key)) then
+        call flu_getglobal(L, key)
+      else
+        valid_args = .false.
+      end if
+    end if
+    if (valid_args) then
+      call aot_top_get_val(val, ErrCode, L, default)
+    else
+      ErrCode = ibSet(0, aoterr_NonExistent)
+      ErrCode = ibSet(ErrCode, aoterr_Fatal)
+    end if
 
   end subroutine get_table_quadruple
 

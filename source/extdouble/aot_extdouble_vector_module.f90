@@ -31,8 +31,6 @@ module aot_extdouble_vector_module
   !! specified to limit the allocated memory by these routines (and make the
   !! interfaces distinguishable).
   interface aot_get_val
-    module procedure get_config_extdouble_vvect
-
     module procedure get_table_extdouble_vvect
   end interface
 
@@ -52,8 +50,6 @@ module aot_extdouble_vector_module
   !! If the Lua table is longer than the available elements in the array
   !! only the first elements from the table will be stored in the array.
   interface aot_get_val
-    module procedure get_config_extdouble_v
-
     module procedure get_table_extdouble_v
   end interface
 
@@ -81,7 +77,7 @@ contains
   subroutine get_table_extdouble_vvect(val, ErrCode, maxlength, L, thandle, &
     &                                  key, pos, default)
     type(flu_State) :: L !< Handle to the lua script
-    integer, intent(in) :: thandle !< Handle of the parent table
+    integer, intent(in), optional :: thandle !< Handle of the parent table
 
     !> Vector read from the Lua table, will have the same length as the table
     !! but not exceed maxlength, if provided.
@@ -106,52 +102,29 @@ contains
     !! Components will be filled with the help of this default definition.
     real(kind=xdble_k), intent(in), optional :: default(:)
 
-    ! Get the requeseted value from the provided table
-    call aot_table_push(L=L, thandle=thandle, &
-      &                   key=key, pos=pos)
+    logical :: valid_args
 
-    call aot_top_get_val(val, ErrCode, maxlength, L, default)
+    valid_args = .true.
+    if (present(thandle)) then
+      ! Get the requested value from the provided table
+      call aot_table_push(L=L, thandle=thandle, &
+        &                   key=key, pos=pos)
+    else
+      if (present(key)) then
+        ! Get the requeseted global variable
+        call flu_getglobal(L, key)
+      else
+        valid_args = .false.
+      end if
+    end if
+    if (valid_args) then
+      call aot_top_get_val(val, ErrCode, maxlength, L, default)
+    else
+      ErrCode = ibSet(0, aoterr_NonExistent)
+      ErrCode = ibSet(ErrCode, aoterr_Fatal)
+    end if
 
   end subroutine get_table_extdouble_vvect
-
-
-  !> This routine obtains a vectorial quantity with variable length from a Lua
-  !! global variable as a whole.
-  !!
-  !! It is intented to ease the reading of vectors on the Fortran side by
-  !! capsulating the parsing of the Lua table internally.
-  !! For the dynamically sized array, which will be allocated, a upper limit
-  !! to allocate has to be specified.
-  subroutine get_config_extdouble_vvect(val, ErrCode, maxlength, L, &
-    &                                   key, default)
-    type(flu_State) :: L !< Handle to the lua script
-
-    !> Vector read from the Lua table, will have the same length as the table
-    !! but not exceed maxlength, if provided.
-    real(kind=xdble_k), intent(out), allocatable :: val(:)
-
-    !> Error code describing problems encountered in each of the components.
-    !! Will be allocated with the same length as the returned vector.
-    !! If the complete vector is not given in the Lua script, and no default
-    !! is provided, an zerosized array will be returned.
-    integer, intent(out), allocatable :: ErrCode(:)
-
-    !> Maximal length to allocate for the vector.
-    integer, intent(in) :: maxlength
-
-    !> Name of the variable (vector) to read.
-    character(len=*), intent(in) :: key
-
-    !> A default vector to use, if no proper definition is found.
-    !! Components will be filled with the help of this default definition.
-    real(kind=xdble_k), intent(in), optional :: default(:)
-
-    ! Get the requeseted global variable
-    call flu_getglobal(L, key)
-
-    call aot_top_get_val(val, ErrCode, maxlength, L, default)
-
-  end subroutine get_config_extdouble_vvect
 
 
   !> This routine obtains a vectorial quantity with fixed length from a Lua
@@ -167,9 +140,9 @@ contains
   !! Components, which are neither defined in the Lua script, nor in the
   !! default will be marked with the aoterr_Fatal flag.
   subroutine get_table_extdouble_v(val, ErrCode, L, thandle, key, &
-    &                         pos, default)
+    &                              pos, default)
     type(flu_State) :: L !< Handle to the lua script
-    integer, intent(in) :: thandle !< Handle of the parent table
+    integer, intent(in), optional :: thandle !< Handle of the parent table
 
     !> Vector read from the Lua table.
     real(kind=xdble_k), intent(out) :: val(:)
@@ -188,11 +161,28 @@ contains
     !! Components will be filled with the help of this default definition.
     real(kind=xdble_k), intent(in), optional :: default(:)
 
-    ! Get the requeseted value from the provided table
-    call aot_table_push(L=L, thandle=thandle, &
-      &                 key=key, pos=pos)
+    logical :: valid_args
 
-    call aot_top_get_val(val, ErrCode, L, default)
+    valid_args = .true.
+    if (present(thandle)) then
+      ! Get the requested value from the provided table
+      call aot_table_push(L=L, thandle=thandle, &
+        &                 key=key, pos=pos)
+    else
+      if (present(key)) then
+        ! Get the requeseted global variable
+        call flu_getglobal(L, key)
+      else
+        valid_args = .false.
+      end if
+    end if
+    if (valid_args) then
+      call aot_top_get_val(val, ErrCode, L, default)
+    else
+      ErrCode = ibSet(0, aoterr_NonExistent)
+      ErrCode = ibSet(ErrCode, aoterr_Fatal)
+    end if
+
   end subroutine get_table_extdouble_v
 
 
