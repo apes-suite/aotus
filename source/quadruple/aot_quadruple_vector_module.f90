@@ -22,7 +22,7 @@ module aot_quadruple_vector_module
 
   implicit none
 
-  public :: aot_table_get_val !, aot_get_val, aot_top_get_val
+  public :: aot_table_get_val, aot_get_val, aot_top_get_val
 
   !> Use these routines to obtain a vector whose length is unknown.
   !!
@@ -30,9 +30,9 @@ module aot_quadruple_vector_module
   !! Lua script with these routines. A maximal length has to be
   !! specified to limit the allocated memory by these routines (and make the
   !! interfaces distinguishable).
-!!  interface aot_get_val
-!!    module procedure get_table_quadruple_vvect
-!!  end interface
+  interface aot_get_val
+    module procedure get_table_quadruple_vvect
+  end interface
 
   interface aot_table_get_val
     module procedure get_table_quadruple_vvect
@@ -49,9 +49,9 @@ module aot_quadruple_vector_module
   !! values from the Lua table, as far as they exist.
   !! If the Lua table is longer than the available elements in the array
   !! only the first elements from the table will be stored in the array.
-!!  interface aot_get_val
-!!    module procedure get_table_quadruple_v
-!!  end interface
+  interface aot_get_val
+    module procedure get_table_quadruple_v
+  end interface
 
   interface aot_table_get_val
     module procedure get_table_quadruple_v
