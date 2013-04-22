@@ -48,8 +48,8 @@ you get a list of available options to the waf script.
 What is Built
 -------------
 
-For your convenience the Lua library is included in version 5.2.1 (released
-2012-06-08).
+For your convenience the Lua library is included in version 5.2.2 (released
+2013-03-27).
 Its objects are completely gathered into the final *libaotus* library, so it is
 only necessary to link against this single static library to gain the
 configuration features of aotus in your Fortran application.
