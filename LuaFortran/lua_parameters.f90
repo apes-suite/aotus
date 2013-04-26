@@ -20,6 +20,7 @@ module lua_parameters
   integer(kind=c_int), parameter :: LUA_TNONE = -1
   integer(kind=c_int), parameter :: LUA_TNIL = 0
   integer(kind=c_int), parameter :: LUA_TBOOLEAN = 1
+  integer(kind=c_int), parameter :: LUA_TLIGHTUSERDATA = 2
   integer(kind=c_int), parameter :: LUA_TTABLE = 5
   integer(kind=c_int), parameter :: LUA_TFUNCTION = 6
 

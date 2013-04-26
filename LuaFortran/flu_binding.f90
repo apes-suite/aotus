@@ -35,16 +35,16 @@ module flu_binding
   public :: flu_insert
   public :: flu_isFunction, flu_isNumber, flu_isTable
   public :: flu_isNone, flu_isNoneOrNil, flu_isNil
-  public :: flu_isBoolean
+  public :: flu_isBoolean, flu_islightuserdata
   public :: flu_pcall
   public :: flu_next
   public :: flu_setTop
   public :: flu_setTable, flu_setField
   public :: flu_todouble
-  public :: flu_tolstring, flu_tonumber, flu_toboolean
+  public :: flu_tolstring, flu_tonumber, flu_toboolean, flu_touserdata
   public :: flu_pop
   public :: flu_pushinteger, flu_pushnil, flu_pushnumber, flu_pushboolean
-  public :: flu_pushstring, flu_pushvalue
+  public :: flu_pushstring, flu_pushvalue, flu_pushlightuserdata
 
   public :: flu_copyptr
   public :: flu_register
@@ -255,6 +255,18 @@ contains
   end function flu_isNone
 
 
+  function flu_islightuserdata(L, index) result(is_lightuserdata)
+    type(flu_State) :: L
+    integer         :: index
+    logical         :: is_lightuserdata
+
+    integer(kind=c_int) :: c_index
+
+    c_index = int(index, kind = c_int)
+    is_lightuserdata = (lua_Type(L%state, c_index) .eq. LUA_TLIGHTUSERDATA)
+  end function flu_islightuserdata
+
+
   function flu_next(L, index) result(exists)
     type(flu_State) :: L
     integer, intent(in) :: index
@@ -369,6 +381,14 @@ contains
     call lua_pushvalue(L%state, c_index)
   end subroutine flu_pushvalue
 
+  subroutine flu_pushlightuserdata(L, ptr)
+    type(flu_State) :: L
+    type(c_ptr) :: ptr
+
+    call lua_pushlightuserdata(L%state, ptr)
+
+  end subroutine flu_pushlightuserdata
+
 
   subroutine flu_settable(L, n)
     type(flu_State) :: L
@@ -475,6 +495,18 @@ contains
     c_index = index
     bool = (lua_toBoolean(L%state, c_index) == 1)
   end function flu_toBoolean
+
+
+  function flu_touserdata(L, index) result(ptr)
+    type(flu_State) :: L
+    integer :: index
+    type(c_ptr) :: ptr
+
+    integer(kind=c_int) :: c_index
+
+    c_index = index
+    ptr = lua_touserdata(L%state, c_index)
+  end function flu_touserdata
 
   subroutine flu_pushcclosure(L, fn, n)
     type(flu_State), value :: L 

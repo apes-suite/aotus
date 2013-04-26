@@ -169,6 +169,13 @@ module lua_fif
       integer(kind=c_int) :: lua_toboolean
     end function lua_toboolean
 
+    function lua_touserdata(L, index) bind(c, name="lua_touserdata")
+      use, intrinsic :: iso_c_binding
+      type(c_ptr), value :: L
+      integer(kind=c_int), value :: index
+      type(c_ptr) :: lua_touserdata
+    end function lua_touserdata
+
     function lua_type(L, index) bind(c, name="lua_type")
       use, intrinsic :: iso_c_binding
       type(c_ptr), value :: L
@@ -182,6 +189,12 @@ module lua_fif
       type(c_funptr), value :: c_fn
       integer(c_int), value :: n
     end subroutine lua_pushcclosure
+
+    subroutine lua_pushlightuserdata(L, ptr) bind(c, name="lua_pushlightuserdata")
+      use, intrinsic :: iso_c_binding
+      type(c_ptr), value :: L
+      type(c_ptr), value :: ptr
+    end subroutine lua_pushlightuserdata
 
   end interface
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

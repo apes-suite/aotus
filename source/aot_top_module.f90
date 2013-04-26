@@ -50,6 +50,7 @@ module aot_top_module
     module procedure aot_top_get_long
     module procedure aot_top_get_string
     module procedure aot_top_get_logical
+    module procedure aot_top_get_userdata
   end interface
 
 contains
@@ -317,6 +318,51 @@ contains
     call flu_pop(L)
 
   end subroutine aot_top_get_string
+
+
+  !> Interpret topmost entry on Lua stack as userdata.
+  subroutine aot_top_get_userdata(val, ErrCode, L, default)
+    use, intrinsic :: iso_c_binding
+    type(flu_State) :: L !< Handle to the Lua script
+
+    !> Value of the Variable in the script
+    type(c_ptr), intent(out) :: val
+
+    !> Error code to indicate what kind of problem might have occured.
+    integer, intent(out) :: ErrCode
+
+    !> Some default value, that should be used, if the variable is not set in
+    !! the Lua script.
+    type(c_ptr), optional, intent(in) :: default
+
+    logical :: not_retrievable
+
+    ErrCode = 0
+    not_retrievable = .false.
+
+    if (flu_isNoneOrNil(L, -1)) then
+      ErrCode = ibSet(ErrCode, aoterr_NonExistent)
+      not_retrievable = .true.
+    else
+      if (flu_islightuserdata(L, -1)) then
+        val = flu_touserdata(L, -1)
+      else
+        ErrCode = ibSet(ErrCode, aoterr_WrongType)
+        ErrCode = ibSet(ErrCode, aoterr_Fatal)
+        not_retrievable = .true.
+      end if
+    end if
+
+    if (not_retrievable) then
+      if (present(default)) then
+        val = default
+      else
+        ErrCode = ibSet(ErrCode, aoterr_Fatal)
+      end if
+    end if
+    call flu_pop(L)
+
+  end subroutine aot_top_get_userdata
 
 
 end module aot_top_module
