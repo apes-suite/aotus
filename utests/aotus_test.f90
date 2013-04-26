@@ -1,7 +1,7 @@
 program aotus_test
   use flu_binding, only: flu_State
 
-  use aot_kinds_module, only: double_k, long_k
+  use aot_kinds_module, only: long_k
   use aotus_module, only: open_config_file, close_config, aot_get_val
   use aot_top_module, only: aoterr_Fatal, aoterr_NonExistent, aoterr_WrongType
 
@@ -84,7 +84,7 @@ program aotus_test
   ! Testing for global REAL
   write(*,*) ' * reading a global real'
   call aot_get_val(L = conf, key = 'real_test', &
-    &                 val = glob_real, ErrCode = iError)
+    &              val = glob_real, ErrCode = iError)
 
   if (btest(iError, aoterr_Fatal)) then
     write(*,*) '  : unexpected FATAL Error occured !!!'
@@ -94,7 +94,8 @@ program aotus_test
       &   write(*,*) '  : Variable has wrong type!'
     passed = .false.
   else
-    if (glob_real == 0.5) then
+    if ((glob_real > 0.5*(1.0-epsilon(glob_real))) &
+      & .or. (glob_real < 0.5*(1.0+epsilon(glob_real)))) then
       write(*,*) '  : success.'
     else
       write(*,*) '  : unexpected ERROR, value mismatch, got: ', glob_real
@@ -108,7 +109,7 @@ program aotus_test
   glob_log = .false.
   write(*,*) ' * reading a global logical'
   call aot_get_val(L = conf, key = 'log_test', &
-    &                 val = glob_log, ErrCode = iError)
+    &              val = glob_log, ErrCode = iError)
 
   if (btest(iError, aoterr_Fatal)) then
     write(*,*) '  : unexpected FATAL Error occured !!!'
@@ -131,7 +132,7 @@ program aotus_test
   ! Testing for global STRING
   write(*,*) ' * reading a global string'
   call aot_get_val(L = conf, key = 'string_test', &
-    &                 val = glob_string, ErrCode = iError)
+    &              val = glob_string, ErrCode = iError)
 
   if (btest(iError, aoterr_Fatal)) then
     write(*,*) '  : unexpected FATAL Error occured !!!'

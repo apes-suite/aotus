@@ -186,42 +186,6 @@ contains
   end subroutine get_table_extdouble_v
 
 
-  !> This routine obtains a vectorial quantity with fixed length from a Lua
-  !! global variable as a whole.
-  !!
-  !! It is intented to ease the reading of vectors on the Fortran side by
-  !! capsulating the parsing of the Lua table internally.
-  !! Components which are not found are filled with the data given in
-  !! the default vector. For each component an error code will be returned
-  !! to indicate the success when reading it.
-  !! If the vector is not defined at all, all components will be indicated
-  !! as non-existent.
-  !! Components, which are neither defined in the Lua script, nor in the
-  !! default will be marked with the aoterr_Fatal flag.
-  subroutine get_config_extdouble_v(val, ErrCode, L, key, default)
-    type(flu_State) :: L !< Handle to the lua script
-
-    !> Vector read from the Lua table.
-    real(kind=xdble_k), intent(out) :: val(:)
-
-    !> Error code describing problems encountered in each of the components.
-    !! This array has to have the same length as val.
-    integer, intent(out) :: ErrCode(:)
-
-    !> Name of the variable (vector) to read.
-    character(len=*), intent(in) :: key
-
-    !> A default vector to use, if no proper definition is found.
-    !! Components will be filled with the help of this default definition.
-    real(kind=xdble_k), intent(in), optional :: default(:)
-
-    ! Get the requeseted value from the provided table
-    call flu_getglobal(L, key)
-
-    call aot_top_get_val(val, ErrCode, L, default)
-  end subroutine get_config_extdouble_v
-
-
   subroutine get_top_extdouble_vvect(val, ErrCode, maxlength, L, default)
     type(flu_State) :: L !< Handle to the lua script
 
