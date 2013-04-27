@@ -153,6 +153,9 @@ contains
     if (valid_args) then
       call aot_top_get_val(val, ErrCode, maxlength, L, default)
     else
+      ! In case of invalid arguments return 0-sized arrays.
+      ! (Equivalent of not found Lua tables.)
+      allocate(Val(0))
       allocate(ErrCode(0))
     end if
 
@@ -212,6 +215,9 @@ contains
     if (valid_args) then
       call aot_top_get_val(val, ErrCode, maxlength, L, default)
     else
+      ! In case of invalid arguments return 0-sized arrays.
+      ! (Equivalent of not found Lua tables.)
+      allocate(Val(0))
       allocate(ErrCode(0))
     end if
 
@@ -271,6 +277,9 @@ contains
     if (valid_args) then
       call aot_top_get_val(val, ErrCode, maxlength, L, default)
     else
+      ! In case of invalid arguments return 0-sized arrays.
+      ! (Equivalent of not found Lua tables.)
+      allocate(Val(0))
       allocate(ErrCode(0))
     end if
 
@@ -330,6 +339,9 @@ contains
     if (valid_args) then
       call aot_top_get_val(val, ErrCode, maxlength, L, default)
     else
+      ! In case of invalid arguments return 0-sized arrays.
+      ! (Equivalent of not found Lua tables.)
+      allocate(Val(0))
       allocate(ErrCode(0))
     end if
 
@@ -389,6 +401,9 @@ contains
     if (valid_args) then
       call aot_top_get_val(val, ErrCode, maxlength, L, default)
     else
+      ! In case of invalid arguments return 0-sized arrays.
+      ! (Equivalent of not found Lua tables.)
+      allocate(Val(0))
       allocate(ErrCode(0))
     end if
 
