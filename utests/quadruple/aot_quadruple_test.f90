@@ -46,7 +46,8 @@ program quadruple_test
       &   write(*,*) '  : Variable has wrong type!'
     passed = .false.
   else
-    if (glob_quad == 0.5_quad_k) then
+    if ((glob_quad > 0.5_quad_k*(1.0_quad_k-epsilon(glob_quad))) &
+      & .and. (glob_quad < 0.5_quad_k*(1.0_quad_k+epsilon(glob_quad)))) then
       write(*,*) '  : success.'
     else
       write(*,*) '  : unexpected ERROR, value mismatch, got: ', glob_quad
@@ -75,7 +76,8 @@ program quadruple_test
     if (btest(iError, aoterr_WrongType)) &
       &   write(*,*) '  : Variable has wrong type!'
   else
-    if (tab_quad /= 2.0_quad_k) then
+    if ((tab_quad < 2.0_quad_k*(1._quad_k-epsilon(tab_quad))) &
+      & .or. (tab_quad > 2.0_quad_k*(1._quad_k+epsilon(tab_quad)))) then
       write(*,*) '  : unexpected ERROR, value mismatch, got: ', tab_quad
       write(*,*) '  :                             should be: ', 2.0
       passed = .false.

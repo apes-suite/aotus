@@ -1,7 +1,6 @@
 program aot_table_test
   use flu_binding, only: flu_State
 
-  use aot_kinds_module, only: double_k, long_k
   use aotus_module, only: open_config_file, close_config
   use aot_top_module, only: aoterr_Fatal, aoterr_NonExistent, aoterr_WrongType
   use aot_table_module, only: aot_table_open, aot_table_close, &
