@@ -291,7 +291,7 @@ contains
         allocate(val(def_len))
         allocate(errCode(vect_len))
         val = default
-        ErrCode = ibSet(ErrCode, aoterr_NonExistent)
+        ErrCode = ibSet(0, aoterr_NonExistent)
       else
         ! No vector definition in the Lua script and no default provided,
         ! return an empty array.
@@ -322,6 +322,8 @@ contains
     integer :: table_len, vect_len, def_len
     integer :: vect_lb
     integer :: iComp
+
+    ErrCode = 0
 
     ! Try to interpret it as table.
     vect_handle = aot_table_top(L=L)

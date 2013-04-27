@@ -723,6 +723,8 @@ contains
     integer :: vect_lb
     integer :: iComp
 
+    ErrCode = 0
+
     ! Try to interpret the top entry on the stack as a table
     vect_handle = aot_table_top(L=L)
     table_len = aot_table_length(L=L, thandle=vect_handle)
@@ -767,7 +769,7 @@ contains
         allocate(val(def_len))
         allocate(errCode(vect_len))
         val = default
-        ErrCode = ibSet(ErrCode, aoterr_NonExistent)
+        ErrCode = ibSet(0, aoterr_NonExistent)
       else
         ! No vector definition in the Lua script and no default provided,
         ! return an empty array.
@@ -806,6 +808,8 @@ contains
     integer :: vect_lb
     integer :: iComp
 
+    ErrCode = 0
+
     ! Try to interpret the top entry on the stack as a table
     vect_handle = aot_table_top(L=L)
     table_len = aot_table_length(L=L, thandle=vect_handle)
@@ -850,7 +854,7 @@ contains
         allocate(val(def_len))
         allocate(errCode(vect_len))
         val = default
-        ErrCode = ibSet(ErrCode, aoterr_NonExistent)
+        ErrCode = ibSet(0, aoterr_NonExistent)
       else
         ! No vector definition in the Lua script and no default provided,
         ! return an empty array.
@@ -888,6 +892,8 @@ contains
     integer :: vect_lb
     integer :: iComp
 
+    ErrCode = 0
+
     ! Try to interpret the top entry on the stack as a table
     vect_handle = aot_table_top(L=L)
     table_len = aot_table_length(L=L, thandle=vect_handle)
@@ -932,7 +938,7 @@ contains
         allocate(val(def_len))
         allocate(errCode(vect_len))
         val = default
-        ErrCode = ibSet(ErrCode, aoterr_NonExistent)
+        ErrCode = ibSet(0, aoterr_NonExistent)
       else
         ! No vector definition in the Lua script and no default provided,
         ! return an empty array.
@@ -970,6 +976,8 @@ contains
     integer :: vect_lb
     integer :: iComp
 
+    ErrCode = 0
+
     ! Try to interpret the top entry on the stack as a table
     vect_handle = aot_table_top(L=L)
     table_len = aot_table_length(L=L, thandle=vect_handle)
@@ -1014,7 +1022,7 @@ contains
         allocate(val(def_len))
         allocate(errCode(vect_len))
         val = default
-        ErrCode = ibSet(ErrCode, aoterr_NonExistent)
+        ErrCode = ibSet(0, aoterr_NonExistent)
       else
         ! No vector definition in the Lua script and no default provided,
         ! return an empty array.
@@ -1052,6 +1060,8 @@ contains
     integer :: vect_lb
     integer :: iComp
 
+    ErrCode = 0
+
     ! Try to interpret the top entry on the stack as a table
     vect_handle = aot_table_top(L=L)
     table_len = aot_table_length(L=L, thandle=vect_handle)
@@ -1096,7 +1106,7 @@ contains
         allocate(val(def_len))
         allocate(errCode(vect_len))
         val = default
-        ErrCode = ibSet(ErrCode, aoterr_NonExistent)
+        ErrCode = ibSet(0, aoterr_NonExistent)
       else
         ! No vector definition in the Lua script and no default provided,
         ! return an empty array.
@@ -1128,6 +1138,8 @@ contains
     integer :: table_len, vect_len, def_len
     integer :: vect_lb
     integer :: iComp
+
+    ErrCode = 0
 
     ! Try to interpret it as table.
     vect_handle = aot_table_top(L=L)
@@ -1216,6 +1228,8 @@ contains
     vect_handle = aot_table_top(L=L)
     table_len = aot_table_length(L=L, thandle=vect_handle)
 
+    ErrCode = 0
+
     vect_len = min(table_len, size(val))
 
     ! Find the length of the default value, if it is not provided, its 0.
@@ -1294,6 +1308,8 @@ contains
     integer :: table_len, vect_len, def_len
     integer :: vect_lb
     integer :: iComp
+
+    ErrCode = 0
 
     ! Try to interpret it as table.
     vect_handle = aot_table_top(L=L)
@@ -1379,6 +1395,8 @@ contains
     integer :: vect_lb
     integer :: iComp
 
+    ErrCode = 0
+
     ! Try to interpret it as table.
     vect_handle = aot_table_top(L=L)
     table_len = aot_table_length(L=L, thandle=vect_handle)
@@ -1461,6 +1479,8 @@ contains
     integer :: table_len, vect_len, def_len
     integer :: vect_lb
     integer :: iComp
+
+    ErrCode = 0
 
     ! Try to interpret it as table.
     vect_handle = aot_table_top(L=L)
