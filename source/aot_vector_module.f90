@@ -153,8 +153,7 @@ contains
     if (valid_args) then
       call aot_top_get_val(val, ErrCode, maxlength, L, default)
     else
-      ErrCode = ibSet(0, aoterr_NonExistent)
-      ErrCode = ibSet(ErrCode, aoterr_Fatal)
+      allocate(ErrCode(0))
     end if
 
   end subroutine get_table_real_vvect
@@ -213,8 +212,7 @@ contains
     if (valid_args) then
       call aot_top_get_val(val, ErrCode, maxlength, L, default)
     else
-      ErrCode = ibSet(0, aoterr_NonExistent)
-      ErrCode = ibSet(ErrCode, aoterr_Fatal)
+      allocate(ErrCode(0))
     end if
 
   end subroutine get_table_double_vvect
@@ -273,8 +271,7 @@ contains
     if (valid_args) then
       call aot_top_get_val(val, ErrCode, maxlength, L, default)
     else
-      ErrCode = ibSet(0, aoterr_NonExistent)
-      ErrCode = ibSet(ErrCode, aoterr_Fatal)
+      allocate(ErrCode(0))
     end if
 
   end subroutine get_table_integer_vvect
@@ -333,8 +330,7 @@ contains
     if (valid_args) then
       call aot_top_get_val(val, ErrCode, maxlength, L, default)
     else
-      ErrCode = ibSet(0, aoterr_NonExistent)
-      ErrCode = ibSet(ErrCode, aoterr_Fatal)
+      allocate(ErrCode(0))
     end if
 
   end subroutine get_table_long_vvect
@@ -393,8 +389,7 @@ contains
     if (valid_args) then
       call aot_top_get_val(val, ErrCode, maxlength, L, default)
     else
-      ErrCode = ibSet(0, aoterr_NonExistent)
-      ErrCode = ibSet(ErrCode, aoterr_Fatal)
+      allocate(ErrCode(0))
     end if
 
   end subroutine get_table_logical_vvect
@@ -723,8 +718,6 @@ contains
     integer :: vect_lb
     integer :: iComp
 
-    ErrCode = 0
-
     ! Try to interpret the top entry on the stack as a table
     vect_handle = aot_table_top(L=L)
     table_len = aot_table_length(L=L, thandle=vect_handle)
@@ -740,6 +733,8 @@ contains
     if (aot_table_first(L, vect_handle)) then
       allocate(val(vect_len))
       allocate(errCode(vect_len))
+
+      ErrCode = 0
 
       ! Only if the vector table actually exists, and has at least one entry,
       ! this parsing has to be done.
@@ -808,8 +803,6 @@ contains
     integer :: vect_lb
     integer :: iComp
 
-    ErrCode = 0
-
     ! Try to interpret the top entry on the stack as a table
     vect_handle = aot_table_top(L=L)
     table_len = aot_table_length(L=L, thandle=vect_handle)
@@ -825,6 +818,8 @@ contains
     if (aot_table_first(L, vect_handle)) then
       allocate(val(vect_len))
       allocate(errCode(vect_len))
+
+      ErrCode = 0
 
       ! Only if the vector table actually exists, and has at least one entry,
       ! this parsing has to be done.
@@ -892,8 +887,6 @@ contains
     integer :: vect_lb
     integer :: iComp
 
-    ErrCode = 0
-
     ! Try to interpret the top entry on the stack as a table
     vect_handle = aot_table_top(L=L)
     table_len = aot_table_length(L=L, thandle=vect_handle)
@@ -909,6 +902,8 @@ contains
     if (aot_table_first(L, vect_handle)) then
       allocate(val(vect_len))
       allocate(errCode(vect_len))
+
+      ErrCode = 0
 
       ! Only if the vector table actually exists, and has at least one entry,
       ! this parsing has to be done.
@@ -976,8 +971,6 @@ contains
     integer :: vect_lb
     integer :: iComp
 
-    ErrCode = 0
-
     ! Try to interpret the top entry on the stack as a table
     vect_handle = aot_table_top(L=L)
     table_len = aot_table_length(L=L, thandle=vect_handle)
@@ -993,6 +986,8 @@ contains
     if (aot_table_first(L, vect_handle)) then
       allocate(val(vect_len))
       allocate(errCode(vect_len))
+
+      ErrCode = 0
 
       ! Only if the vector table actually exists, and has at least one entry,
       ! this parsing has to be done.
@@ -1060,8 +1055,6 @@ contains
     integer :: vect_lb
     integer :: iComp
 
-    ErrCode = 0
-
     ! Try to interpret the top entry on the stack as a table
     vect_handle = aot_table_top(L=L)
     table_len = aot_table_length(L=L, thandle=vect_handle)
@@ -1077,6 +1070,8 @@ contains
     if (aot_table_first(L, vect_handle)) then
       allocate(val(vect_len))
       allocate(errCode(vect_len))
+
+      ErrCode = 0
 
       ! Only if the vector table actually exists, and has at least one entry,
       ! this parsing has to be done.

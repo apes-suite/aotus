@@ -120,8 +120,7 @@ contains
     if (valid_args) then
       call aot_top_get_val(val, ErrCode, maxlength, L, default)
     else
-      ErrCode = ibSet(0, aoterr_NonExistent)
-      ErrCode = ibSet(ErrCode, aoterr_Fatal)
+      allocate(ErrCode(0))
     end if
 
   end subroutine get_table_quadruple_vvect
@@ -226,6 +225,8 @@ contains
     if (aot_table_first(L, vect_handle)) then
       allocate(val(vect_len))
       allocate(errCode(vect_len))
+
+      ErrCode = 0
 
       ! Only if the vector table actually exists, and has at least one entry,
       ! this parsing has to be done.
