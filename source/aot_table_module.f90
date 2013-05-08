@@ -47,6 +47,7 @@ module aot_table_module
     module procedure get_table_long
     module procedure get_table_string
     module procedure get_table_logical
+    module procedure get_table_userdata
   end interface
 
   !> Set a value in a table.
@@ -124,6 +125,7 @@ module aot_table_module
     module procedure get_table_long
     module procedure get_table_string
     module procedure get_table_logical
+    module procedure get_table_userdata
   end interface
 
   !> This interface enables the simple creation of uniform one dimensional
@@ -400,6 +402,62 @@ contains
     end if
 
   end subroutine get_table_logical
+
+
+  !> Retrieve a userdata value (generic C pointer) from a table.
+  subroutine get_table_userdata(val, ErrCode, L, thandle, key, pos, &
+    &                          default)
+
+    use, intrinsic :: iso_c_binding, only: c_ptr
+
+    type(flu_State) :: L !< Handle to the Lua script.
+
+    !> Handle to the table to look the value up in.
+    integer, intent(in), optional :: thandle
+
+    !> Value of the table entry if it exists.
+    type(c_ptr), intent(out) :: val
+
+    !> Error code to indicate what kind of problem might have occured.
+    integer, intent(out) :: ErrCode
+
+    !> Name of the entry to look for.
+    !!
+    !! Key and pos are both optional, however at least one of them has to be
+    !! supplied.
+    !! The key takes precedence over the pos if both are given.
+    character(len=*), intent(in), optional :: key
+
+    !> Position of the entry to look for in the table.
+    !!
+    !! It allows the access to unnamed arrays in the Lua tables.
+    integer, intent(in), optional :: pos
+
+    !> Some default value, that should be used, if the variable is not set in
+    !! the Lua script.
+    type(c_ptr), intent(in), optional :: default
+
+    logical :: valid_args
+
+    valid_args = .true.
+    if (present(thandle)) then
+      call aot_table_push(L=L, thandle=thandle, &
+        &                 key=key, pos=pos)
+    else
+      if (present(key)) then
+        call flu_getglobal(L, key)
+      else
+        valid_args = .false.
+      end if
+    end if
+    if (valid_args) then
+      call aot_top_get_val(val, ErrCode, L, default)
+    else
+      ErrCode = ibSet(0, aoterr_NonExistent)
+      ErrCode = ibSet(ErrCode, aoterr_Fatal)
+    end if
+
+  end subroutine get_table_userdata
 
 
   !> Retrieve a string from a table.
