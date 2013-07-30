@@ -53,7 +53,7 @@ def configure(conf):
     # Flags for the default (production) variant
     conf.env['FCFLAGS'] = ( fcopts[conf.env.FC_NAME, 'optimize']
                           + fcopts[conf.env.FC_NAME, 'warn'] )
-    conf.env['LINKFLAGS_FORTRAN'] = conf.env['FCFLAGS']
+    conf.env['LINKFLAGS_fcprogram'] = conf.env['FCFLAGS']
 
     # Set flags for the debugging variant
     # DEBUG Variant
@@ -62,7 +62,7 @@ def configure(conf):
                           + fcopts[conf.env.FC_NAME, 'warn']
                           + fcopts[conf.env.FC_NAME, 'w2e']
                           + fcopts[conf.env.FC_NAME, 'debug'] )
-    conf.env['LINKFLAGS_FORTRAN'] = conf.env['FCFLAGS']
+    conf.env['LINKFLAGS_fcprogram'] = conf.env['FCFLAGS']
 
 def subconf(conf):
     """
@@ -246,19 +246,19 @@ def build(bld):
     bld(
         features = 'fc fcprogram',
         source = ['sample/aotus_sample.f90'],
-        use = ['aotus', 'FORTRAN'],
+        use = 'aotus',
         target = 'aotus_sample')
 
     bld(
         features = 'fc fcprogram',
         source = ['LuaFortran/examples/test.f90'],
-        use = ['flu', 'FORTRAN'],
+        use = 'flu',
         target = 'flu_sample')
 
     from waflib.extras import utest_results
     utest_results.utests(bld, 'aotus')
     if bld.env['quad_support']:
-        utest_results.utests(bld, use = ['aotus', 'FORTRAN'], path = 'utests/quadruple')
+        utest_results.utests(bld, use = 'aotus', path = 'utests/quadruple')
     bld.add_post_fun(utest_results.summary)
 
     if bld.cmd == 'doxy':
