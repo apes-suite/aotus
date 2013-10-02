@@ -92,6 +92,7 @@ def subconf(conf):
                   msg = "Checking for ISO_C_Binding support",
                   mandatory = 'true')
 
+    conf.in_msg = 1
     conf.check_fc(fragment = '''
        program checkquad
          implicit none
@@ -99,13 +100,21 @@ def subconf(conf):
          real(kind=quad_k) :: a_quad_real
          write(*,*) quad_k
        end program checkquad''',
-                  msg = 'Checking for Quadruple Precision',
                   mandatory=False, define_name='quadruple',
                   execute = True, define_ret = True)
+    conf.in_msg = 0
+
     conf.env['quad_support'] = conf.is_defined('quadruple')
     if conf.env['quad_support']:
        conf.env['quad_k'] = int(conf.get_define('quadruple').replace('"', '').strip())
+       if conf.env['quad_k'] < 1:
+          conf.env['quad_support'] = False
+    if conf.env['quad_support']:
+       conf.msg('Checking for Quadruple Precision', 'yes', color='GREEN')
+    else:
+       conf.msg('Checking for Quadruple Precision', 'NO', color='RED')
 
+    conf.in_msg = 1
     conf.check_fc(fragment = '''
        program checkxdble
          implicit none
@@ -113,14 +122,21 @@ def subconf(conf):
          real(kind=xdble_k) :: a_xdble_real
          write(*,*) xdble_k
        end program checkxdble''',
-                  msg = 'Checking for Extended Double Precision',
                   mandatory=False, define_name='extdouble',
                   execute = True, define_ret = True)
+    conf.in_msg = 0
+
     conf.env['xdble_support'] = False
     if conf.is_defined('extdouble'):
        conf.env['xdble_k'] = int(conf.get_define('extdouble').replace('"', '').strip())
-       if conf.env['xdble_k'] != conf.env['quad_k']:
+       if conf.env['xdble_k'] > 0 and conf.env['xdble_k'] != conf.env['quad_k']:
           conf.env['xdble_support'] = True
+
+    if conf.env['xdble_support']:
+       conf.msg('Checking for Extended Double Precision', 'yes', color='GREEN')
+    else:
+       conf.msg('Checking for Extended Double Precision', 'NO', color='RED')
+
     # Cleanup the DEFINES again
     conf.env.DEFINES = tmpDEF
 
