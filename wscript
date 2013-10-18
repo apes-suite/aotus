@@ -20,9 +20,9 @@ def configure(conf):
     from waflib import Logs
     # The fcopts provide some sane flag combinations
     # for different variants in the various compilers.
-    # They are found in apes/sys_env, and included in
-    # the waf script, when built with build_waf.sh.
-    from waflib.extras.fc_flags import fcopts
+    # They are found in the fc_flags.py in the same
+    # directory as the wscript file.
+    from fc_flags import fcopts
     # includes options for:
     # * 'warn': activate compile time warnings
     # * 'w2e': turn warnings into errors
