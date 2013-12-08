@@ -71,6 +71,7 @@ contains
 
       string => flu_tolstring(L, -1, str_len)
       if (present(ErrString)) then
+        ErrString = ''
         do i=1,min(str_len, len(ErrString))
           ErrString(i:i) = string(i)
         end do
