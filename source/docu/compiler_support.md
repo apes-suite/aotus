@@ -9,13 +9,13 @@ However a wide range of different compilers are known to compile the library.
 Known to work with version 7.4.0 and newer.
 
 ## GNU gfortran
-Known to work with version 4.4.3 and newer.
+Known to work with version 4.4.5 and newer.
 
 ## IBM
 Known to work with version 11.1.
 
 ## Intel
-Known to work with version 11.1 and newer.
+Known to work with version 12.0 and newer.
 
 ## NAG
 Known to work with version 5.2.

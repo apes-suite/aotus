@@ -510,7 +510,7 @@ contains
 
   subroutine flu_pushcclosure(L, fn, n)
     type(flu_State), value :: L 
-    procedure(lua_Function), bind(C) :: fn
+    procedure(lua_Function) :: fn
     integer :: n 
 
     integer(c_int) :: c_n
