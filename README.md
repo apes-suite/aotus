@@ -11,6 +11,11 @@ And for a detailed interface reference visit its
 
 *This library is released under a simplified MIT licence, please have a look into the COPYRIGHT file for details.*
 
+Aotus is part of the APES suite, for which there is a
+[mailing list](https://listserv.uni-siegen.de/cgi-bin/mailman/listinfo/apes)
+where questions can be asked.
+
+
 How To Build
 ------------
 
