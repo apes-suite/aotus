@@ -7,7 +7,7 @@ scripts as configuration files in Fortran applications.
 Please have a look at the [Wiki](https://bitbucket.org/haraldkl/aotus/wiki/Home)
 for more information on its usage.
 And for a detailed interface reference visit its
-[Doxygen generated documentation](https://geb.sts.nt.uni-siegen.de/aotus)
+[Doxygen generated documentation](https://geb.sts.nt.uni-siegen.de/doxy/aotus)
 
 *This library is released under a simplified MIT licence, please have a look into the COPYRIGHT file for details.*
 
