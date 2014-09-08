@@ -95,11 +95,15 @@ contains
     !> Path object to initialize
     type(aot_path_type), intent(out) :: me
     !> Filename of the Lua script, this path is located in
-    character(len=*), intent(in) :: Filename
+    character(len=*), optional, intent(in) :: Filename
 
     ! Finalize the path first, just in case it might have had any entries.
     call aot_fin_path(me)
-    me%LuaFilename = adjustl(trim(Filename))
+    if (present(Filename)) then
+      me%LuaFilename = adjustl(trim(Filename))
+    else 
+      me%LuaFilename = ''
+    end if
     me%rootHandle = 0
   end subroutine aot_init_path
 
