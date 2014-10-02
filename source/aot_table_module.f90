@@ -31,6 +31,7 @@ module aot_table_module
   public :: aot_table_from_1Darray
   public :: aot_table_set_val, aot_table_set_top
   public :: aot_get_val
+  public :: aot_exist
 
   !> Get a value from a table.
   !!
@@ -139,6 +140,51 @@ module aot_table_module
   end interface
 
 contains
+
+  !> Checks if given key or pos exist from a table or global
+  function aot_exist(L, thandle, key, pos) result(isExist)
+    type(flu_State) :: L !< Handle to the Lua script.
+
+    !> Handle to the table to look the value up in.
+    integer, intent(in), optional :: thandle
+
+    !> Name of the entry to look for.
+    !!
+    !! Key and pos are both optional, however at least one of them has to be
+    !! supplied.
+    !! The key takes precedence over the pos if both are given.
+    character(len=*), intent(in), optional :: key
+
+    !> Position of the entry to look for in the table.
+    !!
+    !! It allows the access to unnamed arrays in the Lua tables.
+    integer, intent(in), optional :: pos
+
+    logical :: isExist
+
+    logical :: valid_args
+
+    isExist = .true.
+
+    valid_args = .true.
+    if (present(thandle)) then
+      call aot_table_push(L=L, thandle=thandle, &
+        &                 key=key, pos=pos)
+    else
+      if (present(key)) then
+        call flu_getglobal(L, key)
+      else
+        valid_args = .false.
+      end if
+    end if
+    if (valid_args) then
+      if (flu_isNoneOrNil(L, -1)) isExist = .false.
+    else
+      isExist = .false.
+    end if
+
+  end function aot_exist
+
 
   !> Retrieve a single precision real value from a table.
   subroutine get_table_real(val, ErrCode, L, thandle, key, pos, default)
