@@ -182,6 +182,7 @@ contains
     else
       isExist = .false.
     end if
+    call flu_pop(L)
 
   end function aot_exist
 
