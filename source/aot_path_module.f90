@@ -101,7 +101,7 @@ contains
     call aot_fin_path(me)
     if (present(Filename)) then
       me%LuaFilename = adjustl(trim(Filename))
-    else 
+    else
       me%LuaFilename = ''
     end if
     me%rootHandle = 0

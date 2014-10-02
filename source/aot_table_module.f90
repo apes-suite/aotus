@@ -1,5 +1,6 @@
 ! Copyright (C) 2011-2013 German Research School for Simulation Sciences GmbH,
 !              Aachen and others.
+!               2014 University of Siegen.
 ! Please see the COPYRIGHT file in this directory for details.
 
 !> This module provides some convenient functions to act on Lua tables.
@@ -31,7 +32,7 @@ module aot_table_module
   public :: aot_table_from_1Darray
   public :: aot_table_set_val, aot_table_set_top
   public :: aot_get_val
-  public :: aot_exist
+  public :: aot_exists
 
   !> Get a value from a table.
   !!
@@ -139,10 +140,16 @@ module aot_table_module
     module procedure create_1Darray_double
   end interface
 
+
 contains
 
-  !> Checks if given key or pos exist from a table or global
-  function aot_exist(L, thandle, key, pos) result(isExist)
+
+  !> Returns wether a given entity exists in the Lua script L.
+  !!
+  !! The entity is identified by a table handle for the
+  !! containing table if it is not a global variable. A key
+  !! or a position.
+  function aot_exists(L, thandle, key, pos) result(exists)
     type(flu_State) :: L !< Handle to the Lua script.
 
     !> Handle to the table to look the value up in.
@@ -160,31 +167,31 @@ contains
     !! It allows the access to unnamed arrays in the Lua tables.
     integer, intent(in), optional :: pos
 
-    logical :: isExist
+    logical :: exists
 
     logical :: valid_args
 
-    isExist = .true.
+    exists = .false.
 
-    valid_args = .true.
+    valid_args = .false.
     if (present(thandle)) then
       call aot_table_push(L=L, thandle=thandle, &
         &                 key=key, pos=pos)
+      valid_args = .true.
     else
       if (present(key)) then
         call flu_getglobal(L, key)
-      else
-        valid_args = .false.
+        valid_args = .true.
       end if
     end if
+
     if (valid_args) then
-      if (flu_isNoneOrNil(L, -1)) isExist = .false.
-    else
-      isExist = .false.
+      exists = .not. flu_isNoneOrNil(L, -1)
     end if
+
     call flu_pop(L)
 
-  end function aot_exist
+  end function aot_exists
 
 
   !> Retrieve a single precision real value from a table.
