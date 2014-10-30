@@ -82,7 +82,7 @@ The doxygen documentation can be built by running:
 This will build a html directory in the build directory with the resulting
 documentation. Note, that this requires an installed doxygen.
 It is also online available at
-[Aotus documentation](https://geb.sts.nt.uni-siegen.de/aotus).
+[Aotus documentation](https://geb.sts.nt.uni-siegen.de/doxy/aotus).
 
 ### Example
 
