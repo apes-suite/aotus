@@ -1,5 +1,6 @@
 ! Copyright (C) 2011-2013 German Research School for Simulation Sciences GmbH,
-!              Aachen and others.
+!                         Aachen and others.
+!               2013-2014 University of Siegen.
 ! Please see the COPYRIGHT file in this directory for details.
 
 !> This module provides general operations on Lua tables.
