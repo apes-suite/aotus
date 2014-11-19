@@ -5,9 +5,9 @@
 !> This module provides high level Fortran interfaces to retrieve values from a
 !! Lua script.
 !!
-!! Its central interface is aot_table_module#aot_get_val, which is a generic
-!! interface that allows access to scalars and vectors in global Lua variables
-!! as well as nested tables.
+!! The central interface of the module is aot_table_module#aot_get_val, which is
+!! a generic interface that allows access to scalars and vectors in global Lua
+!! variables as well as nested tables.
 !!
 !! In the \ref aot_overview "overview page" there are some more general
 !! remarks and further pointers.
@@ -42,6 +42,10 @@ module aotus_module
 contains
 
   !> Subroutine to load and execute a script from a file.
+  !!
+  !! If you are using MPI for parallelization, have a look at the
+  !! tem_open_distconf routine in the
+  !! [treelm library](https://bitbucket.org/apesteam/treelm) instead.
   subroutine open_config_file(L, filename, ErrCode, ErrString, buffer)
     type(flu_State) :: L !< Handle to the Lua script
 
@@ -71,7 +75,7 @@ contains
     !! allows you to obtain the script in compiled form, before it is executed.
     !! The buffer will be allocated and filled with the Lua data.
     !! It contains the actual string in buffer%buffer which is a character
-    !! pointer, and the original c_ptr to this 
+    !! pointer, and the original c_ptr to this
     type(cbuf_type), intent(out), optional :: buffer
 
     integer :: err
@@ -288,14 +292,14 @@ end module aotus_module
 !! Aotus is also known as the
 !! [night monkey](http://en.wikipedia.org/wiki/Night_monkey), living in south
 !! america.
-!! Thus we saw the name as fitting as it interacts with the moon (Lua, provided
+!! Thus, we saw the name fit as it interacts with the moon (Lua, provided
 !! by the Pontifical Catholic University of Rio de Janeiro in Brazil).
 !!
 !! The most prominent data structure in Lua are
 !! [tables](http://www.lua.org/manual/5.2/manual.html#2), which provide the
-!! possibility to store complex data structures.
-!! Thus the configuration is mainly done in global variables in the lua script
-!! or tables.
+!! possibility to store complex structures.
+!! Configuration is typically done with global variables in the Lua script
+!! or some tables to distinguish subsections in the configuration.
 !!
 !! Aotus provides several layers, encapsulating the bare
 !! [Lua C-API](http://www.lua.org/manual/5.2/manual.html#4):
@@ -315,8 +319,8 @@ end module aotus_module
 !!   a Lua script.
 !! - On top of those there is an additional \ref aot_vector_module, which allows
 !!   the concise reading of values into arrays of rank one.
-!! - Finally there is and additional \ref aot_out_module, that allows output of
-!!   Fortran values into nested Lua tables.
+!! - Finally there is an \ref aot_out_module that allows output of Fortran values
+!!   into nested Lua tables.
 !!
 !! The library can be compiled by various modern Fortran compilers as described
 !! in \ref compiler_support "Compiler Support".
@@ -325,4 +329,12 @@ end module aotus_module
 !! in sample/aotus_sample.f90 in the Aotus main directory.
 !! The corresponding Lua script used as input is given in sample/config.lua.
 !!
-!! *Sources are available at <https://bitbucket.org/haraldkl/aotus>.*
+!! Note on usage in parallel environments: Aotus itself is not providing parallel
+!! facilities. But it can be nicely used in parallel aswell. However, for
+!! massively parallel systems, it is advisable to minimize the access to config
+!! files. To avoid excessive filesystem meta accesses it is recommended to
+!! load required files only on one process.
+!! An implementation of this for MPI can be found in TreElMs
+!! [distconf](https://geb.sts.nt.uni-siegen.de/doxy/treelm/classtem__aux__module.html#a1a6bd9f747c89e6f00791131e3d169de).
+!!
+!! *Sources are available at <https://bitbucket.org/apesteam/aotus>.*
