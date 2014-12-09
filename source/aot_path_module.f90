@@ -70,6 +70,7 @@ module aot_path_module
   public :: aot_path_addNode, aot_path_delNode
   public :: assignment(=)
   public :: aot_path_open, aot_path_close
+  public :: aot_path_dump
 
   !> Re-open a previously recorded path through nested Lua tables.
   !!
@@ -281,7 +282,7 @@ contains
     logical, intent(in), optional :: openLua
 
     integer :: myHandle
-    
+
     ! open the table untill it reaches the final head node
     call aot_path_open_table( me, conf, myHandle, openLua )
 
@@ -350,7 +351,7 @@ contains
 
     do while(associated(curNode%child))
       prevHandle = myHandle
- 
+
       select case(curNode%ID_kind)
       case('key')
         call aot_table_open(L=conf, thandle=myHandle, parent=prevHandle, &
@@ -411,5 +412,39 @@ contains
     end if
 
   end subroutine aot_path_close_table
+
+  !> Dumps the complete path to the given output unit.
+  !!
+  !! This routine is for debugging purposes. It takes the path and, beginning
+  !! with the global node, dumps all following nodes to the output unit provided
+  !! by the caller.
+  subroutine aot_path_dump( path, outputUnit )
+    !> The path which information should be printed
+    type(aot_path_type), intent(in) :: path
+    !> The unit to use to write the path data
+    integer, intent(in) :: outputUnit
+
+    type(aot_path_node_type), pointer :: current
+
+    write(outputUnit,*) 'Path:'
+    write(outputUnit,*) '  Filename: ', path%LuaFilename
+    write(outputUnit,'(A,I10)') '   root handle: ', path%rootHandle
+    if (associated(path%globalNode)) then
+      current => path%globalNode
+      do while(associated(current))
+        if(associated(current,path%globalNode)) then
+          write(outputUnit,*) '  Global node: '
+        else
+          write(outputUnit,*) '  next: '
+        end if
+        write(outputUnit,*) '    NodeType: ', current%NodeType
+        write(outputUnit,*) '    ID_Kind: ', current%ID_Kind
+        write(outputUnit,*) '    key: ', current%key
+        write(outputUnit,'(A,I10)') '     pos: ', current%pos
+        current => current%child
+      end do
+    end if
+
+  end subroutine aot_path_dump
 
 end module aot_path_module
