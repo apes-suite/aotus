@@ -162,7 +162,7 @@ contains
     integer(kind=c_int) :: c_index
 
     c_index = int(index, kind = c_int)
-    call lua_insert(L%state, c_index)
+    call lua_rotate(L%state, c_index, 1_c_int)
   end subroutine flu_insert
 
 
