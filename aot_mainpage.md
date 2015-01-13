@@ -5,9 +5,9 @@ The AOTUS library provides a Fortran wrapper around the C-API of the
 [Lua](http://www.lua.org) scripting language, allowing a convenient usage of Lua
 scripts as configuration files in Fortran applications.
 
-**It is available for download on [Bitbucket](https://bitbucket.org/haraldkl/aotus).**
+**It is available for download on [Bitbucket](https://bitbucket.org/apesteam/aotus).**
 
-Please visit the [Wiki](https://bitbucket.org/haraldkl/aotus/wiki/Home)
+Please visit the [Wiki](https://bitbucket.org/apesteam/aotus/wiki/Home)
 for further information on its usage.
 
 *This library is released under a simplified MIT licence, please have a look into the COPYRIGHT file for details.*
@@ -124,6 +124,7 @@ http://www.lua.org/license.html.
 ---
 Copyright (C) 2011-2013 German Research School for Simulation Sciences GmbH,
                         Aachen and others.
+              2014-2015 University of Siegen.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

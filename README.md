@@ -4,7 +4,7 @@ Advanced Options and Tables in Universal Scripting
 The AOTUS library provides a Fortran wrapper around the C-API of the
 [Lua](http://www.lua.org) scripting language, allowing a convenient usage of Lua
 scripts as configuration files in Fortran applications.
-Please have a look at the [Wiki](https://bitbucket.org/haraldkl/aotus/wiki/Home)
+Please have a look at the [Wiki](https://bitbucket.org/apesteam/aotus/wiki/Home)
 for more information on its usage.
 And for a detailed interface reference visit its
 [Doxygen generated documentation](https://geb.sts.nt.uni-siegen.de/doxy/aotus)
