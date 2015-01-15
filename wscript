@@ -81,6 +81,9 @@ def subconf(conf):
                   header_name=['stdio.h'],
                   defines=['LUA_USE_POPEN=1'],
                   uselib_store='POPEN', mandatory=False)
+    if conf.env.DEFINES_POPEN and conf.env.DEFINES_MKSTEMP:
+      conf.env.DEFINES_POSIX = ['LUA_USE_POSIX']
+
     conf.check_cc(lib='m', uselib_store='MATH')
 
     conf.check_fc(fragment = '''
@@ -228,7 +231,7 @@ def build(bld):
         features = 'c',
         source = core_sources + lib_sources,
         defines = ['LUA_ANSI'],
-        use = ['MKSTEMP', 'POPEN'],
+        use = ['POSIX'],
         target = 'luaobjs')
 
     bld(
