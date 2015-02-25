@@ -113,5 +113,17 @@ fcopts['NAG', 'profile'] = ['-pg']
 fcopts['NAG', 'fixform'] = []
 fcopts['NAG', 'freeform'] = []
 
+fcopts['NEC', 'warn'] = []
+fcopts['NEC', 'w2e'] = []
+fcopts['NEC', 'standard'] = ['-f2003']
+fcopts['NEC', 'double'] = []
+fcopts['NEC', 'debug'] = []
+fcopts['NEC', 'optimize'] = ['-hopt']
+fcopts['NEC', 'openmp'] = ['-openmp']
+fcopts['NEC', 'noomp'] = []
+fcopts['NEC', 'profile'] = []
+fcopts['NEC', 'fixform'] = []
+fcopts['NEC', 'freeform'] = []
+
 ### End of set of Fortran flags
 #########################################################################
