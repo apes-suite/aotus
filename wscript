@@ -81,7 +81,10 @@ def subconf(conf):
                   header_name=['stdio.h'],
                   defines=['LUA_USE_POPEN=1'],
                   uselib_store='POPEN', mandatory=False)
-    if conf.env.DEFINES_POPEN and conf.env.DEFINES_MKSTEMP:
+    conf.check_cc(function_name='srandom',
+                  header_name=['stdlib.h', 'math.h'],
+                  uselib_store='SRANDOM', mandatory=False)
+    if conf.env.DEFINES_POPEN and conf.env.DEFINES_MKSTEMP and conf.env.DEFINES_SRANDOM:
       conf.env.DEFINES_POSIX = ['LUA_USE_POSIX']
 
     conf.check_cc(lib='m', uselib_store='MATH')
