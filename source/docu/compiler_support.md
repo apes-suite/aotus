@@ -20,5 +20,8 @@ Known to work with version 12.0 and newer.
 ## NAG
 Known to work with version 5.2.
 
+## NEC
+Known to work with the NEC Fortran 2003 Compiler Rev.003 2014/07/31.
+
 ## PGI
 Does not correctly resolve the generic aot_get_val interface!
