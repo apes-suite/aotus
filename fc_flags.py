@@ -121,7 +121,7 @@ fcopts['NEC', 'debug'] = ['-check,all','-traceback','-init,stack=nan','-mtrace,f
 fcopts['NEC', 'optimize'] = ['-C,hopt']
 fcopts['NEC', 'openmp'] = ['-openmp']
 fcopts['NEC', 'noomp'] = []
-fcopts['NEC', 'profile'] = ['-ftrace','-O,fullmsg','-R,fmtlist,summary']
+fcopts['NEC', 'profile'] = ['-ftrace','-O,fullmsg','-pvctl,fullmsg','-R,fmtlist,diaglist,summary']
 fcopts['NEC', 'fixform'] = []
 fcopts['NEC', 'freeform'] = []
 
