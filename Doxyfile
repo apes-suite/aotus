@@ -53,7 +53,7 @@ PROJECT_LOGO           =
 
 # Use "./waf doxy" to build the documentation, in this case, the output
 # directory will be set by waf!
-#OUTPUT_DIRECTORY       = Documentation
+OUTPUT_DIRECTORY       = Documentation
 
 # If the CREATE_SUBDIRS tag is set to YES, then doxygen will create 
 # 4096 sub-directories (in 2 levels) under the output directory of each output 
