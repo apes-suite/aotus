@@ -70,6 +70,7 @@ module aot_path_module
   public :: aot_path_addNode, aot_path_delNode
   public :: assignment(=)
   public :: aot_path_open, aot_path_close
+  public :: aot_path_toString
   public :: aot_path_dump
 
   !> Re-open a previously recorded path through nested Lua tables.
@@ -412,6 +413,57 @@ contains
     end if
 
   end subroutine aot_path_close_table
+
+  !> Dumps the complete path into a string.
+  !!
+  !! This routine transforms a given path into a special notation. Each element
+  !! is added to the string, separated by a . char.
+  !! If the resulting string is to long for the provided buffer /ref
+  !! pathAsString, the buffer will stay empty to not have the caller proceed
+  !! with incomplete results.
+  subroutine aot_path_toString( path, pathAsString )
+    !> The path which information should be printed
+    type(aot_path_type), intent(in) :: path
+    !> The path represented as string
+    character(len=*), intent(out) :: pathAsString
+
+    type(aot_path_node_type), pointer :: current
+    integer :: pathLength
+    integer :: stringLength
+    stringLength = len(pathAsString)
+
+    ! First we measure the size of the result
+    if (associated(path%globalNode)) then
+      current => path%globalNode
+      do while(associated(current))
+        if(associated(current,path%globalNode)) then
+          ! Add the length of the first node
+          pathLength = len_trim(adjustl(current%key))
+        else
+          ! Add the length of a following node and the delimiter char
+          pathLength = pathLength + len_trim(adjustl(current%key)) + 1
+        end if
+        current => current%child
+      end do
+    end if
+
+    ! If the result fits into the buffer, we create it
+    if (pathLength <= stringLength .and. pathLength > 0) then
+      current => path%globalNode
+      do while(associated(current))
+        if(associated(current,path%globalNode)) then
+          pathAsString = trim(adjustl(current%key))
+        else
+          pathAsString = trim(pathAsString) // '.' // trim(adjustl(current%key))
+        end if
+        current => current%child
+      end do
+    else
+      ! Either the result is empty or too long, thus we clear the buffer
+      pathAsString = ''
+    end if
+
+  end subroutine aot_path_toString
 
   !> Dumps the complete path to the given output unit.
   !!
