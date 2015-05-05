@@ -439,8 +439,11 @@ contains
         end if
         write(outputUnit,*) '    NodeType: ', current%NodeType
         write(outputUnit,*) '    ID_Kind: ', current%ID_Kind
-        write(outputUnit,*) '    key: ', current%key
-        write(outputUnit,'(A,I10)') '     pos: ', current%pos
+        if (current%ID_Kind == 'key') then
+          write(outputUnit,*) '    key: ', current%key
+        else
+          write(outputUnit,'(A,I10)') '     pos: ', current%pos
+        end if
         current => current%child
       end do
     end if

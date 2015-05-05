@@ -1231,7 +1231,7 @@ contains
     real(kind=double_k), intent(in), optional :: default(:)
 
     integer :: vect_handle
-    integer :: table_len, vect_len, def_len
+    integer :: table_len, vect_len, def_len, val_len
     integer :: vect_lb
     integer :: iComp
 
@@ -1241,7 +1241,8 @@ contains
 
     ErrCode = 0
 
-    vect_len = min(table_len, size(val))
+    val_len = size(val)
+    vect_len = min(table_len, val_len)
 
     ! Find the length of the default value, if it is not provided, its 0.
     def_len = 0
@@ -1280,7 +1281,7 @@ contains
         val(iComp) = default(iComp)
       end do
       vect_lb = max(vect_len+1, def_len)
-      do iComp=vect_lb,vect_len
+      do iComp=vect_lb,val_len
         ErrCode(iComp) = ibSet(ErrCode(iComp), aoterr_Fatal)
       end do
     else
