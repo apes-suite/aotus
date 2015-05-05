@@ -430,18 +430,25 @@ contains
     type(aot_path_node_type), pointer :: current
     integer :: pathLength
     integer :: stringLength
+    character(len=labelLen) :: posstr
     stringLength = len(pathAsString)
 
     ! First we measure the size of the result
     if (associated(path%globalNode)) then
       current => path%globalNode
       do while(associated(current))
-        if(associated(current,path%globalNode)) then
+        if (associated(current,path%globalNode)) then
           ! Add the length of the first node
           pathLength = len_trim(adjustl(current%key))
         else
-          ! Add the length of a following node and the delimiter char
-          pathLength = pathLength + len_trim(adjustl(current%key)) + 1
+          if (trim(current%ID_kind) == 'key') then
+            ! Add the length of a following node and the delimiter char
+            pathLength = pathLength + len_trim(adjustl(current%key)) + 1
+          else
+            ! Length of the position number and 2 places for brackets.
+            write(posstr,'(i0)') current%pos
+            pathLength = pathLength + len_trim(posstr) + 2
+          end if
         end if
         current => current%child
       end do
@@ -451,10 +458,17 @@ contains
     if (pathLength <= stringLength .and. pathLength > 0) then
       current => path%globalNode
       do while(associated(current))
-        if(associated(current,path%globalNode)) then
+        if (associated(current,path%globalNode)) then
           pathAsString = trim(adjustl(current%key))
         else
-          pathAsString = trim(pathAsString) // '.' // trim(adjustl(current%key))
+          if (trim(current%ID_kind) == 'key') then
+            pathAsString = trim(pathAsString) // '.' &
+              &            // trim(adjustl(current%key))
+          else
+            write(posstr,'(i0)') current%pos
+            pathAsString = trim(pathAsString) // '[' &
+              &            // trim(posstr) // ']'
+          end if
         end if
         current => current%child
       end do
@@ -491,8 +505,11 @@ contains
         end if
         write(outputUnit,*) '    NodeType: ', current%NodeType
         write(outputUnit,*) '    ID_Kind: ', current%ID_Kind
-        write(outputUnit,*) '    key: ', current%key
-        write(outputUnit,'(A,I10)') '     pos: ', current%pos
+        if (trim(current%ID_Kind) == 'key') then
+          write(outputUnit,*) '    key: ', current%key
+        else
+          write(outputUnit,'(A,I10)') '     pos: ', current%pos
+        end if
         current => current%child
       end do
     end if
