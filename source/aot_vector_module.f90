@@ -1146,7 +1146,7 @@ contains
     real(kind=single_k), intent(in), optional :: default(:)
 
     integer :: vect_handle
-    integer :: table_len, vect_len, def_len
+    integer :: table_len, vect_len, def_len, val_len
     integer :: vect_lb
     integer :: iComp
 
@@ -1156,7 +1156,8 @@ contains
     vect_handle = aot_table_top(L=L)
     table_len = aot_table_length(L=L, thandle=vect_handle)
 
-    vect_len = min(table_len, size(val))
+    val_len = size(val)
+    vect_len = min(table_len, val_len)
 
     ! Find the length of the default value, if it is not provided, its 0.
     def_len = 0
@@ -1195,7 +1196,7 @@ contains
         val(iComp) = default(iComp)
       end do
       vect_lb = max(vect_len+1, def_len)
-      do iComp=vect_lb,vect_len
+      do iComp=vect_lb,val_len
         ErrCode(iComp) = ibSet(ErrCode(iComp), aoterr_Fatal)
       end do
     else
@@ -1203,7 +1204,7 @@ contains
       ErrCode = ibSet(ErrCode, aoterr_NonExistent)
       if (present(default)) then
         val(:def_len) = default(:def_len)
-        if (def_len < vect_len) then
+        if (def_len < val_len) then
           ErrCode(def_len+1:) = ibSet(ErrCode(def_len+1:), aoterr_Fatal)
         end if
       else
@@ -1231,7 +1232,7 @@ contains
     real(kind=double_k), intent(in), optional :: default(:)
 
     integer :: vect_handle
-    integer :: table_len, vect_len, def_len
+    integer :: table_len, vect_len, def_len, val_len
     integer :: vect_lb
     integer :: iComp
 
@@ -1241,7 +1242,8 @@ contains
 
     ErrCode = 0
 
-    vect_len = min(table_len, size(val))
+    val_len = size(val)
+    vect_len = min(table_len, val_len)
 
     ! Find the length of the default value, if it is not provided, its 0.
     def_len = 0
@@ -1280,7 +1282,7 @@ contains
         val(iComp) = default(iComp)
       end do
       vect_lb = max(vect_len+1, def_len)
-      do iComp=vect_lb,vect_len
+      do iComp=vect_lb,val_len
         ErrCode(iComp) = ibSet(ErrCode(iComp), aoterr_Fatal)
       end do
     else
@@ -1288,7 +1290,7 @@ contains
       ErrCode = ibSet(ErrCode, aoterr_NonExistent)
       if (present(default)) then
         val(:def_len) = default(:def_len)
-        if (def_len < vect_len) then
+        if (def_len < val_len) then
           ErrCode(def_len+1:) = ibSet(ErrCode(def_len+1:), aoterr_Fatal)
         end if
       else
@@ -1316,7 +1318,7 @@ contains
     integer, intent(in), optional :: default(:)
 
     integer :: vect_handle
-    integer :: table_len, vect_len, def_len
+    integer :: table_len, vect_len, def_len, val_len
     integer :: vect_lb
     integer :: iComp
 
@@ -1326,7 +1328,8 @@ contains
     vect_handle = aot_table_top(L=L)
     table_len = aot_table_length(L=L, thandle=vect_handle)
 
-    vect_len = min(table_len, size(val))
+    val_len = size(val)
+    vect_len = min(table_len, val_len)
 
     ! Find the length of the default value, if it is not provided, its 0.
     def_len = 0
@@ -1365,7 +1368,7 @@ contains
         val(iComp) = default(iComp)
       end do
       vect_lb = max(vect_len+1, def_len)
-      do iComp=vect_lb,vect_len
+      do iComp=vect_lb,val_len
         ErrCode(iComp) = ibSet(ErrCode(iComp), aoterr_Fatal)
       end do
     else
@@ -1374,7 +1377,7 @@ contains
       if (present(default)) then
         def_len = def_len
         val(:def_len) = default(:def_len)
-        if (def_len < vect_len) then
+        if (def_len < val_len) then
           ErrCode(def_len+1:) = ibSet(ErrCode(def_len+1:), aoterr_Fatal)
         end if
       else
@@ -1402,7 +1405,7 @@ contains
     integer(kind=long_k), intent(in), optional :: default(:)
 
     integer :: vect_handle
-    integer :: table_len, vect_len, def_len
+    integer :: table_len, vect_len, def_len, val_len
     integer :: vect_lb
     integer :: iComp
 
@@ -1412,7 +1415,8 @@ contains
     vect_handle = aot_table_top(L=L)
     table_len = aot_table_length(L=L, thandle=vect_handle)
 
-    vect_len = min(table_len, size(val))
+    val_len = size(val)
+    vect_len = min(table_len, val_len)
 
     ! Find the length of the default value, if it is not provided, its 0.
     def_len = 0
@@ -1451,7 +1455,7 @@ contains
         val(iComp) = default(iComp)
       end do
       vect_lb = max(vect_len+1, def_len)
-      do iComp=vect_lb,vect_len
+      do iComp=vect_lb,val_len
         ErrCode(iComp) = ibSet(ErrCode(iComp), aoterr_Fatal)
       end do
     else
@@ -1459,7 +1463,7 @@ contains
       ErrCode = ibSet(ErrCode, aoterr_NonExistent)
       if (present(default)) then
         val(:def_len) = default(:def_len)
-        if (def_len < vect_len) then
+        if (def_len < val_len) then
           ErrCode(def_len+1:) = ibSet(ErrCode(def_len+1:), aoterr_Fatal)
         end if
       else
@@ -1487,7 +1491,7 @@ contains
     logical, intent(in), optional :: default(:)
 
     integer :: vect_handle
-    integer :: table_len, vect_len, def_len
+    integer :: table_len, vect_len, def_len, val_len
     integer :: vect_lb
     integer :: iComp
 
@@ -1497,7 +1501,8 @@ contains
     vect_handle = aot_table_top(L=L)
     table_len = aot_table_length(L=L, thandle=vect_handle)
 
-    vect_len = min(table_len, size(val))
+    val_len = size(val)
+    vect_len = min(table_len, val_len)
 
     ! Find the length of the default value, if it is not provided, its 0.
     def_len = 0
@@ -1536,7 +1541,7 @@ contains
         val(iComp) = default(iComp)
       end do
       vect_lb = max(vect_len+1, def_len)
-      do iComp=vect_lb,vect_len
+      do iComp=vect_lb,val_len
         ErrCode(iComp) = ibSet(ErrCode(iComp), aoterr_Fatal)
       end do
     else
@@ -1544,7 +1549,7 @@ contains
       ErrCode = ibSet(ErrCode, aoterr_NonExistent)
       if (present(default)) then
         val(:def_len) = default(:def_len)
-        if (def_len < vect_len) then
+        if (def_len < val_len) then
           ErrCode(def_len+1:) = ibSet(ErrCode(def_len+1:), aoterr_Fatal)
         end if
       else
