@@ -430,7 +430,7 @@ contains
     type(aot_path_node_type), pointer :: current
     integer :: pathLength
     integer :: stringLength
-    character(len=labelLen) :: posstr
+    character(len=10) :: posstr
     stringLength = len(pathAsString)
 
     ! First we measure the size of the result
