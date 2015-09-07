@@ -49,7 +49,7 @@ fcopts['IFORT', 'debug'] = '-check all -check noarg_temp_created'.split() + ['-t
 fcopts['IFORT', 'optimize'] = '-xHOST -O3 -ipo -no-prec-div'.split()
 fcopts['IFORT', 'openmp'] = ['-openmp']
 fcopts['IFORT', 'noomp'] = []
-fcopts['IFORT', 'profile'] = ['-vec-report3', '-opt-report', '-pg']
+fcopts['IFORT', 'profile'] = ['-qopt-report=5', '-pg']
 fcopts['IFORT', 'fixform'] = []
 fcopts['IFORT', 'freeform'] = []
 
