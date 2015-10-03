@@ -46,18 +46,18 @@ you get a list of available options to the waf script.
 What is Built
 -------------
 
-For your convenience the Lua library is included in version 5.3.0 (released
-2015-01-12).
-Its objects are completely gathered into the final *libaotus* library, so it is
-only necessary to link against this single static library to gain the
-configuration features of aotus in your Fortran application.
+For your convenience the Lua library is included in version 5.3.1 (released
+2015-06-10).
+Its objects are completely gathered into the final *libaotus* library, so you
+only need to link against this single static library to gain the
+configuration features of Aotus in your Fortran application.
 Due to the compiler specific module information required by any application
-using the libaotus, the suggested approach to incorporate libaotus is to include
+using libaotus, the suggested approach to incorporate libaotus is to include
 its building in the build process of the final application. This is straight
 forward if waf is used for the complete project. But also in other build
 environments it should not be too hard to make use of the generated *build*
 directory.
-Yet if you would rather install the *libaotus.a* and the module files into a
+Yet, if you would rather install the *libaotus.a* and the module files into a
 *$PREFIX* directory, you can make use of:
 
 ~~~~~~~~~~~{.sh}
