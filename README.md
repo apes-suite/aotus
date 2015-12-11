@@ -67,16 +67,19 @@ Yet, if you would rather install the *libaotus.a* and the module files into a
 The default build process will also create some unit test executables and
 execute them to ensure functionality of the various parts in the library.
 
-The doxygen documentation can be built by running:
+The documentation can be built with [FORD](https://github.com/cmacmackin/ford)
+by running:
 
 ~~~~~~~~~~~{.sh}
-./waf doxy
+ford aot_mainpage.md
 ~~~~~~~~~~~
 
-This will build a html directory in the build directory with the resulting
-documentation. Note, that this requires an installed doxygen.
-It is also online available at
-[Aotus documentation](https://geb.sts.nt.uni-siegen.de/doxy/aotus).
+This will build a docu directory with the resulting documentation.
+Note, that this requires
+[FORD to be installed](https://github.com/cmacmackin/ford#installation)
+beforehand.
+This documentation is also online available at
+[our server](https://geb.sts.nt.uni-siegen.de/aotus).
 
 ### Example
 

@@ -37,13 +37,6 @@ def configure(conf):
     conf.load('compiler_c')
     conf.load('waf_unit_test')
 
-    conf.env.stash()
-    try:
-        conf.load('doxygen')
-    except conf.errors.ConfigurationError:
-        Logs.debug('doxygen: %r' % conf.errors.ConfigurationError)
-        conf.env.revert()
-
     conf.env['FCSTLIB_MARKER'] = ''
     conf.env['FCSHLIB_MARKER'] = ''
 
@@ -285,10 +278,6 @@ def build(bld):
         utest_results.utests(bld, use = 'aotus', path = 'utests/quadruple')
     bld.add_post_fun(utest_results.summary)
 
-    if bld.cmd == 'doxy':
-        bld(features = 'doxygen',
-            doxyfile = 'Doxyfile')
-
     # install_files actually only done, if in install mode
     # however the if here, protects the ant_glob in the build directory
     # to be run if not in the install phase...
@@ -312,7 +301,3 @@ class debug(BuildContext):
     "Build a debug executable"
     cmd = 'debug'
     variant = 'debug'
-
-class doxy(BuildContext):
-    "Doxygen documentation"
-    cmd = 'doxy'
