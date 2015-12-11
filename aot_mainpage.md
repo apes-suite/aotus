@@ -122,9 +122,10 @@ also the source of this small program is found.
 
 Getting Started
 ---------------
-The central module in this library is the [aotus_module](@ref aotus_module),
-its documentation and the [Aotus overview](@ref aot_overview) would be good
+The central module in this library is the [[aotus_module]],
+its documentation and the [Aotus overview](page/index.html) would be good
 starting points.
+
 
 Related Projects
 ----------------
