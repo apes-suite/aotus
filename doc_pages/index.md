@@ -2,7 +2,7 @@ title: Overview
 
 *Avanced Options in Tables and Universal Scripting*
 
-This is a Fortran wrapper for the [[http://www.lua.org|Lua]] scripting language,
+This is a Fortran wrapper for the [Lua](http://www.lua.org) scripting language,
 dedicated to enable flexible configuration of Fortran applications with this
 full fledged scripting language.
 Aotus is also the [Night monkey](http://en.wikipedia.org/wiki/Night_monkey)

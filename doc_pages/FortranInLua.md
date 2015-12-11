@@ -10,7 +10,7 @@ in a Lua script you can do this by using Aotus and compiling your Fortran code
 together with it into a library.
 
 To register Fortran functions for usage in Lua, you need to define a
-*luaopen_<libname>* function and call [[flu_register]], for each function to
+*luaopen_libname* function and call [[flu_register]], for each function to
 expose to Lua.
 
 Here is an example for this setup:
