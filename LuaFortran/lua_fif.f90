@@ -1,5 +1,5 @@
 !> This module provides a direct translation of some
-!! Lua 5.2.1
+!! Lua 5.3.2
 !! C-Interfaces to Fortran 2003 interfaces using the
 !! ISO_C_BINDING facilities.
 module lua_fif
@@ -8,9 +8,9 @@ module lua_fif
 
   implicit none
 
-  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  ! lua API interfaces
-  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  ! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !
+  ! Lua API interfaces
+  ! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !
   interface
 
     subroutine lua_close(L) bind(c, name="lua_close")
@@ -198,15 +198,14 @@ module lua_fif
     end subroutine lua_pushlightuserdata
 
   end interface
-  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  ! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !
+  ! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !
 
 
 
-  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  ! lua auxiliary library interfaces
-  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  ! lua auxiliary library
+  ! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !
+  ! Lua auxiliary library interfaces
+  ! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !
   interface
 
     subroutine luaL_openlibs(L) bind(c, name="luaL_openlibs")
@@ -245,5 +244,7 @@ module lua_fif
     end function luaL_loadstring
 
   end interface
+  ! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !
+  ! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !
 
 end module lua_fif

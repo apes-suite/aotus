@@ -84,9 +84,9 @@ module flu_binding
 
 contains
 
-  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  ! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !
   ! Wrapper routines for the lua API
-  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  ! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !
 
   subroutine flu_close(L)
     type(flu_State) :: L
@@ -211,7 +211,7 @@ contains
     integer(kind=c_int) :: c_index
 
     c_index = int(index, kind = c_int)
-    !! Only defined as a Macro, using lua_type:
+    ! Only defined as a Macro, using lua_type:
     is_Table = (lua_type(L%state, c_index) == LUA_TTABLE)
   end function flu_isTable
 
@@ -224,7 +224,7 @@ contains
     integer(kind=c_int) :: c_index
 
     c_index = int(index, kind = c_int)
-    !! Only defined as a Macro, using lua_type:
+    ! Only defined as a Macro, using lua_type:
     is_NoneOrNil = (lua_Type(L%state, c_index) <= 0)
   end function flu_isNoneOrNil
 
@@ -237,7 +237,7 @@ contains
     integer(kind=c_int) :: c_index
 
     c_index = int(index, kind = c_int)
-    !! Only defined as a Macro, using lua_type:
+    ! Only defined as a Macro, using lua_type:
     is_Nil = (lua_Type(L%state, c_index) .eq. LUA_TNIL)
   end function flu_isNil
 
@@ -250,7 +250,7 @@ contains
     integer(kind=c_int) :: c_index
 
     c_index = int(index, kind = c_int)
-    !! Only defined as a Macro, using lua_type:
+    ! Only defined as a Macro, using lua_type:
     is_None = (lua_Type(L%state, c_index) .eq. LUA_TNONE)
   end function flu_isNone
 
@@ -537,14 +537,14 @@ contains
 
   end subroutine flu_register
 
-  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  ! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !
+  ! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !
 
 
 
-  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  ! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !
   ! Wrapper routines for the auxiliary library 
-  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  ! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !
 
   function fluL_loadfile(L, filename) result(errcode)
     type(flu_State) :: L
@@ -616,10 +616,10 @@ contains
     end if
   end subroutine fluL_openlibs
 
-  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  ! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !
   ! Routines for using existing Lua states with 
   ! flu_binding
-  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  ! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !
 
   function flu_copyptr(lua_state) result(L)
       ! WARNING: this copies the pointer to an existing Lua state, not the Lua
@@ -630,9 +630,9 @@ contains
       L%state = lua_state
   end function flu_copyptr
 
-  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  ! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !
   ! Routines for probing the Lua state
-  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  ! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !
 
   function flu_isopen(L) result(is_open)
       logical :: is_open
@@ -642,9 +642,9 @@ contains
   end function flu_isopen
 
 
-  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  !!! Wrapper implementation for lua_dump !!!
-  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  ! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !
+  ! ! Wrapper implementation for lua_dump ! !
+  ! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !
 
   !> Dump to a buffer and return the pointer to the resulting string.
   subroutine flu_dump_toBuf(L, buf, length, iError)
@@ -672,7 +672,8 @@ contains
   !> Free an allocated cbuf.
   !!
   !! This is a helping routine to deallocate memory that was allocated for
-  !! the cbuf by C. (Cray compiler complained about its deallocation in Fortran)
+  !! the cbuf by C.
+  !! (Cray compiler complained about its deallocation in Fortran)
   subroutine flu_free_cbuf(buf)
     type(cbuf_type) :: buf
 

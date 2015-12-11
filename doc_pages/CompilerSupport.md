@@ -1,27 +1,26 @@
-Compiler Support {#compiler_support}
-=========================
+title: Compiler Support
 
 Aotus relies on the ISO-C-Binding of the Fortran 2003 standard, and therefore
 requires relatively new compiler versions.
 However a wide range of different compilers are known to compile the library.
 
-## Cray
+* **Cray**:
 Known to work with version 7.4.0 and newer.
 
-## GNU gfortran
+* **GNU gfortran**:
 Known to work with version 4.4.5 and newer.
 
-## IBM
+* **IBM**:
 Known to work with version 11.1.
 
-## Intel
+* **Intel**:
 Known to work with version 12.0 and newer.
 
-## NAG
+* **NAG**:
 Known to work with version 5.2.
 
-## NEC
+* **NEC**:
 Known to work with the NEC Fortran 2003 Compiler Rev.003 2014/07/31.
 
-## PGI
+* **PGI**:
 Does not correctly resolve the generic aot_get_val interface!

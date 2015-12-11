@@ -2,6 +2,7 @@ project: Aotus
 summary: A Fortran wrapper around the C-API of Lua, for usage as configuration.
 project_dir: source
 project_dir: LuaFortran
+page_dir: doc_pages
 output_dir: docu
 project_bitbucket: https://bitbucket.org/apesteam/aotus
 graph: true
