@@ -149,41 +149,41 @@ def subconf(conf):
 
 
 def build(bld):
-    core_sources = ['external/lua-5.3.1/src/lapi.c',
-                    'external/lua-5.3.1/src/lcode.c',
-                    'external/lua-5.3.1/src/lctype.c',
-                    'external/lua-5.3.1/src/ldebug.c',
-                    'external/lua-5.3.1/src/ldo.c',
-                    'external/lua-5.3.1/src/ldump.c',
-                    'external/lua-5.3.1/src/lfunc.c',
-                    'external/lua-5.3.1/src/lgc.c',
-                    'external/lua-5.3.1/src/llex.c',
-                    'external/lua-5.3.1/src/lmem.c',
-                    'external/lua-5.3.1/src/lobject.c',
-                    'external/lua-5.3.1/src/lopcodes.c',
-                    'external/lua-5.3.1/src/lparser.c',
-                    'external/lua-5.3.1/src/lstate.c',
-                    'external/lua-5.3.1/src/lstring.c',
-                    'external/lua-5.3.1/src/ltable.c',
-                    'external/lua-5.3.1/src/ltm.c',
-                    'external/lua-5.3.1/src/lundump.c',
-                    'external/lua-5.3.1/src/lvm.c',
-                    'external/lua-5.3.1/src/lzio.c']
-    lib_sources = ['external/lua-5.3.1/src/lauxlib.c',
-                   'external/lua-5.3.1/src/lbaselib.c',
-                   'external/lua-5.3.1/src/lbitlib.c',
-                   'external/lua-5.3.1/src/lcorolib.c',
-                   'external/lua-5.3.1/src/ldblib.c',
-                   'external/lua-5.3.1/src/liolib.c',
-                   'external/lua-5.3.1/src/lmathlib.c',
-                   'external/lua-5.3.1/src/loslib.c',
-                   'external/lua-5.3.1/src/ltablib.c',
-                   'external/lua-5.3.1/src/lstrlib.c',
-                   'external/lua-5.3.1/src/lutf8lib.c',
-                   'external/lua-5.3.1/src/loadlib.c',
-                   'external/lua-5.3.1/src/linit.c']
-    lua_sources = ['external/lua-5.3.1/src/lua.c']
-    luac_sources = ['external/lua-5.3.1/src/luac.c']
+    core_sources = ['external/lua-5.3.2/src/lapi.c',
+                    'external/lua-5.3.2/src/lcode.c',
+                    'external/lua-5.3.2/src/lctype.c',
+                    'external/lua-5.3.2/src/ldebug.c',
+                    'external/lua-5.3.2/src/ldo.c',
+                    'external/lua-5.3.2/src/ldump.c',
+                    'external/lua-5.3.2/src/lfunc.c',
+                    'external/lua-5.3.2/src/lgc.c',
+                    'external/lua-5.3.2/src/llex.c',
+                    'external/lua-5.3.2/src/lmem.c',
+                    'external/lua-5.3.2/src/lobject.c',
+                    'external/lua-5.3.2/src/lopcodes.c',
+                    'external/lua-5.3.2/src/lparser.c',
+                    'external/lua-5.3.2/src/lstate.c',
+                    'external/lua-5.3.2/src/lstring.c',
+                    'external/lua-5.3.2/src/ltable.c',
+                    'external/lua-5.3.2/src/ltm.c',
+                    'external/lua-5.3.2/src/lundump.c',
+                    'external/lua-5.3.2/src/lvm.c',
+                    'external/lua-5.3.2/src/lzio.c']
+    lib_sources = ['external/lua-5.3.2/src/lauxlib.c',
+                   'external/lua-5.3.2/src/lbaselib.c',
+                   'external/lua-5.3.2/src/lbitlib.c',
+                   'external/lua-5.3.2/src/lcorolib.c',
+                   'external/lua-5.3.2/src/ldblib.c',
+                   'external/lua-5.3.2/src/liolib.c',
+                   'external/lua-5.3.2/src/lmathlib.c',
+                   'external/lua-5.3.2/src/loslib.c',
+                   'external/lua-5.3.2/src/ltablib.c',
+                   'external/lua-5.3.2/src/lstrlib.c',
+                   'external/lua-5.3.2/src/lutf8lib.c',
+                   'external/lua-5.3.2/src/loadlib.c',
+                   'external/lua-5.3.2/src/linit.c']
+    lua_sources = ['external/lua-5.3.2/src/lua.c']
+    luac_sources = ['external/lua-5.3.2/src/luac.c']
 
     wrap_sources = ['LuaFortran/wrap_lua_dump.c']
 
@@ -248,7 +248,7 @@ def build(bld):
         features = 'c',
         source = wrap_sources,
         use = 'luaobjs',
-        includes = 'external/lua-5.3.1/src',
+        includes = 'external/lua-5.3.2/src',
         target = 'wrapobjs')
 
     bld(
