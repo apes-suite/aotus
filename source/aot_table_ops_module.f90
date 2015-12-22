@@ -26,7 +26,8 @@ contains
   !!
   !! If it actually exists and is a table, this handle can be used
   !! for further operations on that table.
-  !! Otherwise a 0 will be returned.
+  !! Otherwise a 0 will be returned and the uppermost value on ths stack remains
+  !! untouched.
   function aot_table_top(L) result(thandle)
     type(flu_state) :: L !< Handle for the Lua script.
 
@@ -35,7 +36,6 @@ contains
 
     if (flu_isNoneOrNil(L, -1) .or. (.not. flu_isTable(L, -1))) then
       thandle = 0
-      call flu_pop(L)
     else
       thandle = flu_gettop(L)
     end if
