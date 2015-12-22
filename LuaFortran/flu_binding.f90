@@ -116,12 +116,12 @@ contains
     integer          :: index
     character(len=*) :: k
 
-    integer(kind=c_int) :: c_index
+    integer(kind=c_int) :: c_index, res
     character(len=len_trim(k)+1) :: c_k
 
     c_k = trim(k) // c_null_char
     c_index = index
-    call lua_getfield(L%state, c_index, c_k)
+    res = lua_getfield(L%state, c_index, c_k)
   end subroutine flu_getfield
 
 
@@ -129,10 +129,12 @@ contains
     type(flu_State)  :: L
     character(len=*) :: k
 
+    integer(kind=c_int) :: res
+
     character(len=len_trim(k)+1) :: c_k
 
     c_k = trim(k) // c_null_char
-    call lua_getglobal(L%state, c_k)
+    res = lua_getglobal(L%state, c_k)
   end subroutine flu_getglobal
 
 
@@ -140,10 +142,10 @@ contains
     type(flu_State) :: L
     integer :: index
 
-    integer(kind=c_int) :: c_index
+    integer(kind=c_int) :: c_index, res
 
     c_index = index
-    call lua_gettable(L%state, c_index)
+    res = lua_gettable(L%state, c_index)
   end subroutine flu_gettable
 
 

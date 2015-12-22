@@ -25,24 +25,27 @@ module lua_fif
       integer(kind=c_int), value :: nrec
     end subroutine lua_createtable
 
-    subroutine lua_getglobal(L, k) bind(c, name="lua_getglobal")
+    function lua_getglobal(L, k) bind(c, name="lua_getglobal")
       use, intrinsic :: iso_c_binding
       type(c_ptr), value :: L
       character(kind=c_char), dimension(*) :: k
-    end subroutine lua_getglobal
+      integer(kind=c_int) :: lua_getglobal
+    end function lua_getglobal
 
-    subroutine lua_getfield(L, index, k) bind(c, name="lua_getfield")
+    function lua_getfield(L, index, k) bind(c, name="lua_getfield")
       use, intrinsic :: iso_c_binding
       type(c_ptr), value :: L
       integer(kind=c_int), value :: index
       character(kind=c_char), dimension(*) :: k
-    end subroutine lua_getfield
+      integer(kind=c_int) :: lua_getfield
+    end function lua_getfield
 
-    subroutine lua_gettable(L, index) bind(c, name="lua_gettable")
+    function lua_gettable(L, index) bind(c, name="lua_gettable")
       use, intrinsic :: iso_c_binding
       type(c_ptr), value :: L
       integer(kind=c_int), value :: index
-    end subroutine lua_gettable
+      integer(kind=c_int) :: lua_gettable
+    end function lua_gettable
 
     function lua_gettop(L) bind(c, name="lua_gettop")
       use, intrinsic :: iso_c_binding
