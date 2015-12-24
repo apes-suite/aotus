@@ -5,6 +5,13 @@
 !! The main content are then the wrapper implementations
 !! which ease the usage of the Lua functions declared
 !! in the lua_fif module.
+!!
+!! Naming follows the Lua API, but replaces the `lua_` prefix
+!! by `flu_`.
+!!
+!! @note Documentation of the actual C functions can be found by replacing
+!!       the `flu_` prefix here by `lua_` and refering to the
+!!       [Lua API documentation](http://www.lua.org/manual/5.3/manual.html#4.8).
 module flu_binding
   use, intrinsic :: iso_c_binding
   use lua_fif
@@ -14,13 +21,18 @@ module flu_binding
 
   private
 
-  type :: flu_State
+  !> Encapsulation of the Lua state.
+  !!
+  !! No internal information on the Lua state is required, and so all
+  !! components are private. It suffices therefore, to keep a `c_ptr`
+  !! reference to the Lua state.
+  type flu_State
     private
     type(c_ptr) :: state = c_null_ptr
     logical :: opened_libs = .false.
   end type flu_State
 
-  type :: cbuf_type
+  type cbuf_type
     type(c_ptr) :: ptr = c_null_ptr
     character, pointer :: buffer(:) => NULL()
   end type cbuf_type
@@ -65,7 +77,7 @@ module flu_binding
   end interface flu_dump
 
 
-  ! Interoperable interface required for a function that is callable from Lua.
+  !> Interoperable interface required for a function that is callable from Lua.
   abstract interface
     function lua_Function(s) result(val) bind(c)
       use, intrinsic :: iso_c_binding
@@ -88,8 +100,9 @@ contains
   ! Wrapper routines for the lua API
   ! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !
 
+  !> Close a previously opened Lua script.
   subroutine flu_close(L)
-    type(flu_State) :: L
+    type(flu_State) :: L !< Handle to the Lua state to close.
 
     call lua_close(L%state)
     L%state = c_null_ptr
@@ -303,8 +316,11 @@ contains
   end function flu_pcall
 
 
+  !> Wrapper for lua_pop that pops n elements from the Lua API stack.
   subroutine flu_pop(L, n)
-    type(flu_State) :: L
+    type(flu_State) :: L !! Handle to the Lua script
+
+    !> Number of elements to pop from the Lua API stack, defaults to 1.
     integer, optional, intent(in) :: n
 
     integer(kind=c_int) :: n_c
@@ -325,6 +341,7 @@ contains
     call lua_pushinteger(L%state, n_c)
   end subroutine flu_pushinteger
 
+
   subroutine flu_pushboolean(L, b)
     type(flu_State) :: L
     logical :: b
@@ -339,6 +356,7 @@ contains
     call lua_pushboolean(L%state, n_c)
   end subroutine flu_pushboolean
 
+
   subroutine flu_pushstring(L, string)
     type(flu_State) :: L
     character(len=*), intent(in) :: string
@@ -350,6 +368,7 @@ contains
     ret = lua_pushlstring(L%state, string, c_len)
   end subroutine flu_pushstring
 
+
   subroutine flu_pushreal(L, n)
     type(flu_State) :: L
     real :: n
@@ -360,6 +379,7 @@ contains
     call lua_pushnumber(L%state, n_c)
   end subroutine flu_pushreal
 
+
   subroutine flu_pushdouble(L, n)
     type(flu_State) :: L
     real(kind=c_double) :: n
@@ -367,11 +387,13 @@ contains
     call lua_pushnumber(L%state, n)
   end subroutine flu_pushdouble
 
+
   subroutine flu_pushnil(L)
     type(flu_State) :: L
 
     call lua_pushnil(L%state)
   end subroutine flu_pushnil
+
 
   subroutine flu_pushvalue(L, index)
     type(flu_State) :: L
@@ -382,6 +404,7 @@ contains
     c_index = index
     call lua_pushvalue(L%state, c_index)
   end subroutine flu_pushvalue
+
 
   subroutine flu_pushlightuserdata(L, ptr)
     type(flu_State) :: L
@@ -525,10 +548,12 @@ contains
 
   end subroutine flu_pushcclosure
 
+
   subroutine flu_register(L, fn_name, fn) 
 
-    ! lua_register is defined as a macro in lua.h and isn't accessible from Fortran.
-    ! Re-implement macro explictly.
+    ! lua_register is defined as a macro in lua.h and isn't accessible from
+    ! Fortran.
+    ! Re-implement macro explicitly.
 
     type(flu_State) :: L
     character(len=*), intent(in) :: fn_name
@@ -623,10 +648,12 @@ contains
   ! flu_binding
   ! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !
 
+  !> Copy an existing Lua state.
+  !!
+  !! @WARNING This copies the *pointer* to an existing Lua state, not the Lua
+  !! state itself.  Modifying L via the flu bindings will modify the same Lua
+  !! state as pointed to by lua_state.
   function flu_copyptr(lua_state) result(L)
-      ! WARNING: this copies the pointer to an existing Lua state, not the Lua
-      ! state itself.  Modifying L via the flu bindings will modify the same Lua
-      ! state as pointed to by lua_state.
       type(flu_State) :: L
       type(c_ptr), intent(in) :: lua_state
       L%state = lua_state

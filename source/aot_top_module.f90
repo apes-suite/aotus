@@ -31,7 +31,7 @@ module aot_top_module
   public :: aot_top_get_val
   public :: aot_err_handler
 
-  !> Get the value on top of the stack
+  !> Get the value on top of the Lua API stack
   !!
   !! This is the most basic operation to retrieve a value.
   !! It is also most flexible in the sense, that it does not matter how the
@@ -39,11 +39,13 @@ module aot_top_module
   !!
   !! The interface looks like this:
   !! `call aot_top_get_val(val, errCode, L, default)`.
-  !! See for example aot_top_get_real() for a more detailed description of the
+  !! See for example [[aot_top_get_real]] for a more detailed description of the
   !! parameters.
   !!
-  !! The aot_top_get_val can not be in the same generic interface as the other
-  !! aot_get_val routines, as it results in ambiguities of the interfaces.
+  !! aot_top_get_val can not be in the same generic interface as the other
+  !! [[aot_get_val]] routines, as it results in ambiguities of the interfaces.
+  !!
+  !! @note The retrieved value will be popped from the Lua API stack.
   interface aot_top_get_val
     module procedure aot_top_get_real
     module procedure aot_top_get_double

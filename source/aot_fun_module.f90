@@ -3,19 +3,20 @@
 !               2013-2014 University of Siegen
 ! Please see the COPYRIGHT file in this directory for details.
 
-!> A module providing access to Lua functions
+!> This module provides access to Lua functions
 !!
 !! Intented usage:
 !!
-!! - First open a function with aot_fun_open.
-!! - Then put required parameters into it with aot_fun_put.
-!! - Execute the function with aot_fun_do().
-!! - Retrieve the possibly multiple results with
-!!   AOT_top_module::aot_top_get_val.
-!!   if there are multiple results to be retrieved from the function, kep
-!!   in mind, that they will be in reversed order on the stack!
-!! - Repeat putting and retrieving if needed.
-!! - Close the function finally with aot_fun_close().
+!! - First open a function with [[aot_fun_open]].
+!! - Then put required parameters into it with [[aot_fun_put]].
+!! - Execute the function with [[aot_fun_do]].
+!! - Retrieve the possibly multiple results with [[aot_top_get_val]].
+!!   If there are multiple results to be retrieved from the function
+!!   repeat calling [[aot_top_get_val]] for each of them. Keep in mind that they
+!!   will be in reversed order on the stack!
+!! - Repeat putting and retrieving as needed (for multiple function
+!!   evaluations).
+!! - Close the function finally with [[aot_fun_close]].
 module aot_fun_module
   use flu_binding
   use aot_kinds_module, only: double_k, single_k
@@ -41,7 +42,7 @@ module aot_fun_module
   !! be executed.
   !! Execution might be repeated for an arbitrary number of iterations, to
   !! retrieve more than one evaluation of a single function, before closing it
-  !! again with aot_fun_close().
+  !! again with [[aot_fun_close]].
   interface aot_fun_open
     module procedure aot_fun_global
     module procedure aot_fun_table
@@ -51,7 +52,7 @@ module aot_fun_module
   !!
   !! Arguments have to be in order, first put the first argument then the second
   !! and so on.
-  !! Currently only double precision arguments are supported.
+  !! Currently only real number arguments are supported.
   interface aot_fun_put
     module procedure aot_fun_put_top
     module procedure aot_fun_put_double
@@ -103,7 +104,7 @@ contains
   !!
   !! Functions in tables might be retrieved by position or key.
   !! If both optional parameters are provided, the key is attempted to be read
-  !! first, only if that fails, the position will be tested.
+  !! first. Only when that fails, the position will be tested.
   subroutine aot_fun_table(L, parent, fun, key, pos)
     type(flu_state) :: L !< Handle for the Lua script.
 
@@ -256,7 +257,7 @@ contains
 
 
   !> Execute a given function and put its results on the stack, where it is
-  !! retrievable with AOT_top_module::aot_top_get_val.
+  !! retrievable with [[aot_top_get_val]].
   !!
   !! The optional arguments ErrCode and ErrString provide some feedback on the
   !! success of the function execution.
@@ -265,6 +266,9 @@ contains
   !! You have to provide the number of results to obtain in nresults. Keep in
   !! mind, that multiple results have to obtained in reverse order from the
   !! stack.
+  !!
+  !! @note You might want to return multiple values as a single argument in a
+  !!       table instead of several single values.
   subroutine aot_fun_do(L, fun, nresults, ErrCode, ErrString)
     type(flu_state) :: L !< Handle for the Lua script.
 

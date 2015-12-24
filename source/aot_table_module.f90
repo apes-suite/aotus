@@ -36,7 +36,7 @@ module aot_table_module
 
   !> Get a value from a table.
   !!
-  !! First the given key is looked up, if this fails, the value
+  !! First, the given key is looked up, if this fails, the value
   !! at the given position is looked up, and if this also fails,
   !! the default value is returned.
   !! Positional addressing is only valid, as long,
@@ -56,7 +56,7 @@ module aot_table_module
   !!
   !! The given value will be put at the entry named by key into the table
   !! provided in thandle.
-  !! Alternatively you can also put the value by position into the table by
+  !! Alternatively, you can also put the value by position into the table by
   !! providing the pos argument.
   !! If both, pos and key are provided, the key will be used.
   !! Though, both of them are optional, at least one of them has to be provided.
@@ -69,57 +69,49 @@ module aot_table_module
     module procedure set_table_logical
   end interface
 
-  !> Get a value from the script.
+  !> Get a value from the Lua script.
   !!
   !! This is the central interface to retrieve values from a Lua script,
   !! its general shape looks like
-  !! <tt>call aot_{top}_get_val(<outputs>, <id>, default)</tt>.
-  !! Where the "outputs" are <tt>val</tt> and <tt>errCode</tt>. While "id" is
-  !! at least the Lua context <tt>L</tt>. For the global variables there has to
-  !! be a <tt>key</tt> for the identification of the variable.
+  !! `call aot_{top}_get_val(<outputs>, <id>, default)`.
+  !! Where the "outputs" are `val` and `errCode`. While "id" is
+  !! at least the Lua context `L`. For global variables there has to
+  !! be a `key` to identify the variable.
   !!
-  !! The <tt>errCode</tt> returns an error code with various bits set for
-  !! different errors, that might happen while retrieving the variable.
-  !! They can be checked by <tt>btest</tt> and the different error codes are:
-  !!- aoterr_fatal: Something went irrecoverably wrong
-  !!- aoterr_nonExistent: The requested variable is not set in the Lua script
-  !!- aoterr_wrongType: The requested variable in the Lua script does not meet
-  !!                    the requested data type
+  !! The `errCode` returns an error code with various bits set for
+  !! different errors that might happen while retrieving the variable.
+  !! They can be checked by `btest` and the different error codes are:
+  !!
+  !! - [[aot_err_module:aoterr_fatal]]: Something went irrecoverably wrong
+  !! - [[aot_err_module:aoterr_nonExistent]]: The requested variable is not set in the Lua
+  !!                           script
+  !! - [[aot_err_module:aoterr_wrongType]]: The requested variable in the Lua script does not
+  !!                         match the requested data type
   !!
   !! For example a check for a fatal error can be done by
   !! `btest(errCode, aoterr_fatal)`.
   !!
   !! For the access to global variables in the Lua script the interface
-  !! therefore looks like:
+  !! therefore, looks like:
   !! `call aot_get_val(val, errCode, L, key, default)`.
-  !! First the given key is looked up, if this fails, the value
-  !! at the given position is looked up, and if this also fails,
-  !! the default value is returned.
-  !! Positional addressing is only valid, as long,
-  !! as no value was provided by an explicit key
-  !! in the list before the entry in question.
   !!
   !! The interface to access table values looks like:
   !! `call aot_get_val(val, errCode, L, thandle, key, pos, default)`.
   !! Position pos and key are both optional, but one of them has to be provided.
   !! If both are provided the key takes precedence over the pos, and the pos
   !! will only be tried if the access to the key fails.
-  !! See for example get_table_real() for a more detailed
-  !! description of the parameters.
+  !! See for example [[get_table_real]] for a more detailed description of the
+  !! parameters.
   !!
-  !! Note, that positional addressing only works intuitively as long as there
+  !! @note Positional addressing only works intuitively as long as there
   !! have been no entries specified by keys in the table.
   !! This kind of resembles the behavior of Fortran interfaces with named or
   !! unnamed arguments, as soon as you provide a name, all following arguments
   !! have to be given by key also.
   !! Just stick to this rule for the Lua tables as well to avoid too much
   !! headache.
-  !!
   !! The reason for this is, that positional addressing in Lua refers only to
   !! the unnamed entries of the tables.
-  !!
-  !! See for example aot_table_module#get_table_real for a more detailed
-  !! description of the parameters.
   interface aot_get_val
     module procedure get_table_real
     module procedure get_table_double
