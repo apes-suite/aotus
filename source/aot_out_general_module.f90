@@ -18,12 +18,12 @@ module aot_out_general_module
   !!
   !! It is used to keep track of the state in the script internally.
   type aot_out_type
-    integer :: outunit !< Unit to write to
-    integer :: indent !< Indentation level (number of spaces)
-    integer :: stack(100) !< Number of entries on each level
-    integer :: level !< Current nesting level in tables
-    logical :: externalOpen !< Flag if file opened outside the aot_out scope
-    integer :: in_step !< Number of spaces for each indentation level
+    integer :: outunit !! Unit to write to
+    integer :: indent !! Indentation level (number of spaces)
+    integer :: stack(100) !! Number of entries on each level
+    integer :: level !! Current nesting level in tables
+    logical :: externalOpen !! Flag if file opened outside the aot_out scope
+    integer :: in_step !! Number of spaces for each indentation level
   end type
 
   private
@@ -40,10 +40,10 @@ contains
   !! outUnit is ignored in this case.
   subroutine aot_out_open(put_conf, filename, outUnit, indentation)
     !------------------------------------------------------------------------
-    type(aot_out_type), intent(out) :: put_conf !< Handle for the file
-    character(len=*), optional, intent(in) :: filename !< File to open
-    integer, optional, intent(in) :: outUnit !< Pre-connected unit to write to
-    integer, optional, intent(in) :: indentation !< Spacer per indentation level
+    type(aot_out_type), intent(out) :: put_conf !! Handle for the file
+    character(len=*), optional, intent(in) :: filename !! File to open
+    integer, optional, intent(in) :: outUnit !! Pre-connected unit to write to
+    integer, optional, intent(in) :: indentation !! Spacer per indentation level
     !------------------------------------------------------------------------
 
     if (present(indentation)) then

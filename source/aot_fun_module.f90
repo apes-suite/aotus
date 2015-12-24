@@ -66,7 +66,7 @@ contains
   !!
   !! If it actually is not a Lua function, the returned handle will be 0.
   function aot_fun_top(L) result(fun)
-    type(flu_state) :: L !< Handle for the Lua script.
+    type(flu_state) :: L !! Handle for the Lua script.
 
     !> Handle to the function on the top of the stack.
     type(aot_fun_type) :: fun
@@ -87,7 +87,7 @@ contains
 
   !> Get a globally defined function.
   subroutine aot_fun_global(L, fun, key)
-    type(flu_state) :: L !< Handle for the Lua script.
+    type(flu_state) :: L !! Handle for the Lua script.
 
     !> Returned handle, providing access to the function.
     type(aot_fun_type), intent(out) :: fun
@@ -106,7 +106,7 @@ contains
   !! If both optional parameters are provided, the key is attempted to be read
   !! first. Only when that fails, the position will be tested.
   subroutine aot_fun_table(L, parent, fun, key, pos)
-    type(flu_state) :: L !< Handle for the Lua script.
+    type(flu_state) :: L !! Handle for the Lua script.
 
     !> Handle to the table to look in for the function.
     integer, intent(in) :: parent
@@ -127,7 +127,7 @@ contains
 
   !> Close the function again (pop everything above from the stack).
   subroutine aot_fun_close(L, fun)
-    type(flu_state) :: L !< Handle for the Lua script.
+    type(flu_state) :: L !! Handle for the Lua script.
 
     !> Handle to the function to close.
     type(aot_fun_type) :: fun
@@ -141,7 +141,7 @@ contains
   !> Put the top of the stack as argument into the list of arguments for the
   !! function.
   subroutine aot_fun_put_top(L, fun)
-    type(flu_state) :: L !< Handle for the Lua script.
+    type(flu_state) :: L !! Handle for the Lua script.
 
     !> Handle of the function, this argument should be put into.
     type(aot_fun_type) :: fun
@@ -184,7 +184,7 @@ contains
 
   !> Put an argument of type double into the list of arguments for the function.
   subroutine aot_fun_put_double(L, fun, arg)
-    type(flu_state) :: L !< Handle for the Lua script.
+    type(flu_state) :: L !! Handle for the Lua script.
 
     !> Handle of the function, this argument should be put into.
     type(aot_fun_type) :: fun
@@ -219,7 +219,7 @@ contains
 
   !> Put an argument of type single into the list of arguments for the function.
   subroutine aot_fun_put_single(L, fun, arg)
-    type(flu_state) :: L !< Handle for the Lua script.
+    type(flu_state) :: L !! Handle for the Lua script.
 
     !> Handle of the function, this argument should be put into.
     type(aot_fun_type) :: fun
@@ -270,7 +270,7 @@ contains
   !! @note You might want to return multiple values as a single argument in a
   !!       table instead of several single values.
   subroutine aot_fun_do(L, fun, nresults, ErrCode, ErrString)
-    type(flu_state) :: L !< Handle for the Lua script.
+    type(flu_state) :: L !! Handle for the Lua script.
 
     !> Handle to the function to execute.
     type(aot_fun_type) :: fun

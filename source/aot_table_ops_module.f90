@@ -28,7 +28,7 @@ contains
   !! for further operations on that table.
   !! Otherwise a 0 will be returned.
   function aot_table_top(L) result(thandle)
-    type(flu_state) :: L !< Handle for the Lua script.
+    type(flu_state) :: L !! Handle for the Lua script.
 
     !> A handle for the table on the top of the stack to access it.
     integer :: thandle
@@ -56,7 +56,7 @@ contains
   !! After the table is opened, the returned handle can be used to access its
   !! components.
   subroutine aot_table_open(L, parent, thandle, key, pos)
-    type(flu_state) :: L !< Handle for the Lua script.
+    type(flu_state) :: L !! Handle for the Lua script.
 
     !> Handle of the table containing the requested table.
     integer, intent(in), optional :: parent
@@ -94,7 +94,7 @@ contains
   !!
   !! This is done by popping all values above and itself from the stack.
   subroutine aot_table_close(L, thandle)
-    type(flu_state) :: L !< Handle for the Lua script.
+    type(flu_state) :: L !! Handle for the Lua script.
 
     !> Handle of the table to close.
     integer, intent(in) :: thandle
@@ -111,7 +111,7 @@ contains
   !! is supplied, the key is checked first and only if this fails the entry at
   !! pos will be looked up.
   subroutine aot_table_push(L, thandle, key, pos)
-    type(flu_state) :: L !< Handle for the Lua script.
+    type(flu_state) :: L !! Handle for the Lua script.
 
     !> Handle to the table to look in.
     integer :: thandle
@@ -167,7 +167,7 @@ contains
   !! If there are no entries in the table the function
   !! returns false, otherwise the result will be true.
   function aot_table_first(L, thandle) result(exists)
-    type(flu_state) :: L !< Handle for the Lua script.
+    type(flu_state) :: L !! Handle for the Lua script.
 
     !> Handle to the table to get the first entry of.
     integer, intent(in) :: thandle
@@ -186,7 +186,7 @@ contains
 
   !> Count the entries in a lua table.
   function aot_table_length(L, thandle) result(length)
-    type(flu_state) :: L !< Handle for the Lua script.
+    type(flu_state) :: L !! Handle for the Lua script.
 
     !> Handle of the table to count the enries in.
     integer, intent(in) :: thandle

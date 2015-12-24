@@ -110,8 +110,8 @@ contains
   !! to allocate has to be specified.
   subroutine get_table_real_vvect(val, ErrCode, maxlength, L, thandle, &
     &                             key, pos, default)
-    type(flu_State) :: L !< Handle to the lua script
-    integer, intent(in), optional :: thandle !< Handle of the parent table
+    type(flu_State) :: L !! Handle to the lua script
+    integer, intent(in), optional :: thandle !! Handle of the parent table
 
     !> Vector read from the Lua table, will have the same length as the table
     !! but not exceed maxlength, if provided.
@@ -172,8 +172,8 @@ contains
   !! to allocate has to be specified.
   subroutine get_table_double_vvect(val, ErrCode, maxlength, L, thandle, &
     &                               key, pos, default)
-    type(flu_State) :: L !< Handle to the lua script
-    integer, intent(in), optional :: thandle !< Handle of the parent table
+    type(flu_State) :: L !! Handle to the lua script
+    integer, intent(in), optional :: thandle !! Handle of the parent table
 
     !> Vector read from the Lua table, will have the same length as the table
     !! but not exceed maxlength, if provided.
@@ -234,8 +234,8 @@ contains
   !! to allocate has to be specified.
   subroutine get_table_integer_vvect(val, ErrCode, maxlength, L, thandle, &
     &                                key, pos, default)
-    type(flu_State) :: L !< Handle to the lua script
-    integer, intent(in), optional :: thandle !< Handle of the parent table
+    type(flu_State) :: L !! Handle to the lua script
+    integer, intent(in), optional :: thandle !! Handle of the parent table
 
     !> Vector read from the Lua table, will have the same length as the table
     !! but not exceed maxlength, if provided.
@@ -296,8 +296,8 @@ contains
   !! to allocate has to be specified.
   subroutine get_table_long_vvect(val, ErrCode, maxlength, L, thandle, &
     &                             key, pos, default)
-    type(flu_State) :: L !< Handle to the lua script
-    integer, intent(in), optional :: thandle !< Handle of the parent table
+    type(flu_State) :: L !! Handle to the lua script
+    integer, intent(in), optional :: thandle !! Handle of the parent table
 
     !> Vector read from the Lua table, will have the same length as the table
     !! but not exceed maxlength, if provided.
@@ -358,8 +358,8 @@ contains
   !! to allocate has to be specified.
   subroutine get_table_logical_vvect(val, ErrCode, maxlength, L, thandle, &
     &                                key, pos, default)
-    type(flu_State) :: L !< Handle to the lua script
-    integer, intent(in), optional :: thandle !< Handle of the parent table
+    type(flu_State) :: L !! Handle to the lua script
+    integer, intent(in), optional :: thandle !! Handle of the parent table
 
     !> Vector read from the Lua table, will have the same length as the table
     !! but not exceed maxlength, if provided.
@@ -426,8 +426,8 @@ contains
   !! default will be marked with the aoterr_Fatal flag.
   subroutine get_table_real_v(val, ErrCode, L, thandle, key, &
     &                         pos, default)
-    type(flu_State) :: L !< Handle to the lua script
-    integer, intent(in), optional :: thandle !< Handle of the parent table
+    type(flu_State) :: L !! Handle to the lua script
+    integer, intent(in), optional :: thandle !! Handle of the parent table
 
     !> Vector read from the Lua table.
     real(kind=single_k), intent(out) :: val(:)
@@ -485,8 +485,8 @@ contains
   !! default will be marked with the aoterr_Fatal flag.
   subroutine get_table_double_v(val, ErrCode, L, thandle, key, &
     &                         pos, default)
-    type(flu_State) :: L !< Handle to the lua script
-    integer, intent(in), optional :: thandle !< Handle of the parent table
+    type(flu_State) :: L !! Handle to the lua script
+    integer, intent(in), optional :: thandle !! Handle of the parent table
 
     !> Vector read from the Lua table.
     real(kind=double_k), intent(out) :: val(:)
@@ -544,8 +544,8 @@ contains
   !! default will be marked with the aoterr_Fatal flag.
   subroutine get_table_integer_v(val, ErrCode, L, thandle, key, &
     &                         pos, default)
-    type(flu_State) :: L !< Handle to the lua script
-    integer, intent(in), optional :: thandle !< Handle of the parent table
+    type(flu_State) :: L !! Handle to the lua script
+    integer, intent(in), optional :: thandle !! Handle of the parent table
 
     !> Vector read from the Lua table.
     integer, intent(out) :: val(:)
@@ -603,8 +603,8 @@ contains
   !! default will be marked with the aoterr_Fatal flag.
   subroutine get_table_long_v(val, ErrCode, L, thandle, key, &
     &                         pos, default)
-    type(flu_State) :: L !< Handle to the lua script
-    integer, intent(in), optional :: thandle !< Handle of the parent table
+    type(flu_State) :: L !! Handle to the lua script
+    integer, intent(in), optional :: thandle !! Handle of the parent table
 
     !> Vector read from the Lua table.
     integer(kind=long_k), intent(out) :: val(:)
@@ -662,8 +662,8 @@ contains
   !! default will be marked with the aoterr_Fatal flag.
   subroutine get_table_logical_v(val, ErrCode, L, thandle, key, &
     &                         pos, default)
-    type(flu_State) :: L !< Handle to the lua script
-    integer, intent(in), optional :: thandle !< Handle of the parent table
+    type(flu_State) :: L !! Handle to the lua script
+    integer, intent(in), optional :: thandle !! Handle of the parent table
 
     !> Vector read from the Lua table.
     logical, intent(out) :: val(:)
@@ -710,7 +710,7 @@ contains
 
 
   subroutine get_top_real_vvect(val, ErrCode, maxlength, L, default)
-    type(flu_State) :: L !< Handle to the lua script
+    type(flu_State) :: L !! Handle to the lua script
 
     !> Vector read from the Lua table, will have the same length as the table
     !! but not exceed maxlength, if provided.
@@ -795,7 +795,7 @@ contains
 
 
   subroutine get_top_double_vvect(val, ErrCode, maxlength, L, default)
-    type(flu_State) :: L !< Handle to the lua script
+    type(flu_State) :: L !! Handle to the lua script
 
     !> Vector read from the Lua table, will have the same length as the table
     !! but not exceed maxlength, if provided.
@@ -879,7 +879,7 @@ contains
 
 
   subroutine get_top_integer_vvect(val, ErrCode, maxlength, L, default)
-    type(flu_State) :: L !< Handle to the lua script
+    type(flu_State) :: L !! Handle to the lua script
 
     !> Vector read from the Lua table, will have the same length as the table
     !! but not exceed maxlength, if provided.
@@ -963,7 +963,7 @@ contains
 
 
   subroutine get_top_long_vvect(val, ErrCode, maxlength, L, default)
-    type(flu_State) :: L !< Handle to the lua script
+    type(flu_State) :: L !! Handle to the lua script
 
     !> Vector read from the Lua table, will have the same length as the table
     !! but not exceed maxlength, if provided.
@@ -1047,7 +1047,7 @@ contains
 
 
   subroutine get_top_logical_vvect(val, ErrCode, maxlength, L, default)
-    type(flu_State) :: L !< Handle to the lua script
+    type(flu_State) :: L !! Handle to the lua script
 
     !> Vector read from the Lua table, will have the same length as the table
     !! but not exceed maxlength, if provided.
@@ -1132,7 +1132,7 @@ contains
 
 
   subroutine get_top_real_v(val, ErrCode, L,  default)
-    type(flu_State) :: L !< Handle to the lua script
+    type(flu_State) :: L !! Handle to the lua script
 
     !> Vector read from the Lua table.
     real(kind=single_k), intent(out) :: val(:)
@@ -1218,7 +1218,7 @@ contains
 
 
   subroutine get_top_double_v(val, ErrCode, L,  default)
-    type(flu_State) :: L !< Handle to the lua script
+    type(flu_State) :: L !! Handle to the lua script
 
     !> Vector read from the Lua table.
     real(kind=double_k), intent(out) :: val(:)
@@ -1304,7 +1304,7 @@ contains
 
 
   subroutine get_top_integer_v(val, ErrCode, L,  default)
-    type(flu_State) :: L !< Handle to the lua script
+    type(flu_State) :: L !! Handle to the lua script
 
     !> Vector read from the Lua table.
     integer, intent(out) :: val(:)
@@ -1391,7 +1391,7 @@ contains
 
 
   subroutine get_top_long_v(val, ErrCode, L,  default)
-    type(flu_State) :: L !< Handle to the lua script
+    type(flu_State) :: L !! Handle to the lua script
 
     !> Vector read from the Lua table.
     integer(kind=long_k), intent(out) :: val(:)
@@ -1477,7 +1477,7 @@ contains
 
 
   subroutine get_top_logical_v(val, ErrCode, L,  default)
-    type(flu_State) :: L !< Handle to the lua script
+    type(flu_State) :: L !! Handle to the lua script
 
     !> Vector read from the Lua table.
     logical, intent(out) :: val(:)

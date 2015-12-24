@@ -58,7 +58,7 @@ contains
   !! If either of them is provided, the application will continue and the
   !! calling side has to deal with the occured error.
   subroutine aot_err_handler(L, err, msg, ErrString, ErrCode)
-    type(flu_State) :: L !< Handle to the Lua script
+    type(flu_State) :: L !! Handle to the Lua script
 
     !> Lua error code to evaluate
     integer, intent(in) :: err

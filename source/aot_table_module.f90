@@ -142,7 +142,7 @@ contains
   !! containing table if it is not a global variable. A key
   !! or a position.
   function aot_exists(L, thandle, key, pos) result(exists)
-    type(flu_State) :: L !< Handle to the Lua script.
+    type(flu_State) :: L !! Handle to the Lua script.
 
     !> Handle to the table to look the value up in.
     integer, intent(in), optional :: thandle
@@ -188,7 +188,7 @@ contains
 
   !> Retrieve a single precision real value from a table.
   subroutine get_table_real(val, ErrCode, L, thandle, key, pos, default)
-    type(flu_State) :: L !< Handle to the Lua script.
+    type(flu_State) :: L !! Handle to the Lua script.
 
     !> Handle to the table to look the value up in.
     integer, intent(in), optional :: thandle
@@ -241,7 +241,7 @@ contains
   !> Retrieve a double precision real value from a table.
   subroutine get_table_double(val, ErrCode, L, thandle, key, pos, &
     &                         default)
-    type(flu_State) :: L !< Handle to the Lua script.
+    type(flu_State) :: L !! Handle to the Lua script.
 
     !> Handle to the table to look the value up in.
     integer, intent(in), optional :: thandle
@@ -294,7 +294,7 @@ contains
   !> Retrieve a default integer value from a table.
   subroutine get_table_integer(val, ErrCode, L, thandle, key, pos, &
     &                          default)
-    type(flu_State) :: L !< Handle to the Lua script.
+    type(flu_State) :: L !! Handle to the Lua script.
 
     !> Handle to the table to look the value up in.
     integer, intent(in), optional :: thandle
@@ -347,7 +347,7 @@ contains
 
   !> Retrieve a long integer value from a table.
   subroutine get_table_long(val, ErrCode, L, thandle, key, pos, default)
-    type(flu_State) :: L !< Handle to the Lua script.
+    type(flu_State) :: L !! Handle to the Lua script.
 
     !> Handle to the table to look the value up in.
     integer, intent(in), optional :: thandle
@@ -400,7 +400,7 @@ contains
   !> Retrieve a logical value from a table.
   subroutine get_table_logical(val, ErrCode, L, thandle, key, pos, &
     &                          default)
-    type(flu_State) :: L !< Handle to the Lua script.
+    type(flu_State) :: L !! Handle to the Lua script.
 
     !> Handle to the table to look the value up in.
     integer, intent(in), optional :: thandle
@@ -456,7 +456,7 @@ contains
 
     use, intrinsic :: iso_c_binding, only: c_ptr
 
-    type(flu_State) :: L !< Handle to the Lua script.
+    type(flu_State) :: L !! Handle to the Lua script.
 
     !> Handle to the table to look the value up in.
     integer, intent(in), optional :: thandle
@@ -509,7 +509,7 @@ contains
   !> Retrieve a string from a table.
   subroutine get_table_string(val, ErrCode, L, thandle, key, pos, &
     &                         default)
-    type(flu_State) :: L !< Handle to the Lua script.
+    type(flu_State) :: L !! Handle to the Lua script.
 
     !> Handle to the table to look the value up in.
     integer, intent(in), optional :: thandle
@@ -564,7 +564,7 @@ contains
 
   !> Put the top of the stack into a table.
   subroutine aot_table_set_top(L, thandle, key, pos)
-    type(flu_State) :: L !< Handle to the Lua script.
+    type(flu_State) :: L !! Handle to the Lua script.
 
     !> Handle to the table to look the value up in.
     integer, intent(in) :: thandle
@@ -616,7 +616,7 @@ contains
 
   !> Put a single precision real value into a table.
   subroutine set_table_real(val, L, thandle, key, pos)
-    type(flu_State) :: L !< Handle to the Lua script.
+    type(flu_State) :: L !! Handle to the Lua script.
 
     !> Handle to the table to look the value up in.
     integer, intent(in) :: thandle
@@ -662,7 +662,7 @@ contains
 
   !> Put a double precision real value into a table.
   subroutine set_table_double(val, L, thandle, key, pos)
-    type(flu_State) :: L !< Handle to the Lua script.
+    type(flu_State) :: L !! Handle to the Lua script.
 
     !> Handle to the table to look the value up in.
     integer, intent(in) :: thandle
@@ -708,7 +708,7 @@ contains
 
   !> Put a default integer value into a table.
   subroutine set_table_integer(val, L, thandle, key, pos)
-    type(flu_State) :: L !< Handle to the Lua script.
+    type(flu_State) :: L !! Handle to the Lua script.
 
     !> Handle to the table to look the value up in.
     integer, intent(in) :: thandle
@@ -754,7 +754,7 @@ contains
 
   !> Put a long integer value into a table.
   subroutine set_table_long(val, L, thandle, key, pos)
-    type(flu_State) :: L !< Handle to the Lua script.
+    type(flu_State) :: L !! Handle to the Lua script.
 
     !> Handle to the table to look the value up in.
     integer, intent(in) :: thandle
@@ -800,7 +800,7 @@ contains
 
   !> Put a logical value into a table.
   subroutine set_table_logical(val, L, thandle, key, pos)
-    type(flu_State) :: L !< Handle to the Lua script.
+    type(flu_State) :: L !! Handle to the Lua script.
 
     !> Handle to the table to look the value up in.
     integer, intent(in) :: thandle
@@ -846,7 +846,7 @@ contains
 
   !> Put a string value into a table.
   subroutine set_table_string(val, L, thandle, key, pos)
-    type(flu_State) :: L !< Handle to the Lua script.
+    type(flu_State) :: L !! Handle to the Lua script.
 
     !> Handle to the table to look the value up in.
     integer, intent(in) :: thandle
@@ -896,7 +896,7 @@ contains
   !! The returned thandle provides the index to access this newly created
   !! table.
   subroutine create_1Darray_real(L, thandle, val)
-    type(flu_State) :: L !< Handle to the Lua script.
+    type(flu_State) :: L !! Handle to the Lua script.
 
     !> Handle to access the newly created table.
     integer, intent(out) :: thandle
@@ -928,7 +928,7 @@ contains
   !! The returned thandle provides the index to access this newly created
   !! table.
   subroutine create_1Darray_double(L, thandle, val)
-    type(flu_State) :: L !< Handle to the Lua script.
+    type(flu_State) :: L !! Handle to the Lua script.
 
     !> Handle to access the newly created table.
     integer, intent(out) :: thandle

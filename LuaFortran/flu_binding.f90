@@ -102,7 +102,7 @@ contains
 
   !> Close a previously opened Lua script.
   subroutine flu_close(L)
-    type(flu_State) :: L !< Handle to the Lua state to close.
+    type(flu_State) :: L !! Handle to the Lua state to close.
 
     call lua_close(L%state)
     L%state = c_null_ptr

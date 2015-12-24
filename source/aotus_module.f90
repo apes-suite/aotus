@@ -48,7 +48,7 @@ contains
   !! tem_open_distconf routine in the
   !! [treelm library](https://bitbucket.org/apesteam/treelm) instead.
   subroutine open_config_file(L, filename, ErrCode, ErrString, buffer)
-    type(flu_State) :: L !< Handle to the Lua script
+    type(flu_State) :: L !! Handle to the Lua script
 
     !> Name of file to load the Lua code from
     character(len=*), intent(in) :: filename
@@ -104,7 +104,7 @@ contains
 
   !> Subroutine to load and execute a script given in a string.
   subroutine open_config_chunk(L, chunk, ErrCode, ErrString)
-    type(flu_State) :: L !< Handle to the Lua script
+    type(flu_State) :: L !! Handle to the Lua script
 
     !> String with Lua code to load.
     character(len=*), intent(in) :: chunk
@@ -147,7 +147,7 @@ contains
   !> Subroutine to load and execute a script given in a buffer
   !! (bytecode).
   subroutine open_config_buffer(L, buffer, bufName, ErrCode, ErrString)
-    type(flu_State) :: L !< Handle to the Lua script
+    type(flu_State) :: L !! Handle to the Lua script
 
     !> String with Lua code to load.
     character, intent(in) :: buffer(:)
@@ -192,7 +192,7 @@ contains
 
   !> Close an opened Lua script again.
   subroutine close_config(L)
-    type(flu_State) :: L !< Handle to the Lua script to close.
+    type(flu_State) :: L !! Handle to the Lua script to close.
 
     call flu_close(L)
 
@@ -263,9 +263,9 @@ contains
   !> Load and execute a given buffer and register it in the package table as
   !! the given module name.
   subroutine aot_require_buffer(L, buffer, modname)
-    type(flu_State) :: L !< Lua State to set load the buffer into.
-    character, intent(in) :: buffer(:) !< Buffer to load.
-    character(len=*), intent(in) :: modname !< Module name to set.
+    type(flu_State) :: L !! Lua State to set load the buffer into.
+    character, intent(in) :: buffer(:) !! Buffer to load.
+    character(len=*), intent(in) :: modname !! Module name to set.
 
     integer :: pac_handle
     integer :: ld_handle

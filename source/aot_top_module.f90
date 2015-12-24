@@ -60,7 +60,7 @@ contains
 
   !> Interpret topmost entry on Lua stack as a single precision real.
   subroutine aot_top_get_real(val, ErrCode, L, default)
-    type(flu_State) :: L !< Handle to the Lua script
+    type(flu_State) :: L !! Handle to the Lua script
 
     !> Value of the Variable in the script
     real(kind=single_k), intent(out) :: val
@@ -104,7 +104,7 @@ contains
 
   !> Interpret topmost entry on Lua stack as a double precision real.
   subroutine aot_top_get_double(val, ErrCode, L, default)
-    type(flu_State) :: L !< Handle to the Lua script
+    type(flu_State) :: L !! Handle to the Lua script
 
     !> Value of the Variable in the script
     real(kind=double_k), intent(out) :: val
@@ -148,7 +148,7 @@ contains
 
   !> Interpret topmost entry on Lua stack as a default integer.
   subroutine aot_top_get_integer(val, ErrCode, L, default)
-    type(flu_State) :: L !< Handle to the Lua script
+    type(flu_State) :: L !! Handle to the Lua script
 
     !> Value of the Variable in the script
     integer, intent(out) :: val
@@ -192,7 +192,7 @@ contains
 
   !> Interpret topmost entry on Lua stack as a single precision real.
   subroutine aot_top_get_long(val, ErrCode, L, default)
-    type(flu_State) :: L !< Handle to the Lua script
+    type(flu_State) :: L !! Handle to the Lua script
 
     !> Value of the Variable in the script
     integer(kind=long_k), intent(out) :: val
@@ -236,7 +236,7 @@ contains
 
   !> Interpret topmost entry on Lua stack as a single precision real.
   subroutine aot_top_get_logical(val, ErrCode, L, default)
-    type(flu_State) :: L !< Handle to the Lua script
+    type(flu_State) :: L !! Handle to the Lua script
 
     !> Value of the Variable in the script
     logical, intent(out) :: val
@@ -280,7 +280,7 @@ contains
 
   !> Interpret topmost entry on Lua stack as a single precision real.
   subroutine aot_top_get_string(val, ErrCode, L, default)
-    type(flu_State) :: L !< Handle to the Lua script
+    type(flu_State) :: L !! Handle to the Lua script
 
     !> Value of the Variable in the script
     character(len=*) :: val
@@ -326,7 +326,7 @@ contains
   !> Interpret topmost entry on Lua stack as userdata.
   subroutine aot_top_get_userdata(val, ErrCode, L, default)
     use, intrinsic :: iso_c_binding
-    type(flu_State) :: L !< Handle to the Lua script
+    type(flu_State) :: L !! Handle to the Lua script
 
     !> Value of the Variable in the script
     type(c_ptr), intent(out) :: val
