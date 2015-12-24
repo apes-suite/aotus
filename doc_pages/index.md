@@ -20,28 +20,28 @@ tables.
 
 Aotus provides several layers, encapsulating the bare Lua C-API:
 
- * lua_fif: this just provides the ISO_C_BINDING interface declarations to the
-   Lua API
- * flu_binding: this is the actual Fortran binding wrapped around lua_fif, to
-   provide a more Fortran like interface. Especially the **flu_state** type is
-   declared which maintains the handle for the Lua context.
- * aot_table_module: provides some convenience functions to work on Lua tables
-   in Fortran
- * aot_fun_module: provides some convenience functions to work with Lua functions
-   in Fortran
- * aotus_module: provides the high end level to easily retrieve data from a Lua
-   script
+ * [[lua_fif]]: this just provides the ISO_C_BINDING interface declarations to
+   the Lua API
+ * [[flu_binding]]: this is the actual Fortran binding wrapped around lua_fif,
+   to provide a more Fortran like interface. Especially the **flu_state** type
+   is declared, which maintains the handle for the Lua context.
+ * [[aot_table_module]]: provides some convenience functions to work on Lua
+   tables in Fortran
+ * [[aot_fun_module]]: provides some convenience functions to work with Lua
+   functions in Fortran
+ * [[aotus_module]]: provides the high end level to easily retrieve data from a
+   Lua script
 
-On top of those there is an additional aot_vector_module that allows the direct
-reading of values into arrays of rank 1.
+On top of those there is an additional [aot_vector_module] that allows the
+direct reading of values into arrays of rank 1.
 
-Finally there is an additional module which allows [output](Output.html) of
+Finally, there is an additional module which allows [output](Output.html) of
 Fortran values into nested Lua tables.
 
 The library can be compiled by various modern Fortran compilers as outlined in
 [Compiler Support](CompilerSupport.html).
 
-**An example, showing the usage of this library in a Fortran application is
+**An example, showing the usage of this library in a Fortran application, is
 given in aotus_sample.f90, the corresponding Lua script is given
 in config.lua.**
 
@@ -51,7 +51,7 @@ massively parallel systems, it is advisable to minimize the access to config
 files. To avoid excessive filesystem meta accesses it is recommended to
 load required files only on one process.
 An implementation of this for MPI can be found in TreElMs
-[distconf](https://geb.sts.nt.uni-siegen.de/doxy/treelm/classtem__aux__module.html#a1a6bd9f747c89e6f00791131e3d169de).
+[distconf](https://geb.sts.nt.uni-siegen.de/doxy/treelm/namespacetem__aux__module.html#a1a6bd9f747c89e6f00791131e3d169de).
 
 
 Reading a Lua Script
