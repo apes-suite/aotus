@@ -41,20 +41,26 @@ def configure(conf):
     conf.env['FCSHLIB_MARKER'] = ''
 
     conf.check_fortran()
+    print(conf.env['DEST_OS'])
     subconf(conf)
 
+    if conf.env.FC_NAME=='IFORT' and conf.env.DEST_OS=='win32':
+      fcname = 'IFORTwin'
+    else:
+      fcname = conf.env.FC_NAME
+
     # Flags for the default (production) variant
-    conf.env['FCFLAGS'] = ( fcopts[conf.env.FC_NAME, 'optimize']
-                          + fcopts[conf.env.FC_NAME, 'warn'] )
+    conf.env['FCFLAGS'] = ( fcopts[fcname, 'optimize']
+                          + fcopts[fcname, 'warn'] )
     conf.env['LINKFLAGS_fcprogram'] = conf.env['FCFLAGS']
 
     # Set flags for the debugging variant
     # DEBUG Variant
     conf.setenv('debug',conf.env)
-    conf.env['FCFLAGS'] = ( fcopts[conf.env.FC_NAME, 'standard']
-                          + fcopts[conf.env.FC_NAME, 'warn']
-                          + fcopts[conf.env.FC_NAME, 'w2e']
-                          + fcopts[conf.env.FC_NAME, 'debug'] )
+    conf.env['FCFLAGS'] = ( fcopts[fcname, 'standard']
+                          + fcopts[fcname, 'warn']
+                          + fcopts[fcname, 'w2e']
+                          + fcopts[fcname, 'debug'] )
     conf.env['LINKFLAGS_fcprogram'] = conf.env['FCFLAGS']
 
 def subconf(conf):
@@ -81,7 +87,8 @@ def subconf(conf):
     if conf.env.DEFINES_POPEN and conf.env.DEFINES_MKSTEMP and conf.env.DEFINES_SRANDOM:
       conf.env.DEFINES_POSIX = ['LUA_USE_POSIX']
 
-    conf.check_cc(lib='m', uselib_store='MATH')
+    # Only required to build the Lua interpreter
+    conf.check_cc(lib='m', uselib_store='MATH', mandatory=False)
 
     conf.check_fc(fragment = '''
        program check_iso_c

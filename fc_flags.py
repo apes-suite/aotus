@@ -44,14 +44,26 @@ fcopts['GFORTRAN', 'freeform'] = []
 fcopts['IFORT', 'warn'] = '-warn all'.split()
 fcopts['IFORT', 'w2e'] = '-warn stderrors'.split()
 fcopts['IFORT', 'standard'] = ['-stand']
-fcopts['IFORT', 'double'] = ['-r8']
+fcopts['IFORT', 'double'] = '-real-size 64'.split()
 fcopts['IFORT', 'debug'] = '-check all -check noarg_temp_created'.split() + ['-traceback', '-g']
-fcopts['IFORT', 'optimize'] = '-xHOST -O3 -ipo -no-prec-div'.split()
-fcopts['IFORT', 'openmp'] = ['-openmp']
+fcopts['IFORT', 'optimize'] = '-xHost -O3 -ipo -no-prec-div'.split()
+fcopts['IFORT', 'openmp'] = ['-qopenmp']
 fcopts['IFORT', 'noomp'] = []
 fcopts['IFORT', 'profile'] = ['-qopt-report=5', '-pg']
 fcopts['IFORT', 'fixform'] = []
 fcopts['IFORT', 'freeform'] = []
+
+fcopts['IFORTwin', 'warn'] = '/warn:all'.split()
+fcopts['IFORTwin', 'w2e'] = '/warn:stderrors'.split()
+fcopts['IFORTwin', 'standard'] = ['/stand']
+fcopts['IFORTwin', 'double'] = '/real-size:64'
+fcopts['IFORTwin', 'debug'] = '/check:all, noarg_temp_created'.split() + ['/traceback', '/g']
+fcopts['IFORTwin', 'optimize'] = '/QxHost /O3 /Qipo /Qprec-div-'.split()
+fcopts['IFORTwin', 'openmp'] = ['/Qopenmp']
+fcopts['IFORTwin', 'noomp'] = []
+fcopts['IFORTwin', 'profile'] = ['/Qopt-report:5']
+fcopts['IFORTwin', 'fixform'] = []
+fcopts['IFORTwin', 'freeform'] = []
 
 fcopts['SOL', 'warn'] = ['-w4']
 fcopts['SOL', 'w2e'] = ['-errwarn=%all']
