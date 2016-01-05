@@ -3,9 +3,12 @@
 !              2013-2014 University of Siegen
 ! Please see the COPYRIGHT file in this directory for details.
 
+!> Helping module to define the aot_fun_type without causing dependency locks.
 module aot_fun_declaration_module
 
   implicit none
+
+  private
 
   type aot_fun_type
     integer :: handle = 0
@@ -13,7 +16,5 @@ module aot_fun_declaration_module
   end type
 
   public :: aot_fun_type
-
-  private
 
 end module aot_fun_declaration_module

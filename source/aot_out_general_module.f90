@@ -3,9 +3,12 @@
 !               2013-2014 University of Siegen
 ! Please see the COPYRIGHT file in this directory for details.
 
+!> Collection of general operations required for the output of Lua scripts.
 module aot_out_general_module
 
   implicit none
+
+  private
 
   public :: aot_out_type
   public :: aot_out_open
@@ -26,11 +29,11 @@ module aot_out_general_module
     integer :: in_step !! Number of spaces for each indentation level
   end type
 
-  private
 
 contains
 
-!******************************************************************************!
+
+! **************************************************************************** !
   !> Open the file to write to and return a handle (put_conf) to it.
   !!
   !! This will overwrite the given file, if it already exists.
@@ -67,10 +70,10 @@ contains
     put_conf%level = 0
 
   end subroutine aot_out_open
-!******************************************************************************!
+! **************************************************************************** !
 
 
-!******************************************************************************!
+! **************************************************************************** !
   !>  Close the opened script again.
   !!
   !! This will close the file, if the data was not written to a pre-connected
@@ -81,10 +84,10 @@ contains
     !------------------------------------------------------------------------
     if( .not. put_conf%externalOpen ) close( put_conf%outunit )
   end subroutine aot_out_close
-!******************************************************************************!
+! **************************************************************************** !
 
 
-!******************************************************************************!
+! **************************************************************************** !
   !> Start a new table to write to.
   !!
   !! You can give the table a name with the tname argument.
@@ -109,10 +112,10 @@ contains
     put_conf%indent = put_conf%indent + put_conf%in_step
 
   end subroutine aot_out_open_table
-!******************************************************************************!
+! **************************************************************************** !
 
 
-!******************************************************************************!
+! **************************************************************************** !
   !>  Close the current table.
   !!
   !! The table on the current table is closed with a curly bracket.
@@ -157,12 +160,12 @@ contains
     end if
 
   end subroutine aot_out_close_table
-!******************************************************************************!
+! **************************************************************************** !
 
 
 
 
-!******************************************************************************!
+! **************************************************************************** !
   !> This subroutine takes care of the proper linebreaking in Lua-Tables.
   !!
   !! It takes care of a proper line-continuation, depending on the optional
@@ -209,7 +212,7 @@ contains
     end if lev_if
 
   end subroutine aot_out_breakline
-!******************************************************************************!
+! **************************************************************************** !
 
 
 
