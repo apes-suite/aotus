@@ -15,6 +15,9 @@ def options(opt):
     opt.load('compiler_c')
     opt.load('waf_unit_test')
     opt.load('utest_results')
+    opt.add_option('--command_sequence', action='store_true', default=False,
+                   help='Collect all executed commands into a single file.',
+                   dest='cmdsequence')
 
 def configure(conf):
     from waflib import Logs
@@ -149,6 +152,9 @@ def subconf(conf):
 
 
 def build(bld):
+    if bld.options.cmdsequence:
+        import waflib.extras.command_sequence
+
     core_sources = ['external/lua-5.3.2/src/lapi.c',
                     'external/lua-5.3.2/src/lcode.c',
                     'external/lua-5.3.2/src/lctype.c',
