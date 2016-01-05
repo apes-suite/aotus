@@ -44,7 +44,6 @@ def configure(conf):
     conf.env['FCSHLIB_MARKER'] = ''
 
     conf.check_fortran()
-    print(conf.env['DEST_OS'])
     subconf(conf)
 
     if conf.env.FC_NAME=='IFORT' and conf.env.DEST_OS=='win32':
