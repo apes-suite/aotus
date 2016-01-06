@@ -262,12 +262,12 @@ def build(bld):
         target = 'fluobjs')
 
     bld(
-        features = 'fc fcstlib',
+        features = 'fc cstlib',
         use = ['luaobjs', 'fluobjs', 'wrapobjs'],
         target = 'flu')
 
     bld(
-        features = 'fc fcstlib',
+        features = 'fc cstlib',
         source = aotus_sources,
         use = ['luaobjs', 'fluobjs', 'wrapobjs'],
         target = 'aotus')
