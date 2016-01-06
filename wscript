@@ -87,7 +87,7 @@ def subconf(conf):
                   defines=['LUA_USE_SRANDOM=1'],
                   uselib_store='SRANDOM', mandatory=False)
     if conf.env.DEFINES_POPEN and conf.env.DEFINES_MKSTEMP and conf.env.DEFINES_SRANDOM:
-      conf.env.DEFINES_POSIX = ['LUA_USE_POSIX']
+      conf.env.DEFINES_LUA_POSIX = ['LUA_USE_POSIX']
 
     # Only required to build the Lua interpreter
     conf.check_cc(lib='m', uselib_store='MATH', mandatory=False)
@@ -240,7 +240,7 @@ def build(bld):
         features = 'c',
         source = core_sources + lib_sources,
         defines = ['LUA_ANSI'],
-        use = ['POSIX'],
+        use = ['LUA_POSIX'],
         target = 'luaobjs')
 
     bld(
