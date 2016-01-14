@@ -431,7 +431,9 @@ contains
     integer :: pathLength
     integer :: stringLength
     character(len=10) :: posstr
+
     stringLength = len(pathAsString)
+    pathLength = 0
 
     ! First we measure the size of the result
     if (associated(path%globalNode)) then
@@ -478,6 +480,7 @@ contains
     end if
 
   end subroutine aot_path_toString
+
 
   !> Dumps the complete path to the given output unit.
   !!
