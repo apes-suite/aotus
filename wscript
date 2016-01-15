@@ -21,6 +21,7 @@ def options(opt):
 
 def configure(conf):
     from waflib import Logs
+
     # The fcopts provide some sane flag combinations
     # for different variants in the various compilers.
     # They are found in the fc_flags.py in the same
@@ -36,15 +37,28 @@ def configure(conf):
     # * 'double': promote default reals to double precision
 
     # Load the compiler informations
-    conf.load('compiler_fc')
-    conf.load('compiler_c')
+    conf.setenv('default')
     conf.load('waf_unit_test')
+    conf.add_os_flags('DEFINES', dup=False)
 
-    conf.env['FCSTLIB_MARKER'] = ''
-    conf.env['FCSHLIB_MARKER'] = ''
+    conf.setenv('cenv',conf.env)
+    conf.load('compiler_c')
 
+    conf.setenv('default')
+    conf.setenv('fortenv',conf.env)
+    conf.env.DEST_OS = conf.all_envs['cenv'].DEST_OS
+    conf.load('compiler_fc')
+    # Deactivate dynamic linking flags for Cray
+    if conf.env.FC[0] == 'ftn':
+      conf.env['FCSHLIB_MARKER'] = ''
     conf.check_fortran()
+
     subconf(conf)
+
+    conf.setenv('cenv')
+    conf.setenv('cenv_debug',conf.env)
+
+    conf.setenv('fortenv')
 
     if conf.env.FC_NAME=='IFORT' and conf.env.DEST_OS=='win32':
       fcname = 'IFORTwin'
@@ -58,7 +72,7 @@ def configure(conf):
 
     # Set flags for the debugging variant
     # DEBUG Variant
-    conf.setenv('debug',conf.env)
+    conf.setenv('fortenv_debug',conf.env)
     conf.env['FCFLAGS'] = ( fcopts[fcname, 'standard']
                           + fcopts[fcname, 'warn']
                           + fcopts[fcname, 'w2e']
@@ -72,25 +86,41 @@ def subconf(conf):
     Useful to restrict parent recursions to just this part
     of the configuration.
     """
-    # Do not change the DEFINES themselves, use the lib_store instead
-    tmpDEF = conf.env.DEFINES
+
+    conf.setenv('cenv')
+
+    conf.env.append_unique('DEFINES', ['LUA_ANSI'])
+
+    # Do not change the DEFINES themselves, but use a temporary copy.
+    tmpenv = conf.env.derive()
+    tmpenv.detach()
+
+    conf.start_msg('Can use POSIX features in Lua')
     conf.check_cc(function_name='mkstemp',
                   header_name=['stdlib.h', 'unistd.h'],
-                  defines=['LUA_USE_MKSTEMP=1'],
-                  uselib_store='MKSTEMP', mandatory=False)
+                  define_name='MKSTEMP',
+                  mandatory=False)
     conf.check_cc(function_name='popen',
                   header_name=['stdio.h'],
-                  defines=['LUA_USE_POPEN=1'],
-                  uselib_store='POPEN', mandatory=False)
+                  define_name='POPEN',
+                  mandatory=False)
     conf.check_cc(function_name='srandom',
                   header_name=['stdlib.h', 'math.h'],
-                  defines=['LUA_USE_SRANDOM=1'],
-                  uselib_store='SRANDOM', mandatory=False)
-    if conf.env.DEFINES_POPEN and conf.env.DEFINES_MKSTEMP and conf.env.DEFINES_SRANDOM:
-      conf.env.DEFINES_LUA_POSIX = ['LUA_USE_POSIX']
+                  define_name='SRANDOM',
+                  mandatory=False)
+
+    if conf.is_defined('POPEN') and conf.is_defined('MKSTEMP') and conf.is_defined('SRANDOM'):
+      conf.env = tmpenv
+      conf.all_envs['cenv'].DEFINES_LUA_POSIX = ['LUA_USE_POSIX']
+      conf.end_msg('yes')
+    else:
+      conf.env = tmpenv
+      conf.end_msg('NO')
 
     # Only required to build the Lua interpreter
     conf.check_cc(lib='m', uselib_store='MATH', mandatory=False)
+
+    conf.setenv('fortenv')
 
     conf.check_fc(fragment = '''
        program check_iso_c
@@ -100,6 +130,9 @@ def subconf(conf):
        end program check_iso_c''',
                   msg = "Checking for ISO_C_Binding support",
                   mandatory = 'true')
+
+    tmpenv = conf.env.derive()
+    tmpenv.detach()
 
     conf.in_msg = 1
     conf.check_fc(fragment = '''
@@ -113,12 +146,12 @@ def subconf(conf):
                   execute = True, define_ret = True)
     conf.in_msg = 0
 
-    conf.env['quad_support'] = conf.is_defined('quadruple')
-    if conf.env['quad_support']:
+    tmpenv['quad_support'] = conf.is_defined('quadruple')
+    if tmpenv['quad_support']:
        conf.env['quad_k'] = int(conf.get_define('quadruple').replace('"', '').strip())
        if conf.env['quad_k'] < 1:
-          conf.env['quad_support'] = False
-    if conf.env['quad_support']:
+          tmpenv['quad_support'] = False
+    if tmpenv['quad_support']:
        conf.msg('Checking for Quadruple Precision', 'yes', color='GREEN')
     else:
        conf.msg('Checking for Quadruple Precision', 'NO', color='RED')
@@ -135,24 +168,30 @@ def subconf(conf):
                   execute = True, define_ret = True)
     conf.in_msg = 0
 
-    conf.env['xdble_support'] = False
+    tmpenv['xdble_support'] = False
     if conf.is_defined('extdouble'):
        conf.env['xdble_k'] = int(conf.get_define('extdouble').replace('"', '').strip())
        if conf.env['xdble_k'] > 0 and conf.env['xdble_k'] != conf.env['quad_k']:
-          conf.env['xdble_support'] = True
+          tmpenv['xdble_support'] = True
 
-    if conf.env['xdble_support']:
+    if tmpenv['xdble_support']:
        conf.msg('Checking for Extended Double Precision', 'yes', color='GREEN')
     else:
        conf.msg('Checking for Extended Double Precision', 'NO', color='RED')
 
-    # Cleanup the DEFINES again
-    conf.env.DEFINES = tmpDEF
+    conf.env = tmpenv
 
 
 def build(bld):
     if bld.options.cmdsequence:
         import waflib.extras.command_sequence
+
+    if bld.variant == '':
+      cenv = 'cenv'
+      fortenv = 'fortenv'
+    else:
+      cenv = 'cenv_'+bld.variant
+      fortenv = 'fortenv_'+bld.variant
 
     core_sources = ['external/lua-5.3.2/src/lapi.c',
                     'external/lua-5.3.2/src/lcode.c',
@@ -210,6 +249,40 @@ def build(bld):
                      'source/aot_path_module.f90',
                      'source/aot_vector_module.f90']
 
+    # C parts
+    bld.env = bld.all_envs[cenv]
+
+    bld(
+        features = 'c',
+        source = core_sources + lib_sources,
+        use = ['LUA_POSIX'],
+        target = 'luaobjs')
+
+    bld(
+        features = 'c cstlib',
+        use = 'luaobjs',
+        target = 'lualib')
+
+    bld(
+        features = 'c',
+        source = wrap_sources,
+        use = 'luaobjs',
+        includes = 'external/lua-5.3.2/src',
+        target = 'wrapobjs')
+
+    ## Building the lua interpreter (usually not needed).
+    ## Only built if libm available.
+    if 'LIB_MATH' in bld.env:
+      bld(
+          features = 'c cprogram',
+          use = ['lualib', 'MATH'],
+          source = lua_sources,
+          target = 'lua')
+
+
+    # Fortran parts
+    bld.env = bld.all_envs[fortenv]
+
     if bld.env['quad_support']:
         aotus_sources += ['source/quadruple/aot_quadruple_fun_module.f90']
         aotus_sources += ['source/quadruple/aot_quadruple_table_module.f90']
@@ -237,37 +310,17 @@ def build(bld):
         aotus_sources += ['source/extdouble/dummy_extdouble_vector_module.f90']
 
     bld(
-        features = 'c',
-        source = core_sources + lib_sources,
-        defines = ['LUA_ANSI'],
-        use = ['LUA_POSIX'],
-        target = 'luaobjs')
-
-    bld(
-        features = 'c cstlib',
-        defines = ['LUA_ANSI'],
-        use = 'luaobjs',
-        target = 'lualib')
-
-    bld(
-        features = 'c',
-        source = wrap_sources,
-        use = 'luaobjs',
-        includes = 'external/lua-5.3.2/src',
-        target = 'wrapobjs')
-
-    bld(
         features = 'fc',
         source = flu_sources,
         target = 'fluobjs')
 
     bld(
-        features = 'fc cstlib',
+        features = 'fc fcstlib',
         use = ['luaobjs', 'fluobjs', 'wrapobjs'],
         target = 'flu')
 
     bld(
-        features = 'fc cstlib',
+        features = 'fc fcstlib',
         source = aotus_sources,
         use = ['luaobjs', 'fluobjs', 'wrapobjs'],
         target = 'aotus')
@@ -290,22 +343,13 @@ def build(bld):
         utest_results.utests(bld, use = 'aotus', path = 'utests/quadruple')
     bld.add_post_fun(utest_results.summary)
 
-    # install_files actually only done, if in install mode
-    # however the if here, protects the ant_glob in the build directory
+    # install_files actually only done, if in install mode.
+    # However, the if here avoids the ant_glob in the build directory
     # to be run if not in the install phase...
     if bld.cmd == 'install':
         bld.install_files('${PREFIX}/include',
                           bld.path.get_bld().ant_glob('*.mod'))
         bld.install_files('${PREFIX}/lib', 'libaotus.a')
-
-## Building the lua interpreter, usually not needed.
-    bld(
-        features = 'c cprogram',
-        use = ['lualib', 'MATH'],
-        source = lua_sources,
-        defines = ['LUA_ANSI'],
-        stlib = bld.env['STLIBS'],
-        target = 'lua')
 
 
 from waflib.Build import BuildContext
