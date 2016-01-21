@@ -30,9 +30,9 @@ to build the aotus library.
 If you want to select a specific Fortran compiler, set the environment variable
 *FC*.
 And for a specific C compiler, set the environment variable *CC*.
-The Fortran compiler flags are set with the help of fc_flags, which provide
+The Fortran compiler flags are set with the help of fcopts, which provide
 a set of compiler flag combinations for various compilers.
-They are found in the fc_flags.py file in the root directory of the project.
+They are found in the fortran_compiler.py file in the root directory of the project.
 
 By running:
 
