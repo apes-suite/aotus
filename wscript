@@ -133,7 +133,6 @@ def subconf(conf):
        end program checkquad''',
                   mandatory=False, define_name='quadruple',
                   execute = True, define_ret = True)
-    conf.in_msg = 0
 
     tmpenv['quad_support'] = conf.is_defined('quadruple')
     if tmpenv['quad_support']:
@@ -155,7 +154,6 @@ def subconf(conf):
        end program checkxdble''',
                   mandatory=False, define_name='extdouble',
                   execute = True, define_ret = True)
-    conf.in_msg = 0
 
     tmpenv['xdble_support'] = False
     if conf.is_defined('extdouble'):
