@@ -36,12 +36,14 @@ def configure(conf):
     # * 'profile': activate profiling facilities
     # * 'double': promote default reals to double precision
 
-    # Load the compiler informations
     conf.load('waf_unit_test')
 
+    # Load the C compiler information
     conf.setenv('cenv',conf.env)
     conf.load('compiler_c')
+    conf.setenv('cenv_debug',conf.env)
 
+    # Load the Fortran compiler information
     conf.setenv('')
     conf.env.DEST_OS = conf.all_envs['cenv'].DEST_OS
     conf.load('compiler_fc')
@@ -67,6 +69,7 @@ def configure(conf):
                           + fcopts[fcname, 'w2e']
                           + fcopts[fcname, 'debug'] )
     conf.env['LINKFLAGS_fcprogram'] = conf.env['FCFLAGS']
+
 
 def subconf(conf):
     """
@@ -346,7 +349,11 @@ def kill_marker_flags(self):
 @TaskGen.feature('c', 'cstlib', 'cprogram')
 @TaskGen.before('process_rule')
 def enter_cenv(self):
-  self.env = self.bld.all_envs['cenv'].derive()
+  if self.bld.variant == '':
+    self.env = self.bld.all_envs['cenv'].derive()
+  else:
+    self.env = self.bld.all_envs['cenv_'+self.bld.variant].derive()
+
 
 # A class to describe the debug variant
 class debug(BuildContext):
