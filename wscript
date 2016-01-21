@@ -37,30 +37,19 @@ def configure(conf):
     # * 'double': promote default reals to double precision
 
     # Load the compiler informations
-    conf.setenv('default')
     conf.load('waf_unit_test')
-    conf.add_os_flags('DEFINES', dup=False)
 
     conf.setenv('cenv',conf.env)
     conf.load('compiler_c')
 
-    conf.setenv('default')
-    conf.setenv('fortenv',conf.env)
+    conf.setenv('')
     conf.env.DEST_OS = conf.all_envs['cenv'].DEST_OS
     conf.load('compiler_fc')
-    # Deactivate dynamic linking flags for Cray
-    if conf.env.FC[0] == 'ftn':
-      conf.env['FCSHLIB_MARKER'] = ''
     conf.check_fortran()
 
     subconf(conf)
 
-    conf.setenv('cenv')
-    conf.setenv('cenv_debug',conf.env)
-
-    conf.setenv('fortenv')
-
-    if conf.env.FC_NAME=='IFORT' and conf.env.DEST_OS=='win32':
+    if getattr(conf.env, 'IFORT_WIN32', False):
       fcname = 'IFORTwin'
     else:
       fcname = conf.env.FC_NAME
@@ -72,7 +61,7 @@ def configure(conf):
 
     # Set flags for the debugging variant
     # DEBUG Variant
-    conf.setenv('fortenv_debug',conf.env)
+    conf.setenv('debug',conf.env)
     conf.env['FCFLAGS'] = ( fcopts[fcname, 'standard']
                           + fcopts[fcname, 'warn']
                           + fcopts[fcname, 'w2e']
@@ -120,7 +109,7 @@ def subconf(conf):
     # Only required to build the Lua interpreter
     conf.check_cc(lib='m', uselib_store='MATH', mandatory=False)
 
-    conf.setenv('fortenv')
+    conf.setenv('')
 
     conf.check_fc(fragment = '''
        program check_iso_c
@@ -134,7 +123,7 @@ def subconf(conf):
     tmpenv = conf.env.derive()
     tmpenv.detach()
 
-    conf.in_msg = 1
+    conf.start_msg('Checking for Quadruple precision')
     conf.check_fc(fragment = '''
        program checkquad
          implicit none
@@ -152,11 +141,11 @@ def subconf(conf):
        if conf.env['quad_k'] < 1:
           tmpenv['quad_support'] = False
     if tmpenv['quad_support']:
-       conf.msg('Checking for Quadruple Precision', 'yes', color='GREEN')
+       conf.end_msg('yes', color='GREEN')
     else:
-       conf.msg('Checking for Quadruple Precision', 'NO', color='RED')
+       conf.end_msg('NO', color='RED')
 
-    conf.in_msg = 1
+    conf.start_msg('Checking for extended double precision')
     conf.check_fc(fragment = '''
        program checkxdble
          implicit none
@@ -175,9 +164,9 @@ def subconf(conf):
           tmpenv['xdble_support'] = True
 
     if tmpenv['xdble_support']:
-       conf.msg('Checking for Extended Double Precision', 'yes', color='GREEN')
+       conf.end_msg('yes', color='GREEN')
     else:
-       conf.msg('Checking for Extended Double Precision', 'NO', color='RED')
+       conf.end_msg('NO', color='RED')
 
     conf.env = tmpenv
 
@@ -185,13 +174,6 @@ def subconf(conf):
 def build(bld):
     if bld.options.cmdsequence:
         import waflib.extras.command_sequence
-
-    if bld.variant == '':
-      cenv = 'cenv'
-      fortenv = 'fortenv'
-    else:
-      cenv = 'cenv_'+bld.variant
-      fortenv = 'fortenv_'+bld.variant
 
     core_sources = ['external/lua-5.3.2/src/lapi.c',
                     'external/lua-5.3.2/src/lcode.c',
@@ -250,8 +232,6 @@ def build(bld):
                      'source/aot_vector_module.f90']
 
     # C parts
-    bld.env = bld.all_envs[cenv]
-
     bld(
         features = 'c',
         source = core_sources + lib_sources,
@@ -281,8 +261,6 @@ def build(bld):
 
 
     # Fortran parts
-    bld.env = bld.all_envs[fortenv]
-
     if bld.env['quad_support']:
         aotus_sources += ['source/quadruple/aot_quadruple_fun_module.f90']
         aotus_sources += ['source/quadruple/aot_quadruple_table_module.f90']
@@ -353,6 +331,26 @@ def build(bld):
 
 
 from waflib.Build import BuildContext
+from waflib import Utils, TaskGen
+
+# Modify Fortran tasks to not contain SHLIB and STLIB markers if not
+# explicitly requested.
+@TaskGen.feature('fcprogram', 'fcshlib', 'fcstlib')
+@TaskGen.before_method('process_use')
+@TaskGen.after_method('apply_link')
+def kill_marker_flags(self):
+  if not self.env.SHLIB and not self.env.SHLIBPATH:
+    self.env.SHLIB_MARKER = []
+  if not self.env.STLIB and not self.env.STLIBPATH:
+    self.env.STLIB_MARKER = []
+
+# Modifiy C tasks to use a dedicated C environment.
+@TaskGen.feature('c', 'cstlib', 'cprogram')
+@TaskGen.before('process_rule')
+def enter_cenv(self):
+  self.env = self.bld.all_envs['cenv'].derive()
+
+# A class to describe the debug variant
 class debug(BuildContext):
     "Build a debug executable"
     cmd = 'debug'
