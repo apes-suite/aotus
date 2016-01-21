@@ -139,3 +139,101 @@ fcopts['NEC', 'freeform'] = []
 
 ### End of set of Fortran flags
 #########################################################################
+
+# Helpers to manage the flags:
+def options(opt):
+    opt.load('compiler_fc')
+    fcopts = opt.add_option_group('Fortran Compiler specific settings')
+    fcopts.add_option('--fc_addflags', action='store',
+                      help='Additional Fortran compiler flags to use.')
+
+    fcopts.add_option('--fc_delflags', action='store',
+                      help='Fortran compiler flags to remove.')
+
+    fcopts.add_option('--bench', action='store_true', default=False,
+                      help='Set this flag to use the explicit compiler given in bench_compiler.py')
+
+
+def configure(conf):
+    from waflib import Logs
+    if not hasattr(conf.options, 'bench'):
+       Logs.error("Error: use opt.load('fortran_compiler') in your options!")
+    if not conf.options.bench:
+      conf.load('compiler_fc')
+
+    else:
+      print('loading bench compiler')
+      from bench_compiler import set_bench_f_compiler
+      set_bench_f_compiler(conf)
+      conf.load('fc')
+
+
+def set_fc_flags(conf, flagset, osflags=None):
+    ''' Define a set of flags to use for Fortran compilations.
+        The flagset has to be an array of strings indicating the
+        set of options to pick from the fcopts table.
+    '''
+    myflags = osflags or []
+    if getattr(conf.env, 'IFORT_WIN32', False):
+      fcname = 'IFORTwin'
+    else:
+      fcname = conf.env.FC_NAME
+
+    # Flag sets to add from the fcopts table.
+    for fs in flagset:
+        myflags += fcopts[fcname, fs]
+        # Add the sanitize option to the debug flags for gfortran >= 4.8
+        if (fs == 'debug') and (fcname == 'GFORTRAN'):
+            if ( (int(conf.env.FC_VERSION[0]) == 4)
+                 and (int(conf.env.FC_VERSION[1]) >= 8) ):
+                myflags += ['-fsanitize=address']
+
+
+    # Additional flags to set due to the fc_addflags option.
+    if conf.options.fc_addflags:
+        myflags += conf.options.fc_addflags.split(' ')
+
+    # Flags to filter out according to the fc_delflags option.
+    if conf.options.fc_delflags:
+        delflags = conf.options.fc_delflags.split(' ')
+    else:
+        delflags = []
+
+    # Now set the FCFLAGS in the environment accordingly.
+    conf.env.FCFLAGS = []
+    for flag in myflags:
+        if not flag in delflags:
+            conf.env.append_value('FCFLAGS', [flag])
+    conf.env.LINKFLAGS = conf.env.FCFLAGS
+
+from waflib import TaskGen
+
+@TaskGen.feature('fc')
+@TaskGen.after_method('apply_link')
+def addremove_fc_flags(self):
+  if hasattr(self, 'bld'):
+    if hasattr(self.bld, 'options'):
+      if self.bld.options.fc_addflags:
+        for flag in self.bld.options.fc_addflags.split(' '):
+          self.env.append_unique('FCFLAGS', [flag])
+      if self.bld.options.fc_delflags:
+        for flag in self.bld.options.fc_delflags.split(' '):
+          try:
+            self.env.FCFLAGS.remove(flag)
+          except ValueError:
+            pass
+
+@TaskGen.feature('fcprogram', 'fcshlib', 'fcstlib')
+@TaskGen.after_method('apply_link')
+def addremove_fclink_flags(self):
+  if hasattr(self, 'bld'):
+    if hasattr(self.bld, 'options'):
+      if self.bld.options.fc_addflags:
+        for flag in self.bld.options.fc_addflags.split(' '):
+          self.env.append_unique('LINKFLAGS', [flag])
+      if self.bld.options.fc_delflags:
+        for flag in self.bld.options.fc_delflags.split(' '):
+          try:
+            self.env.LINKFLAGS.remove(flag)
+          except ValueError:
+            pass

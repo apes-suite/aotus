@@ -10,8 +10,7 @@ top = '.'
 out = 'build'
 
 def options(opt):
-    from waflib.Tools.compiler_fc import fc_compiler
-    opt.load('compiler_fc')
+    opt.load('fortran_compiler')
     opt.load('compiler_c')
     opt.load('waf_unit_test')
     opt.load('utest_results')
@@ -20,22 +19,6 @@ def options(opt):
                    dest='cmdsequence')
 
 def configure(conf):
-    from waflib import Logs
-
-    # The fcopts provide some sane flag combinations
-    # for different variants in the various compilers.
-    # They are found in the fc_flags.py in the same
-    # directory as the wscript file.
-    from fc_flags import fcopts
-    # includes options for:
-    # * 'warn': activate compile time warnings
-    # * 'w2e': turn warnings into errors
-    # * 'standard': check for standard compliance
-    # * 'debug': activate debugging facilities
-    # * 'optimize': turn optimization on
-    # * 'profile': activate profiling facilities
-    # * 'double': promote default reals to double precision
-
     conf.load('waf_unit_test')
 
     # Load the C compiler information
@@ -46,30 +29,21 @@ def configure(conf):
     # Load the Fortran compiler information
     conf.setenv('')
     conf.env.DEST_OS = conf.all_envs['cenv'].DEST_OS
-    conf.load('compiler_fc')
+    conf.load('fortran_compiler')
     conf.check_fortran()
 
     subconf(conf)
 
-    if getattr(conf.env, 'IFORT_WIN32', False):
-      fcname = 'IFORTwin'
-    else:
-      fcname = conf.env.FC_NAME
+    from fortran_compiler import set_fc_flags
+    osfcflags = conf.env.FCFLAGS
 
     # Flags for the default (production) variant
-    conf.env['FCFLAGS'] = ( fcopts[fcname, 'optimize']
-                          + fcopts[fcname, 'warn'] )
-    conf.env['LINKFLAGS_fcprogram'] = conf.env['FCFLAGS']
+    set_fc_flags(conf, ['optimize', 'warn'], osfcflags)
 
-    # Set flags for the debugging variant
-    # DEBUG Variant
+    # Set flags for the debug variant
     conf.setenv('debug',conf.env)
-    conf.env['FCFLAGS'] = ( fcopts[fcname, 'standard']
-                          + fcopts[fcname, 'warn']
-                          + fcopts[fcname, 'w2e']
-                          + fcopts[fcname, 'debug'] )
-    conf.env['LINKFLAGS_fcprogram'] = conf.env['FCFLAGS']
-
+    set_fc_flags(conf, ['standard', 'warn', 'w2e', 'debug'],
+                 osfcflags)
 
 def subconf(conf):
     """
@@ -332,7 +306,7 @@ def build(bld):
 
 
 from waflib.Build import BuildContext
-from waflib import Utils, TaskGen
+from waflib import TaskGen
 
 # Modify Fortran tasks to not contain SHLIB and STLIB markers if not
 # explicitly requested.
