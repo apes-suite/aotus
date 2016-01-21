@@ -339,10 +339,10 @@ from waflib import Utils, TaskGen
 @TaskGen.before_method('process_use')
 @TaskGen.after_method('apply_link')
 def kill_marker_flags(self):
-  if not self.env.SHLIB and not self.env.SHLIBPATH:
-    self.env.SHLIB_MARKER = []
+  if not self.env.LIB and not self.env.LIBPATH:
+    self.env.FCSHLIB_MARKER = []
   if not self.env.STLIB and not self.env.STLIBPATH:
-    self.env.STLIB_MARKER = []
+    self.env.FCSTLIB_MARKER = []
 
 # Modifiy C tasks to use a dedicated C environment.
 @TaskGen.feature('c', 'cstlib', 'cprogram')
