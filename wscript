@@ -75,10 +75,14 @@ def subconf(conf):
                   define_name='SRANDOM',
                   mandatory=False)
 
-    if conf.is_defined('POPEN') and conf.is_defined('MKSTEMP') and conf.is_defined('SRANDOM'):
+    if ( conf.is_defined('POPEN') and
+         conf.is_defined('MKSTEMP') and
+         conf.is_defined('SRANDOM') ):
+
       conf.env = tmpenv
       conf.all_envs['cenv'].DEFINES_LUA_POSIX = ['LUA_USE_POSIX']
       conf.end_msg('yes')
+
     else:
       conf.env = tmpenv
       conf.end_msg('NO')
@@ -88,62 +92,14 @@ def subconf(conf):
 
     conf.setenv('')
 
-    conf.check_fc(fragment = '''
-       program check_iso_c
-         use, intrinsic :: iso_c_binding
-         implicit none
-         write(*,*) c_int
-       end program check_iso_c''',
-                  msg = "Checking for ISO_C_Binding support",
-                  mandatory = 'true')
+    import fortran_language
 
-    tmpenv = conf.env.derive()
-    tmpenv.detach()
+    # Check for ISO_C_Binding support
+    fortran_language.supports_iso_c(conf)
 
-    conf.start_msg('Checking for Quadruple precision')
-    conf.check_fc(fragment = '''
-       program checkquad
-         implicit none
-         integer, parameter :: quad_k = selected_real_kind(33)
-         real(kind=quad_k) :: a_quad_real
-         write(*,*) quad_k
-       end program checkquad''',
-                  mandatory=False, define_name='quadruple',
-                  execute = True, define_ret = True)
-
-    tmpenv['quad_support'] = conf.is_defined('quadruple')
-    if tmpenv['quad_support']:
-       conf.env['quad_k'] = int(conf.get_define('quadruple').replace('"', '').strip())
-       if conf.env['quad_k'] < 1:
-          tmpenv['quad_support'] = False
-    if tmpenv['quad_support']:
-       conf.end_msg('yes', color='GREEN')
-    else:
-       conf.end_msg('NO', color='RED')
-
-    conf.start_msg('Checking for extended double precision')
-    conf.check_fc(fragment = '''
-       program checkxdble
-         implicit none
-         integer, parameter :: xdble_k = selected_real_kind(18)
-         real(kind=xdble_k) :: a_xdble_real
-         write(*,*) xdble_k
-       end program checkxdble''',
-                  mandatory=False, define_name='extdouble',
-                  execute = True, define_ret = True)
-
-    tmpenv['xdble_support'] = False
-    if conf.is_defined('extdouble'):
-       conf.env['xdble_k'] = int(conf.get_define('extdouble').replace('"', '').strip())
-       if conf.env['xdble_k'] > 0 and conf.env['xdble_k'] != conf.env['quad_k']:
-          tmpenv['xdble_support'] = True
-
-    if tmpenv['xdble_support']:
-       conf.end_msg('yes', color='GREEN')
-    else:
-       conf.end_msg('NO', color='RED')
-
-    conf.env = tmpenv
+    # Check for higher precision real kinds:
+    fortran_language.supports_quad_kind(conf = conf, mandatory = False)
+    fortran_language.supports_xdble_kind(conf = conf, mandatory = False)
 
 
 def build(bld):
@@ -236,7 +192,7 @@ def build(bld):
 
 
     # Fortran parts
-    if bld.env['quad_support']:
+    if bld.env['fortsupp_quad_kind'] > 0:
         aotus_sources += ['source/quadruple/aot_quadruple_fun_module.f90']
         aotus_sources += ['source/quadruple/aot_quadruple_table_module.f90']
         aotus_sources += ['source/quadruple/aot_quadruple_top_module.f90']
@@ -249,7 +205,7 @@ def build(bld):
         aotus_sources += ['source/quadruple/dummy_quadruple_out_module.f90']
         aotus_sources += ['source/quadruple/dummy_quadruple_vector_module.f90']
 
-    if bld.env['xdble_support']:
+    if bld.env['fortsupp_xdble_kind'] > 0:
         aotus_sources += ['source/extdouble/aot_extdouble_fun_module.f90']
         aotus_sources += ['source/extdouble/aot_extdouble_table_module.f90']
         aotus_sources += ['source/extdouble/aot_extdouble_top_module.f90']
@@ -292,7 +248,7 @@ def build(bld):
 
     from waflib.extras import utest_results
     utest_results.utests(bld, 'aotus')
-    if bld.env['quad_support']:
+    if bld.env['fortsupp_quad_kind'] > 0:
         utest_results.utests(bld, use = 'aotus', path = 'utests/quadruple')
     bld.add_post_fun(utest_results.summary)
 
