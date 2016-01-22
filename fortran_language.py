@@ -21,7 +21,7 @@ def supports_iso_c(conf, mandatory=True):
      Result stored in conf.env.fortsupp_iso_c
   '''
 
-  fcenv = conf.env
+  fcenv = conf.env.derive()
   fcenv.detach()
 
   conf.check_fc( fragment = '''
@@ -54,7 +54,7 @@ def supports_ieee_is_NaN(conf, mandatory=True):
   '''
      Check for IEEE isNaN support.
   '''
-  fcenv = conf.env
+  fcenv = conf.env.derive()
   fcenv.detach()
 
   conf.check_fc( fragment = '''
@@ -75,7 +75,7 @@ def supports_vendor_is_NaN(conf, mandatory=True):
   '''
      Check for vendor specific isNaN support.
   '''
-  fcenv = conf.env
+  fcenv = conf.env.derive()
   fcenv.detach()
 
   isNaN_name = 'isNaN'
@@ -101,7 +101,7 @@ def supports_f2008_gamma(conf, mandatory=True):
      Check for F2008 gamma function support.
   '''
 
-  fcenv = conf.env
+  fcenv = conf.env.derive()
   fcenv.detach()
 
   conf.check_fc(fragment = '''
@@ -122,7 +122,7 @@ def supports_f2008_bessel(conf, mandatory=True):
      Check for F2008 bessel function support.
   '''
 
-  fcenv = conf.env
+  fcenv = conf.env.derive()
   fcenv.detach()
 
   conf.check_fc(fragment = '''
@@ -167,7 +167,7 @@ def supports_quad_kind(conf, mandatory=True):
 
   conf.start_msg('Checking for Quadruple precision')
 
-  fcenv = conf.env
+  fcenv = conf.env.derive()
   fcenv.detach()
 
   if conf.options.quad_kind:
@@ -214,7 +214,7 @@ def supports_xdble_kind(conf, mandatory=True):
 
   conf.start_msg('Checking for Extended double precision')
 
-  fcenv = conf.env
+  fcenv = conf.env.derive()
   fcenv.detach()
 
   if conf.options.xdble_kind:
