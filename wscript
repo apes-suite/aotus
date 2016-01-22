@@ -30,6 +30,7 @@ def configure(conf):
     # Load the Fortran compiler information
     conf.setenv('')
     conf.env.DEST_OS = conf.all_envs['cenv'].DEST_OS
+    conf.env.CC_NAME = conf.all_envs['cenv'].CC_NAME
     conf.load('fortran_compiler')
     conf.check_fortran()
 

@@ -204,7 +204,8 @@ def set_fc_flags(conf, flagset, osflags=None):
     for flag in myflags:
         if not flag in delflags:
             conf.env.append_value('FCFLAGS', [flag])
-    conf.env.LINKFLAGS = conf.env.FCFLAGS
+    if getattr(conf.env, 'LINK_FC', conf.env.FC) == conf.env.FC:
+        conf.env.LINKFLAGS = conf.env.FCFLAGS
 
 from waflib import TaskGen
 
