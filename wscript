@@ -281,7 +281,7 @@ def kill_marker_flags(self):
     self.env.FCSTLIB_MARKER = []
 
 # Modifiy C tasks to use a dedicated C environment.
-@TaskGen.feature('c', 'cstlib', 'cprogram')
+@TaskGen.feature('c', 'cstlib', 'cprogram', 'cxx')
 @TaskGen.before('process_rule')
 def enter_cenv(self):
   if self.bld.variant == '':
