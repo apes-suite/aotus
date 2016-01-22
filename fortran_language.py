@@ -8,6 +8,9 @@ def options(opt):
                       help='Kind for quadruple precision reals')
     flopts.add_option('--xdble_kind', action='store',
                       help='Kind for extended double precision reals')
+    flopts.add_option('--fortran_isNaN', action='store',
+                      help='Function name to use for vendor specific isNaN checking.')
+
 
 def supports_iso_c(conf, mandatory=True):
   '''
@@ -33,6 +36,115 @@ end program check_iso_c''',
 
   fcenv['fortsupp_iso_c'] = conf.is_defined('iso_c_binding')
   conf.env = fcenv
+
+
+################
+# isNaN support:
+################
+isNaN_vendor_stub = '''
+program check_isnan
+  implicit none
+  real :: a_real
+  logical :: noNumber
+  noNumber = {0}(a_real)
+end program check_isnan
+'''
+
+def supports_ieee_is_NaN(conf, mandatory=True):
+  '''
+     Check for IEEE isNaN support.
+  '''
+  fcenv = conf.env
+  fcenv.detach()
+
+  conf.check_fc( fragment = '''
+program check_isnan
+  use, intrinsic :: ieee_arithmetic
+  implicit none
+  real :: a_real
+  logical :: noNumber
+  noNumber = ieee_is_NaN(a_real)
+end program check_isnan''',
+                 msg = 'Checking for IEEE_is_NaN',
+                 mandatory = mandatory, define_name='isNaN')
+  fcenv['fortsupp_ieee_is_NaN'] = conf.is_defined('isNaN')
+
+  conf.env = fcenv
+
+def supports_vendor_is_NaN(conf, mandatory=True):
+  '''
+     Check for vendor specific isNaN support.
+  '''
+  fcenv = conf.env
+  fcenv.detach()
+
+  isNaN_name = 'isNaN'
+  if conf.options.fortran_isNaN:
+    isNaN_name = conf.options.fortran_isNaN
+  conf.check_fc(fragment = isNaN_vendor_stub.format(isNaN_name),
+                msg = 'Checking for vendor specific isNaN',
+                mandatory = mandatory, define_name='isNaN')
+  if conf.is_defined('isNaN'):
+    fcenv['fortsupp_vendor_is_NaN'] = isNaN_name
+  else:
+    fcenv['fortsupp_vendor_is_NaN'] = None
+
+  conf.env = fcenv
+
+
+##########################
+# F2008 special functions:
+##########################
+
+def supports_f2008_gamma(conf, mandatory=True):
+  '''
+     Check for F2008 gamma function support.
+  '''
+
+  fcenv = conf.env
+  fcenv.detach()
+
+  conf.check_fc(fragment = '''
+program check_gamma
+  implicit none
+  real :: a_real
+  real :: res
+  read(*,*) a_real
+  res = gamma(a_real)
+end program check_gamma''',
+                  msg = 'Checking for F2008 Gamma function',
+                  mandatory = mandatory, define_name='has_f2008_gamma')
+  fcenv['fortsupp_f2008_gamma'] = conf.is_defined('has_f2008_gamma')
+  conf.env = fcenv
+
+def supports_f2008_bessel(conf, mandatory=True):
+  '''
+     Check for F2008 bessel function support.
+  '''
+
+  fcenv = conf.env
+  fcenv.detach()
+
+  conf.check_fc(fragment = '''
+program check_bessel
+  implicit none
+  real :: a_real
+  real :: res
+  integer :: an_int
+  read(*,*) an_int
+  read(*,*) a_real
+  res = bessel_jn(an_int, a_real)
+end program check_bessel''',
+                msg = 'Checking for F2008 Bessel_jn function',
+                mandatory = mandatory, define_name = 'has_f2008_bessel')
+  fcenv['fortsupp_f2008_bessel'] = conf.is_defined('has_f2008_bessel')
+
+  conf.env = fcenv
+    
+
+#############
+# Real kinds:
+#############
 
 real_kind_stub = '''
 program check_r_kind
