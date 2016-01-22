@@ -11,6 +11,7 @@ out = 'build'
 
 def options(opt):
     opt.load('fortran_compiler')
+    opt.load('fortran_language')
     opt.load('compiler_c')
     opt.load('waf_unit_test')
     opt.load('utest_results')
