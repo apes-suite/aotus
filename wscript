@@ -20,20 +20,9 @@ def options(opt):
                    dest='cmdsequence')
 
 def configure(conf):
-    conf.load('waf_unit_test')
 
-    # Load the C compiler information
-    conf.setenv('cenv',conf.env)
-    conf.load('compiler_c')
-    conf.setenv('cenv_debug',conf.env)
-
-    # Load the Fortran compiler information
-    conf.setenv('')
-    conf.env.DEST_OS = conf.all_envs['cenv'].DEST_OS
-    conf.env.CC_NAME = conf.all_envs['cenv'].CC_NAME
-    conf.load('fortran_compiler')
-    conf.check_fortran()
-
+    # Use a function for the first part to make it callable
+    # from parent projects without setting the flags.
     subconf(conf)
 
     from fortran_compiler import set_fc_flags
@@ -54,6 +43,20 @@ def subconf(conf):
     Useful to restrict parent recursions to just this part
     of the configuration.
     """
+
+    conf.load('waf_unit_test')
+
+    # Load the C compiler information
+    conf.setenv('cenv',conf.env)
+    conf.load('compiler_c')
+    conf.setenv('cenv_debug',conf.env)
+
+    # Load the Fortran compiler information
+    conf.setenv('')
+    conf.env.DEST_OS = conf.all_envs['cenv'].DEST_OS
+    conf.env.CC_NAME = conf.all_envs['cenv'].CC_NAME
+    conf.load('fortran_compiler')
+    conf.check_fortran()
 
     conf.setenv('cenv')
 

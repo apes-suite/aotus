@@ -92,6 +92,49 @@ def supports_vendor_is_NaN(conf, mandatory=True):
   conf.env = fcenv
 
 
+def supports_c_sizeof(conf, mandatory=True):
+  '''
+     Check for F2008 c_sizeof support.
+  '''
+  fcenv = conf.env.derive()
+  fcenv.detach()
+
+  conf.check_fc( fragment = '''
+program check_c_sizeof
+  use, intrinsic :: iso_c_binding, only: c_sizeof, c_float
+  implicit none
+  real(kind=c_float) :: a_real
+  integer :: realsize
+  realsize = c_sizeof(a_real)
+end program check_c_sizeof
+''',
+                 msg = 'Checking for F2008 c_sizeof support',
+                 mandatory = mandatory, define_name='c_sizeof')
+  fcenv['fortsupp_c_sizeof'] = conf.is_defined('c_sizeof')
+
+  conf.env = fcenv
+
+def supports_vendor_sizeof(conf, mandatory=True):
+  '''
+     Check for vendor sizeof support.
+  '''
+  fcenv = conf.env.derive()
+  fcenv.detach()
+
+  conf.check_fc( fragment = '''
+program check_vendor_sizeof
+  implicit none
+  real :: a_real
+  integer :: realsize
+  realsize = sizeof(a_real)
+end program check_vendor_sizeof
+''',
+                 msg = 'Checking for vendor sizeof support',
+                 mandatory = mandatory, define_name='vendor_sizeof')
+  fcenv['fortsupp_vendor_sizeof'] = conf.is_defined('vendor_sizeof')
+
+  conf.env = fcenv
+
 ##########################
 # F2008 special functions:
 ##########################
