@@ -32,7 +32,7 @@ Aotus provides several layers, encapsulating the bare Lua C-API:
  * [[aotus_module]]: provides the high end level to easily retrieve data from a
    Lua script
 
-On top of those there is an additional [aot_vector_module] that allows the
+On top of those there is an additional [[aot_vector_module]] that allows the
 direct reading of values into arrays of rank 1.
 
 Finally, there is an additional module which allows [output](Output.html) of
