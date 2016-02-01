@@ -39,6 +39,7 @@ module flu_binding
 
   public :: flu_State
   public :: cbuf_type
+  public :: lua_Function
 
   public :: flu_close, flu_isopen
   public :: flu_createTable
@@ -56,7 +57,7 @@ module flu_binding
   public :: flu_tolstring, flu_tonumber, flu_toboolean, flu_touserdata
   public :: flu_pop
   public :: flu_pushinteger, flu_pushnil, flu_pushnumber, flu_pushboolean
-  public :: flu_pushstring, flu_pushvalue, flu_pushlightuserdata
+  public :: flu_pushstring, flu_pushvalue, flu_pushlightuserdata, flu_pushcclosure
 
   public :: flu_copyptr
   public :: flu_register
@@ -66,6 +67,8 @@ module flu_binding
 
   public :: fluL_loadfile, fluL_newstate, fluL_openlibs, fluL_loadstring
   public :: fluL_loadbuffer
+
+  public :: fluL_newmetatable, fluL_setmetatable, flu_getmetatable
 
   interface flu_pushnumber
     module procedure flu_pushreal
@@ -564,6 +567,18 @@ contains
 
   end subroutine flu_register
 
+  function flu_getmetatable(L, index) result(errcode)
+    type(flu_State) :: L
+    integer :: index, errcode
+
+    integer(c_int) :: c_index, c_errcode
+
+    c_index = index
+    c_errcode = lua_getmetatable(L%state, c_index)
+    errcode = c_errcode
+
+  end function flu_getmetatable
+
   ! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !
   ! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !
 
@@ -642,6 +657,30 @@ contains
       L%opened_libs = .true.
     end if
   end subroutine fluL_openlibs
+
+  subroutine fluL_setmetatable(L, tname)
+    type(flu_State) :: L
+    character(len=*) :: tname
+
+    character(len=len_trim(tname) + 1) :: c_name
+
+    c_name = trim(tname) // c_null_char
+    call luaL_setmetatable(L%state, c_name)
+  end subroutine fluL_setmetatable
+
+
+  function fluL_newmetatable(L, tname) result(errcode)
+    type(flu_State) :: L
+    character(len=*) :: tname
+    integer :: errcode
+
+    character(len=len_trim(tname)+1) :: c_name
+    integer(kind=c_int) :: c_errcode
+
+    c_name = trim(tname) // c_null_char
+    c_errcode = luaL_newmetatable(L%state, c_name)
+    errcode = c_errcode
+  end function fluL_newmetatable
 
   ! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !
   ! Routines for using existing Lua states with 
