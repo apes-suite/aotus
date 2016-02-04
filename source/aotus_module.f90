@@ -10,7 +10,7 @@
 !! a generic interface that allows access to scalars and vectors in global Lua
 !! variables as well as nested tables.
 !!
-!! In the [Overview](index.html) there are some more general remarks and further
+!! In the [Overview](|page|/index.html) there are some more general remarks and further
 !! pointers.
 module aotus_module
   use flu_binding
