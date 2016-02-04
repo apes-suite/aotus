@@ -49,7 +49,6 @@ def subconf(conf):
     # Load the C compiler information
     conf.setenv('cenv',conf.env)
     conf.load('compiler_c')
-    conf.setenv('cenv_debug',conf.env)
 
     # Load the Fortran compiler information
     conf.setenv('')
@@ -95,6 +94,7 @@ def subconf(conf):
     # Only required to build the Lua interpreter
     conf.check_cc(lib='m', uselib_store='MATH', mandatory=False)
 
+    conf.setenv('cenv_debug',conf.env)
     conf.setenv('')
 
     import fortran_language
@@ -188,7 +188,7 @@ def build(bld):
 
     ## Building the lua interpreter (usually not needed).
     ## Only built if libm available.
-    if 'LIB_MATH' in bld.env:
+    if 'LIB_MATH' in bld.all_envs['cenv']:
       bld(
           features = 'c cprogram',
           use = ['lualib', 'MATH'],
