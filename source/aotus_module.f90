@@ -119,7 +119,7 @@ contains
 
     !> Obtained error description from the Lua stack.
     !!
-    !! This optional argument holds the Lua error message in case somehting
+    !! This optional argument holds the Lua error message in case something
     !! went wrong. It can be used to provide some feedback to the user in the
     !! calling routine. If neither ErrCode nor ErrString are provided,
     !! open_config() will print the error message and stop program execution.

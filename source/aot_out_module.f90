@@ -16,7 +16,7 @@ module aot_out_module
   use aot_kinds_module, only: double_k, single_k, long_k
   use aot_out_general_module, only: aot_out_type, aot_out_open, aot_out_close, &
     &                               aot_out_open_table, aot_out_close_table, &
-    &                               aot_out_breakline
+    &                               aot_out_breakline, aot_out_toChunk
 
   ! Include interfaces for quadruple precision if available.
   use aot_quadruple_out_module
@@ -32,6 +32,7 @@ module aot_out_module
   public :: aot_out_close
   public :: aot_out_open_table
   public :: aot_out_close_table
+  public :: aot_out_toChunk
 
   !> Put Fortran intrinsic types into the script.
   !!

@@ -16,6 +16,7 @@ module aot_out_general_module
   public :: aot_out_open_table
   public :: aot_out_close_table
   public :: aot_out_breakline
+  public :: aot_out_toChunk
 
   !> This type provides the internal representation of the opened Lua script.
   !!
@@ -215,8 +216,92 @@ contains
 ! **************************************************************************** !
 
 
+! **************************************************************************** !
+  !> This subroutine converts information written in outunit to string
+  subroutine aot_out_toChunk(out_conf, chunk, ErrCode, ErrString)
+    type(aot_out_type), intent(in)  :: out_conf
+
+    !> String with Lua code to load.
+    character(len=*), intent(out) :: chunk
+
+    !> Error code returned by Lua during loading or executing the file.
+    !!
+    !! This optional parameter might be used to react on errors in the calling
+    !! side. If neither ErrCode nor ErrString are given, this subroutine will
+    !! stop the program execution and print the error message 
+    integer, intent(out), optional :: ErrCode
+
+    !> Error description
+    !!
+    !! This optional argument holds the error message in case something
+    !! went wrong. It can be used to provide some feedback to the user in the
+    !! calling routine. If neither ErrCode nor ErrString are provided,
+    !! this subroutine will print the error message and stop program execution.
+    character(len=*), intent(out), optional :: ErrString
+
+    logical :: stop_on_error
+    integer :: error
+    integer :: chunk_len, chunk_left, read_len
+    character(len=320) :: err_string
+    logical :: unitOpened
+    integer :: read_stat
+    character(len=320) :: chunk_line
+
+    stop_on_error = .not.(present(ErrString) .or. present(ErrCode))
+    error = 0
+    err_string = ''
+
+    ! length of chunk
+    chunk_len = len(chunk)
+   
+    inquire(unit=out_conf%outunit, opened=unitOpened)
+    if (unitOpened) then
+      chunk = ''
+      chunk_left = chunk_len
+      rewind(out_conf%outunit)
+      do
+        read(out_conf%outunit,'(a)', iostat=read_stat) chunk_line
+        read_len = len(trim(chunk_line))
+        if (read_stat /= 0) then
+          if (read_stat > 0) then
+            error = read_stat
+            err_string = 'Error reading out conf unit'
+          end if
+          exit ! exit reading
+        end if  
+        if (chunk_left >= read_len) then
+          chunk_left = chunk_left - len(trim(chunk))
+          chunk =  trim(chunk)//new_line('x')//trim(chunk_line)
+        else
+          error = 2
+          err_string = 'Reached limit of output string length'
+          exit
+        end if
+      end do
+    else
+      error = 1
+      err_string = 'Output conf unit is not opened'
+    end if
+
+    if (present(ErrCode)) then
+      ErrCode = error
+    end if
+
+    if (present(ErrString)) then
+      ErrString = err_string
+    end if
+
+    if (error /= 0) then
+      if (stop_on_error) then
+        write(*,*) 'From aot_out_toChunk: '//trim(err_string)
+        STOP
+      end if
+    end if  
+  end subroutine aot_out_toChunk
+! **************************************************************************** !
 
 
+! **************************************************************************** !
   !> Helper function to provide new unit, as long as F2008 newunit argument
   !! in open statement is not commonly available.
   !!
@@ -235,6 +320,7 @@ contains
       inquire(unit=nu, opened=connected)
     end do
   end function newunit
+! **************************************************************************** !
 
 
 end module aot_out_general_module
