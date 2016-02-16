@@ -46,7 +46,7 @@ module flu_binding
   public :: flu_getField, flu_getGlobal, flu_getTable, flu_getTop
   public :: flu_setGlobal
   public :: flu_insert
-  public :: flu_isFunction, flu_isNumber, flu_isTable
+  public :: flu_isFunction, flu_isNumber, flu_isTable, flu_isString
   public :: flu_isNone, flu_isNoneOrNil, flu_isNil
   public :: flu_isBoolean, flu_islightuserdata
   public :: flu_pcall
@@ -219,6 +219,18 @@ contains
     c_index = int(index, kind = c_int)
     is_number = (lua_isnumber(L%state, c_index) .eq. 1)
   end function flu_isnumber
+
+
+  function flu_isString(L, index) result(is_string)
+    type(flu_State) :: L
+    integer         :: index
+    logical         :: is_string
+
+    integer(kind=c_int) :: c_index
+
+    c_index = int(index, kind = c_int)
+    is_string = (lua_isstring(L%state, c_index) .eq. 1)
+  end function flu_isString
 
 
   function flu_isTable(L, index) result(is_Table)

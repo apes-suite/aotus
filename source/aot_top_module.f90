@@ -303,12 +303,18 @@ contains
       ErrCode = ibSet(ErrCode, aoterr_NonExistent)
       not_retrievable = .true.
     else
-      cstring => flu_toLString(L, -1, StrLen)
-      StrLimit = min(StrLen, len(val))
-      val = ''
-      do i=1,StrLimit
-        val(i:i) = cstring(i)
-      end do
+      if (flu_isString(L, -1)) then
+        cstring => flu_toLString(L, -1, StrLen)
+        StrLimit = min(StrLen, len(val))
+        val = ''
+        do i=1,StrLimit
+          val(i:i) = cstring(i)
+        end do
+      else
+        ErrCode = ibSet(ErrCode, aoterr_WrongType)
+        ErrCode = ibSet(ErrCode, aoterr_Fatal)
+        not_retrievable = .true.
+      end if
     end if
 
     if (not_retrievable) then

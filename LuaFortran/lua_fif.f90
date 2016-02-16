@@ -60,6 +60,13 @@ module lua_fif
       integer(kind=c_int) :: lua_isnumber
     end function lua_isnumber
 
+    function lua_isString(L, index) bind(c, name="lua_isstring")
+      use, intrinsic :: iso_c_binding
+      type(c_ptr), value :: L
+      integer(kind=c_int), value :: index
+      integer(kind=c_int) :: lua_isString
+    end function lua_isString
+
     function lua_next(L, index) bind(c, name="lua_next")
       use, intrinsic :: iso_c_binding
       type(c_ptr), value :: L
