@@ -1,10 +1,12 @@
+!> A small program to test the usage of Lua references for functions.
 program aot_ref_test
   use flu_binding, only: flu_State, flu_topointer, flu_pop
 
   use aotus_module, only: open_config_file, close_config, aot_get_val, &
     &                     aot_top_get_val
   use aot_fun_module, only: aot_fun_type, aot_fun_top, aot_fun_do, &
-    &                       aot_fun_put, aot_fun_id
+    &                       aot_fun_put, aot_fun_id, aot_fun_open, &
+    &                       aot_fun_close
   use aot_references_module, only: aot_reference_for, aot_reference_to_top
   use aot_err_module, only: aoterr_Fatal, aoterr_NonExistent, aoterr_WrongType
   use aot_table_module, only: aot_table_open, aot_table_close
@@ -60,8 +62,7 @@ program aot_ref_test
   ! Recalling the function and executing it
   res = 0.0
   write(*,*) ' * Recalling the function in the reference and executing it'
-  call aot_reference_to_top(L = conf, ref = tabref)
-  luafun = aot_fun_top(L = conf)
+  call aot_fun_open(L = conf, fun=luafun, ref = tabref)
   write(*,*) '   : id: ', aot_fun_id(luafun)
   call aot_fun_put(L = conf, fun = luafun, arg = 2.0)
   call aot_fun_do(L = conf, fun = luafun, nresults = 1)
@@ -85,6 +86,7 @@ program aot_ref_test
     end if
   end if
 
+  call aot_fun_close(L = conf, fun=luafun)
 
   write(*,*) ' * close_conf'
   call close_config(conf)
