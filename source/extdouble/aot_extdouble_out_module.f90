@@ -8,7 +8,7 @@
 !! It takes care of indentation with nested tables, and provides a concise
 !! interface to output Fortran data into Lua tables.
 !! Therefore this module is somehow the counter-part to the reading functions,
-!! however it is almost completely independent and relies purely on Fortran
+!! however, it is almost completely independent and relies purely on Fortran
 !! output methods. Thus this module could stand alone, along with the
 !! aot_kinds_module without the Lua library.
 module aot_extdouble_out_module
@@ -41,7 +41,7 @@ contains
 
   !>  Put extdouble variables into the Lua script.
   !!
-  !! The value is passed in with path, optionally you can assign a name to it
+  !! The value is passed in with val, optionally you can assign a name to it
   !! with the vname argument. If it should be put on the same line as the
   !! previous entry, you have to set advance_previous=.false.
   subroutine aot_out_val_extdouble(put_conf, val, vname, advance_previous)

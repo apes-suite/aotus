@@ -71,7 +71,7 @@ contains
 !******************************************************************************!
   !>  Put integer variables into the Lua script.
   !!
-  !! The value is passed in with path, optionally you can assign a name to it
+  !! The value is passed in with val, optionally you can assign a name to it
   !! with the vname argument. If it should be put on the same line as the
   !! previous entry, you have to set advance_previous=.false.
   subroutine aot_out_val_int(put_conf, val, vname, advance_previous)
@@ -108,7 +108,7 @@ contains
 !******************************************************************************!
   !>  Put long variables into the Lua script.
   !!
-  !! The value is passed in with path, optionally you can assign a name to it
+  !! The value is passed in with val, optionally you can assign a name to it
   !! with the vname argument. If it should be put on the same line as the
   !! previous entry, you have to set advance_previous=.false.
   subroutine aot_out_val_long(put_conf, val, vname, advance_previous)
@@ -145,7 +145,7 @@ contains
 !******************************************************************************!
   !>  Put real variables into the Lua script.
   !!
-  !! The value is passed in with path, optionally you can assign a name to it
+  !! The value is passed in with val, optionally you can assign a name to it
   !! with the vname argument. If it should be put on the same line as the
   !! previous entry, you have to set advance_previous=.false.
   subroutine aot_out_val_real(put_conf, val, vname, advance_previous)
@@ -182,7 +182,7 @@ contains
 !******************************************************************************!
   !>  Put double variables into the Lua script.
   !!
-  !! The value is passed in with path, optionally you can assign a name to it
+  !! The value is passed in with val, optionally you can assign a name to it
   !! with the vname argument. If it should be put on the same line as the
   !! previous entry, you have to set advance_previous=.false.
   subroutine aot_out_val_double(put_conf, val, vname, advance_previous)
@@ -219,7 +219,7 @@ contains
 !******************************************************************************!
   !>  Put logical variables into the Lua script.
   !!
-  !! The value is passed in with path, optionally you can assign a name to it
+  !! The value is passed in with val, optionally you can assign a name to it
   !! with the vname argument. If it should be put on the same line as the
   !! previous entry, you have to set advance_previous=.false.
   subroutine aot_out_val_logical(put_conf, val, vname, advance_previous)
@@ -263,7 +263,7 @@ contains
 !******************************************************************************!
   !>  Put string variables into the Lua script.
   !!
-  !! The value is passed in with path, optionally you can assign a name to it
+  !! The value is passed in with val, optionally you can assign a name to it
   !! with the vname argument. If it should be put on the same line as the
   !! previous entry, you have to set advance_previous=.false.
   subroutine aot_out_val_string(put_conf, val, vname, advance_previous)

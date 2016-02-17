@@ -6,8 +6,10 @@
 !> The aot_path can be used to track the position of a Lua entity in nested
 !! tables.
 !!
-!! It is mainly useful to lookup a function reference again after closing and
-!! opening the script.
+!! @warning This is obsolete! Use [[aot_references_module]] instead.
+!!          Please note that this module might be removed in future versions
+!!          of Aotus.
+!!
 !! The idea is to initialize the path in the very beginning and then append a
 !! node whenever a table is opened. Thus you pass down the growing path object
 !! and store at in the level, to which you might need to return later.
