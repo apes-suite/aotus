@@ -138,6 +138,7 @@ contains
 
     if (fun%handle > 0) call flu_settop(L, fun%handle-1)
     fun%handle = 0
+    fun%id = 0
     fun%arg_count = 0
   end subroutine aot_fun_close
 
