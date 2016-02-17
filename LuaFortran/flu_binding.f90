@@ -16,6 +16,7 @@ module flu_binding
   use, intrinsic :: iso_c_binding
   use lua_fif
   use dump_lua_fif_module
+  use aot_kinds_module, only: long_k
 
   implicit none
 
@@ -50,11 +51,13 @@ module flu_binding
   public :: flu_isNone, flu_isNoneOrNil, flu_isNil
   public :: flu_isBoolean, flu_islightuserdata
   public :: flu_pcall
+  public :: flu_rawgeti
   public :: flu_next
   public :: flu_setTop
   public :: flu_setTable, flu_setField
   public :: flu_todouble
   public :: flu_tolstring, flu_tonumber, flu_toboolean, flu_touserdata
+  public :: flu_topointer
   public :: flu_pop
   public :: flu_pushinteger, flu_pushnil, flu_pushnumber, flu_pushboolean
   public :: flu_pushstring, flu_pushvalue, flu_pushlightuserdata, flu_pushcclosure
@@ -67,6 +70,7 @@ module flu_binding
 
   public :: fluL_loadfile, fluL_newstate, fluL_openlibs, fluL_loadstring
   public :: fluL_loadbuffer
+  public :: fluL_ref
 
   public :: fluL_newmetatable, fluL_setmetatable, flu_getmetatable
 
@@ -430,6 +434,23 @@ contains
   end subroutine flu_pushlightuserdata
 
 
+  function flu_rawgeti(L, index, n) result(luatype)
+    type(flu_State) :: L
+    integer, intent(in) :: index
+    integer, intent(in) :: n
+    integer :: luatype
+
+    integer(kind=c_int) :: c_index
+    integer(kind=c_int) :: c_n
+    integer(kind=c_int) :: res
+
+    c_index = int(index, kind=c_int)
+    c_n = int(n, kind=c_int)
+    res = lua_rawgeti(L%state, c_index, c_n)
+    luatype = int(res)
+  end function flu_rawgeti
+
+
   subroutine flu_settable(L, n)
     type(flu_State) :: L
     integer, intent(in) :: n
@@ -547,6 +568,21 @@ contains
     c_index = index
     ptr = lua_touserdata(L%state, c_index)
   end function flu_touserdata
+
+
+  function flu_topointer(L, index) result(intptr)
+    type(flu_State) :: L
+    integer :: index
+    integer(kind=long_k) :: intptr
+
+    integer(kind=c_intptr_t) :: ptr
+    integer(kind=c_int) :: c_index
+
+    c_index = index
+    ptr = lua_topointer(L%state, c_index)
+    intptr = int(ptr, kind=long_k)
+  end function flu_topointer
+
 
   subroutine flu_pushcclosure(L, fn, n)
     type(flu_State), value :: L 
@@ -693,6 +729,21 @@ contains
     c_errcode = luaL_newmetatable(L%state, c_name)
     errcode = c_errcode
   end function fluL_newmetatable
+
+
+  function fluL_ref(L, t) result(ref)
+    type(flu_State) :: L
+    integer :: t
+    integer :: ref
+
+    integer(kind=c_int) :: c_t
+    integer(kind=c_int) :: c_ref
+
+    c_t = int(t, kind=c_int)
+    c_ref = luaL_ref(L%state, c_t)
+    ref = int(c_ref)
+  end function fluL_ref
+
 
   ! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !
   ! Routines for using existing Lua states with 

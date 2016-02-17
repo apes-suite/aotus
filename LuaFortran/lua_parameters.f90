@@ -16,6 +16,10 @@ module lua_parameters
   integer, parameter :: lua_int = c_long
   integer, parameter :: lua_num = c_double
 
+  ! Lua config constants (see luaconf.h)
+  ! Attention: might need to be adapted!
+  integer(kind=c_int), parameter :: LUAI_MAXSTACK = 1000000
+
   ! Lua constants
   integer(kind=c_int), parameter :: LUA_TNONE = -1
   integer(kind=c_int), parameter :: LUA_TNIL = 0
@@ -23,5 +27,6 @@ module lua_parameters
   integer(kind=c_int), parameter :: LUA_TLIGHTUSERDATA = 2
   integer(kind=c_int), parameter :: LUA_TTABLE = 5
   integer(kind=c_int), parameter :: LUA_TFUNCTION = 6
+  integer(kind=c_int), parameter :: LUA_REGISTRYINDEX = -LUAI_MAXSTACK - 1000
 
 end module lua_parameters

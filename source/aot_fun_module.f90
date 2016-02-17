@@ -1,6 +1,6 @@
 ! Copyright (C) 2011-2013 German Research School for Simulation Sciences GmbH,
 !                         Aachen and others.
-!               2013-2014 University of Siegen
+!               2013-2016 University of Siegen
 ! Please see the COPYRIGHT file in this directory for details.
 
 !> This module provides access to Lua functions
@@ -35,6 +35,8 @@ module aot_fun_module
   private
 
   public :: aot_fun_type, aot_fun_open, aot_fun_close, aot_fun_put, aot_fun_do
+  public :: aot_fun_top
+  public :: aot_fun_id
 
   !> Open a Lua function for evaluation.
   !!
@@ -59,6 +61,7 @@ module aot_fun_module
     module procedure aot_fun_put_single
   end interface aot_fun_put
 
+
 contains
 
 
@@ -76,8 +79,9 @@ contains
     if (flu_isFunction(L, -1)) then
       ! Keep a handle to this function.
       fun%handle = flu_gettop(L)
+      fun%id = flu_topointer(L, -1)
       ! Push a copy of the function right after it, the function will
-      ! be popped from the stack upon execution. Thus this copy is
+      ! be popped from the stack upon execution. Thus, this copy is
       ! used to ensure the reference to the function is kept across
       ! several executions of the function.
       call flu_pushvalue(L, -1)
@@ -294,5 +298,20 @@ contains
       fun%arg_count = -1
     end if
   end subroutine aot_fun_do
+
+
+  !> A string identifying the function uniquely in the Lua script.
+  function aot_fun_id(fun) result(id)
+    !> Function to identify.
+    type(aot_fun_type), intent(in) :: fun
+
+    !> Identification of the function as a string.
+    character(len=32) :: id
+
+    character(len=32) :: tmp
+
+    write(tmp,'(i0)') fun%id
+    id = adjustl(tmp)
+  end function aot_fun_id
 
 end module aot_fun_module

@@ -124,6 +124,14 @@ module lua_fif
       integer(kind=c_int), value :: index
     end subroutine lua_pushvalue
 
+    function lua_rawgeti(L, index, n) bind(c, name="lua_rawgeti")
+      use, intrinsic :: iso_c_binding
+      type(c_ptr), value :: L
+      integer(kind=c_int), value :: index
+      integer(kind=c_int), value :: n
+      integer(kind=c_int) :: lua_rawgeti
+    end function lua_rawgeti
+
     subroutine lua_rotate(L, idx, n) bind(c, name="lua_rotate")
       use, intrinsic :: iso_c_binding
       type(c_ptr), value :: L
@@ -186,6 +194,13 @@ module lua_fif
       integer(kind=c_int), value :: index
       type(c_ptr) :: lua_touserdata
     end function lua_touserdata
+
+    function lua_topointer(L, index) bind(c, name="lua_topointer")
+      use, intrinsic :: iso_c_binding
+      type(c_ptr), value :: L
+      integer(kind=c_int), value :: index
+      integer(kind=c_intptr_t) :: lua_topointer
+    end function lua_topointer
 
     function lua_type(L, index) bind(c, name="lua_type")
       use, intrinsic :: iso_c_binding
@@ -272,6 +287,13 @@ module lua_fif
       character(kind=c_char), dimension(*) :: tname
       integer(kind=c_int) :: luaL_newmetatable
     end function luaL_newmetatable
+
+    function luaL_ref(L, t) bind(c, name="luaL_ref")
+      use, intrinsic :: iso_c_binding
+      type(c_ptr), value :: L
+      integer(kind=c_int), value :: t
+      integer(kind=c_int) :: luaL_ref
+    end function luaL_ref
 
   end interface
   ! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !

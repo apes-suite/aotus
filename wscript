@@ -165,6 +165,7 @@ def build(bld):
 		     'source/aot_out_module.f90',
 		     'source/aot_out_general_module.f90',
                      'source/aot_path_module.f90',
+                     'source/aot_references_module.f90',
                      'source/aot_vector_module.f90']
 
     # C parts
