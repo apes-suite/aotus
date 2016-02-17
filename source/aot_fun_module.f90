@@ -23,6 +23,7 @@ module aot_fun_module
   use aot_fun_declaration_module, only: aot_fun_type
   use aot_table_module, only: aot_table_push
   use aot_top_module, only: aot_err_handler
+  use aot_references_module, only: aot_reference_to_top
 
   ! Include quadruple precision interfaces if available
   use aot_quadruple_fun_module
@@ -48,6 +49,7 @@ module aot_fun_module
   interface aot_fun_open
     module procedure aot_fun_global
     module procedure aot_fun_table
+    module procedure aot_fun_ref
   end interface aot_fun_open
 
   !> Put an argument into the lua function.
@@ -127,6 +129,24 @@ contains
     call aot_table_push(L, parent, key, pos)
     fun = aot_fun_top(L)
   end subroutine aot_fun_table
+
+
+  !> Get a function from a reference.
+  !!
+  !! Use a previously (with [[aot_reference_for]]) defined reference to get a
+  !! function.
+  subroutine aot_fun_ref(L, fun, ref)
+    type(flu_state) :: L !! Handle for the Lua script.
+
+    !> Returned handle, providing access to the function.
+    type(aot_fun_type), intent(out) :: fun
+
+    !> Handle to the table to look in for the function.
+    integer, intent(in) :: ref
+
+    call aot_reference_to_top(L, ref)
+    fun = aot_fun_top(L)
+  end subroutine aot_fun_ref
 
 
   !> Close the function again (pop everything above from the stack).
