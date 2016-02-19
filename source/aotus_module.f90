@@ -39,7 +39,6 @@ module aotus_module
 
   ! Inherited from the flu_binding module, publish for convenience.
   public :: flu_State
-  public :: flu_isNumber
 
 contains
 
