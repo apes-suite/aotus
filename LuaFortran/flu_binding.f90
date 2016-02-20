@@ -15,6 +15,7 @@
 module flu_binding
   use, intrinsic :: iso_c_binding
   use lua_fif
+  use lua_parameters
   use dump_lua_fif_module
   use aot_kinds_module, only: long_k
 
@@ -38,6 +39,19 @@ module flu_binding
     character, pointer :: buffer(:) => NULL()
   end type cbuf_type
 
+
+  integer, parameter, public :: FLU_TNONE          = int(LUA_TNONE)
+  integer, parameter, public :: FLU_TNIL           = int(LUA_TNIL)
+  integer, parameter, public :: FLU_TBOOLEAN       = int(LUA_TBOOLEAN)
+  integer, parameter, public :: FLU_TLIGHTUSERDATA = int(LUA_TLIGHTUSERDATA)
+  integer, parameter, public :: FLU_TNUMBER        = int(LUA_TNUMBER)
+  integer, parameter, public :: FLU_TSTRING        = int(LUA_TSTRING)
+  integer, parameter, public :: FLU_TTABLE         = int(LUA_TTABLE)
+  integer, parameter, public :: FLU_TFUNCTION      = int(LUA_TFUNCTION)
+  integer, parameter, public :: FLU_TUSERDATA      = int(LUA_TUSERDATA)
+  integer, parameter, public :: FLU_TTHREAD        = int(LUA_TTHREAD)
+
+
   public :: flu_State
   public :: cbuf_type
   public :: lua_Function
@@ -60,7 +74,8 @@ module flu_binding
   public :: flu_topointer
   public :: flu_pop
   public :: flu_pushinteger, flu_pushnil, flu_pushnumber, flu_pushboolean
-  public :: flu_pushstring, flu_pushvalue, flu_pushlightuserdata, flu_pushcclosure
+  public :: flu_pushstring, flu_pushvalue, flu_pushlightuserdata
+  public :: flu_pushcclosure
 
   public :: flu_copyptr
   public :: flu_register
@@ -131,10 +146,11 @@ contains
   end subroutine flu_createtable
 
 
-  subroutine flu_getfield(L, index, k)
+  function flu_getfield(L, index, k) result(luatype)
     type(flu_State)  :: L
     integer          :: index
     character(len=*) :: k
+    integer          :: luatype
 
     integer(kind=c_int) :: c_index, res
     character(len=len_trim(k)+1) :: c_k
@@ -142,12 +158,14 @@ contains
     c_k = trim(k) // c_null_char
     c_index = index
     res = lua_getfield(L%state, c_index, c_k)
-  end subroutine flu_getfield
+    luatype = int(res)
+  end function flu_getfield
 
 
-  subroutine flu_getglobal(L, k)
+  function flu_getglobal(L, k) result(luatype)
     type(flu_State)  :: L
     character(len=*) :: k
+    integer          :: luatype
 
     integer(kind=c_int) :: res
 
@@ -155,18 +173,21 @@ contains
 
     c_k = trim(k) // c_null_char
     res = lua_getglobal(L%state, c_k)
-  end subroutine flu_getglobal
+    luatype = int(res)
+  end function flu_getglobal
 
 
-  subroutine flu_gettable(L, index)
+  function flu_gettable(L, index) result(luatype)
     type(flu_State) :: L
-    integer :: index
+    integer         :: index
+    integer         :: luatype
 
     integer(kind=c_int) :: c_index, res
 
     c_index = index
     res = lua_gettable(L%state, c_index)
-  end subroutine flu_gettable
+    luatype = int(res)
+  end function flu_gettable
 
 
   function flu_gettop(L) result(stacktop)

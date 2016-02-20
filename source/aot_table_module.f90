@@ -1,6 +1,6 @@
 ! Copyright (C) 2011-2013 German Research School for Simulation Sciences GmbH,
 !                         Aachen and others.
-!               2013-2014 University of Siegen.
+!               2013-2016 University of Siegen.
 ! Please see the COPYRIGHT file in this directory for details.
 
 !> This module provides some convenient functions to act on Lua tables.
@@ -83,10 +83,10 @@ module aot_table_module
   !! They can be checked by `btest` and the different error codes are:
   !!
   !! - [[aot_err_module:aoterr_fatal]]: Something went irrecoverably wrong
-  !! - [[aot_err_module:aoterr_nonExistent]]: The requested variable is not set in the Lua
-  !!                           script
-  !! - [[aot_err_module:aoterr_wrongType]]: The requested variable in the Lua script does not
-  !!                         match the requested data type
+  !! - [[aot_err_module:aoterr_nonExistent]]: The requested variable is not set
+  !!   in the Lua script
+  !! - [[aot_err_module:aoterr_wrongType]]: The requested variable in the Lua
+  !!   script does not match the requested data type
   !!
   !! For example a check for a fatal error can be done by
   !! `btest(errCode, aoterr_fatal)`.
@@ -162,17 +162,18 @@ contains
     logical :: exists
 
     logical :: valid_args
+    integer :: toptype
 
     exists = .false.
 
     valid_args = .false.
     if (present(thandle)) then
       call aot_table_push(L=L, thandle=thandle, &
-        &                 key=key, pos=pos)
+        &                 key=key, pos=pos      )
       valid_args = .true.
     else
       if (present(key)) then
-        call flu_getglobal(L, key)
+        toptype = flu_getglobal(L, key)
         valid_args = .true.
       end if
     end if
@@ -216,14 +217,15 @@ contains
     real(kind=single_k), intent(in), optional :: default
 
     logical :: valid_args
+    integer :: toptype
 
     valid_args = .true.
     if (present(thandle)) then
       call aot_table_push(L=L, thandle=thandle, &
-        &                 key=key, pos=pos)
+        &                 key=key, pos=pos      )
     else
       if (present(key)) then
-        call flu_getglobal(L, key)
+        toptype = flu_getglobal(L, key)
       else
         valid_args = .false.
       end if
@@ -269,6 +271,7 @@ contains
     real(kind=double_k), intent(in), optional :: default
 
     logical :: valid_args
+    integer :: toptype
 
     valid_args = .true.
     if (present(thandle)) then
@@ -276,7 +279,7 @@ contains
         &                 key=key, pos=pos)
     else
       if (present(key)) then
-        call flu_getglobal(L, key)
+        toptype = flu_getglobal(L, key)
       else
         valid_args = .false.
       end if
@@ -323,6 +326,7 @@ contains
     integer, intent(in), optional :: default
 
     logical :: valid_args
+    integer :: toptype
 
     valid_args = .true.
     if (present(thandle)) then
@@ -330,7 +334,7 @@ contains
         &                 key=key, pos=pos)
     else
       if (present(key)) then
-        call flu_getglobal(L, key)
+        toptype = flu_getglobal(L, key)
       else
         valid_args = .false.
       end if
@@ -375,6 +379,7 @@ contains
     integer(kind=long_k), intent(in), optional :: default
 
     logical :: valid_args
+    integer :: toptype
 
     valid_args = .true.
     if (present(thandle)) then
@@ -382,7 +387,7 @@ contains
         &                 key=key, pos=pos)
     else
       if (present(key)) then
-        call flu_getglobal(L, key)
+        toptype = flu_getglobal(L, key)
       else
         valid_args = .false.
       end if
@@ -428,6 +433,7 @@ contains
     logical, intent(in), optional :: default
 
     logical :: valid_args
+    integer :: toptype
 
     valid_args = .true.
     if (present(thandle)) then
@@ -435,7 +441,7 @@ contains
         &                 key=key, pos=pos)
     else
       if (present(key)) then
-        call flu_getglobal(L, key)
+        toptype = flu_getglobal(L, key)
       else
         valid_args = .false.
       end if
@@ -484,6 +490,7 @@ contains
     type(c_ptr), intent(in), optional :: default
 
     logical :: valid_args
+    integer :: toptype
 
     valid_args = .true.
     if (present(thandle)) then
@@ -491,7 +498,7 @@ contains
         &                 key=key, pos=pos)
     else
       if (present(key)) then
-        call flu_getglobal(L, key)
+        toptype = flu_getglobal(L, key)
       else
         valid_args = .false.
       end if
@@ -537,6 +544,7 @@ contains
     character(len=*), intent(in), optional :: default
 
     logical :: valid_args
+    integer :: toptype
 
     valid_args = .true.
     if (present(thandle)) then
@@ -544,7 +552,7 @@ contains
         &                 key=key, pos=pos)
     else
       if (present(key)) then
-        call flu_getglobal(L, key)
+        toptype = flu_getglobal(L, key)
       else
         valid_args = .false.
       end if

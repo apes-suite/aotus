@@ -1,6 +1,6 @@
 ! Copyright (C) 2011-2013 German Research School for Simulation Sciences GmbH,
 !                         Aachen and others.
-!               2013-2014 University of Siegen.
+!               2013-2016 University of Siegen.
 ! Please see the COPYRIGHT file in this directory for details.
 
 !> This module provides some convenience functions to access complete vectors
@@ -137,16 +137,17 @@ contains
     real(kind=single_k), intent(in), optional :: default(:)
 
     logical :: valid_args
+    integer :: toptype
 
     valid_args = .true.
     if (present(thandle)) then
       ! Get the requested value from the provided table
       call aot_table_push(L=L, thandle=thandle, &
-        &                   key=key, pos=pos)
+        &                 key=key, pos=pos      )
     else
       if (present(key)) then
         ! Get the requeseted global variable
-        call flu_getglobal(L, key)
+        toptype = flu_getglobal(L, key)
       else
         valid_args = .false.
       end if
@@ -199,16 +200,17 @@ contains
     real(kind=double_k), intent(in), optional :: default(:)
 
     logical :: valid_args
+    integer :: toptype
 
     valid_args = .true.
     if (present(thandle)) then
       ! Get the requested value from the provided table
       call aot_table_push(L=L, thandle=thandle, &
-        &                   key=key, pos=pos)
+        &                 key=key, pos=pos      )
     else
       if (present(key)) then
         ! Get the requeseted global variable
-        call flu_getglobal(L, key)
+        toptype = flu_getglobal(L, key)
       else
         valid_args = .false.
       end if
@@ -261,16 +263,17 @@ contains
     integer, intent(in), optional :: default(:)
 
     logical :: valid_args
+    integer :: toptype
 
     valid_args = .true.
     if (present(thandle)) then
       ! Get the requested value from the provided table
       call aot_table_push(L=L, thandle=thandle, &
-        &                   key=key, pos=pos)
+        &                 key=key, pos=pos      )
     else
       if (present(key)) then
         ! Get the requeseted global variable
-        call flu_getglobal(L, key)
+        toptype = flu_getglobal(L, key)
       else
         valid_args = .false.
       end if
@@ -323,16 +326,17 @@ contains
     integer(kind=long_k), intent(in), optional :: default(:)
 
     logical :: valid_args
+    integer :: toptype
 
     valid_args = .true.
     if (present(thandle)) then
       ! Get the requested value from the provided table
       call aot_table_push(L=L, thandle=thandle, &
-        &                   key=key, pos=pos)
+        &                 key=key, pos=pos      )
     else
       if (present(key)) then
         ! Get the requeseted global variable
-        call flu_getglobal(L, key)
+        toptype = flu_getglobal(L, key)
       else
         valid_args = .false.
       end if
@@ -385,16 +389,17 @@ contains
     logical, intent(in), optional :: default(:)
 
     logical :: valid_args
+    integer :: toptype
 
     valid_args = .true.
     if (present(thandle)) then
       ! Get the requested value from the provided table
       call aot_table_push(L=L, thandle=thandle, &
-        &                   key=key, pos=pos)
+        &                 key=key, pos=pos      )
     else
       if (present(key)) then
         ! Get the requeseted global variable
-        call flu_getglobal(L, key)
+        toptype = flu_getglobal(L, key)
       else
         valid_args = .false.
       end if
@@ -447,16 +452,17 @@ contains
     real(kind=single_k), intent(in), optional :: default(:)
 
     logical :: valid_args
+    integer :: toptype
 
     valid_args = .true.
     if (present(thandle)) then
       ! Get the requested value from the provided table
       call aot_table_push(L=L, thandle=thandle, &
-        &                 key=key, pos=pos)
+        &                 key=key, pos=pos      )
     else
       if (present(key)) then
         ! Get the requeseted global variable
-        call flu_getglobal(L, key)
+        toptype = flu_getglobal(L, key)
       else
         valid_args = .false.
       end if
@@ -506,16 +512,17 @@ contains
     real(kind=double_k), intent(in), optional :: default(:)
 
     logical :: valid_args
+    integer :: toptype
 
     valid_args = .true.
     if (present(thandle)) then
       ! Get the requested value from the provided table
       call aot_table_push(L=L, thandle=thandle, &
-        &                 key=key, pos=pos)
+        &                 key=key, pos=pos      )
     else
       if (present(key)) then
         ! Get the requeseted global variable
-        call flu_getglobal(L, key)
+        toptype = flu_getglobal(L, key)
       else
         valid_args = .false.
       end if
@@ -565,16 +572,17 @@ contains
     integer, intent(in), optional :: default(:)
 
     logical :: valid_args
+    integer :: toptype
 
     valid_args = .true.
     if (present(thandle)) then
       ! Get the requested value from the provided table
       call aot_table_push(L=L, thandle=thandle, &
-        &                 key=key, pos=pos)
+        &                 key=key, pos=pos      )
     else
       if (present(key)) then
         ! Get the requeseted global variable
-        call flu_getglobal(L, key)
+        toptype = flu_getglobal(L, key)
       else
         valid_args = .false.
       end if
@@ -624,16 +632,17 @@ contains
     integer(kind=long_k), intent(in), optional :: default(:)
 
     logical :: valid_args
+    integer :: toptype
 
     valid_args = .true.
     if (present(thandle)) then
       ! Get the requested value from the provided table
       call aot_table_push(L=L, thandle=thandle, &
-        &                 key=key, pos=pos)
+        &                 key=key, pos=pos      )
     else
       if (present(key)) then
         ! Get the requeseted global variable
-        call flu_getglobal(L, key)
+        toptype = flu_getglobal(L, key)
       else
         valid_args = .false.
       end if
@@ -683,16 +692,17 @@ contains
     logical, intent(in), optional :: default(:)
 
     logical :: valid_args
+    integer :: toptype
 
     valid_args = .true.
     if (present(thandle)) then
       ! Get the requested value from the provided table
       call aot_table_push(L=L, thandle=thandle, &
-        &                 key=key, pos=pos)
+        &                 key=key, pos=pos      )
     else
       if (present(key)) then
         ! Get the requeseted global variable
-        call flu_getglobal(L, key)
+        toptype = flu_getglobal(L, key)
       else
         valid_args = .false.
       end if

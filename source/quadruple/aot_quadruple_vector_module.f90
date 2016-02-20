@@ -103,6 +103,7 @@ contains
     real(kind=quad_k), intent(in), optional :: default(:)
 
     logical :: valid_args
+    integer :: toptype
 
     valid_args = .true.
     if (present(thandle)) then
@@ -112,7 +113,7 @@ contains
     else
       if (present(key)) then
         ! Get the requeseted global variable
-        call flu_getglobal(L, key)
+        toptype = flu_getglobal(L, key)
       else
         valid_args = .false.
       end if
@@ -164,6 +165,7 @@ contains
     real(kind=quad_k), intent(in), optional :: default(:)
 
     logical :: valid_args
+    integer :: toptype
 
     valid_args = .true.
     if (present(thandle)) then
@@ -173,7 +175,7 @@ contains
     else
       if (present(key)) then
         ! Get the requeseted global variable
-        call flu_getglobal(L, key)
+        toptype = flu_getglobal(L, key)
       else
         valid_args = .false.
       end if

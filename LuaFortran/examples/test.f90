@@ -6,6 +6,7 @@ program test
   type(flu_State) :: L
   character(len=89) :: filename
   integer :: str_len
+  integer :: widthtype, heighttype
 
   L = fluL_newstate()
 
@@ -19,11 +20,15 @@ program test
      STOP
   endif
 
-  call flu_getglobal(L, "width")
-  call flu_getglobal(L, "height")
+  widthtype = flu_getglobal(L, "width")
+  heighttype = flu_getglobal(L, "height")
 
-  write(*,*) 'width=', flu_tonumber(L, -2)
-  write(*,*) 'height=', flu_tonumber(L, -1)
+  if (widthtype == FLU_TNUMBER) then
+    write(*,*) 'width=', flu_tonumber(L, -2)
+  end if
+  if (heighttype == FLU_TNUMBER) then
+    write(*,*) 'height=', flu_tonumber(L, -1)
+  end if
 
   call flu_close(L)
 

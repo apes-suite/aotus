@@ -101,7 +101,9 @@ contains
     !> Name of the function to look up in the global scope of the Lua script.
     character(len=*), intent(in) :: key
 
-    call flu_getglobal(L, key)
+    integer :: toptype
+
+    toptype = flu_getglobal(L, key)
     fun = aot_fun_top(L)
   end subroutine aot_fun_global
 

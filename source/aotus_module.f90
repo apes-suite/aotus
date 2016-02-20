@@ -1,6 +1,6 @@
 ! Copyright (C) 2011-2013 German Research School for Simulation Sciences GmbH,
 !                         Aachen and others.
-!               2013-2015 University of Siegen.
+!               2013-2016 University of Siegen.
 ! Please see the COPYRIGHT file in this directory for details.
 
 !> This module provides high level Fortran interfaces to retrieve values from a
@@ -18,7 +18,8 @@ module aotus_module
   use aot_top_module, only: aot_top_get_val, aot_err_handler, &
     &                       aoterr_Fatal, aoterr_NonExistent, aoterr_WrongType
   use aot_table_module, only: aot_get_val, aot_table_set_val, &
-    &                         aot_table_open, aot_table_close
+    &                         aot_table_open, aot_table_close, &
+    &                         aot_table_push
   use aot_vector_module, only: aot_top_get_val, aot_get_val
 
   implicit none
@@ -26,6 +27,7 @@ module aotus_module
   private
 
   public :: aot_get_val
+  public :: aot_type_of
   public :: open_config_file, close_config
   public :: open_config_chunk, open_config_buffer
   public :: aot_require_buffer
@@ -40,7 +42,9 @@ module aotus_module
   ! Inherited from the flu_binding module, publish for convenience.
   public :: flu_State
 
+
 contains
+
 
   !> Subroutine to load and execute a script from a file.
   !!
@@ -197,6 +201,55 @@ contains
     call flu_close(L)
 
   end subroutine close_config
+
+
+  !> Get the Lua object in table thandle under the given key or pos on the
+  !! top of the stack and return the Lua type of the gotten entry.
+  !!
+  !! This might be used to get a Lua entry to the top of the stack without
+  !! knowing its type beforehand, and then deciding what to load, based on
+  !! the type.
+  !! Lua types are encoded as integer values and available in the
+  !! [[flu_binding]] module.
+  !!
+  !! - FLU_TNONE    : not existing
+  !! - FLU_TNIL     : not available
+  !! - FLU_TBOOLEAN : logical value
+  !! - FLU_TNUMBER  : a number
+  !! - FLU_TSTRING  : a string
+  !! - FLU_TTABLE   : a table
+  !! - FLU_TFUNCTION: a function
+  !!
+  function aot_type_of(L, thandle, key, pos) result(luatype)
+    type(flu_State) :: L !! Handle to the Lua script.
+
+    !> Handle of the table to get the value from
+    integer, intent(in), optional :: thandle
+
+    !> Key of the value to find the type for.
+    character(len=*), intent(in), optional :: key
+
+    !> Position of the value to find the type for.
+    integer, intent(in), optional :: pos
+
+    !> Type of the Lua object found in L, thandle, key and pos
+    integer :: luatype
+
+    luatype = FLU_TNONE
+
+    if (present(thandle)) then
+      call aot_table_push( L       = L,       &
+        &                  thandle = thandle, &
+        &                  key     = key,     &
+        &                  pos     = pos,     &
+        &                  toptype = luatype  )
+    else
+      if (present(key)) then
+        luatype = flu_getglobal(L, key)
+      end if
+    end if
+
+  end function aot_type_of
 
 
   !> Subroutine to load a script from a file and put it into a character buffer.

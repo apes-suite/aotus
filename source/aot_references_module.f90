@@ -47,13 +47,14 @@ contains
     !! If a key is provided, that takes precedent over pos.
     integer, intent(in), optional :: pos
 
+    integer :: toptype
     integer :: ref
 
     if (present(thandle)) then
       call aot_table_push(L=L, thandle=thandle, &
         &                 key=key, pos=pos      )
     else if (present(key)) then
-      call flu_getglobal(L, key)
+      toptype = flu_getglobal(L, key)
     end if
 
     ref = fluL_ref(L, LUA_REGISTRYINDEX)
