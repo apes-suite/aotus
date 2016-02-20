@@ -418,7 +418,6 @@ contains
       &                   thandle = thandle, &
       &                   key     = key,     &
       &                   pos     = pos      )
-
     if (toptype /= FLU_TNONE) then
       call aot_top_get_val(val, ErrCode, maxlength, L, default)
     else
@@ -765,68 +764,75 @@ contains
     integer :: vect_lb
     integer :: iComp
 
-    ! Try to interpret the top entry on the stack as a table
-    vect_handle = aot_table_top(L=L)
-    table_len = aot_table_length(L=L, thandle=vect_handle)
-
-    ! The size of the vector is limited by maxlength.
-    vect_len = min(maxlength, table_len)
+    vect_handle = 0
 
     ! Find the length of the default value, if it is not provided, its 0.
     def_len = 0
     if (present(default)) def_len = size(default)
 
-    ! Now parse the table with the vector entries.
-    if (aot_table_first(L, vect_handle)) then
-      allocate(val(vect_len))
-      allocate(errCode(vect_len))
+    is_scal: if (flu_isNumber(L, -1)) then
 
-      ErrCode = 0
+      ! Not a table but a scalar number!
+      allocate(val(1))
+      allocate(errCode(1))
 
-      ! Up to the length of the default value, provide the default settings.
-      do iComp=1,def_len
-        call aot_top_get_val(val(iComp), ErrCode(iComp), L, &
-          &                  default(iComp))
-        if (.not. flu_next(L, vect_handle)) exit
-      end do
-
-      vect_lb = def_len+1
-      ! After def_len entries no default values for the components are
-      ! available anymore, proceed without a default setting for the rest.
-      do iComp=vect_lb,vect_len
-        call aot_top_get_val(val(iComp), ErrCode(iComp), L)
-        if (.not. flu_next(L, vect_handle)) exit
-      end do
-
-    else
-
-      ! Not a table, try to read a single number.
-      if (flu_isNumber(L, -1)) then
-        allocate(val(1))
-        allocate(errCode(1))
-
-        if (def_len >= 1) then
-          call aot_top_get_val(val(1), ErrCode(1), L, &
-            &                  default(1)             )
-        else
-          call aot_top_get_val( val(1), ErrCode(1), L )
-        end if
+      if (def_len >= 1) then
+        call aot_top_get_val(val(1), ErrCode(1), L, &
+          &                  default(1)             )
       else
-        ! No vector definition found in the Lua script, use the default.
-        if (present(default)) then
-          allocate(val(def_len))
-          allocate(errCode(def_len))
-          val = default
-          ErrCode = ibSet(0, aoterr_NonExistent)
-        else
-          ! No vector definition in the Lua script and no default provided,
-          ! return an empty array.
-          allocate(val(0))
-          allocate(errCode(0))
-        end if
+        call aot_top_get_val( val(1), ErrCode(1), L )
       end if
 
-    end if
+    else is_scal
+
+      ! Try to interpret the top entry on the stack as a table
+      vect_handle = aot_table_top(L=L)
+      table_len = aot_table_length(L=L, thandle=vect_handle)
+
+      ! The size of the vector is limited by maxlength.
+      vect_len = min(maxlength, table_len)
+
+      ! Now parse the table with the vector entries.
+      if (aot_table_first(L, vect_handle)) then
+
+        allocate(val(vect_len))
+        allocate(errCode(vect_len))
+
+        ErrCode = 0
+
+        ! Up to the length of the default value, provide the default settings.
+        do iComp=1,def_len
+          call aot_top_get_val(val(iComp), ErrCode(iComp), L, &
+            &                  default(iComp))
+          if (.not. flu_next(L, vect_handle)) exit
+        end do
+
+        vect_lb = def_len+1
+        ! After def_len entries no default values for the components are
+        ! available anymore, proceed without a default setting for the rest.
+        do iComp=vect_lb,vect_len
+          call aot_top_get_val(val(iComp), ErrCode(iComp), L)
+          if (.not. flu_next(L, vect_handle)) exit
+        end do
+
+      else
+
+          ! No vector definition found in the Lua script, use the default.
+          if (present(default)) then
+            allocate(val(def_len))
+            allocate(errCode(def_len))
+            val = default
+            ErrCode = ibSet(0, aoterr_NonExistent)
+          else
+            ! No vector definition in the Lua script and no default provided,
+            ! return an empty array.
+            allocate(val(0))
+            allocate(errCode(0))
+          end if
+
+      end if
+
+    end if is_scal
 
     call aot_table_close(L, vect_handle)
 
@@ -859,69 +865,75 @@ contains
     integer :: vect_lb
     integer :: iComp
 
-    ! Try to interpret the top entry on the stack as a table
-    vect_handle = aot_table_top(L=L)
-    table_len = aot_table_length(L=L, thandle=vect_handle)
-
-    ! The size of the vector is limited by maxlength.
-    vect_len = min(maxlength, table_len)
+    vect_handle = 0
 
     ! Find the length of the default value, if it is not provided, its 0.
     def_len = 0
     if (present(default)) def_len = size(default)
 
-    ! Now parse the table with the vector entries.
-    if (aot_table_first(L, vect_handle)) then
+    is_scal: if (flu_isNumber(L, -1)) then
 
-      allocate(val(vect_len))
-      allocate(errCode(vect_len))
+      ! Not a table but a scalar number!
+      allocate(val(1))
+      allocate(errCode(1))
 
-      ErrCode = 0
-
-      ! Up to the length of the default value, provide the default settings.
-      do iComp=1,def_len
-        call aot_top_get_val(val(iComp), ErrCode(iComp), L, &
-          &                  default(iComp))
-        if (.not. flu_next(L, vect_handle)) exit
-      end do
-
-      vect_lb = def_len+1
-      ! After def_len entries no default values for the components are
-      ! available anymore, proceed without a default setting for the rest.
-      do iComp=vect_lb,vect_len
-        call aot_top_get_val(val(iComp), ErrCode(iComp), L)
-        if (.not. flu_next(L, vect_handle)) exit
-      end do
-
-    else
-
-      ! Not a table, try to read a single number.
-      if (flu_isNumber(L, -1)) then
-        allocate(val(1))
-        allocate(errCode(1))
-
-        if (def_len >= 1) then
-          call aot_top_get_val(val(1), ErrCode(1), L, &
-            &                  default(1)             )
-        else
-          call aot_top_get_val( val(1), ErrCode(1), L )
-        end if
+      if (def_len >= 1) then
+        call aot_top_get_val(val(1), ErrCode(1), L, &
+          &                  default(1)             )
       else
-        ! No vector definition found in the Lua script, use the default.
-        if (present(default)) then
-          allocate(val(def_len))
-          allocate(errCode(def_len))
-          val = default
-          ErrCode = ibSet(0, aoterr_NonExistent)
-        else
-          ! No vector definition in the Lua script and no default provided,
-          ! return an empty array.
-          allocate(val(0))
-          allocate(errCode(0))
-        end if
+        call aot_top_get_val( val(1), ErrCode(1), L )
       end if
 
-    end if
+    else is_scal
+
+      ! Try to interpret the top entry on the stack as a table
+      vect_handle = aot_table_top(L=L)
+      table_len = aot_table_length(L=L, thandle=vect_handle)
+
+      ! The size of the vector is limited by maxlength.
+      vect_len = min(maxlength, table_len)
+
+      ! Now parse the table with the vector entries.
+      if (aot_table_first(L, vect_handle)) then
+
+        allocate(val(vect_len))
+        allocate(errCode(vect_len))
+
+        ErrCode = 0
+
+        ! Up to the length of the default value, provide the default settings.
+        do iComp=1,def_len
+          call aot_top_get_val(val(iComp), ErrCode(iComp), L, &
+            &                  default(iComp))
+          if (.not. flu_next(L, vect_handle)) exit
+        end do
+
+        vect_lb = def_len+1
+        ! After def_len entries no default values for the components are
+        ! available anymore, proceed without a default setting for the rest.
+        do iComp=vect_lb,vect_len
+          call aot_top_get_val(val(iComp), ErrCode(iComp), L)
+          if (.not. flu_next(L, vect_handle)) exit
+        end do
+
+      else
+
+          ! No vector definition found in the Lua script, use the default.
+          if (present(default)) then
+            allocate(val(def_len))
+            allocate(errCode(def_len))
+            val = default
+            ErrCode = ibSet(0, aoterr_NonExistent)
+          else
+            ! No vector definition in the Lua script and no default provided,
+            ! return an empty array.
+            allocate(val(0))
+            allocate(errCode(0))
+          end if
+
+      end if
+
+    end if is_scal
 
     call aot_table_close(L, vect_handle)
 
@@ -953,69 +965,75 @@ contains
     integer :: vect_lb
     integer :: iComp
 
-    ! Try to interpret the top entry on the stack as a table
-    vect_handle = aot_table_top(L=L)
-    table_len = aot_table_length(L=L, thandle=vect_handle)
-
-    ! The size of the vector is limited by maxlength.
-    vect_len = min(maxlength, table_len)
+    vect_handle = 0
 
     ! Find the length of the default value, if it is not provided, its 0.
     def_len = 0
     if (present(default)) def_len = size(default)
 
-    ! Now parse the table with the vector entries.
-    if (aot_table_first(L, vect_handle)) then
+    is_scal: if (flu_isNumber(L, -1)) then
 
-      allocate(val(vect_len))
-      allocate(errCode(vect_len))
+      ! Not a table but a scalar number!
+      allocate(val(1))
+      allocate(errCode(1))
 
-      ErrCode = 0
-
-      ! Up to the length of the default value, provide the default settings.
-      do iComp=1,def_len
-        call aot_top_get_val(val(iComp), ErrCode(iComp), L, &
-          &                  default(iComp))
-        if (.not. flu_next(L, vect_handle)) exit
-      end do
-
-      vect_lb = def_len+1
-      ! After def_len entries no default values for the components are
-      ! available anymore, proceed without a default setting for the rest.
-      do iComp=vect_lb,vect_len
-        call aot_top_get_val(val(iComp), ErrCode(iComp), L)
-        if (.not. flu_next(L, vect_handle)) exit
-      end do
-
-    else
-
-      ! Not a table, try to read a single number.
-      if (flu_isNumber(L, -1)) then
-        allocate(val(1))
-        allocate(errCode(1))
-
-        if (def_len >= 1) then
-          call aot_top_get_val(val(1), ErrCode(1), L, &
-            &                  default(1)             )
-        else
-          call aot_top_get_val( val(1), ErrCode(1), L )
-        end if
+      if (def_len >= 1) then
+        call aot_top_get_val(val(1), ErrCode(1), L, &
+          &                  default(1)             )
       else
-        ! No vector definition found in the Lua script, use the default.
-        if (present(default)) then
-          allocate(val(def_len))
-          allocate(errCode(def_len))
-          val = default
-          ErrCode = ibSet(0, aoterr_NonExistent)
-        else
-          ! No vector definition in the Lua script and no default provided,
-          ! return an empty array.
-          allocate(val(0))
-          allocate(errCode(0))
-        end if
+        call aot_top_get_val( val(1), ErrCode(1), L )
       end if
 
-    end if
+    else is_scal
+
+      ! Try to interpret the top entry on the stack as a table
+      vect_handle = aot_table_top(L=L)
+      table_len = aot_table_length(L=L, thandle=vect_handle)
+
+      ! The size of the vector is limited by maxlength.
+      vect_len = min(maxlength, table_len)
+
+      ! Now parse the table with the vector entries.
+      if (aot_table_first(L, vect_handle)) then
+
+        allocate(val(vect_len))
+        allocate(errCode(vect_len))
+
+        ErrCode = 0
+
+        ! Up to the length of the default value, provide the default settings.
+        do iComp=1,def_len
+          call aot_top_get_val(val(iComp), ErrCode(iComp), L, &
+            &                  default(iComp))
+          if (.not. flu_next(L, vect_handle)) exit
+        end do
+
+        vect_lb = def_len+1
+        ! After def_len entries no default values for the components are
+        ! available anymore, proceed without a default setting for the rest.
+        do iComp=vect_lb,vect_len
+          call aot_top_get_val(val(iComp), ErrCode(iComp), L)
+          if (.not. flu_next(L, vect_handle)) exit
+        end do
+
+      else
+
+          ! No vector definition found in the Lua script, use the default.
+          if (present(default)) then
+            allocate(val(def_len))
+            allocate(errCode(def_len))
+            val = default
+            ErrCode = ibSet(0, aoterr_NonExistent)
+          else
+            ! No vector definition in the Lua script and no default provided,
+            ! return an empty array.
+            allocate(val(0))
+            allocate(errCode(0))
+          end if
+
+      end if
+
+    end if is_scal
 
     call aot_table_close(L, vect_handle)
 
@@ -1047,69 +1065,76 @@ contains
     integer :: vect_lb
     integer :: iComp
 
-    ! Try to interpret the top entry on the stack as a table
-    vect_handle = aot_table_top(L=L)
-    table_len = aot_table_length(L=L, thandle=vect_handle)
-
-    ! The size of the vector is limited by maxlength.
-    vect_len = min(maxlength, table_len)
+    vect_handle = 0
 
     ! Find the length of the default value, if it is not provided, its 0.
     def_len = 0
     if (present(default)) def_len = size(default)
 
-    ! Now parse the table with the vector entries.
-    if (aot_table_first(L, vect_handle)) then
+    is_scal: if (flu_isNumber(L, -1)) then
 
-      allocate(val(vect_len))
-      allocate(errCode(vect_len))
+      ! Not a table but a scalar number!
+      allocate(val(1))
+      allocate(errCode(1))
 
-      ErrCode = 0
-
-      ! Up to the length of the default value, provide the default settings.
-      do iComp=1,def_len
-        call aot_top_get_val(val(iComp), ErrCode(iComp), L, &
-          &                  default(iComp))
-        if (.not. flu_next(L, vect_handle)) exit
-      end do
-
-      vect_lb = def_len+1
-      ! After def_len entries no default values for the components are
-      ! available anymore, proceed without a default setting for the rest.
-      do iComp=vect_lb,vect_len
-        call aot_top_get_val(val(iComp), ErrCode(iComp), L)
-        if (.not. flu_next(L, vect_handle)) exit
-      end do
-
-    else
-
-      ! Not a table, try to read a single number.
-      if (flu_isNumber(L, -1)) then
-        allocate(val(1))
-        allocate(errCode(1))
-
-        if (def_len >= 1) then
-          call aot_top_get_val(val(1), ErrCode(1), L, &
-            &                  default(1)             )
-        else
-          call aot_top_get_val( val(1), ErrCode(1), L )
-        end if
+      if (def_len >= 1) then
+        call aot_top_get_val(val(1), ErrCode(1), L, &
+          &                  default(1)             )
       else
-        ! No vector definition found in the Lua script, use the default.
-        if (present(default)) then
-          allocate(val(def_len))
-          allocate(errCode(def_len))
-          val = default
-          ErrCode = ibSet(0, aoterr_NonExistent)
-        else
-          ! No vector definition in the Lua script and no default provided,
-          ! return an empty array.
-          allocate(val(0))
-          allocate(errCode(0))
-        end if
+        call aot_top_get_val( val(1), ErrCode(1), L )
       end if
 
-    end if
+    else is_scal
+
+      ! Try to interpret the top entry on the stack as a table
+      vect_handle = aot_table_top(L=L)
+      table_len = aot_table_length(L=L, thandle=vect_handle)
+
+      ! The size of the vector is limited by maxlength.
+      vect_len = min(maxlength, table_len)
+
+      ! Now parse the table with the vector entries.
+      if (aot_table_first(L, vect_handle)) then
+
+        allocate(val(vect_len))
+        allocate(errCode(vect_len))
+
+        ErrCode = 0
+
+        ! Up to the length of the default value, provide the default settings.
+        do iComp=1,def_len
+          call aot_top_get_val(val(iComp), ErrCode(iComp), L, &
+            &                  default(iComp))
+          if (.not. flu_next(L, vect_handle)) exit
+        end do
+
+        vect_lb = def_len+1
+        ! After def_len entries no default values for the components are
+        ! available anymore, proceed without a default setting for the rest.
+        do iComp=vect_lb,vect_len
+          call aot_top_get_val(val(iComp), ErrCode(iComp), L)
+          if (.not. flu_next(L, vect_handle)) exit
+        end do
+
+      else
+
+          ! No vector definition found in the Lua script, use the default.
+          if (present(default)) then
+            allocate(val(def_len))
+            allocate(errCode(def_len))
+            val = default
+            ErrCode = ibSet(0, aoterr_NonExistent)
+          else
+            ! No vector definition in the Lua script and no default provided,
+            ! return an empty array.
+            allocate(val(0))
+            allocate(errCode(0))
+          end if
+
+      end if
+
+    end if is_scal
+
     call aot_table_close(L, vect_handle)
 
   end subroutine get_top_long_vvect
@@ -1140,69 +1165,76 @@ contains
     integer :: vect_lb
     integer :: iComp
 
-    ! Try to interpret the top entry on the stack as a table
-    vect_handle = aot_table_top(L=L)
-    table_len = aot_table_length(L=L, thandle=vect_handle)
-
-    ! The size of the vector is limited by maxlength.
-    vect_len = min(maxlength, table_len)
+    vect_handle = 0
 
     ! Find the length of the default value, if it is not provided, its 0.
     def_len = 0
     if (present(default)) def_len = size(default)
 
-    ! Now parse the table with the vector entries.
-    if (aot_table_first(L, vect_handle)) then
+    is_scal: if (flu_isBoolean(L, -1)) then
 
-      allocate(val(vect_len))
-      allocate(errCode(vect_len))
+      ! Not a table but a scalar logical!
+      allocate(val(1))
+      allocate(errCode(1))
 
-      ErrCode = 0
-
-      ! Up to the length of the default value, provide the default settings.
-      do iComp=1,def_len
-        call aot_top_get_val(val(iComp), ErrCode(iComp), L, &
-          &                  default(iComp))
-        if (.not. flu_next(L, vect_handle)) exit
-      end do
-
-      vect_lb = def_len+1
-      ! After def_len entries no default values for the components are
-      ! available anymore, proceed without a default setting for the rest.
-      do iComp=vect_lb,vect_len
-        call aot_top_get_val(val(iComp), ErrCode(iComp), L)
-        if (.not. flu_next(L, vect_handle)) exit
-      end do
-
-    else
-
-      ! Not a table, try to read a single logical.
-      if (flu_isBoolean(L, -1)) then
-        allocate(val(1))
-        allocate(errCode(1))
-
-        if (def_len >= 1) then
-          call aot_top_get_val(val(1), ErrCode(1), L, &
-            &                  default(1)             )
-        else
-          call aot_top_get_val( val(1), ErrCode(1), L )
-        end if
+      if (def_len >= 1) then
+        call aot_top_get_val(val(1), ErrCode(1), L, &
+          &                  default(1)             )
       else
-        ! No vector definition found in the Lua script, use the default.
-        if (present(default)) then
-          allocate(val(def_len))
-          allocate(errCode(def_len))
-          val = default
-          ErrCode = ibSet(0, aoterr_NonExistent)
-        else
-          ! No vector definition in the Lua script and no default provided,
-          ! return an empty array.
-          allocate(val(0))
-          allocate(errCode(0))
-        end if
+        call aot_top_get_val( val(1), ErrCode(1), L )
       end if
 
-    end if
+    else is_scal
+
+      ! Try to interpret the top entry on the stack as a table
+      vect_handle = aot_table_top(L=L)
+      table_len = aot_table_length(L=L, thandle=vect_handle)
+
+      ! The size of the vector is limited by maxlength.
+      vect_len = min(maxlength, table_len)
+
+      ! Now parse the table with the vector entries.
+      if (aot_table_first(L, vect_handle)) then
+
+        allocate(val(vect_len))
+        allocate(errCode(vect_len))
+
+        ErrCode = 0
+
+        ! Up to the length of the default value, provide the default settings.
+        do iComp=1,def_len
+          call aot_top_get_val(val(iComp), ErrCode(iComp), L, &
+            &                  default(iComp))
+          if (.not. flu_next(L, vect_handle)) exit
+        end do
+
+        vect_lb = def_len+1
+        ! After def_len entries no default values for the components are
+        ! available anymore, proceed without a default setting for the rest.
+        do iComp=vect_lb,vect_len
+          call aot_top_get_val(val(iComp), ErrCode(iComp), L)
+          if (.not. flu_next(L, vect_handle)) exit
+        end do
+
+      else
+
+          ! No vector definition found in the Lua script, use the default.
+          if (present(default)) then
+            allocate(val(def_len))
+            allocate(errCode(def_len))
+            val = default
+            ErrCode = ibSet(0, aoterr_NonExistent)
+          else
+            ! No vector definition in the Lua script and no default provided,
+            ! return an empty array.
+            allocate(val(0))
+            allocate(errCode(0))
+          end if
+
+      end if
+
+    end if is_scal
+
     call aot_table_close(L, vect_handle)
 
   end subroutine get_top_logical_vvect
@@ -1233,69 +1265,76 @@ contains
     integer :: vect_lb
     integer :: iComp
 
-    ! Try to interpret the top entry on the stack as a table
-    vect_handle = aot_table_top(L=L)
-    table_len = aot_table_length(L=L, thandle=vect_handle)
-
-    ! The size of the vector is limited by maxlength.
-    vect_len = min(maxlength, table_len)
+    vect_handle = 0
 
     ! Find the length of the default value, if it is not provided, its 0.
     def_len = 0
     if (present(default)) def_len = size(default)
 
-    ! Now parse the table with the vector entries.
-    if (aot_table_first(L, vect_handle)) then
+    is_scal: if (flu_isString(L, -1)) then
 
-      allocate(val(vect_len))
-      allocate(errCode(vect_len))
+      ! Not a table but a scalar string!
+      allocate(val(1))
+      allocate(errCode(1))
 
-      ErrCode = 0
-
-      ! Up to the length of the default value, provide the default settings.
-      do iComp=1,def_len
-        call aot_top_get_val(val(iComp), ErrCode(iComp), L, &
-          &                  default(iComp))
-        if (.not. flu_next(L, vect_handle)) exit
-      end do
-
-      vect_lb = def_len+1
-      ! After def_len entries no default values for the components are
-      ! available anymore, proceed without a default setting for the rest.
-      do iComp=vect_lb,vect_len
-        call aot_top_get_val(val(iComp), ErrCode(iComp), L)
-        if (.not. flu_next(L, vect_handle)) exit
-      end do
-
-    else
-
-      ! Not a table, try to read a single logical.
-      if (flu_isString(L, -1)) then
-        allocate(val(1))
-        allocate(errCode(1))
-
-        if (def_len >= 1) then
-          call aot_top_get_val(val(1), ErrCode(1), L, &
-            &                  default(1)             )
-        else
-          call aot_top_get_val( val(1), ErrCode(1), L )
-        end if
+      if (def_len >= 1) then
+        call aot_top_get_val(val(1), ErrCode(1), L, &
+          &                  default(1)             )
       else
-        ! No vector definition found in the Lua script, use the default.
-        if (present(default)) then
-          allocate(val(def_len))
-          allocate(errCode(def_len))
-          val = default
-          ErrCode = ibSet(0, aoterr_NonExistent)
-        else
-          ! No vector definition in the Lua script and no default provided,
-          ! return an empty array.
-          allocate(val(0))
-          allocate(errCode(0))
-        end if
+        call aot_top_get_val( val(1), ErrCode(1), L )
       end if
 
-    end if
+    else is_scal
+
+      ! Try to interpret the top entry on the stack as a table
+      vect_handle = aot_table_top(L=L)
+      table_len = aot_table_length(L=L, thandle=vect_handle)
+
+      ! The size of the vector is limited by maxlength.
+      vect_len = min(maxlength, table_len)
+
+      ! Now parse the table with the vector entries.
+      if (aot_table_first(L, vect_handle)) then
+
+        allocate(val(vect_len))
+        allocate(errCode(vect_len))
+
+        ErrCode = 0
+
+        ! Up to the length of the default value, provide the default settings.
+        do iComp=1,def_len
+          call aot_top_get_val(val(iComp), ErrCode(iComp), L, &
+            &                  default(iComp))
+          if (.not. flu_next(L, vect_handle)) exit
+        end do
+
+        vect_lb = def_len+1
+        ! After def_len entries no default values for the components are
+        ! available anymore, proceed without a default setting for the rest.
+        do iComp=vect_lb,vect_len
+          call aot_top_get_val(val(iComp), ErrCode(iComp), L)
+          if (.not. flu_next(L, vect_handle)) exit
+        end do
+
+      else
+
+          ! No vector definition found in the Lua script, use the default.
+          if (present(default)) then
+            allocate(val(def_len))
+            allocate(errCode(def_len))
+            val = default
+            ErrCode = ibSet(0, aoterr_NonExistent)
+          else
+            ! No vector definition in the Lua script and no default provided,
+            ! return an empty array.
+            allocate(val(0))
+            allocate(errCode(0))
+          end if
+
+      end if
+
+    end if is_scal
+
     call aot_table_close(L, vect_handle)
 
   end subroutine get_top_string_vvect

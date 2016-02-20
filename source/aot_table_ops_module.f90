@@ -36,7 +36,7 @@ contains
     !> A handle for the table on the top of the stack to access it.
     integer :: thandle
 
-    if (flu_isNoneOrNil(L, -1) .or. (.not. flu_isTable(L, -1))) then
+    if (.not. flu_isTable(L, -1)) then
       thandle = 0
       call flu_pop(L)
     else
