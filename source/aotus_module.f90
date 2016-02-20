@@ -19,7 +19,7 @@ module aotus_module
     &                       aoterr_Fatal, aoterr_NonExistent, aoterr_WrongType
   use aot_table_module, only: aot_get_val, aot_table_set_val, &
     &                         aot_table_open, aot_table_close, &
-    &                         aot_table_push
+    &                         aot_table_push, aot_type_of
   use aot_vector_module, only: aot_top_get_val, aot_get_val
 
   implicit none
@@ -201,55 +201,6 @@ contains
     call flu_close(L)
 
   end subroutine close_config
-
-
-  !> Get the Lua object in table thandle under the given key or pos on the
-  !! top of the stack and return the Lua type of the gotten entry.
-  !!
-  !! This might be used to get a Lua entry to the top of the stack without
-  !! knowing its type beforehand, and then deciding what to load, based on
-  !! the type.
-  !! Lua types are encoded as integer values and available in the
-  !! [[flu_binding]] module.
-  !!
-  !! - FLU_TNONE    : not existing
-  !! - FLU_TNIL     : not available
-  !! - FLU_TBOOLEAN : logical value
-  !! - FLU_TNUMBER  : a number
-  !! - FLU_TSTRING  : a string
-  !! - FLU_TTABLE   : a table
-  !! - FLU_TFUNCTION: a function
-  !!
-  function aot_type_of(L, thandle, key, pos) result(luatype)
-    type(flu_State) :: L !! Handle to the Lua script.
-
-    !> Handle of the table to get the value from
-    integer, intent(in), optional :: thandle
-
-    !> Key of the value to find the type for.
-    character(len=*), intent(in), optional :: key
-
-    !> Position of the value to find the type for.
-    integer, intent(in), optional :: pos
-
-    !> Type of the Lua object found in L, thandle, key and pos
-    integer :: luatype
-
-    luatype = FLU_TNONE
-
-    if (present(thandle)) then
-      call aot_table_push( L       = L,       &
-        &                  thandle = thandle, &
-        &                  key     = key,     &
-        &                  pos     = pos,     &
-        &                  toptype = luatype  )
-    else
-      if (present(key)) then
-        luatype = flu_getglobal(L, key)
-      end if
-    end if
-
-  end function aot_type_of
 
 
   !> Subroutine to load a script from a file and put it into a character buffer.

@@ -1,6 +1,6 @@
 ! Copyright (C) 2011-2013 German Research School for Simulation Sciences GmbH,
 !                         Aachen and others.
-!               2013-2014 University of Siegen.
+!               2013-2016 University of Siegen.
 ! Please see the COPYRIGHT file in this directory for details.
 
 !> This module provides general operations on Lua tables.
@@ -18,6 +18,7 @@ module aot_table_ops_module
 
   public :: aot_table_open, aot_table_close
   public :: aot_table_top, aot_table_length, aot_table_first, aot_table_push
+  public :: aot_type_of
 
 
 contains
@@ -170,6 +171,55 @@ contains
     end if
 
   end subroutine aot_table_push
+
+
+  !> Get the Lua object in table thandle under the given key or pos on the
+  !! top of the stack and return the Lua type of the gotten entry.
+  !!
+  !! This might be used to get a Lua entry to the top of the stack without
+  !! knowing its type beforehand, and then deciding what to load, based on
+  !! the type.
+  !! Lua types are encoded as integer values and available in the
+  !! [[flu_binding]] module.
+  !!
+  !! - FLU_TNONE    : not existing
+  !! - FLU_TNIL     : not available
+  !! - FLU_TBOOLEAN : logical value
+  !! - FLU_TNUMBER  : a number
+  !! - FLU_TSTRING  : a string
+  !! - FLU_TTABLE   : a table
+  !! - FLU_TFUNCTION: a function
+  !!
+  function aot_type_of(L, thandle, key, pos) result(luatype)
+    type(flu_State) :: L !! Handle to the Lua script.
+
+    !> Handle of the table to get the value from
+    integer, intent(in), optional :: thandle
+
+    !> Key of the value to find the type for.
+    character(len=*), intent(in), optional :: key
+
+    !> Position of the value to find the type for.
+    integer, intent(in), optional :: pos
+
+    !> Type of the Lua object found in L, thandle, key and pos
+    integer :: luatype
+
+    luatype = FLU_TNONE
+
+    if (present(thandle)) then
+      call aot_table_push( L       = L,       &
+        &                  thandle = thandle, &
+        &                  key     = key,     &
+        &                  pos     = pos,     &
+        &                  toptype = luatype  )
+    else
+      if (present(key)) then
+        luatype = flu_getglobal(L, key)
+      end if
+    end if
+
+  end function aot_type_of
 
 
   !> Load the first key-value pair of table thandle on the

@@ -12,7 +12,8 @@ module aot_table_module
   use aot_top_module, only: aot_top_get_val
   use aot_table_ops_module, only: aot_table_open, aot_table_close, &
     &                             aot_table_length, aot_table_first, &
-    &                             aot_table_top, aot_table_push
+    &                             aot_table_top, aot_table_push, &
+    &                             aot_type_of
 
   ! The following module enables an interface for quadruple precision numbers,
   ! if the compiler supports them. However, you should be aware, that this is
@@ -32,6 +33,7 @@ module aot_table_module
   public :: aot_table_from_1Darray
   public :: aot_table_set_val, aot_table_set_top
   public :: aot_get_val
+  public :: aot_type_of
   public :: aot_exists
 
   !> Get a value from a table.
