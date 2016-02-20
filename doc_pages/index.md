@@ -179,6 +179,29 @@ calling
     :::fortran
     call aot_table_close(L, thandle)
 
+### Type dependent actions
+
+Sometimes there might be different types possible for a given setting, and
+different actions need to be taken for each possible type.
+In this case you might first want to check the type of a given variable
+before proceeding and reading the actual value.
+This can be achieve by [[aot_type_of]], which is a function that will
+put the requested variable onto the top of the stack and return the
+Lua data type of it:
+
+    ::: Fortran
+    luatype = aot_type_of(L, thandle, key, pos)
+
+With:
+
+* **L**: is the Lua context
+* **thandle**: handle of the parent table
+* **key**: name of the Lua variable to get to the top of the stack
+* **pos**: positional addressing of the variable inside thandle
+
+Afterwards, the actual value can then be read by the corrsponding
+[[aot_top_get_val]].
+
 ### Functions
 
 Again functions try to resemble the usage of files, however in this case its
@@ -290,14 +313,16 @@ Where:
 The interface for vectors within other tables is defined accordingly.
 In the interface described above, the conf_val vector has a given size, and
 just the values need to be filled.
-However it might be necessary to retrieve arrays, of which the size is not
+However, it might be necessary to retrieve arrays, of which the size is not
 known beforehand, and should depend on the table definition in the configuration.
 For these cases there are additional routines defined, which take allocatable
 arrays as input.
 These are then allocated and filled according to the configuration or the
 provided default vector.
-In these interfaces you have to provide an additional parameter **maxlength**,
-which limits the size of the vector to allocate.
+In these interfaces you have to provide an additional parameter **maxlength**
+that limits the size of the vector to allocate.
+If the Lua variable in question is not a table but rather a scalar of the
+correct type, an array of length 1 will be created for this single value.
 For undefined vectors zero sized arrays are returned for the values and the
 error codes.
 

@@ -107,6 +107,7 @@ module aot_vector_module
 
 contains
 
+
   !> This routine obtains a vectorial quantity with variable length from a Lua
   !! table as a whole.
   !!

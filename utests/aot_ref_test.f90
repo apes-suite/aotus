@@ -26,7 +26,7 @@ program aot_ref_test
 
   call create_script('aot_ref_test_config.lua')
   write(*,*)
-  write(*,*) 'Running aotus_test...'
+  write(*,*) 'Running aot_ref_test...'
   write(*,*) ' * open_config_file (aot_ref_test_config.lua)'
   call open_config_file(L = conf, filename = 'aot_ref_test_config.lua', &
     &                   ErrCode = iError, ErrString = ErrString)
@@ -104,7 +104,7 @@ contains
     character(len=*) :: filename
 
     open(file=trim(filename), unit=22, action='write', status='replace')
-    write(22,*) '-- test script for aotus_test'
+    write(22,*) '-- test script for aot_ref_test'
     write(22,*) 'function squaring(x)'
     write(22,*) '  return x^2'
     write(22,*) 'end'
