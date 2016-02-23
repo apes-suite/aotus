@@ -8,7 +8,6 @@ program aot_vec_test
     &                       aot_fun_put, aot_fun_id, aot_fun_open, &
     &                       aot_fun_close
   use aot_references_module, only: aot_reference_for, aot_reference_to_top
-  use aot_err_module, only: aoterr_Fatal, aoterr_NonExistent, aoterr_WrongType
   use aot_table_module, only: aot_table_open, aot_table_close
 
   implicit none

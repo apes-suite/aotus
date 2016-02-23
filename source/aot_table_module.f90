@@ -228,7 +228,7 @@ contains
     else
       if (present(key)) then
         toptype = flu_getglobal(L, key)
-      else
+      else if (present(pos)) then
         valid_args = .false.
       end if
     end if
@@ -282,7 +282,7 @@ contains
     else
       if (present(key)) then
         toptype = flu_getglobal(L, key)
-      else
+      else if (present(pos)) then
         valid_args = .false.
       end if
     end if
@@ -337,7 +337,7 @@ contains
     else
       if (present(key)) then
         toptype = flu_getglobal(L, key)
-      else
+      else if (present(pos)) then
         valid_args = .false.
       end if
     end if
@@ -390,7 +390,7 @@ contains
     else
       if (present(key)) then
         toptype = flu_getglobal(L, key)
-      else
+      else if (present(pos)) then
         valid_args = .false.
       end if
     end if
@@ -444,7 +444,7 @@ contains
     else
       if (present(key)) then
         toptype = flu_getglobal(L, key)
-      else
+      else if (present(pos)) then
         valid_args = .false.
       end if
     end if
@@ -501,7 +501,7 @@ contains
     else
       if (present(key)) then
         toptype = flu_getglobal(L, key)
-      else
+      else if (present(pos)) then
         valid_args = .false.
       end if
     end if
@@ -555,7 +555,7 @@ contains
     else
       if (present(key)) then
         toptype = flu_getglobal(L, key)
-      else
+      else if (present(pos)) then
         valid_args = .false.
       end if
     end if

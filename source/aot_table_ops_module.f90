@@ -18,7 +18,12 @@ module aot_table_ops_module
 
   public :: aot_table_open, aot_table_close
   public :: aot_table_top, aot_table_length, aot_table_first, aot_table_push
+  public :: aot_push
   public :: aot_type_of
+
+  interface aot_push
+    module procedure aot_table_push
+  end interface aot_push
 
 
 contains
@@ -55,6 +60,8 @@ contains
   !!
   !! If a key is present but no parent, a global table is opened.
   !! If neither key nor parent is present, a new table is created.
+  !! Only passing pos, without a thandle is erroneous and always
+  !! results in a thandle = 0.
   !!
   !! After the table is opened, the returned handle can be used to access its
   !! components.
@@ -79,6 +86,8 @@ contains
 
     integer :: luatype
 
+    thandle = 0
+
     if (present(parent)) then
       call aot_table_push(L, parent, key, pos)
       thandle = aot_table_top(L)
@@ -86,7 +95,7 @@ contains
       if (present(key)) then
         luatype = flu_getglobal(L, key)
         thandle = aot_table_top(L)
-      else
+      else if (.not. present(pos)) then
         call flu_createtable(L, 0, 0)
         thandle = flu_gettop(L)
       end if
@@ -112,14 +121,18 @@ contains
   !! within the table thandle onto the Lua stack.
   !!
   !! If no corresponding value is found, a nil value is pushed to the stack.
-  !! Key and pos are both optional, but one of them has to be supplied. If one
-  !! is supplied, the key is checked first and only if this fails the entry at
-  !! pos will be looked up.
+  !! Key, pos and thandle are all optional.
+  !! If no thandle is provided, the key will be obtained as a global variable.
+  !! When none of thandle, key and pos are provided, the subroutine does
+  !! nothing and the resulting type returned in toptype is the type of the
+  !! current top entry in the Lua stack.
+  !! Passing only pos without thandle is illegal and will result in a NIL
+  !! value on the top of the stack.
   subroutine aot_table_push(L, thandle, key, pos, toptype)
     type(flu_state) :: L !! Handle for the Lua script.
 
     !> Handle to the table to look in.
-    integer, intent(in) :: thandle
+    integer, intent(in), optional :: thandle
 
     !> Name of the entry to push to the stack.
     character(len=*), intent(in), optional :: key
@@ -132,39 +145,61 @@ contains
     integer :: loctype
 
     loctype = FLU_TNIL
-    if (thandle /= 0) then
-      ! Only proceed if thandle is actually a table
-      ! (Should be received with aot_table_global or aot_table_top)
 
-      if (present(key)) then
-        ! Try to look up the given key first
-        loctype = flu_getfield(L, thandle, key)
-        if ((loctype == FLU_TNONE) .or. (loctype == FLU_TNIL)) then
-          ! If this is not found, try to retrieve
-          ! the value at the given position
+    istable: if (present(thandle)) then
+
+      if (thandle /= 0) then
+        ! Only proceed if thandle is actually a table
+        ! (Should be received with aot_table_global or aot_table_top)
+
+        if (present(key)) then
+          ! Try to look up the given key first
+          loctype = flu_getfield(L, thandle, key)
+          if ((loctype == FLU_TNONE) .or. (loctype == FLU_TNIL)) then
+            ! If this is not found, try to retrieve
+            ! the value at the given position
+            if (present(pos)) then
+              call flu_pop(L)
+              call flu_pushInteger(L, pos)
+              loctype = flu_getTable(L, thandle)
+            end if
+          end if
+        else
+          ! No key to look up, just check the given position
           if (present(pos)) then
-            call flu_pop(L)
             call flu_pushInteger(L, pos)
             loctype = flu_getTable(L, thandle)
+          else
+            ! Neither key nor pos present, nothing to look up
+            ! Just push a NIL onto the stack as a result
+            call flu_pushnil(L)
           end if
         end if
+
       else
-        ! No key to look up, just check the given position
+
+        call flu_pushnil(L)
+
+      end if
+
+    else istable
+
+      if (present(key)) then
+        ! Try to look up the given key as a global variable
+        loctype = flu_getglobal(L, key)
+      else
+        ! No key, no thandle, treat this as a no-op if also no pos is provided
+        ! and return the type of the current top of the Lua stack.
         if (present(pos)) then
-          call flu_pushInteger(L, pos)
-          loctype = flu_getTable(L, thandle)
-        else
-          ! Neither key nor pos present, nothing to look up
-          ! Just push a NIL onto the stack as a result
+          ! Passing pos without thandle is illegal, and we always push a NIL
+          ! in this case.
           call flu_pushnil(L)
+        else
+          loctype = flu_type(L, -1)
         end if
       end if
 
-    else
-
-      call flu_pushnil(L)
-
-    end if
+    end if istable
 
     if (present(toptype)) then
       toptype = loctype
@@ -189,6 +224,10 @@ contains
   !! - FLU_TSTRING  : a string
   !! - FLU_TTABLE   : a table
   !! - FLU_TFUNCTION: a function
+  !!
+  !! If none of key, pos or thandle are provided, the type of the current
+  !! top of the stack will be returned. Just passing pos without a thandle
+  !! is invalid and always returns FLU_TNONE.
   !!
   function aot_type_of(L, thandle, key, pos) result(luatype)
     type(flu_State) :: L !! Handle to the Lua script.
@@ -216,6 +255,8 @@ contains
     else
       if (present(key)) then
         luatype = flu_getglobal(L, key)
+      else if (.not. present(pos)) then
+        luatype = flu_type(L, -1)
       end if
     end if
 

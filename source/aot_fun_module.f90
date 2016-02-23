@@ -47,7 +47,6 @@ module aot_fun_module
   !! retrieve more than one evaluation of a single function, before closing it
   !! again with [[aot_fun_close]].
   interface aot_fun_open
-    module procedure aot_fun_global
     module procedure aot_fun_table
     module procedure aot_fun_ref
   end interface aot_fun_open
@@ -90,24 +89,6 @@ contains
     end if
   end function aot_fun_top
 
-
-  !> Get a globally defined function.
-  subroutine aot_fun_global(L, fun, key)
-    type(flu_state) :: L !! Handle for the Lua script.
-
-    !> Returned handle, providing access to the function.
-    type(aot_fun_type), intent(out) :: fun
-
-    !> Name of the function to look up in the global scope of the Lua script.
-    character(len=*), intent(in) :: key
-
-    integer :: toptype
-
-    toptype = flu_getglobal(L, key)
-    fun = aot_fun_top(L)
-  end subroutine aot_fun_global
-
-
   !> Get a function defined as component of a table.
   !!
   !! Functions in tables might be retrieved by position or key.
@@ -117,7 +98,7 @@ contains
     type(flu_state) :: L !! Handle for the Lua script.
 
     !> Handle to the table to look in for the function.
-    integer, intent(in) :: parent
+    integer, intent(in), optional :: parent
 
     !> Returned handle, providing access to the function.
     type(aot_fun_type), intent(out) :: fun
@@ -133,7 +114,7 @@ contains
   end subroutine aot_fun_table
 
 
-  !> Get a function from a reference.
+  !> Get a function from a previously defned Lua reference.
   !!
   !! Use a previously (with [[aot_reference_for]]) defined reference to get a
   !! function.
@@ -143,7 +124,7 @@ contains
     !> Returned handle, providing access to the function.
     type(aot_fun_type), intent(out) :: fun
 
-    !> Handle to the table to look in for the function.
+    !> Lua reference to the function.
     integer, intent(in) :: ref
 
     call aot_reference_to_top(L, ref)

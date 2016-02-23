@@ -72,6 +72,7 @@ module flu_binding
   public :: flu_todouble
   public :: flu_tolstring, flu_tonumber, flu_toboolean, flu_touserdata
   public :: flu_topointer
+  public :: flu_type
   public :: flu_pop
   public :: flu_pushinteger, flu_pushnil, flu_pushnumber, flu_pushboolean
   public :: flu_pushstring, flu_pushvalue, flu_pushlightuserdata
@@ -603,6 +604,21 @@ contains
     ptr = lua_topointer(L%state, c_index)
     intptr = int(ptr, kind=long_k)
   end function flu_topointer
+
+
+  function flu_type(L, index) result(flut)
+    type(flu_State) :: L
+    integer :: index
+    integer :: flut
+
+    integer(kind=c_int) :: c_index
+    integer(kind=c_int) :: luat
+
+    c_index = int(index, kind=c_int)
+    luat = lua_type(L%state, c_index)
+    flut = int(luat)
+    
+  end function flu_type
 
 
   subroutine flu_pushcclosure(L, fn, n)
