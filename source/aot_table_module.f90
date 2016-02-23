@@ -169,20 +169,13 @@ contains
     exists = .false.
 
     valid_args = .false.
-    if (present(thandle)) then
-      call aot_table_push(L=L, thandle=thandle, &
-        &                 key=key, pos=pos      )
-      valid_args = .true.
-    else
-      if (present(key)) then
-        toptype = flu_getglobal(L, key)
-        valid_args = .true.
-      end if
-    end if
-
-    if (valid_args) then
-      exists = .not. flu_isNoneOrNil(L, -1)
-    end if
+    toptype = FLU_TNONE
+    call aot_table_push( L       = L,       &
+      &                  thandle = thandle, &
+      &                  key     = key,     &
+      &                  pos     = pos,     &
+      &                  toptype = toptype  )
+    exists = (toptype /= FLU_TNONE .and. toptype /= FLU_TNIL)
 
     call flu_pop(L)
 
