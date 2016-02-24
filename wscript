@@ -95,6 +95,7 @@ def subconf(conf):
     conf.check_cc(lib='m', uselib_store='MATH', mandatory=False)
 
     conf.setenv('cenv_debug',conf.env)
+    conf.setenv('cenv_profile',conf.env)
     conf.setenv('')
 
     import fortran_language
