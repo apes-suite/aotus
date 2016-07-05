@@ -185,7 +185,8 @@ def set_fc_flags(conf, flagset, osflags=None):
         # Add the sanitize option to the debug flags for gfortran >= 4.8
         if (fs == 'debug') and (fcname == 'GFORTRAN'):
             if ( (int(conf.env.FC_VERSION[0]) == 4)
-                 and (int(conf.env.FC_VERSION[1]) >= 8) ):
+                 and (int(conf.env.FC_VERSION[1]) >= 8) 
+                 or int(conf.env.FC_VERSION[0]) > 4):
                 myflags += ['-fsanitize=address']
 
 
