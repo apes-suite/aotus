@@ -148,6 +148,9 @@ program aot_vec_test
     write(*,*) 'FAILED'
   end if
 
+  ! for the sake of the address sanitizer
+  deallocate(res, vError)
+
 contains
 
   subroutine create_script(filename)
