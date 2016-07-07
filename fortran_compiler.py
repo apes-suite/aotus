@@ -33,7 +33,7 @@ fcopts['GFORTRAN', 'warn'] = ['-Wall', '-Wconversion', '-Wimplicit-interface', '
 fcopts['GFORTRAN', 'w2e'] = ['-Werror']
 fcopts['GFORTRAN', 'standard'] = ['-std=f2008']
 fcopts['GFORTRAN', 'double'] = ['-fdefault-real-8']
-fcopts['GFORTRAN', 'debug'] = ['-fbacktrace', '-fbounds-check', '-g']
+fcopts['GFORTRAN', 'debug'] = ['-fbacktrace', '-fcheck=all,no-array-temps', '-ffpe-trap=invalid,zero,overflow', '-g']
 fcopts['GFORTRAN', 'optimize'] = ['-O3', '-march=native']
 fcopts['GFORTRAN', 'openmp'] = ['-fopenmp']
 fcopts['GFORTRAN', 'noomp'] = []
