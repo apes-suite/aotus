@@ -33,13 +33,13 @@ fcopts['GFORTRAN', 'warn'] = ['-Wall', '-Wconversion', '-Wimplicit-interface', '
 fcopts['GFORTRAN', 'w2e'] = ['-Werror']
 fcopts['GFORTRAN', 'standard'] = ['-std=f2008']
 fcopts['GFORTRAN', 'double'] = ['-fdefault-real-8']
-fcopts['GFORTRAN', 'debug'] = ['-fbacktrace', '-fcheck=all,no-array-temps', '-ffpe-trap=invalid,zero,overflow', '-g']
+fcopts['GFORTRAN', 'debug'] = ['-fbacktrace', '-fcheck=bounds,do,mem,pointer,recursion', '-finit-real=nan', '-ffpe-trap=invalid,zero,overflow', '-g']
 fcopts['GFORTRAN', 'optimize'] = ['-O3', '-march=native']
 fcopts['GFORTRAN', 'openmp'] = ['-fopenmp']
 fcopts['GFORTRAN', 'noomp'] = []
 fcopts['GFORTRAN', 'profile'] = ['-pg']
-fcopts['GFORTRAN', 'fixform'] = []
-fcopts['GFORTRAN', 'freeform'] = []
+fcopts['GFORTRAN', 'fixform'] = ['-ffixed-form']
+fcopts['GFORTRAN', 'freeform'] = ['-ffree-form']
 
 fcopts['IFORT', 'warn'] = '-warn all'.split()
 fcopts['IFORT', 'w2e'] = '-warn stderrors'.split()
