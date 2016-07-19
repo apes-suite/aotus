@@ -56,16 +56,10 @@ to build the aotus library.
 If you want to select a specific Fortran compiler, set the environment variable
 *FC*.
 And for a specific C compiler, set the environment variable *CC*.
-The Fortran compiler flags are set with the help of fc_flags, which provide
+The Fortran compiler flags are set with the help of fcopts, which provide
 a set of compiler flag combinations for various compilers.
-They are found in the waflib/extras directory, and the waflib directory is
-created upon execution of waf in a:
+They are found in the fortran_compiler.py file in the root directory of the project.
 
-~~~~~~~~~~~{.sh}
-.waf-*
-~~~~~~~~~~~
-
-directory, if you need to have a look at them.
 By running:
 
 ~~~~~~~~~~~{.sh}
