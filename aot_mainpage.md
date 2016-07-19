@@ -111,7 +111,7 @@ Note, that this requires
 [FORD to be installed](https://github.com/cmacmackin/ford#installation)
 beforehand.
 This documentation is also online available at
-[our server](https://geb.sts.nt.uni-siegen.de/aotus).
+[our server](https://geb.sts.nt.uni-siegen.de/doxy/aotus/).
 
 ### Example
 
@@ -122,8 +122,8 @@ also the source of this small program is found.
 
 Getting Started
 ---------------
-The central module in this library is the [[aotus_module]],
-its documentation and the [Aotus overview](page/index.html) would be good
+The central module in this library is the [[aotus_module]].
+Its documentation and the [Aotus overview](page/index.html) would be good
 starting points.
 
 

@@ -42,8 +42,8 @@ The library can be compiled by various modern Fortran compilers as outlined in
 [Compiler Support](CompilerSupport.html).
 
 **An example, showing the usage of this library in a Fortran application, is
-given in aotus_sample.f90, the corresponding Lua script is given
-in config.lua.**
+given in aotus_sample.f90. You can find it in the *build* directory. The corresponding Lua script is given
+in config.lua, which you can find in the *sample* directory**
 
 Note on usage in parallel environments: Aotus itself is not providing parallel
 facilities. But it can be nicely used in parallel aswell. However, for
@@ -57,8 +57,7 @@ An implementation of this for MPI can be found in TreElMs
 Reading a Lua Script
 --------------------
 
-You need a handle for the Lua context of type [[flu_state]], and you can get
-that by opening and processing a Lua script with [[open_config_file]]:
+You need a handle for the Lua context of type [[flu_state]]. You can get that by opening and processing a Lua script with [[open_config_file]]:
 
     :::fortran
     call open_config_file(L, filename, errCode, errString)
@@ -101,7 +100,7 @@ Where:
 * **val**: is the variable the value should be stored in, all intrinsic
   data types should be supported, reals with kind single and double precision
 * **errCode**: Returns an error code with various bits set for different errors,
-  that might happen, while retrieving the variable.
+  which might happen while retrieving the variable.
   They can be checked by btest, and the different error codes are encoded in
   parameters:
     * **aoterr_fatal**: Something went irrecoverably wrong
@@ -120,7 +119,7 @@ In general we get the following shape for the interface:
     :::fortran
     call aot_{top}_get_val(<outputs>, <id>, default)
 
-Where *outputs* is: **val** and **errCode**, and *id* is at least the Lua
+Where *outputs* is: **val** and **errCode** and *id* is at least the Lua
 context (**L**) for the *aot_top* variant. For global variables there has
 to be a **key** in the *id* and for tables there has to be a **thandle**.
 In tables the **key** might be replaced by a **pos** argument.
@@ -128,11 +127,11 @@ In tables the **key** might be replaced by a **pos** argument.
 ### Tables
 
 The interface to work with tables is trying to resemble IO, thus you could think
-of a table as a file, which you can open and read values out of it by
+of a table as a file, which you can open and read values out of by
 referencing its unit (handle).
 Opening and closing tables is provided by the [[aot_table_module]].
 
-To work with a table, you first need to get an handle to identify the table.
+To work with a table, you first need to get a handle to identify the table.
 For globally defined tables this can be done by using
 
     :::fortran
@@ -151,8 +150,8 @@ For a table within an already opened table use:
 
 Where the additional arguments are:
 
-* **parent**: the handle of the table, this table should be looked up in
-* _optional_ **pos**: Referring to the table to retrive by position instead of
+* **parent**: the handle of the table, which this table should be looked up in
+* _optional_ **pos**: Referring to the table to retrieve by position instead of
   name, it is optional as well as the **key**, and one of them has to be present
 
 The handle will be 0, if the variable does not exist, or is not a table.
@@ -189,7 +188,7 @@ This can be achieve by [[aot_type_of]], which is a function that will
 put the requested variable onto the top of the stack and return the
 Lua data type of it:
 
-    ::: Fortran
+    :::fortran
     luatype = aot_type_of(L, thandle, key, pos)
 
 With:
@@ -227,7 +226,7 @@ To access a function, which is within a table, use:
 Where the additional arguments are:
 
 * **parent**: the table handle of the table, the function should be looked up in
-* _optional_ **pos**: Refer to the function by position instead of name (key
+* _optional_ **pos**: Refer to the function by position instead of name (**key**
   is also optional)
 
 After the function is opened, its arguments need to be filled with:
@@ -265,7 +264,7 @@ Where:
 * _optional_ **default**: a default value to use, if no value can be retrieved
 
 You will get the results in reversed order if there are multiple results.
-That is, the first call to [[aot_top_get_val]] will return the last result returned
+That is, because the first call to [[aot_top_get_val]] will return the last result returned
 by the function, the next the second last, and so on.
 
 You may then go on and put new arguments into the function, execute
@@ -297,7 +296,7 @@ Where:
 * **key**: is a string identifying the variable you want to retrieve
 * **val(:)**: is the array the vector should be stored in
 * **errCode(:)**: Returns an error code with various bits set for different errors,
-  that might happen, while retrieving each component of the vector.
+  which might happen, while retrieving each component of the vector.
   They can be checked by btest, and the different error codes are encoded in
   parameters:
     * **aoterr_fatal**: Something went irrecoverably wrong
@@ -311,7 +310,7 @@ Where:
   only partially defined in the configuration script.
 
 The interface for vectors within other tables is defined accordingly.
-In the interface described above, the conf_val vector has a given size, and
+In the interface described above, the conf_val vector has a given size and
 just the values need to be filled.
 However, it might be necessary to retrieve arrays, of which the size is not
 known beforehand, and should depend on the table definition in the configuration.
