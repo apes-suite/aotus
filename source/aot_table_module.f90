@@ -6,7 +6,7 @@
 !> This module provides some convenient functions to act on Lua tables.
 module aot_table_module
   use flu_binding
-  use aot_kinds_module, only: double_k, single_k, long_k
+  use flu_kinds_module, only: double_k, single_k, long_k
   use aot_err_module, only: aoterr_Fatal, aoterr_NonExistent, &
     &                       aoterr_WrongType
   use aot_top_module, only: aot_top_get_val

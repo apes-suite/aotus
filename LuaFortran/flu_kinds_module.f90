@@ -6,7 +6,7 @@
 !> Global definitions of some handy kind declarations
 !! with the help of the intrinsic selected_*_kind
 !! functions.
-module aot_kinds_module
+module flu_kinds_module
   implicit none
 
   integer, parameter :: quad_k = selected_real_kind(33)
@@ -14,4 +14,4 @@ module aot_kinds_module
   integer, parameter :: single_k = selected_real_kind(6)
   integer, parameter :: long_k = selected_int_kind(15)
 
-end module aot_kinds_module
+end module flu_kinds_module

@@ -10,7 +10,7 @@
 !! All intrinsic variables except complex numbers can be accessed this way.
 module aot_top_module
   use flu_binding
-  use aot_kinds_module, only: double_k, single_k, long_k
+  use flu_kinds_module, only: double_k, single_k, long_k
   use aot_err_module, only: aoterr_Fatal, aoterr_NonExistent, &
     &                       aoterr_WrongType, aot_err_handler
 

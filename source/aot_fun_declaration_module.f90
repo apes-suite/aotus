@@ -5,7 +5,7 @@
 
 !> Helping module to define the aot_fun_type without causing dependency locks.
 module aot_fun_declaration_module
-  use aot_kinds_module, only: long_k
+  use flu_kinds_module, only: long_k
 
   implicit none
 

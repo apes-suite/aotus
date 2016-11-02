@@ -14,7 +14,7 @@
 !! pointers.
 module aotus_module
   use flu_binding
-  use aot_kinds_module, only: double_k, single_k, long_k
+  use flu_kinds_module, only: double_k, single_k, long_k
   use aot_top_module, only: aot_top_get_val, aot_err_handler, &
     &                       aoterr_Fatal, aoterr_NonExistent, aoterr_WrongType
   use aot_table_module, only: aot_get_val, aot_table_set_val, &

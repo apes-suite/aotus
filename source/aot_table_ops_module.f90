@@ -9,7 +9,7 @@
 !! type specific implementations.
 module aot_table_ops_module
   use flu_binding
-  use aot_kinds_module, only: double_k, single_k, long_k
+  use flu_kinds_module, only: double_k, single_k, long_k
   use aot_top_module, only: aot_top_get_val
 
   implicit none

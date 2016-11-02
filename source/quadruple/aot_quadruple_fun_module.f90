@@ -9,7 +9,7 @@
 !! the usage of the functions from this module with quadruple precision numbers.
 module aot_quadruple_fun_module
   use flu_binding
-  use aot_kinds_module, only: double_k
+  use flu_kinds_module, only: double_k
   use aot_quadruple_top_module, only: quad_k
   use aot_fun_declaration_module, only: aot_fun_type
   use aot_table_module, only: aot_table_from_1Darray

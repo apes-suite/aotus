@@ -17,7 +17,7 @@ module flu_binding
   use lua_fif
   use lua_parameters
   use dump_lua_fif_module
-  use aot_kinds_module, only: long_k
+  use flu_kinds_module, only: long_k
 
   implicit none
 

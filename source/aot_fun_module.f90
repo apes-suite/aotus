@@ -19,7 +19,7 @@
 !! - Close the function finally with [[aot_fun_close]].
 module aot_fun_module
   use flu_binding
-  use aot_kinds_module, only: double_k, single_k
+  use flu_kinds_module, only: double_k, single_k
   use aot_fun_declaration_module, only: aot_fun_type
   use aot_table_module, only: aot_table_push, aot_table_from_1Darray
   use aot_top_module, only: aot_err_handler

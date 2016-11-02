@@ -15,7 +15,7 @@
 !! Otherwise the interfaces correspond to the scalar retrieval operations.
 module aot_vector_module
   use flu_binding
-  use aot_kinds_module, only: double_k, single_k, long_k
+  use flu_kinds_module, only: double_k, single_k, long_k
   use aot_table_ops_module, only: aot_table_close, aot_table_top, &
     &                             aot_table_length, aot_table_push, &
     &                             aot_table_first, aot_type_of

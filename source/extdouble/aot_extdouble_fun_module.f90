@@ -9,7 +9,7 @@
 !! the usage of the functions from this module with extdouble precision numbers.
 module aot_extdouble_fun_module
   use flu_binding
-  use aot_kinds_module, only: double_k
+  use flu_kinds_module, only: double_k
   use aot_extdouble_top_module, only: xdble_k
   use aot_fun_declaration_module, only: aot_fun_type
   use aot_table_module, only: aot_table_from_1Darray

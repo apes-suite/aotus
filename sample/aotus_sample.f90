@@ -1,5 +1,5 @@
 program aotus_sample
-  use aot_kinds_module, only: double_k
+  use flu_kinds_module, only: double_k
   use aotus_module, only: flu_State, open_config_file, close_config, aot_get_val, &
     &                     aot_top_get_val, &
     &                     aoterr_Fatal, aoterr_WrongType, aoterr_NonExistent

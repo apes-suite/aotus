@@ -4,7 +4,7 @@
 
 module aot_quadruple_table_module
   use flu_binding
-  use aot_kinds_module, only: double_k
+  use flu_kinds_module, only: double_k
   use aot_err_module, only: aoterr_Fatal, aoterr_NonExistent
   use aot_quadruple_top_module, only: quad_k
   use aot_top_module, only: aot_top_get_val

@@ -10,7 +10,7 @@
 !! Therefore this module is somehow the counter-part to the reading functions,
 !! however, it is almost completely independent and relies purely on Fortran
 !! output methods. Thus this module could stand alone, along with the
-!! aot_kinds_module without the Lua library.
+!! flu_kinds_module without the Lua library.
 module aot_extdouble_out_module
   use aot_out_general_module, only: aot_out_type, aot_out_open, aot_out_close, &
     &                               aot_out_open_table, aot_out_close_table, &
