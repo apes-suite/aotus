@@ -1,7 +1,7 @@
 program aotus_test
   use flu_binding, only: flu_State
 
-  use aot_kinds_module, only: long_k
+  use flu_kinds_module, only: long_k
   use aotus_module, only: open_config_file, close_config, aot_get_val
   use aot_top_module, only: aoterr_Fatal, aoterr_NonExistent, aoterr_WrongType
 
