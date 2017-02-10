@@ -1,7 +1,7 @@
 project: Aotus
 summary: A Fortran wrapper around the C-API of Lua, for usage as configuration.
-project_dir: source
-project_dir: LuaFortran
+src_dir: source
+src_dir: LuaFortran
 page_dir: doc_pages
 output_dir: docu
 project_bitbucket: https://bitbucket.org/apesteam/aotus
@@ -72,8 +72,8 @@ you get a list of available options to the waf script.
 What is Built
 -------------
 
-For your convenience the Lua library is included in version 5.3.3 (released
-2016-06-06).
+For your convenience the Lua library is included in version 5.3.4 (released
+2017-01-30).
 Its objects are completely gathered into the final *libaotus* library, so it is
 only necessary to link against this single static library to gain the
 configuration features of aotus in your Fortran application.
