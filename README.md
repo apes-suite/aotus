@@ -47,8 +47,8 @@ you get a list of available options to the waf script.
 What is Built
 -------------
 
-For your convenience the Lua library is included in version 5.3.3 (released
-2016-06-06).
+For your convenience the Lua library is included in version 5.3.4 (released
+2017-01-30).
 Its objects are completely gathered into the final *libaotus* library, so you
 only need to link against this single static library to gain the
 configuration features of Aotus in your Fortran application.
@@ -120,7 +120,7 @@ http://www.lua.org/license.html.
 ---
 Copyright (C) 2011-2013 German Research School for Simulation Sciences GmbH,
                         Aachen and others.
-              2014-2016 University of Siegen.
+              2014-2017 University of Siegen.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
