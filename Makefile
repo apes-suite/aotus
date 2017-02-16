@@ -1,5 +1,8 @@
 
+# Define variables for internal Lua source code
 EXTERNAL_LUA_V = 5.3.4
+# Default platform
+PLATFORM ?= linux
 
 # Define VPATH
 VPATH ?= $(shell pwd)
@@ -37,7 +40,7 @@ include $(TOP_DIR)/$(SMEKA_DIR)/Makefile.smeka
 LINK := $(FC)
 
 # Create targets for the library
-.PHONY: lib
+.PHONY: lib lua-lib
 lib: $(LIBRARIES)
 
 # Determine whether the user has added an external
@@ -45,12 +48,38 @@ lib: $(LIBRARIES)
 ifdef LUA_DIR
  # User-defined
  INCLUDES += -I$(LUA_DIR)/include
-else
- # lua-sources shipped
- LUA_DIR = $(TOP_DIR)/external/lua-$(EXTERNAL_LUA_V)
- INCLUDES += -I$(LUA_DIR)/src
-endif
+ LUA__LIB = $(LUA_DIR)/lib/liblua.a
+lua-lib:
+	@echo ""
+	@echo "Adding external Lua library to lib$(AOTUS_LIB).*"
+	@echo "Extracting $(LUA_DIR)/lib/liblua.a"
+	@echo ""
+	$(AR) -x $(LUA__LIB)
 
+else
+
+ # lua-sources shipped
+ LUA_DIR = external/lua-$(EXTERNAL_LUA_V)
+ INCLUDES += -I$(LUA_DIR)/src
+ LUA__LIB = $(LUA_DIR)/src/liblua.a
+lua-lib:
+	mkdir -p external
+	cp -rf $(TOP_DIR)/$(LUA_DIR) external/
+	$(MAKE) -C $(LUA_DIR) $(PLATFORM)
+	$(AR) -x $(LUA__LIB)
+
+# Ensure the Lua-library is built first
+$(LIBRARIES): |lua-lib
+
+# Add cleaning target
+.PHONY: clean-lua-lib
+clean-lua-lib:
+	$(MAKE) -C $(LUA_DIR) clean
+	-rm -f *.o
+
+clean: clean-lua-lib
+
+endif
 
 
 # Add the LuaFortran files

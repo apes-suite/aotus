@@ -88,6 +88,14 @@ which creates `bin/`, `include/` and `lib/` folders with the typical libraries
 and modules.
 
 
+_NOTE_: Currently `liblua.a` is not added to the archive, this may easily be achieved by
+performing this shell command (after having runned `make`)
+~~~~~{.sh}
+rm libaotus.a
+ar -ru libaotus.a *.o
+ranlib libaotus.a
+~~~~~
+
 What is Built
 -------------
 
