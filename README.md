@@ -43,6 +43,58 @@ By running:
 
 you get a list of available options to the waf script.
 
+### Build using Makefile
+
+Aotus also enables building the library, *libaotus.a*, using GNU `Makefile`.
+
+The build system is based on the [smeka][smeka] build system.  
+This build system requires compilation in subdirectory. A minimal compilation
+(defaulting to the GNU compiler suite, `gfortran`/`gcc`) is this:
+
+~~~~~{.sh}
+mkdir build
+cd build
+{
+echo 'TOP_DIR = ..'
+echo 'include $(TOP_DIR)/Makefile'
+} > Makefile
+make
+~~~~~
+and the resulting *libaotus.a* will be present.  
+To control the compiler flags one may create a file `setup.make` which may
+contain the regular `FC`, `FFLAGS`, `CC`, `CFLAGS`, `INCLUDES` and `LIBS`
+variables which are used to compile, and link.
+For instance to compile using only the `-g` flag:
+~~~~~{.sh}
+{
+echo FFLAGS = -g
+echo CFLAGS = -g
+} > setup.make
+~~~~~
+note that the default compiler is still the GNU suite.
+
+Aotus may be built with two variations of extended precisions. They may
+individually be turned on by setting these variables:
+~~~~~{makefile}
+EXTDOUBLE = 1 # defaults to 0 == do not build with extended double
+QUADRUPLE = 1 # defaults to 0 == do not build with quadruple double
+~~~~~
+
+To install the library together with the modules one may perform this:
+~~~~~{.sh}
+make install PREFIX=$HOME/aotus
+~~~~~
+which creates `bin/`, `include/` and `lib/` folders with the typical libraries
+and modules.
+
+
+_NOTE_: Currently `liblua.a` is not added to the archive, this may easily be achieved by
+performing this shell command (after having runned `make`)
+~~~~~{.sh}
+rm libaotus.a
+ar -ru libaotus.a *.o
+ranlib libaotus.a
+~~~~~
 
 What is Built
 -------------
@@ -141,3 +193,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 ---
+
+
+[smeka]: https://github.com/zerothi/smeka
