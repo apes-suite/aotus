@@ -55,8 +55,8 @@ This build system requires compilation in subdirectory. A minimal compilation
 mkdir build
 cd build
 {
-echo 'TOP_DIR=..'
-echo 'include $(TOP_DIR)/Makefile
+echo 'TOP_DIR = ..'
+echo 'include $(TOP_DIR)/Makefile'
 } > Makefile
 make
 ~~~~~
