@@ -20,7 +20,9 @@ where questions can be asked.
 How To Build
 ------------
 
-[Waf](http://code.google.com/p/waf/) is used as build system.
+[Waf](http://code.google.com/p/waf/) is used as build system, but alternatively
+you may also use the provided Makefile, see below.
+
 Run:
 
 ~~~~~~~~~~~{.sh}
@@ -33,7 +35,8 @@ If you want to select a specific Fortran compiler, set the environment variable
 And for a specific C compiler, set the environment variable *CC*.
 The Fortran compiler flags are set with the help of fcopts, which provide
 a set of compiler flag combinations for various compilers.
-They are found in the fortran_compiler.py file in the root directory of the project.
+They are found in the `fortran_compiler.py` file in the root directory of the
+project.
 
 By running:
 
@@ -45,11 +48,12 @@ you get a list of available options to the waf script.
 
 ### Build using Makefile
 
-Aotus also enables building the library, *libaotus.a*, using GNU `Makefile`.
+The aotus library can also built by using the provided `Makefile`,
+which utilizes the [smeka](https://github.com/zerothi/smeka) build system.
 
-The build system is based on the [smeka][smeka] build system.  
-This build system requires compilation in subdirectory. A minimal compilation
-(defaulting to the GNU compiler suite, `gfortran`/`gcc`) is this:
+This build system requires the compilation in a subdirectory.
+A minimal compilation (defaulting to the GNU compiler suite,
+`gfortran`/`gcc`) is achieved by running:
 
 ~~~~~{.sh}
 mkdir build
@@ -60,18 +64,20 @@ echo 'include $(TOP_DIR)/Makefile'
 } > Makefile
 make
 ~~~~~
-and the resulting *libaotus.a* will be present.  
-To control the compiler flags one may create a file `setup.make` which may
-contain the regular `FC`, `FFLAGS`, `CC`, `CFLAGS`, `INCLUDES` and `LIBS`
-variables which are used to compile, and link.
-For instance to compile using only the `-g` flag:
+
+and the resulting *libaotus.a* will be put in that directory.  
+To control the compiler flags you may create a file `setup.make`,
+which can define the usual `FC`, `FFLAGS`, `CC`, `CFLAGS`, `INCLUDES`
+and `LIBS` variables which are used for compilation, and linking.
+For instance, to compile with just the `-g` flag, you can use:
 ~~~~~{.sh}
 {
 echo FFLAGS = -g
 echo CFLAGS = -g
 } > setup.make
 ~~~~~
-note that the default compiler is still the GNU suite.
+
+Note that the default compiler is still the GNU suite.
 
 Aotus may be built with two variations of extended precisions. They may
 individually be turned on by setting these variables:
@@ -80,16 +86,17 @@ EXTDOUBLE = 1 # defaults to 0 == do not build with extended double
 QUADRUPLE = 1 # defaults to 0 == do not build with quadruple double
 ~~~~~
 
-To install the library together with the modules one may perform this:
+To install the library together with the modules in a given directory,
+you can run:
 ~~~~~{.sh}
 make install PREFIX=$HOME/aotus
 ~~~~~
-which creates `bin/`, `include/` and `lib/` folders with the typical libraries
-and modules.
+This will create `bin/`, `include/` and `lib/` directories within the
+`PREFIX` path with the typical libraries and modules.
 
 
-_NOTE_: Currently `liblua.a` is not added to the archive, this may easily be achieved by
-performing this shell command (after having runned `make`)
+_NOTE_: Currently `liblua.a` is not added to the archive, this may easily be
+achieved by performing this shell command (after having run `make`)
 ~~~~~{.sh}
 rm libaotus.a
 ar -ru libaotus.a *.o
@@ -128,10 +135,10 @@ ford aot_mainpage.md
 ~~~~~~~~~~~
 
 This will build a docu directory with the resulting documentation.
-Note, that this requires
+Note that this requires
 [FORD to be installed](https://github.com/cmacmackin/ford#installation)
 beforehand.
-This documentation is also online available at
+This documentation is also available online at
 [our server](https://geb.sts.nt.uni-siegen.de/aotus).
 
 ### Example
@@ -193,6 +200,3 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 ---
-
-
-[smeka]: https://github.com/zerothi/smeka

@@ -27,11 +27,11 @@ exclude: dummy_quadruple_vector_module.f90
 Advanced Options and Tables in Universal Scripting
 ==================================================
 
-The AOTUS library provides a Fortran wrapper around the C-API of the
+The Aotus library provides a Fortran wrapper around the C-API of the
 [Lua](http://www.lua.org) scripting language, allowing a convenient usage of Lua
 scripts as configuration files in Fortran applications.
 
-**It is available for download on [Bitbucket](https://bitbucket.org/apesteam/aotus).**
+**It is available for download from [Bitbucket](https://bitbucket.org/apesteam/aotus).**
 
 Please visit the [Wiki](https://bitbucket.org/apesteam/aotus/wiki/Home)
 for further information on its usage.
@@ -39,14 +39,14 @@ for further information on its usage.
 *This library is released under a simplified MIT licence, please have a look into the COPYRIGHT file for details.*
 
 Aotus is part of the APES suite, for which there is a
-[mailing list](https://listserv.uni-siegen.de/cgi-bin/mailman/listinfo/apes)
-where questions can be asked.
+[mailing list](https://listserv.uni-siegen.de/cgi-bin/mailman/listinfo/apes).
 
 
 How To Build
 ------------
 
 [Waf](http://code.google.com/p/waf/) is used as build system.
+
 Run:
 
 ~~~~~~~~~~~{.sh}
@@ -68,6 +68,63 @@ By running:
 ~~~~~~~~~~~
 
 you get a list of available options to the waf script.
+
+### Build using Makefile
+
+The aotus library can also built by using the provided `Makefile`,
+which utilizes the [smeka](https://github.com/zerothi/smeka) build system.
+
+This build system requires the compilation in a subdirectory.
+A minimal compilation (defaulting to the GNU compiler suite,
+`gfortran`/`gcc`) is achieved by running:
+
+~~~~~{.sh}
+mkdir build
+cd build
+{
+echo 'TOP_DIR = ..'
+echo 'include $(TOP_DIR)/Makefile'
+} > Makefile
+make
+~~~~~
+
+and the resulting *libaotus.a* will be put in that directory.  
+To control the compiler flags you may create a file `setup.make`,
+which can define the usual `FC`, `FFLAGS`, `CC`, `CFLAGS`, `INCLUDES`
+and `LIBS` variables which are used for compilation, and linking.
+For instance, to compile with just the `-g` flag, you can use:
+~~~~~{.sh}
+{
+echo FFLAGS = -g
+echo CFLAGS = -g
+} > setup.make
+~~~~~
+
+Note that the default compiler is still the GNU suite.
+
+Aotus may be built with two variations of extended precisions. They may
+individually be turned on by setting these variables:
+~~~~~{makefile}
+EXTDOUBLE = 1 # defaults to 0 == do not build with extended double
+QUADRUPLE = 1 # defaults to 0 == do not build with quadruple double
+~~~~~
+
+To install the library together with the modules in a given directory,
+you can run:
+~~~~~{.sh}
+make install PREFIX=$HOME/aotus
+~~~~~
+This will create `bin/`, `include/` and `lib/` directories within the
+`PREFIX` path with the typical libraries and modules.
+
+
+_NOTE_: Currently `liblua.a` is not added to the archive, this may easily be
+achieved by performing this shell command (after having run `make`)
+~~~~~{.sh}
+rm libaotus.a
+ar -ru libaotus.a *.o
+ranlib libaotus.a
+~~~~~
 
 
 What is Built
