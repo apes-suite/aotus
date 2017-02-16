@@ -47,7 +47,7 @@ you get a list of available options to the waf script.
 
 Aotus also enables building the library, *libaotus.a*, using GNU `Makefile`.
 
-The build system is based on the [[smeka]] build system.  
+The build system is based on the [smeka][smeka] build system.  
 This build system requires compilation in subdirectory. A minimal compilation
 (defaulting to the GNU compiler suite, `gfortran`/`gcc`) is this:
 
