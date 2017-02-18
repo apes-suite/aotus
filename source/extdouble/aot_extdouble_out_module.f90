@@ -72,10 +72,10 @@ contains
     end if
 
   end subroutine aot_out_val_extdouble
-!******************************************************************************!
+! *****************************************************************************!
 
 
-!******************************************************************************!
+! *****************************************************************************!
   !> This is a vectorized version of the value output.
   !!
   !! It takes a one-dimensional array and puts it into a table. The parameters
@@ -136,6 +136,6 @@ contains
     call aot_out_close_table(put_conf, advance_previous = .false.)
 
   end subroutine aot_out_val_arr_extdouble
-!******************************************************************************!
+! *****************************************************************************!
 
 end module aot_extdouble_out_module

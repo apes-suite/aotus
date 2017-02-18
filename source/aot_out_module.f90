@@ -68,7 +68,7 @@ module aot_out_module
 
 contains
 
-!******************************************************************************!
+! *****************************************************************************!
   !>  Put integer variables into the Lua script.
   !!
   !! The value is passed in with val, optionally you can assign a name to it
@@ -102,10 +102,10 @@ contains
     end if
 
   end subroutine aot_out_val_int
-!******************************************************************************!
+! *****************************************************************************!
 
 
-!******************************************************************************!
+! *****************************************************************************!
   !>  Put long variables into the Lua script.
   !!
   !! The value is passed in with val, optionally you can assign a name to it
@@ -139,10 +139,10 @@ contains
     end if
 
   end subroutine aot_out_val_long
-!******************************************************************************!
+! *****************************************************************************!
 
 
-!******************************************************************************!
+! *****************************************************************************!
   !>  Put real variables into the Lua script.
   !!
   !! The value is passed in with val, optionally you can assign a name to it
@@ -176,10 +176,10 @@ contains
     end if
 
   end subroutine aot_out_val_real
-!******************************************************************************!
+! *****************************************************************************!
 
 
-!******************************************************************************!
+! *****************************************************************************!
   !>  Put double variables into the Lua script.
   !!
   !! The value is passed in with val, optionally you can assign a name to it
@@ -213,10 +213,10 @@ contains
     end if
 
   end subroutine aot_out_val_double
-!******************************************************************************!
+! *****************************************************************************!
 
 
-!******************************************************************************!
+! *****************************************************************************!
   !>  Put logical variables into the Lua script.
   !!
   !! The value is passed in with val, optionally you can assign a name to it
@@ -257,10 +257,10 @@ contains
     end if
 
   end subroutine aot_out_val_logical
-!******************************************************************************!
+! *****************************************************************************!
 
 
-!******************************************************************************!
+! *****************************************************************************!
   !>  Put string variables into the Lua script.
   !!
   !! The value is passed in with val, optionally you can assign a name to it
@@ -295,10 +295,10 @@ contains
     end if
 
   end subroutine aot_out_val_string
-!******************************************************************************!
+! *****************************************************************************!
 
 
-!******************************************************************************!
+! *****************************************************************************!
   !> This is a vectorized version of the value output.
   !!
   !! It takes a one-dimensional array and puts it into a table. The parameters
@@ -359,10 +359,10 @@ contains
     call aot_out_close_table(put_conf, advance_previous = .false.)
 
   end subroutine aot_out_val_arr_int
-!******************************************************************************!
+! *****************************************************************************!
 
 
-!******************************************************************************!
+! *****************************************************************************!
   !> This is a vectorized version of the value output.
   !!
   !! It takes a one-dimensional array and puts it into a table. The parameters
@@ -423,10 +423,10 @@ contains
     call aot_out_close_table(put_conf, advance_previous = .false.)
 
   end subroutine aot_out_val_arr_long
-!******************************************************************************!
+! *****************************************************************************!
 
 
-!******************************************************************************!
+! *****************************************************************************!
   !> This is a vectorized version of the value output.
   !!
   !! It takes a one-dimensional array and puts it into a table. The parameters
@@ -487,10 +487,10 @@ contains
     call aot_out_close_table(put_conf, advance_previous = .false.)
 
   end subroutine aot_out_val_arr_real
-!******************************************************************************!
+! *****************************************************************************!
 
 
-!******************************************************************************!
+! *****************************************************************************!
   !> This is a vectorized version of the value output.
   !!
   !! It takes a one-dimensional array and puts it into a table. The parameters
@@ -551,10 +551,10 @@ contains
     call aot_out_close_table(put_conf, advance_previous = .false.)
 
   end subroutine aot_out_val_arr_double
-!******************************************************************************!
+! *****************************************************************************!
 
 
-!******************************************************************************!
+! *****************************************************************************!
   !> This is a vectorized version of the value output.
   !!
   !! It takes a one-dimensional array and puts it into a table. The parameters
@@ -615,10 +615,10 @@ contains
     call aot_out_close_table(put_conf, advance_previous = .false.)
 
   end subroutine aot_out_val_arr_logical
-!******************************************************************************!
+! *****************************************************************************!
 
 
-!******************************************************************************!
+! *****************************************************************************!
   !> This is a vectorized version of the value output.
   !!
   !! It takes a one-dimensional array and puts it into a table. The parameters
@@ -679,6 +679,6 @@ contains
     call aot_out_close_table(put_conf, advance_previous = .false.)
 
   end subroutine aot_out_val_arr_string
-!******************************************************************************!
+! *****************************************************************************!
 
 end module aot_out_module
