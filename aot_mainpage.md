@@ -12,6 +12,7 @@ display: private
 print_creation_date: True
 sort: permission
 source: true
+externalize: true
 author: University of Siegen
 exclude: dummy_extdouble_fun_module.f90
 exclude: dummy_extdouble_out_module.f90
