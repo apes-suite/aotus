@@ -297,3 +297,70 @@ class debug(BuildContext):
     "Build a debug executable"
     cmd = 'debug'
     variant = 'debug'
+
+from waflib import Logs
+class Dumper(BuildContext):
+	fun = 'dump'
+	cmd = 'dump'
+
+def dump(bld):
+    import os
+    # Do not perform tests when dumping a Makefile.
+    bld.options.no_tests = True
+    # call the build function as if a real build were performed
+    build(bld)
+    
+    from waflib import Task
+    bld.commands = []
+    bld.targets = []
+    bld.make_ins = []
+    
+    # store the command executed
+    def exec_command(self, *k, **kw):
+        self.command_executed = k[0]
+        self.path = kw['cwd'] or self.generator.bld.cwd
+        for x in self.outputs:
+            x.write('dummy', 'wb')
+        return False
+    Task.TaskBase.exec_command = exec_command
+
+    # perform a fake build, and accumulate the makefile bits
+    old_process = Task.TaskBase.process
+    def process(self):
+        old_process(self)
+
+        lst = []
+        for x in self.outputs:
+            lst.append(x.path_from(self.generator.bld.bldnode))
+        bld.targets.extend(lst)
+        lst.append(':')
+        for x in self.inputs + self.dep_nodes + self.generator.bld.node_deps.get(self.uid(), []):
+            lst.append(x.path_from(self.generator.bld.bldnode))
+            bld.make_ins.append(x.path_from(self.generator.bld.bldnode))
+        try:
+            if isinstance(self.command_executed, list):
+                self.command_executed = ' '.join(self.command_executed)
+            # Replace absolute paths.
+            self.command_executed = self.command_executed.replace(bld.out_dir, '.')
+            self.command_executed = self.command_executed.replace(bld.top_dir, os.path.relpath(bld.top_dir, bld.out_dir))
+        except Exception as e:
+            print(e)
+        else:
+            bld.commands.append(' '.join(lst))
+            bld.commands.append('\t{0}\n'.format(self.command_executed).replace(bld.out_dir, '.'))
+    Task.TaskBase.process = process
+
+    # write the makefile after the build is complete
+    def output_makefile(self):
+        self.commands.insert(0, "all: %s\n" % " ".join([x for x in self.targets if x not in self.make_ins]))
+        self.commands.insert(0, ".SUFFIXES:\n")
+        self.commands.insert(0, ".POSIX:")
+        self.commands.append('clean:')
+        targetlist = ' '.join(self.targets)
+        self.commands.append('\trm -f {0}\n'.format(targetlist))
+        node = self.bldnode.make_node('Makefile')
+        node.write("\n".join(self.commands))
+        Logs.warn('Wrote %s' % node.abspath())
+        for dummy in self.targets:
+            os.remove(os.path.join(self.out_dir,dummy))
+    bld.add_post_fun(output_makefile)
