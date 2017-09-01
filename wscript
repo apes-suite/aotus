@@ -48,7 +48,13 @@ def subconf(conf):
 
     # Load the C compiler information
     conf.setenv('cenv',conf.env)
-    conf.load('compiler_c')
+    if not conf.options.bench:
+      conf.load('compiler_c')
+    else:
+      print('loading bench c compiler')
+      from bench_compiler import set_bench_c_compiler
+      set_bench_c_compiler(conf)
+      conf.load('c')
 
     # Load the Fortran compiler information
     conf.setenv('')
