@@ -306,8 +306,9 @@ class debug(BuildContext):
 
 from waflib import Logs
 class Dumper(BuildContext):
-	fun = 'dump'
-	cmd = 'dump'
+    """Create a Makefile from the configured project."""
+    fun = 'dump'
+    cmd = 'dump'
 
 def dump(bld):
     import os
