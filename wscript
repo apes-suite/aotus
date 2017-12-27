@@ -9,7 +9,15 @@ VERSION = '1'
 top = '.'
 out = 'build'
 
+def append_aotmodpaths(ctx):
+    ''' Add directories with Python modules for waf to sys.path. '''
+    import sys
+    myabspath = ctx.path.abspath()
+    if not myabspath in sys.path:
+        sys.path.append(myabspath)
+
 def options(opt):
+    append_aotmodpaths(opt)
     opt.load('fortran_compiler')
     opt.load('fortran_language')
     opt.load('compiler_c')
@@ -36,6 +44,32 @@ def configure(conf):
     set_fc_flags(conf, ['standard', 'warn', 'w2e', 'debug'],
                  osfcflags)
 
+MKSTEMP_FRAG = '''
+#include <stdlib.h>
+int main(int argc, char **argv) {
+  char fname[] = "aotempXXXXXX";
+  return mkstemp(fname);
+}
+'''
+
+POPEN_FRAG = '''
+#include <stdio.h>
+int main(int argc, char **argv) {
+  FILE *channel;
+  const char fname[] = "aotchannel";
+  const char fmode[] = "r";
+  channel = popen(fname, fmode);
+}
+'''
+
+SRANDOM_FRAG = '''
+#include <stdlib.h>
+int main(int argc, char **argv) {
+  int seed = 42;
+  srandom(seed);
+}
+'''
+
 def subconf(conf):
     """
     Configure parts, which are relevant, even when called
@@ -44,6 +78,7 @@ def subconf(conf):
     of the configuration.
     """
 
+    append_aotmodpaths(conf)
     conf.load('waf_unit_test')
 
     # Load the C compiler information
@@ -72,18 +107,19 @@ def subconf(conf):
     tmpenv.detach()
 
     conf.start_msg('Can use POSIX features in Lua')
-    conf.check_cc(function_name='mkstemp',
-                  header_name=['stdlib.h', 'unistd.h'],
-                  define_name='MKSTEMP',
+    conf.check_cc(header_name=['stdlib.h', 'unistd.h', 'stdio.h', 'math.h'],
+                  define_name='POSIXH',
                   mandatory=False)
-    conf.check_cc(function_name='popen',
-                  header_name=['stdio.h'],
-                  define_name='POPEN',
-                  mandatory=False)
-    conf.check_cc(function_name='srandom',
-                  header_name=['stdlib.h', 'math.h'],
-                  define_name='SRANDOM',
-                  mandatory=False)
+    if conf.is_defined('POSIXH'):
+      conf.check_cc(fragment=MKSTEMP_FRAG,
+                    define_name='MKSTEMP',
+                    mandatory=False)
+      conf.check_cc(fragment=POPEN_FRAG,
+                    define_name='POPEN',
+                    mandatory=False)
+      conf.check_cc(fragment=SRANDOM_FRAG,
+                    define_name='SRANDOM',
+                    mandatory=False)
 
     if ( conf.is_defined('POPEN') and
          conf.is_defined('MKSTEMP') and
@@ -115,6 +151,7 @@ def subconf(conf):
 
 
 def build(bld):
+    append_aotmodpaths(bld)
     if bld.options.cmdsequence:
         import waflib.extras.command_sequence
 
