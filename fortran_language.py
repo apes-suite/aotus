@@ -47,6 +47,7 @@ program check_isnan
   real :: a_real
   logical :: noNumber
   noNumber = {0}(a_real)
+  write(*,*) noNumber
 end program check_isnan
 '''
 
@@ -64,6 +65,7 @@ program check_isnan
   real :: a_real
   logical :: noNumber
   noNumber = ieee_is_NaN(a_real)
+  write(*,*) noNumber
 end program check_isnan''',
                  msg = 'Checking for IEEE_is_NaN',
                  mandatory = mandatory, define_name='isNaN')
@@ -106,6 +108,7 @@ program check_c_sizeof
   real(kind=c_float) :: a_real
   integer :: realsize
   realsize = c_sizeof(a_real)
+  write(*,*) realsize
 end program check_c_sizeof
 ''',
                  msg = 'Checking for F2008 c_sizeof support',
@@ -127,6 +130,7 @@ program check_vendor_sizeof
   real :: a_real
   integer :: realsize
   realsize = sizeof(a_real)
+  write(*,*) realsize
 end program check_vendor_sizeof
 ''',
                  msg = 'Checking for vendor sizeof support',
@@ -154,6 +158,7 @@ program check_gamma
   real :: res
   read(*,*) a_real
   res = gamma(a_real)
+  write(*,*) res
 end program check_gamma''',
                   msg = 'Checking for F2008 Gamma function',
                   mandatory = mandatory, define_name='has_f2008_gamma')
@@ -177,6 +182,7 @@ program check_bessel
   read(*,*) an_int
   read(*,*) a_real
   res = bessel_jn(an_int, a_real)
+  write(*,*) res
 end program check_bessel''',
                 msg = 'Checking for F2008 Bessel_jn function',
                 mandatory = mandatory, define_name = 'has_f2008_bessel')
