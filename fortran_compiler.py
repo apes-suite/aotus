@@ -185,7 +185,7 @@ def set_fc_flags(conf, flagset, osflags=None):
         The flagset has to be an array of strings indicating the
         set of options to pick from the fcopts table.
     '''
-    myflags = osflags or []
+    myflags = list(osflags) or []
     if getattr(conf.env, 'IFORT_WIN32', False):
       fcname = 'IFORTwin'
     else:
