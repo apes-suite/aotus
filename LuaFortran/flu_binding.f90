@@ -273,8 +273,10 @@ contains
     logical :: exists
 
     integer(kind=c_int) :: retCode
+    integer(kind=c_int) :: c_index
 
-    retCode = lua_next(L%state, index)
+    c_index = int(index, kind = c_int)
+    retCode = lua_next(L%state, c_index)
     exists = (retCode /= 0)
   end function flu_next
 
