@@ -14,6 +14,9 @@ module flu_binding
 
   private
 
+  integer, parameter :: int_k = selected_int_kind(6)
+  integer, parameter :: long_k = selected_int_kind(15)
+
   type :: flu_State
     private
     type(c_ptr) :: state = c_null_ptr
@@ -59,6 +62,11 @@ module flu_binding
     module procedure flu_pushreal
     module procedure flu_pushdouble
   end interface flu_pushnumber
+
+  interface flu_pushinteger
+    module procedure flu_pushint
+    module procedure flu_pushlong
+  end interface flu_pushinteger
 
   interface flu_dump
     module procedure flu_dump_toBuf
@@ -315,15 +323,25 @@ contains
   end subroutine flu_pop
 
 
-  subroutine flu_pushinteger(L, n)
+  subroutine flu_pushint(L, n)
     type(flu_State) :: L
-    integer :: n
+    integer(kind=int_k) :: n
 
     integer(kind=lua_int) :: n_c
 
     n_c = int(n, lua_int)
     call lua_pushinteger(L%state, n_c)
-  end subroutine flu_pushinteger
+  end subroutine flu_pushint
+
+  subroutine flu_pushlong(L, n)
+    type(flu_State) :: L
+    integer(kind=long_k) :: n
+
+    integer(kind=lua_int) :: n_c
+
+    n_c = int(n, lua_int)
+    call lua_pushinteger(L%state, n_c)
+  end subroutine flu_pushlong
 
   subroutine flu_pushboolean(L, b)
     type(flu_State) :: L

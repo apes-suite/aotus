@@ -14,7 +14,7 @@
 !! Otherwise the interfaces correspond to the scalar retrieval operations.
 module aot_vector_module
   use flu_binding
-  use aot_kinds_module, only: double_k, single_k, long_k
+  use aot_kinds_module, only: double_k, single_k, int_k, long_k
   use aot_table_ops_module, only: aot_table_close, aot_table_top, &
     &                             aot_table_length, aot_table_push, &
     &                             aot_table_first
@@ -238,7 +238,7 @@ contains
 
     !> Vector read from the Lua table, will have the same length as the table
     !! but not exceed maxlength, if provided.
-    integer, intent(out), allocatable :: val(:)
+    integer(kind=int_k), intent(out), allocatable :: val(:)
 
     !> Error code describing problems encountered in each of the components.
     !! Will be allocated with the same length as the returned vector.
@@ -257,7 +257,7 @@ contains
 
     !> A default vector to use, if no proper definition is found.
     !! Components will be filled with the help of this default definition.
-    integer, intent(in), optional :: default(:)
+    integer(kind=int_k), intent(in), optional :: default(:)
 
     logical :: valid_args
 
@@ -547,7 +547,7 @@ contains
     integer, intent(in), optional :: thandle !< Handle of the parent table
 
     !> Vector read from the Lua table.
-    integer, intent(out) :: val(:)
+    integer(kind=int_k), intent(out) :: val(:)
 
     !> Error code describing problems encountered in each of the components.
     !! This array has to have the same length as val.
@@ -561,7 +561,7 @@ contains
 
     !> A default vector to use, if no proper definition is found.
     !! Components will be filled with the help of this default definition.
-    integer, intent(in), optional :: default(:)
+    integer(kind=int_k), intent(in), optional :: default(:)
 
     logical :: valid_args
 
@@ -882,7 +882,7 @@ contains
 
     !> Vector read from the Lua table, will have the same length as the table
     !! but not exceed maxlength, if provided.
-    integer, intent(out), allocatable :: val(:)
+    integer(kind=int_k), intent(out), allocatable :: val(:)
 
     !> Error code describing problems encountered in each of the components.
     !! Will be allocated with the same length as the returned vector.
@@ -895,7 +895,7 @@ contains
 
     !> A default vector to use, if no proper definition is found.
     !! Components will be filled with the help of this default definition.
-    integer, intent(in), optional :: default(:)
+    integer(kind=int_k), intent(in), optional :: default(:)
 
     integer :: vect_handle
     integer :: table_len, vect_len, def_len
@@ -1304,7 +1304,7 @@ contains
     type(flu_State) :: L !< Handle to the lua script
 
     !> Vector read from the Lua table.
-    integer, intent(out) :: val(:)
+    integer(kind=int_k), intent(out) :: val(:)
 
     !> Error code describing problems encountered in each of the components.
     !! This array has to have the same length as val.
@@ -1312,7 +1312,7 @@ contains
 
     !> A default vector to use, if no proper definition is found.
     !! Components will be filled with the help of this default definition.
-    integer, intent(in), optional :: default(:)
+    integer(kind=int_k), intent(in), optional :: default(:)
 
     integer :: vect_handle
     integer :: table_len, vect_len, def_len

@@ -5,7 +5,7 @@
 !> This module provides some convenient functions to act on Lua tables.
 module aot_table_module
   use flu_binding
-  use aot_kinds_module, only: double_k, single_k, long_k
+  use aot_kinds_module, only: double_k, single_k, int_k, long_k
   use aot_err_module, only: aoterr_Fatal, aoterr_NonExistent, &
     &                       aoterr_WrongType
   use aot_top_module, only: aot_top_get_val
@@ -254,7 +254,7 @@ contains
     integer, intent(in), optional :: thandle
 
     !> Value of the table entry if it exists.
-    integer, intent(out) :: val
+    integer(kind=int_k), intent(out) :: val
 
     !> Error code to indicate what kind of problem might have occured.
     integer, intent(out) :: ErrCode
@@ -274,7 +274,7 @@ contains
 
     !> Some default value, that should be used, if the variable is not set in
     !! the Lua script.
-    integer, intent(in), optional :: default
+    integer(kind=int_k), intent(in), optional :: default
 
     logical :: valid_args
 
@@ -668,7 +668,7 @@ contains
     integer, intent(in) :: thandle
 
     !> Value of the table entry if it exists.
-    integer, intent(in) :: val
+    integer(kind=int_k), intent(in) :: val
 
     !> Name of the entry to look for.
     !!

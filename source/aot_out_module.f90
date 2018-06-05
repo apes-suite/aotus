@@ -12,7 +12,7 @@
 !! output methods. Thus this module could stand alone, along with the
 !! aot_kinds_module without the Lua library.
 module aot_out_module
-  use aot_kinds_module, only: double_k, single_k, long_k
+  use aot_kinds_module, only: double_k, single_k, int_k, long_k
   use aot_out_general_module, only: aot_out_type, aot_out_open, aot_out_close, &
     &                               aot_out_open_table, aot_out_close_table, &
     &                               aot_out_breakline
@@ -77,7 +77,7 @@ contains
     type(aot_out_type), intent(inout)  :: put_conf
     character(len=*), optional, intent(in) :: vname
     logical, optional, intent(in) :: advance_previous
-    integer, intent(in) :: val
+    integer(kind=int_k), intent(in) :: val
     !------------------------------------------------------------------------
     character(len=3) :: adv_string
     !------------------------------------------------------------------------
@@ -315,7 +315,7 @@ contains
     character(len=*), optional, intent(in) :: vname
 
     !> Actual data to write into the script
-    integer, intent(in) :: val(:)
+    integer(kind=int_k), intent(in) :: val(:)
 
     !> Flag if this array should be put on the same line as the last entry of
     !! the parent table.
