@@ -1,12 +1,12 @@
 ! Copyright (C) 2011-2013 German Research School for Simulation Sciences GmbH,
 !                         Aachen and others.
-!               2013-2016 University of Siegen.
+!               2013-2018 University of Siegen.
 ! Please see the COPYRIGHT file in this directory for details.
 
 !> This module provides some convenient functions to act on Lua tables.
 module aot_table_module
   use flu_binding
-  use flu_kinds_module, only: double_k, single_k, long_k
+  use flu_kinds_module, only: double_k, single_k, int_k, long_k
   use aot_err_module, only: aoterr_Fatal, aoterr_NonExistent, &
     &                       aoterr_WrongType
   use aot_top_module, only: aot_top_get_val
@@ -298,7 +298,7 @@ contains
     integer, intent(in), optional :: thandle
 
     !> Value of the table entry if it exists.
-    integer, intent(out) :: val
+    integer(kind=int_k), intent(out) :: val
 
     !> Error code to indicate what kind of problem might have occured.
     integer, intent(out) :: ErrCode
@@ -318,7 +318,7 @@ contains
 
     !> Some default value, that should be used, if the variable is not set in
     !! the Lua script.
-    integer, intent(in), optional :: default
+    integer(kind=int_k), intent(in), optional :: default
 
     logical :: valid_args
     integer :: toptype
@@ -717,7 +717,7 @@ contains
     integer, intent(in) :: thandle
 
     !> Value of the table entry if it exists.
-    integer, intent(in) :: val
+    integer(kind=int_k), intent(in) :: val
 
     !> Name of the entry to look for.
     !!
@@ -931,7 +931,7 @@ contains
   !! The returned thandle provides the index to access this newly created
   !! table.
   subroutine create_1Darray_double(L, thandle, val)
-    type(flu_State) :: L !! Handle to the Lua script.
+    type(flu_State) :: L !< Handle to the Lua script.
 
     !> Handle to access the newly created table.
     integer, intent(out) :: thandle

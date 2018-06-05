@@ -1,6 +1,6 @@
 ! Copyright (C) 2011-2013 German Research School for Simulation Sciences GmbH,
 !                         Aachen and others.
-!               2013-2014 University of Siegen.
+!               2013-2018 University of Siegen.
 ! Please see the COPYRIGHT file in this directory for details.
 
 !> Module for interaction with topmost element of the Lua stack.
@@ -10,7 +10,7 @@
 !! All intrinsic variables except complex numbers can be accessed this way.
 module aot_top_module
   use flu_binding
-  use flu_kinds_module, only: double_k, single_k, long_k
+  use flu_kinds_module, only: double_k, single_k, int_k, long_k
   use aot_err_module, only: aoterr_Fatal, aoterr_NonExistent, &
     &                       aoterr_WrongType, aot_err_handler
 
@@ -151,14 +151,14 @@ contains
     type(flu_State) :: L !! Handle to the Lua script
 
     !> Value of the Variable in the script
-    integer, intent(out) :: val
+    integer(kind=int_k), intent(out) :: val
 
     !> Error code to indicate what kind of problem might have occured.
     integer, intent(out) :: ErrCode
 
     !> Some default value, that should be used, if the variable is not set in
     !! the Lua script.
-    integer, optional, intent(in) :: default
+    integer(kind=int_k), optional, intent(in) :: default
 
     logical :: not_retrievable
 
