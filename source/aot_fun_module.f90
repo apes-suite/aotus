@@ -110,7 +110,6 @@ contains
 
     !> Position of the function to look up in the table.
     integer, intent(in), optional :: pos
-
     call aot_table_push(L, parent, key, pos)
     fun = aot_fun_top(L)
   end subroutine aot_fun_table
