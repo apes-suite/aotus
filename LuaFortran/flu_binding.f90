@@ -17,7 +17,7 @@ module flu_binding
   use lua_fif
   use lua_parameters
   use dump_lua_fif_module
-  use flu_kinds_module, only: long_k
+  use flu_kinds_module, only: int_k, long_k
 
   implicit none
 
@@ -94,6 +94,11 @@ module flu_binding
     module procedure flu_pushreal
     module procedure flu_pushdouble
   end interface flu_pushnumber
+
+  interface flu_pushinteger
+    module procedure flu_pushint
+    module procedure flu_pushlong
+  end interface flu_pushinteger
 
   interface flu_dump
     module procedure flu_dump_toBuf
@@ -329,8 +334,10 @@ contains
     logical :: exists
 
     integer(kind=c_int) :: retCode
+    integer(kind=c_int) :: c_index
 
-    retCode = lua_next(L%state, index)
+    c_index = int(index, kind = c_int)
+    retCode = lua_next(L%state, c_index)
     exists = (retCode /= 0)
   end function flu_next
 
@@ -372,16 +379,25 @@ contains
   end subroutine flu_pop
 
 
-  subroutine flu_pushinteger(L, n)
+  subroutine flu_pushint(L, n)
     type(flu_State) :: L
-    integer :: n
+    integer(kind=int_k) :: n
 
     integer(kind=lua_int) :: n_c
 
     n_c = int(n, lua_int)
     call lua_pushinteger(L%state, n_c)
-  end subroutine flu_pushinteger
+  end subroutine flu_pushint
 
+  subroutine flu_pushlong(L, n)
+    type(flu_State) :: L
+    integer(kind=long_k) :: n
+
+    integer(kind=lua_int) :: n_c
+
+    n_c = int(n, lua_int)
+    call lua_pushinteger(L%state, n_c)
+  end subroutine flu_pushlong
 
   subroutine flu_pushboolean(L, b)
     type(flu_State) :: L
