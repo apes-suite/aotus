@@ -329,10 +329,10 @@ def kill_marker_flags(self):
 @TaskGen.feature('c', 'cstlib', 'cprogram', 'cxx')
 @TaskGen.before('process_rule')
 def enter_cenv(self):
-  if self.bld.variant == '':
-    self.env = self.bld.all_envs['cenv'].derive()
-  else:
+  try:
     self.env = self.bld.all_envs['cenv_'+self.bld.variant].derive()
+  except KeyError:
+    self.env = self.bld.all_envs['cenv'].derive()
 
 
 # A class to describe the debug variant
