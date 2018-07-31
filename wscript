@@ -23,11 +23,14 @@ def options(opt):
     opt.load('compiler_c')
     opt.load('waf_unit_test')
     opt.load('utest_results')
+    opt.load('make_fordoc')
     opt.add_option('--command_sequence', action='store_true', default=False,
                    help='Collect all executed commands into a single file.',
                    dest='cmdsequence')
 
 def configure(conf):
+
+    conf.load('make_fordoc')
 
     # Use a function for the first part to make it callable
     # from parent projects without setting the flags.
@@ -80,6 +83,8 @@ def subconf(conf):
 
     append_aotmodpaths(conf)
     conf.load('waf_unit_test')
+
+    conf.env.fordurl_aotus = 'https://geb.sts.nt.uni-siegen.de/doxy/aotus/'
 
     # Load the C compiler information
     conf.setenv('cenv',conf.env)
