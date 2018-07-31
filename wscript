@@ -212,6 +212,49 @@ def build(bld):
                      'source/aot_references_module.f90',
                      'source/aot_vector_module.f90']
 
+    if bld.env['fortsupp_quad_kind'] > 0:
+        aotus_sources += ['source/quadruple/aot_quadruple_fun_module.f90']
+        aotus_sources += ['source/quadruple/aot_quadruple_table_module.f90']
+        aotus_sources += ['source/quadruple/aot_quadruple_top_module.f90']
+        aotus_sources += ['source/quadruple/aot_quadruple_out_module.f90']
+        aotus_sources += ['source/quadruple/aot_quadruple_vector_module.f90']
+    else:
+        aotus_sources += ['source/quadruple/dummy_quadruple_fun_module.f90']
+        aotus_sources += ['source/quadruple/dummy_quadruple_table_module.f90']
+        aotus_sources += ['source/quadruple/dummy_quadruple_top_module.f90']
+        aotus_sources += ['source/quadruple/dummy_quadruple_out_module.f90']
+        aotus_sources += ['source/quadruple/dummy_quadruple_vector_module.f90']
+
+    if bld.env['fortsupp_xdble_kind'] > 0:
+        aotus_sources += ['source/extdouble/aot_extdouble_fun_module.f90']
+        aotus_sources += ['source/extdouble/aot_extdouble_table_module.f90']
+        aotus_sources += ['source/extdouble/aot_extdouble_top_module.f90']
+        aotus_sources += ['source/extdouble/aot_extdouble_out_module.f90']
+        aotus_sources += ['source/extdouble/aot_extdouble_vector_module.f90']
+    else:
+        aotus_sources += ['source/extdouble/dummy_extdouble_fun_module.f90']
+        aotus_sources += ['source/extdouble/dummy_extdouble_table_module.f90']
+        aotus_sources += ['source/extdouble/dummy_extdouble_top_module.f90']
+        aotus_sources += ['source/extdouble/dummy_extdouble_out_module.f90']
+        aotus_sources += ['source/extdouble/dummy_extdouble_vector_module.f90']
+
+    if bld.cmd == 'docu':
+        from waflib.extras.make_fordoc import gendoc
+        import os
+        source_nodes = []
+        for source in aotus_sources+flu_sources:
+            resource = bld.path.find_resource(source)
+            if resource:
+                source_nodes.append(resource)
+        tgt = bld.path.get_bld().make_node('docu/modules.json')
+        bld( rule = gendoc,
+             source = source_nodes,
+             target = tgt,
+             extern = [],
+             mainpage = os.path.join(bld.top_dir, 'aotus', 'aot_mainpage.md') )
+        bld.env.fordext_aotus = tgt
+        return None
+
     # C parts
     bld(
         features = 'c',
@@ -240,34 +283,7 @@ def build(bld):
           source = lua_sources,
           target = 'lua')
 
-
     # Fortran parts
-    if bld.env['fortsupp_quad_kind'] > 0:
-        aotus_sources += ['source/quadruple/aot_quadruple_fun_module.f90']
-        aotus_sources += ['source/quadruple/aot_quadruple_table_module.f90']
-        aotus_sources += ['source/quadruple/aot_quadruple_top_module.f90']
-        aotus_sources += ['source/quadruple/aot_quadruple_out_module.f90']
-        aotus_sources += ['source/quadruple/aot_quadruple_vector_module.f90']
-    else:
-        aotus_sources += ['source/quadruple/dummy_quadruple_fun_module.f90']
-        aotus_sources += ['source/quadruple/dummy_quadruple_table_module.f90']
-        aotus_sources += ['source/quadruple/dummy_quadruple_top_module.f90']
-        aotus_sources += ['source/quadruple/dummy_quadruple_out_module.f90']
-        aotus_sources += ['source/quadruple/dummy_quadruple_vector_module.f90']
-
-    if bld.env['fortsupp_xdble_kind'] > 0:
-        aotus_sources += ['source/extdouble/aot_extdouble_fun_module.f90']
-        aotus_sources += ['source/extdouble/aot_extdouble_table_module.f90']
-        aotus_sources += ['source/extdouble/aot_extdouble_top_module.f90']
-        aotus_sources += ['source/extdouble/aot_extdouble_out_module.f90']
-        aotus_sources += ['source/extdouble/aot_extdouble_vector_module.f90']
-    else:
-        aotus_sources += ['source/extdouble/dummy_extdouble_fun_module.f90']
-        aotus_sources += ['source/extdouble/dummy_extdouble_table_module.f90']
-        aotus_sources += ['source/extdouble/dummy_extdouble_top_module.f90']
-        aotus_sources += ['source/extdouble/dummy_extdouble_out_module.f90']
-        aotus_sources += ['source/extdouble/dummy_extdouble_vector_module.f90']
-
     bld(
         features = 'fc',
         source = flu_sources,
