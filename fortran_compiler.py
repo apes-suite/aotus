@@ -11,6 +11,7 @@
 ### * GFORTRAN (Gnu Fortran Compiler from the GCC)
 ### * IFORT (Intel Fortran Compiler)
 ### * NAG (NAG Fortran Compiler)
+### * NFORT (NEC Fortran Compiler)
 ### * OPEN64 (Open64 Compiler)
 ### * PGFC (PGI Fortran Compiler)
 ### * SOL (Oracle Solaris Studio Compiler)
@@ -158,6 +159,19 @@ fcopts['NEC', 'pre'] = ['-cpp']
 fcopts['NEC', 'profile'] = ['-ftrace','-O,fullmsg','-pvctl,fullmsg','-R,fmtlist,diaglist,summary']
 fcopts['NEC', 'fixform'] = []
 fcopts['NEC', 'freeform'] = []
+
+fcopts['NFORT', 'warn'] = ['-Wall', '-Woverflow-errors', '-Wextension', '-Wobsolescent']
+fcopts['NFORT', 'w2e'] = ['-Werror']
+fcopts['NFORT', 'standard'] = ['-std=f2008']
+fcopts['NFORT', 'double'] = []
+fcopts['NFORT', 'debug'] = ['-g', '-fcheck=all', '-traceback', '-minit-stack=nan', '-mmemory-trace-full']
+fcopts['NFORT', 'optimize'] = ['-O4']
+fcopts['NFORT', 'openmp'] = ['-fopenmp']
+fcopts['NFORT', 'noomp'] = []
+fcopts['NFORT', 'pre'] = ['-cpp']
+fcopts['NFORT', 'profile'] = ['-ftrace','-diag-vector=2','-report-all']
+fcopts['NFORT', 'fixform'] = ['-ffixed-form']
+fcopts['NFORT', 'freeform'] = ['-ffree-form']
 
 ### End of set of Fortran flags
 #########################################################################
