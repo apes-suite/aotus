@@ -168,8 +168,8 @@ fcopts['NFORT', 'debug'] = ['-g', '-fcheck=all', '-traceback', '-minit-stack=nan
 fcopts['NFORT', 'optimize'] = ['-O4']
 fcopts['NFORT', 'openmp'] = ['-fopenmp']
 fcopts['NFORT', 'noomp'] = []
-fcopts['NFORT', 'pre'] = ['-cpp']
-fcopts['NFORT', 'profile'] = ['-ftrace','-diag-vector=2','-report-all']
+fcopts['NFORT', 'pre'] = ['-fpp']
+fcopts['NFORT', 'profile'] = ['-ftrace','-fdiag-vector=2','-report-all']
 fcopts['NFORT', 'fixform'] = ['-ffixed-form']
 fcopts['NFORT', 'freeform'] = ['-ffree-form']
 
