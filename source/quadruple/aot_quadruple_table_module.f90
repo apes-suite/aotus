@@ -213,7 +213,7 @@ contains
 
     nVals = size(val)
     allocate(locVal(nVals))
-    locVal = real(val, kind=double_k)
+    locVal(:) = real(val, kind=double_k)
     call flu_createtable(L, nVals, 0)
     thandle = flu_gettop(L)
     tab = thandle
