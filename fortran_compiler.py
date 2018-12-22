@@ -29,6 +29,18 @@ fcopts = {}
 # * noomp:    deactivate openmp support
 # * profile:  activate profiling (with gprof)
 
+fcopts['BENCH', 'warn'] = ['-Wall', '-Wconversion', '-Wimplicit-interface', '-Wunderflow', '-W', '-frange-check']
+fcopts['BENCH', 'w2e'] = ['-Werror']
+fcopts['BENCH', 'standard'] = ['-std=f2008']
+fcopts['BENCH', 'double'] = ['-fdefault-real-8']
+fcopts['BENCH', 'debug'] = ['-fbacktrace', '-fcheck=bounds,do,mem,pointer,recursion', '-finit-real=nan', '-ffpe-trap=invalid,zero,overflow', '-g']
+fcopts['BENCH', 'optimize'] = ['-O3', '-march=native']
+fcopts['BENCH', 'openmp'] = ['-fopenmp']
+fcopts['BENCH', 'noomp'] = []
+fcopts['BENCH', 'profile'] = ['-pg']
+fcopts['BENCH', 'fixform'] = ['-ffixed-form']
+fcopts['BENCH', 'freeform'] = ['-ffree-form']
+
 fcopts['GFORTRAN', 'warn'] = ['-Wall', '-Wconversion', '-Wimplicit-interface', '-Wunderflow', '-W', '-frange-check']
 fcopts['GFORTRAN', 'w2e'] = ['-Werror']
 fcopts['GFORTRAN', 'standard'] = ['-std=f2008']

@@ -62,6 +62,15 @@ def set_bench_f_compiler(conf):
 
 	conf.add_os_flags('FCFLAGS')
 
+	# The Archiver:
+	# ============
+
+	# Find the archiver executable 'ar'.
+	conf.find_program('ar', var='AR')
+
+	# Flags for the archiver.
+	conf.env.ARFLAGS = ['rcs']
+
 	# ############################################################# #
 
 def set_bench_c_compiler(conf):
