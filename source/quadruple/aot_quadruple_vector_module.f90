@@ -260,7 +260,7 @@ contains
       if (present(default)) then
         allocate(val(def_len))
         allocate(errCode(vect_len))
-        val = default
+        val(:) = default
         ErrCode = ibSet(0, aoterr_NonExistent)
       else
         ! No vector definition in the Lua script and no default provided,
