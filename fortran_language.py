@@ -195,12 +195,20 @@ end program check_bessel''',
 # Real kinds:
 #############
 
-real_kind_stub = '''
+real_prec_stub = '''
 program check_r_kind
   implicit none
   integer, parameter :: real_k = selected_real_kind({0})
   real(kind=real_k) :: a_real
   write(*,*) real_k
+end program check_r_kind
+'''
+
+real_kind_stub = '''
+program check_r_kind
+  implicit none
+  real(kind={0}) :: a_real
+  write(*,*) {0}
 end program check_r_kind
 '''
 
@@ -228,7 +236,7 @@ def supports_quad_kind(conf, mandatory=True):
     else:
       fcenv['fortsupp_quad_kind'] = -1
   else:
-    conf.check_fc( fragment = real_kind_stub.format(33),
+    conf.check_fc( fragment = real_prec_stub.format(33),
                    mandatory = mandatory,
                    define_name = 'quadruple',
                    execute = True, define_ret = True)
@@ -276,7 +284,7 @@ def supports_xdble_kind(conf, mandatory=True):
       fcenv['fortsupp_xdble_kind'] = -1
   else:
 
-    conf.check_fc( fragment = real_kind_stub.format(18),
+    conf.check_fc( fragment = real_prec_stub.format(18),
                    mandatory = mandatory,
                    define_name = 'xdble',
                    execute = True, define_ret = True)
