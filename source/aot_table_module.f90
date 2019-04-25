@@ -69,6 +69,7 @@ module aot_table_module
     module procedure set_table_long
     module procedure set_table_string
     module procedure set_table_logical
+    module procedure set_table_userdata
   end interface
 
   !> Get a value from the Lua script.
@@ -891,6 +892,53 @@ contains
     end if
 
   end subroutine set_table_string
+
+  !> Put user-data pointer into a table.
+  subroutine set_table_userdata(val, L, thandle, key, pos)
+    use, intrinsic :: iso_c_binding, only: c_ptr
+
+    type(flu_State) :: L !! Handle to the Lua script.
+
+    !> Handle to the table to look the value up in.
+    integer, intent(in) :: thandle
+
+    !> Pointer to set in the table.
+    type(c_ptr), intent(in) :: val
+
+    !> Name of the entry to set.
+    !!
+    !! Key and pos are both optional, however at least one of them has to be
+    !! supplied.
+    !! The key takes precedence over the pos if both are given.
+    character(len=*), intent(in), optional :: key
+
+    !> Position of the entry to set in the table.
+    !!
+    !! It allows the access to unnamed arrays in the Lua tables.
+    integer, intent(in), optional :: pos
+
+    if (thandle > 0) then
+      if (present(key)) then
+        ! If there is a key, use that.
+        ! First put the value on the top of the stack
+        call flu_pushlightuserdata(L, val)
+        ! Now put it into the table
+        call flu_setField(L, thandle, trim(key))
+      else
+        ! No key given, try to put the value by position
+        if (present(pos)) then
+          ! First put the index, where to write the value into the table, on the
+          ! stack.
+          call flu_pushInteger(L, pos)
+          ! Now put the actual value on the top of the stack.
+          call flu_pushlightuserdata(L, val)
+          ! Get the two entries from the stack into the table.
+          call flu_setTable(L, thandle)
+        end if
+      end if
+    end if
+
+  end subroutine set_table_userdata
 
 
   !> This subroutine takes a one dimensional array, and puts it as a table
