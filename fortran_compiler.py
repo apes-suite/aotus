@@ -1,6 +1,31 @@
 #! /usr/bin/env pyhton
 # encoding: utf-8
-# Harald Klimach 2011
+# Copyright (c) 2016-2017, 2018 Harald Klimach <harald@klimachs.de>
+# Copyright (c) 2016 Peter Vitt <peter.vitt2@uni-siegen.de>
+# Copyright (c) 2016 Nikhil Anand <nikhil.anand@uni-siegen.de>
+# Copyright (c) 2018 Raphael Haupt <Raphael.Haupt@student.uni-siegen.de>
+#
+# Parts of this file were written by Harald Klimach, Peter Vitt, Nikhil Anand
+# and Raphael Haupt for University of Siegen.
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+# IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+# DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+# OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+# OR OTHER DEALINGS IN THE SOFTWARE.
+# **************************************************************************** #
 
 ### Definition of some default fortran flags for various compilers.
 ### Easily select and combine any of the desired features.
@@ -221,7 +246,7 @@ def set_fc_flags(conf, flagset, osflags=None):
         # Add the sanitize option to the debug flags for gfortran >= 4.8
         if (fs == 'debug') and (fcname == 'GFORTRAN'):
             if ( (int(conf.env.FC_VERSION[0]) == 4)
-                 and (int(conf.env.FC_VERSION[1]) >= 8) 
+                 and (int(conf.env.FC_VERSION[1]) >= 8)
                  or int(conf.env.FC_VERSION[0]) > 4):
                 myflags += ['-fsanitize=address']
 
