@@ -1,4 +1,4 @@
-! Copyright (c) 2012-2016 Harald Klimach <harald@klimachs.de>
+! Copyright (c) 2012-2016, 2019 Harald Klimach <harald@klimachs.de>
 ! Copyright (c) 2016 Kannan Masilamani <kannan.masilamani@uni-siegen.de>
 !
 ! Parts of this file were written by Harald Klimach for
@@ -63,12 +63,22 @@ contains
   !! pre-connected file.
   !! If both are given, the file will be opened and connected to a new unit,
   !! outUnit is ignored in this case.
-  subroutine aot_out_open(put_conf, filename, outUnit, indentation)
+  subroutine aot_out_open(put_conf, filename, outUnit, indentation, outstat)
     !------------------------------------------------------------------------
     type(aot_out_type), intent(out) :: put_conf !! Handle for the file
     character(len=*), optional, intent(in) :: filename !! File to open
     integer, optional, intent(in) :: outUnit !! Pre-connected unit to write to
     integer, optional, intent(in) :: indentation !! Spacer per indentation level
+
+    !> IO status of the open operation for the given filename or an indication
+    !! whether the given outUnit is actually connected to an open file.
+    !!
+    !! This returns 0 if the the returned unit has properly been properly
+    !! connected to the file.
+    integer, optional, intent(out) :: outstat
+    !------------------------------------------------------------------------
+    integer :: iError
+    logical :: isOpen
     !------------------------------------------------------------------------
 
     if (present(indentation)) then
@@ -80,12 +90,20 @@ contains
     if (present(filename)) then
       put_conf%outunit = newunit()
       open(unit = put_conf%outunit, file = trim(filename), action = 'write', &
-        &  status='replace', recl = 360)
+        &  status='replace', recl = 360, iostat=iError)
       put_conf%externalOpen = .false.
     else if (present(outUnit)) then
+      inquire(unit=outUnit, opened=isOpen)
+      if (isOpen) then
+        iError = 0
+      else
+        iError = -10
+      end if
       put_conf%externalOpen = .true.
       put_conf%outunit = outUnit
     end if
+
+    if (present(outstat)) outstat = iError
 
     put_conf%indent = 0
     put_conf%stack(:) = 0
@@ -104,7 +122,7 @@ contains
     !------------------------------------------------------------------------
     type(aot_out_type), intent(inout)  :: put_conf
     !------------------------------------------------------------------------
-    if( .not. put_conf%externalOpen ) close( put_conf%outunit )
+    if ( .not. put_conf%externalOpen ) close( put_conf%outunit )
   end subroutine aot_out_close
 ! **************************************************************************** !
 
