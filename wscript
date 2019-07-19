@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 # encoding: utf-8
-# Copyright (c) 2011-2013, 2015-2018 Harald Klimach <harald@klimachs.de>
+# Copyright (c) 2011-2013, 2015-2019 Harald Klimach <harald@klimachs.de>
 # Copyright (c) 2011 Konstantin Kleinheinz <k.kleinheinz@grs-sim.de>
 # Copyright (c) 2011 Manuel Hasert <m.hasert@grs-sim.de>
 # Copyright (c) 2011 Jens Zudrop <j.zudrop@grs-sim.de>
@@ -242,8 +242,8 @@ def build(bld):
                      'source/aot_table_module.f90',
                      'source/aot_table_ops_module.f90',
                      'source/aot_top_module.f90',
-		     'source/aot_out_module.f90',
-		     'source/aot_out_general_module.f90',
+                     'source/aot_out_module.f90',
+                     'source/aot_out_general_module.f90',
                      'source/aot_path_module.f90',
                      'source/aot_references_module.f90',
                      'source/aot_vector_module.f90']
@@ -405,12 +405,12 @@ def dump(bld):
     bld.options.no_tests = True
     # call the build function as if a real build were performed
     build(bld)
-    
+
     from waflib import Task
     bld.commands = []
     bld.targets = []
     bld.make_ins = []
-    
+
     # store the command executed
     def exec_command(self, *k, **kw):
         self.command_executed = k[0]

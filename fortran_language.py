@@ -22,7 +22,7 @@
 # **************************************************************************** #
 
 # Checks for supported Fortran language features
-# 
+#
 # Results are stored in the context environment with a fortsupp_ prefix.
 #
 def options(opt):
@@ -212,7 +212,57 @@ end program check_bessel''',
   fcenv['fortsupp_f2008_bessel'] = conf.is_defined('has_f2008_bessel')
 
   conf.env = fcenv
-    
+
+
+################
+# Integer kinds:
+################
+
+int_prec_stub = '''
+program check_i_kind
+  implicit none
+  integer, parameter :: int_k = selected_int_kind({0})
+  integer(kind=int_k) :: an_int
+  write(*,*) int_k
+end program check_i_kind
+'''
+
+def supported_int_kinds(conf, precisions = [ ( 1, True),
+                                             ( 2, True),
+                                             ( 4, True),
+                                             ( 8, True),
+                                             ( 9, True),
+                                             (16, False),
+                                             (18, False),
+                                             (32, False),
+                                             (38, False) ]):
+  ''' Check the available integer kinds.
+      Results in a dictionary that maps the tested precisions
+      to their respective integer kinds if supported.
+      The precisions needs to be a list of tuples, where each
+      tuple indicates a precision to check (as first index) and
+      whether it is mandatory or not (as second index).
+      By default, powers of two precisions are checked up to 32
+      and the usual maximal decimal places that fit into 4 byte (9),
+      8 byte (18) and 16 byte (38).
+      9 supported decimal places (4 byte integers) are assumed
+      mandatory.
+  '''
+  conf.env['fortsupp_intkind'] = {}
+  for prec in precisions:
+    fcenv = conf.env.derive()
+    fcenv.detach()
+
+    conf.check_fc( fragment = int_prec_stub.format(prec[0]),
+                   mandatory = prec[1],
+                   msg = 'Checking integer kind with {0} decimal places.'.format(prec[0]),
+                   define_name = 'intkind',
+                   execute = True, define_ret = True)
+
+    if conf.is_defined('intkind'):
+      fcenv['fortsupp_intkind'][prec[0]] = int( conf.get_define('intkind')
+                                             .replace('"', '').strip() )
+    conf.env = fcenv
 
 #############
 # Real kinds:
