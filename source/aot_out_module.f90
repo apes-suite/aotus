@@ -662,7 +662,7 @@ contains
     character(len=*), optional, intent(in) :: vname
 
     !> Actual data to write into the script
-    character(len=80), intent(in) :: val(:)
+    character(len=*), intent(in) :: val(:)
 
     !> Flag if this array should be put on the same line as the last entry of
     !! the parent table.
