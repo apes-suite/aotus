@@ -227,6 +227,13 @@ program check_i_kind
 end program check_i_kind
 '''
 
+default_int_stub = '''
+program check_default_ikind
+  implicit none
+  write(*,*) kind(1)
+end program check_default_ikind
+'''
+
 def supported_int_kinds(conf, precisions = [ ( 1, True),
                                              ( 2, True),
                                              ( 4, True),
@@ -263,6 +270,19 @@ def supported_int_kinds(conf, precisions = [ ( 1, True),
       fcenv['fortsupp_intkind'][prec[0]] = int( conf.get_define('intkind')
                                              .replace('"', '').strip() )
     conf.env = fcenv
+
+def default_int_kind(conf):
+  fcenv = conf.env.derive()
+  fcenv.detach()
+
+  conf.check_fc( fragment = default_int_stub,
+                 mandatory = False,
+                 msg = 'Getting default integer kind.',
+                 define_name = 'defintkind',
+                 execute = True, define_ret = True)
+
+  return( int( conf.get_define('defintkind').replace('"', '').strip() ) )
+
 
 #############
 # Real kinds:
