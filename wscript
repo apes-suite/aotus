@@ -187,6 +187,18 @@ def subconf(conf):
 
 
 def build(bld):
+    from waflib import Runner
+    orig_refill = Runner.Parallel.refill_task_list
+    def catch_circular(self):
+        from waflib import Errors
+        import fortran_circular
+        try:
+            return(orig_refill(self))
+        except Errors.WafError as e:
+            if not fortran_circular.find_circular_dependency(str(e)):
+                raise(e)
+    Runner.Parallel.refill_task_list = catch_circular
+
     append_aotmodpaths(bld)
     if bld.options.cmdsequence:
         import waflib.extras.command_sequence
