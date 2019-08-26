@@ -2,6 +2,8 @@ title: Overview
 
 *Avanced Options in Tables and Universal Scripting*
 
+![Aotus](logo.svg)
+
 This is a Fortran wrapper for the [Lua](http://www.lua.org) scripting language,
 dedicated to enable flexible configuration of Fortran applications with this
 full fledged scripting language.
