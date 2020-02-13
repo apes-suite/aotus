@@ -3,8 +3,9 @@ summary: A Fortran wrapper around the C-API of Lua, for usage as configuration.
 src_dir: source
 src_dir: LuaFortran
 page_dir: doc_pages
+copy_subdir: media
 output_dir: docu
-project_bitbucket: https://bitbucket.org/apesteam/aotus
+project_website: https://apes.osdn.io/pages/aotus
 graph: true
 display: public
 display: protected
@@ -32,7 +33,7 @@ The Aotus library provides a Fortran wrapper around the C-API of the
 [Lua](http://www.lua.org) scripting language, allowing a convenient usage of Lua
 scripts as configuration files in Fortran applications.
 
-**It is available for download from [Bitbucket](https://bitbucket.org/apesteam/aotus).**
+**It is available for download from [OSDN](https://osdn.net/projects/apes/scm/hg/aotus/).**
 
 *This library is released under a simplified MIT licence, please have a look into the COPYRIGHT file for details.*
 
@@ -224,9 +225,7 @@ For the license of the underlying Lua library have a look at
 http://www.lua.org/license.html.
 
 ---
-Copyright (C) 2011-2013 German Research School for Simulation Sciences GmbH,
-                        Aachen and others.
-              2014-2018 University of Siegen.
+See individual files for the respective copyright holders.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
