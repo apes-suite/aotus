@@ -52,6 +52,7 @@ def options(opt):
     opt.load('fortran_compiler')
     opt.load('fortran_language')
     opt.load('compiler_c')
+    opt.load('clang_compilation_database')
     opt.load('waf_unit_test')
     opt.load('utest_results')
     opt.load('make_fordoc')
