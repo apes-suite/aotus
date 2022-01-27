@@ -310,9 +310,9 @@ contains
     !! an actual Lua state handle.
     logical, intent(in), optional :: openLua
 
-    integer :: myHandle
+    integer :: myHandle = 0
 
-    ! open the table untill it reaches the final head node
+    ! open the table until it reaches the final head node
     call aot_path_open_table( me, conf, myHandle, openLua )
 
     if (me%head%NodeType == 'function') then
@@ -353,7 +353,8 @@ contains
 
     logical :: new_conf
     type(aot_path_node_type), pointer :: curNode => NULL()
-    integer :: myHandle, prevHandle
+    integer :: myHandle = 0
+    integer :: prevHandle = -1
 
     if (present(openLua)) then
       new_conf = openLua
