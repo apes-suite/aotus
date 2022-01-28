@@ -6,14 +6,11 @@ The AOTUS library provides a Fortran wrapper around the C-API of the
 scripts as configuration files in Fortran applications.
 
 Please visit the
-[FORD generated documentation](https://geb.sts.nt.uni-siegen.de/doxy/aotus)
+[FORD generated documentation](https://geb.inf.tu-dresden.de/doxy/aotus)
 for more information on its usage and details.
 
-*This library is released under a simplified MIT licence, please have a look into the COPYRIGHT file for details.*
-
-Aotus is part of the APES suite, for which there is a
-[mailing list](https://listserv.uni-siegen.de/cgi-bin/mailman/listinfo/apes)
-where questions can be asked.
+*This library is released under a simplified MIT licence, please have a look
+ into the COPYRIGHT file for details.*
 
 
 How To Build
@@ -161,7 +158,7 @@ Note that this requires
 [FORD to be installed](https://github.com/cmacmackin/ford#installation)
 beforehand.
 This documentation is also available online at
-[our server](https://geb.sts.nt.uni-siegen.de/aotus).
+[our server](https://geb.inf.tu-dresden.de/doxy/aotus).
 
 ### Example
 
@@ -172,9 +169,11 @@ also the source of this small program is found.
 
 Getting Started
 ---------------
-The central module in this library is the [aotus_module](https://geb.sts.nt.uni-siegen.de/doxy/aotus/module/aotus_module.html).
-Its documentation and the [Aotus overview](https://geb.sts.nt.uni-siegen.de/doxy/aotus/page/index.html) would be good
-starting points.
+The central module in this library is the
+[aotus_module](https://geb.inf.tu-dresden.de/doxy/aotus/module/aotus_module.html).
+Its documentation and the
+[Aotus overview](https://geb.inf.tu-dresden.de/doxy/aotus/page/index.html) would
+be good starting points.
 
 Related Projects
 ----------------
