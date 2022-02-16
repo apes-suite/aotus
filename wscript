@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 # encoding: utf-8
-# Copyright (c) 2011-2013, 2015-2021 Harald Klimach <harald@klimachs.de>
+# Copyright (c) 2011-2013, 2015-2022 Harald Klimach <harald@klimachs.de>
 # Copyright (c) 2011 Konstantin Kleinheinz <k.kleinheinz@grs-sim.de>
 # Copyright (c) 2011 Manuel Hasert <m.hasert@grs-sim.de>
 # Copyright (c) 2011 Jens Zudrop <j.zudrop@grs-sim.de>
@@ -121,12 +121,12 @@ def subconf(conf):
     # Load the C compiler information
     conf.setenv('cenv',conf.env)
     if not conf.options.bench:
-      conf.load('compiler_c')
+        conf.load('compiler_c')
     else:
-      print('loading bench c compiler')
-      from bench_compiler import set_bench_c_compiler
-      set_bench_c_compiler(conf)
-      conf.load('c')
+        print('loading bench c compiler')
+        from bench_compiler import set_bench_c_compiler
+        set_bench_c_compiler(conf)
+        conf.load('c')
 
     # Load the Fortran compiler information
     conf.setenv('')
@@ -148,27 +148,27 @@ def subconf(conf):
                   define_name='POSIXH',
                   mandatory=False)
     if conf.is_defined('POSIXH'):
-      conf.check_cc(fragment=MKSTEMP_FRAG,
-                    define_name='MKSTEMP',
-                    mandatory=False)
-      conf.check_cc(fragment=POPEN_FRAG,
-                    define_name='POPEN',
-                    mandatory=False)
-      conf.check_cc(fragment=SRANDOM_FRAG,
-                    define_name='SRANDOM',
-                    mandatory=False)
+        conf.check_cc(fragment=MKSTEMP_FRAG,
+                      define_name='MKSTEMP',
+                      mandatory=False)
+        conf.check_cc(fragment=POPEN_FRAG,
+                      define_name='POPEN',
+                      mandatory=False)
+        conf.check_cc(fragment=SRANDOM_FRAG,
+                      define_name='SRANDOM',
+                      mandatory=False)
 
     if ( conf.is_defined('POPEN') and
          conf.is_defined('MKSTEMP') and
          conf.is_defined('SRANDOM') ):
 
-      conf.env = tmpenv
-      conf.all_envs['cenv'].DEFINES_LUA_POSIX = ['LUA_USE_POSIX']
-      conf.end_msg('yes')
+        conf.env = tmpenv
+        conf.all_envs['cenv'].DEFINES_LUA_POSIX = ['LUA_USE_POSIX']
+        conf.end_msg('yes')
 
     else:
-      conf.env = tmpenv
-      conf.end_msg('NO')
+        conf.env = tmpenv
+        conf.end_msg('NO')
 
     # Only required to build the Lua interpreter
     conf.check_cc(lib='m', uselib_store='MATH', mandatory=False)
@@ -204,40 +204,40 @@ def build(bld):
     if bld.options.cmdsequence:
         import waflib.extras.command_sequence
 
-    core_sources = ['external/lua-5.4.3/src/lapi.c',
-                    'external/lua-5.4.3/src/lcode.c',
-                    'external/lua-5.4.3/src/lctype.c',
-                    'external/lua-5.4.3/src/ldebug.c',
-                    'external/lua-5.4.3/src/ldo.c',
-                    'external/lua-5.4.3/src/ldump.c',
-                    'external/lua-5.4.3/src/lfunc.c',
-                    'external/lua-5.4.3/src/lgc.c',
-                    'external/lua-5.4.3/src/llex.c',
-                    'external/lua-5.4.3/src/lmem.c',
-                    'external/lua-5.4.3/src/lobject.c',
-                    'external/lua-5.4.3/src/lopcodes.c',
-                    'external/lua-5.4.3/src/lparser.c',
-                    'external/lua-5.4.3/src/lstate.c',
-                    'external/lua-5.4.3/src/lstring.c',
-                    'external/lua-5.4.3/src/ltable.c',
-                    'external/lua-5.4.3/src/ltm.c',
-                    'external/lua-5.4.3/src/lundump.c',
-                    'external/lua-5.4.3/src/lvm.c',
-                    'external/lua-5.4.3/src/lzio.c']
-    lib_sources = ['external/lua-5.4.3/src/lauxlib.c',
-                   'external/lua-5.4.3/src/lbaselib.c',
-                   'external/lua-5.4.3/src/lcorolib.c',
-                   'external/lua-5.4.3/src/ldblib.c',
-                   'external/lua-5.4.3/src/liolib.c',
-                   'external/lua-5.4.3/src/lmathlib.c',
-                   'external/lua-5.4.3/src/loslib.c',
-                   'external/lua-5.4.3/src/ltablib.c',
-                   'external/lua-5.4.3/src/lstrlib.c',
-                   'external/lua-5.4.3/src/lutf8lib.c',
-                   'external/lua-5.4.3/src/loadlib.c',
-                   'external/lua-5.4.3/src/linit.c']
-    lua_sources = ['external/lua-5.4.3/src/lua.c']
-    luac_sources = ['external/lua-5.4.3/src/luac.c']
+    core_sources = ['external/lua-5.4.4/src/lapi.c',
+                    'external/lua-5.4.4/src/lcode.c',
+                    'external/lua-5.4.4/src/lctype.c',
+                    'external/lua-5.4.4/src/ldebug.c',
+                    'external/lua-5.4.4/src/ldo.c',
+                    'external/lua-5.4.4/src/ldump.c',
+                    'external/lua-5.4.4/src/lfunc.c',
+                    'external/lua-5.4.4/src/lgc.c',
+                    'external/lua-5.4.4/src/llex.c',
+                    'external/lua-5.4.4/src/lmem.c',
+                    'external/lua-5.4.4/src/lobject.c',
+                    'external/lua-5.4.4/src/lopcodes.c',
+                    'external/lua-5.4.4/src/lparser.c',
+                    'external/lua-5.4.4/src/lstate.c',
+                    'external/lua-5.4.4/src/lstring.c',
+                    'external/lua-5.4.4/src/ltable.c',
+                    'external/lua-5.4.4/src/ltm.c',
+                    'external/lua-5.4.4/src/lundump.c',
+                    'external/lua-5.4.4/src/lvm.c',
+                    'external/lua-5.4.4/src/lzio.c']
+    lib_sources = ['external/lua-5.4.4/src/lauxlib.c',
+                   'external/lua-5.4.4/src/lbaselib.c',
+                   'external/lua-5.4.4/src/lcorolib.c',
+                   'external/lua-5.4.4/src/ldblib.c',
+                   'external/lua-5.4.4/src/liolib.c',
+                   'external/lua-5.4.4/src/lmathlib.c',
+                   'external/lua-5.4.4/src/loslib.c',
+                   'external/lua-5.4.4/src/ltablib.c',
+                   'external/lua-5.4.4/src/lstrlib.c',
+                   'external/lua-5.4.4/src/lutf8lib.c',
+                   'external/lua-5.4.4/src/loadlib.c',
+                   'external/lua-5.4.4/src/linit.c']
+    lua_sources = ['external/lua-5.4.4/src/lua.c']
+    luac_sources = ['external/lua-5.4.4/src/luac.c']
 
     wrap_sources = ['LuaFortran/wrap_lua_dump.c']
 
@@ -319,7 +319,7 @@ def build(bld):
         features = 'c',
         source = wrap_sources,
         use = 'luaobjs',
-        includes = 'external/lua-5.4.3/src',
+        includes = 'external/lua-5.4.4/src',
         target = 'wrapobjs')
 
     ## Building the lua interpreter (usually not needed).
@@ -384,19 +384,19 @@ from waflib import TaskGen
 @TaskGen.before_method('process_use')
 @TaskGen.after_method('apply_link')
 def kill_marker_flags(self):
-  if not self.env.LIB and not self.env.LIBPATH:
-    self.env.FCSHLIB_MARKER = []
-  if not self.env.STLIB and not self.env.STLIBPATH:
-    self.env.FCSTLIB_MARKER = []
+    if not self.env.LIB and not self.env.LIBPATH:
+        self.env.FCSHLIB_MARKER = []
+    if not self.env.STLIB and not self.env.STLIBPATH:
+        self.env.FCSTLIB_MARKER = []
 
-# Modifiy C tasks to use a dedicated C environment.
+# Modify C tasks to use a dedicated C environment.
 @TaskGen.feature('c', 'cstlib', 'cprogram', 'cxx')
 @TaskGen.before('process_rule')
 def enter_cenv(self):
-  try:
-    self.env = self.bld.all_envs['cenv_'+self.bld.variant].derive()
-  except KeyError:
-    self.env = self.bld.all_envs['cenv'].derive()
+    try:
+        self.env = self.bld.all_envs['cenv_'+self.bld.variant].derive()
+    except KeyError:
+        self.env = self.bld.all_envs['cenv'].derive()
 
 
 # A class to describe the debug variant
@@ -456,6 +456,7 @@ def dump(bld):
         else:
             bld.commands.append(' '.join(lst))
             bld.commands.append('\t{0}\n'.format(self.command_executed).replace(bld.out_dir, '.'))
+
     Task.TaskBase.process = process
 
     # write the makefile after the build is complete
@@ -471,4 +472,5 @@ def dump(bld):
         Logs.warn('Wrote %s' % node.abspath())
         for dummy in self.targets:
             os.remove(os.path.join(self.out_dir,dummy))
+
     bld.add_post_fun(output_makefile)

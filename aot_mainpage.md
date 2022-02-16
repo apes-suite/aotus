@@ -152,8 +152,8 @@ ranlib libaotus.a
 What is Built
 -------------
 
-For your convenience the Lua library is included in version 5.3.5 (released
-2018-07-10).
+For your convenience the Lua library is included in version 5.4.4 (released
+2022-01-26).
 Its objects are completely gathered into the final *libaotus* library, so it is
 only necessary to link against this single static library to gain the
 configuration features of aotus in your Fortran application.
