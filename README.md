@@ -146,8 +146,8 @@ Yet, if you would rather install the *libaotus.a* and the module files into a
 The default build process will also create some unit test executables and
 execute them to ensure functionality of the various parts in the library.
 
-The documentation can be built with [FORD](https://github.com/cmacmackin/ford)
-by running:
+The documentation can be built with
+[FORD](https://github.com/Fortran-FOSS-Programmers/ford) by running:
 
 ~~~~~~~~~~~{.sh}
 ford aot_mainpage.md
@@ -155,7 +155,7 @@ ford aot_mainpage.md
 
 This will build a docu directory with the resulting documentation.
 Note that this requires
-[FORD to be installed](https://github.com/cmacmackin/ford#installation)
+[FORD to be installed](https://github.com/Fortran-FOSS-Programmers/ford/wiki/Installation)
 beforehand.
 This documentation is also available online at
 [our server](https://geb.inf.tu-dresden.de/doxy/aotus).

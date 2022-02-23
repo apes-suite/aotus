@@ -37,8 +37,7 @@ scripts as configuration files in Fortran applications.
 
 *This library is released under a simplified MIT licence, please have a look into the COPYRIGHT file for details.*
 
-Aotus is part of the APES suite, for which there is a
-[mailing list](https://listserv.uni-siegen.de/cgi-bin/mailman/listinfo/apes).
+Aotus is part of the [APES suite](https://apes.osdn.io).
 
 
 How To Build
@@ -173,8 +172,8 @@ Yet if you would rather install the *libaotus.a* and the module files into a
 The default build process will also create some unit test executables and
 execute them to ensure functionality of the various parts in the library.
 
-The documentation can be built with [FORD](https://github.com/cmacmackin/ford)
-by running:
+The documentation can be built with
+[FORD](https://github.com/Fortran-FOSS-Programmers/ford) by running:
 
 ~~~~~~~~~~~{.sh}
 ford aot_mainpage.md
@@ -182,10 +181,10 @@ ford aot_mainpage.md
 
 This will build a docu directory with the resulting documentation.
 Note, that this requires
-[FORD to be installed](https://github.com/cmacmackin/ford#installation)
+[FORD to be installed](https://github.com/Fortran-FOSS-Programmers/ford/wiki/Installation)
 beforehand.
 This documentation is also online available at
-[our server](https://geb.sts.nt.uni-siegen.de/doxy/aotus/).
+[our server](https://geb.inf.tu-dresden.de/doxy/aotus/).
 
 ### Example
 

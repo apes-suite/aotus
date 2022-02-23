@@ -116,7 +116,7 @@ def subconf(conf):
     append_aotmodpaths(conf)
     conf.load('waf_unit_test')
 
-    conf.env.fordurl_aotus = 'https://geb.sts.nt.uni-siegen.de/doxy/aotus/'
+    conf.env.fordurl_aotus = 'https://geb.inf.tu-dresden.de/doxy/aotus/'
 
     # Load the C compiler information
     conf.setenv('cenv',conf.env)
@@ -173,8 +173,8 @@ def subconf(conf):
     # Only required to build the Lua interpreter
     conf.check_cc(lib='m', uselib_store='MATH', mandatory=False)
 
-    conf.setenv('cenv_debug',conf.env)
-    conf.setenv('cenv_profile',conf.env)
+    conf.setenv('cenv_debug', conf.env)
+    conf.setenv('cenv_profile', conf.env)
     conf.setenv('')
 
     import fortran_language
