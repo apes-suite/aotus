@@ -274,23 +274,30 @@ from waflib import TaskGen
 @TaskGen.feature('fc')
 @TaskGen.after_method('apply_link')
 def addremove_fc_flags(self):
+  if hasattr(self, 'delflags'):
+    delflags = self.delflags
+  else:
+    delflags = []
+  self.env.detach()
   if hasattr(self, 'bld'):
     if hasattr(self.bld, 'options'):
       if self.bld.options.fc_addflags:
         for flag in self.bld.options.fc_addflags.split(' '):
           self.env.append_unique('FCFLAGS', [flag])
       if self.bld.options.fc_delflags:
-        for flag in self.bld.options.fc_delflags.split(' '):
-          try:
-            self.env.FCFLAGS.remove(flag)
-          except ValueError:
-            pass
+        delflags += self.bld.options.fc_delflags.split(' ')
+  for flag in delflags:
+    try:
+      self.env.FCFLAGS.remove(flag)
+    except ValueError:
+      pass
 
 @TaskGen.feature('fcprogram', 'fcshlib', 'fcstlib')
 @TaskGen.after_method('apply_link')
 def addremove_fclink_flags(self):
   if hasattr(self, 'bld'):
     if hasattr(self.bld, 'options'):
+      self.env.detach()
       if self.bld.options.fc_addflags:
         for flag in self.bld.options.fc_addflags.split(' '):
           self.env.append_unique('LINKFLAGS', [flag])
