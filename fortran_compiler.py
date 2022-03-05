@@ -68,9 +68,10 @@ fcopts['BENCH', 'profile'] = ['-pg']
 fcopts['BENCH', 'fixform'] = ['-ffixed-form']
 fcopts['BENCH', 'freeform'] = ['-ffree-form']
 
-fcopts['GFORTRAN', 'warn'] = ['-Wall', '-Wconversion', '-Wimplicit-interface', '-Wunderflow', '-W', '-frange-check']
+
+fcopts['GFORTRAN', 'warn'] = ['-Wall', '-Wno-maybe-uninitialized' ]
 fcopts['GFORTRAN', 'w2e'] = ['-Werror']
-fcopts['GFORTRAN', 'standard'] = ['-std=f2008']
+fcopts['GFORTRAN', 'standard'] = ['-std=f2008', '-pedantic-errors']
 fcopts['GFORTRAN', 'double'] = ['-fdefault-real-8']
 fcopts['GFORTRAN', 'debug'] = ['-Og', '-fbacktrace', '-fcheck=bounds,do,mem,pointer,recursion', '-finit-real=nan', '-ffpe-trap=invalid,zero,overflow', '-g']
 fcopts['GFORTRAN', 'optimize'] = ['-O3', '-march=native']
