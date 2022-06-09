@@ -44,8 +44,9 @@ The library can be compiled by various modern Fortran compilers as outlined in
 [Compiler Support](CompilerSupport.html).
 
 **An example, showing the usage of this library in a Fortran application, is
-given in aotus_sample.f90. You can find it in the *build* directory. The corresponding Lua script is given
-in config.lua, which you can find in the *sample* directory**
+given in aotus_sample.f90. You can find it in the *build* directory. The
+corresponding Lua script is given in config.lua, which you can find in the
+*sample* directory**
 
 Note on usage in parallel environments: Aotus itself is not providing parallel
 facilities. But it can be nicely used in parallel aswell. However, for
@@ -53,13 +54,14 @@ massively parallel systems, it is advisable to minimize the access to config
 files. To avoid excessive filesystem meta accesses it is recommended to
 load required files only on one process.
 An implementation of this for MPI can be found in TreElMs
-[distconf](https://geb.sts.nt.uni-siegen.de/doxy/treelm/namespacetem__aux__module.html#a1a6bd9f747c89e6f00791131e3d169de).
+[distconf](https://geb.inf.tu-dresden.de/doxy/treelm/proc/tem_open_distconf_array.html).
 
 
 Reading a Lua Script
 --------------------
 
-You need a handle for the Lua context of type [[flu_state]]. You can get that by opening and processing a Lua script with [[open_config_file]]:
+You need a handle for the Lua context of type [[flu_state]]. You can get that by
+opening and processing a Lua script with [[open_config_file]]:
 
     :::fortran
     call open_config_file(L, filename, errCode, errString)
