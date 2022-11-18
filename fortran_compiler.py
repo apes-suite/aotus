@@ -37,6 +37,7 @@
 ### * IFORT (Intel Fortran Compiler)
 ### * NAG (NAG Fortran Compiler)
 ### * NFORT (NEC Fortran Compiler)
+### * FUJITSU (Fujitsu Fortran Compiler for ARM64FX)
 ### * OPEN64 (Open64 Compiler)
 ### * PGFC (PGI Fortran Compiler)
 ### * SOL (Oracle Solaris Studio Compiler)
@@ -198,6 +199,19 @@ fcopts['NFORT', 'pre'] = ['-fpp']
 fcopts['NFORT', 'profile'] = ['-ftrace','-fdiag-vector=2','-report-all']
 fcopts['NFORT', 'fixform'] = ['-ffixed-form']
 fcopts['NFORT', 'freeform'] = ['-ffree-form']
+
+fcopts['FUJITSU', 'warn'] = ['-fw', '-N maxserious=1']
+fcopts['FUJITSU', 'w2e'] = []
+fcopts['FUJITSU', 'standard'] = ['-N check_std=08s']
+fcopts['FUJITSU', 'double'] = []
+fcopts['FUJITSU', 'debug'] = ['-g', '-NRtrap', '-Haefosux']
+fcopts['FUJITSU', 'optimize'] = ['-Kfast']
+fcopts['FUJITSU', 'openmp'] = ['-Kopenmp']
+fcopts['FUJITSU', 'noomp'] = []
+fcopts['FUJITSU', 'pre'] = []
+fcopts['FUJITSU', 'profile'] = ['-Nlst=t']
+fcopts['FUJITSU', 'fixform'] = ['-Fixed']
+fcopts['FUJITSU', 'freeform'] = ['-Free']
 
 ### End of set of Fortran flags
 #########################################################################
