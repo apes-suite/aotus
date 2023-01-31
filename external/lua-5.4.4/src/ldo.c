@@ -430,13 +430,11 @@ l_sinline void moveresults (lua_State *L, StkId res, int nres, int wanted) {
         ptrdiff_t savedres = savestack(L, res);
         L->ci->callstatus |= CIST_CLSRET;  /* in case of yields */
         L->ci->u2.nres = nres;
-        res = luaF_close(L, res, CLOSEKTOP, 1);
+        luaF_close(L, res, CLOSEKTOP, 1);
         L->ci->callstatus &= ~CIST_CLSRET;
-        if (L->hookmask) {  /* if needed, call hook after '__close's */
-          ptrdiff_t savedres = savestack(L, res);
+        if (L->hookmask)  /* if needed, call hook after '__close's */
           rethook(L, L->ci, nres);
-          res = restorestack(L, savedres);  /* hook can move stack */
-        }
+        res = restorestack(L, savedres);  /* close and hook can move stack */
         wanted = decodeNresults(wanted);
         if (wanted == LUA_MULTRET)
           wanted = nres;  /* we want all results */
@@ -653,7 +651,8 @@ static int finishpcallk (lua_State *L,  CallInfo *ci) {
   else {  /* error */
     StkId func = restorestack(L, ci->u2.funcidx);
     L->allowhook = getoah(ci->callstatus);  /* restore 'allowhook' */
-    func = luaF_close(L, func, status, 1);  /* can yield or raise an error */
+    luaF_close(L, func, status, 1);  /* can yield or raise an error */
+    func = restorestack(L, ci->u2.funcidx);  /* stack may be moved */
     luaD_seterrorobj(L, status, func);
     luaD_shrinkstack(L);   /* restore stack size in case of overflow */
     setcistrecst(ci, LUA_OK);  /* clear original status */

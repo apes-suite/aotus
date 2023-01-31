@@ -223,7 +223,8 @@ def build(bld):
                     'external/lua-5.4.4/src/ltm.c',
                     'external/lua-5.4.4/src/lundump.c',
                     'external/lua-5.4.4/src/lvm.c',
-                    'external/lua-5.4.4/src/lzio.c']
+                    'external/lua-5.4.4/src/lzio.c',
+                    'external/lua-5.4.4/src/ltests.c']
     lib_sources = ['external/lua-5.4.4/src/lauxlib.c',
                    'external/lua-5.4.4/src/lbaselib.c',
                    'external/lua-5.4.4/src/lcorolib.c',
@@ -237,7 +238,6 @@ def build(bld):
                    'external/lua-5.4.4/src/loadlib.c',
                    'external/lua-5.4.4/src/linit.c']
     lua_sources = ['external/lua-5.4.4/src/lua.c']
-    luac_sources = ['external/lua-5.4.4/src/luac.c']
 
     wrap_sources = ['LuaFortran/wrap_lua_dump.c']
 
