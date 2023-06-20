@@ -319,7 +319,7 @@ def build(bld):
         features = 'c',
         source = wrap_sources,
         use = 'luaobjs',
-        includes = 'external/lua-5.4.4/src',
+        includes = 'external/lua-5.4.6/src',
         target = 'wrapobjs')
 
     ## Building the lua interpreter (usually not needed).
