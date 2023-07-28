@@ -83,7 +83,7 @@ fcopts['GFORTRAN', 'profile'] = ['-pg']
 fcopts['GFORTRAN', 'fixform'] = ['-ffixed-form']
 fcopts['GFORTRAN', 'freeform'] = ['-ffree-form']
 
-fcopts['IFORT', 'warn'] = '-warn all'.split()
+fcopts['IFORT', 'warn'] = '-warn all,noexternal'.split()
 fcopts['IFORT', 'w2e'] = '-warn stderrors'.split()
 fcopts['IFORT', 'standard'] = ['-stand']
 fcopts['IFORT', 'double'] = '-real-size 64'.split()
