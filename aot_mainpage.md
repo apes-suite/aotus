@@ -5,7 +5,7 @@ src_dir: LuaFortran
 page_dir: doc_pages
 copy_subdir: media
 output_dir: docu
-project_website: https://apes.osdn.io/pages/aotus
+project_website: https://geb.inf.tu-dresden.de/apes-suite/pages/aotus.html
 graph: true
 display: public
 display: protected
@@ -33,11 +33,12 @@ The Aotus library provides a Fortran wrapper around the C-API of the
 [Lua](http://www.lua.org) scripting language, allowing a convenient usage of Lua
 scripts as configuration files in Fortran applications.
 
-**It is available for download from [OSDN](https://osdn.net/projects/apes/scm/hg/aotus/).**
+**It is available for download from [OSDN](https://github.com/apes-suite/aotus).**
 
-*This library is released under a simplified MIT licence, please have a look into the COPYRIGHT file for details.*
+*This library is released under a simplified MIT licence,
+ please have a look into the COPYRIGHT file for details.*
 
-Aotus is part of the [APES suite](https://apes.osdn.io).
+Aotus is part of the [APES suite](https://geb.inf.tu-dresden.de/apes-suite/).
 
 
 How To Build
@@ -109,7 +110,7 @@ echo 'include $(TOP_DIR)/Makefile.smeka'
 make
 ~~~~~
 
-and the resulting *libaotus.a* will be put in that directory.  
+and the resulting *libaotus.a* will be put in that directory.
 To control the compiler flags you may create a file `setup.make`,
 which can define the usual `FC`, `FFLAGS`, `CC`, `CFLAGS`, `INCLUDES`
 and `LIBS` variables which are used for compilation, and linking.
@@ -151,8 +152,8 @@ ranlib libaotus.a
 What is Built
 -------------
 
-For your convenience the Lua library is included in version 5.4.4 (released
-2022-01-26).
+For your convenience the Lua library is included in version 5.4.6 (released
+2023-05-14).
 Its objects are completely gathered into the final *libaotus* library, so it is
 only necessary to link against this single static library to gain the
 configuration features of aotus in your Fortran application.

@@ -84,7 +84,7 @@ echo 'include $(TOP_DIR)/Makefile.smeka'
 make
 ~~~~~
 
-and the resulting *libaotus.a* will be put in that directory.  
+and the resulting *libaotus.a* will be put in that directory.
 To control the compiler flags you may create a file `setup.make`,
 which can define the usual `FC`, `FFLAGS`, `CC`, `CFLAGS`, `INCLUDES`
 and `LIBS` variables which are used for compilation, and linking.
@@ -125,8 +125,8 @@ ranlib libaotus.a
 What is Built
 -------------
 
-For your convenience the Lua library is included in version 5.4.4 (released
-2022-01-26).
+For your convenience the Lua library is included in version 5.4.6 (released
+2023-05-14).
 Its objects are completely gathered into the final *libaotus* library, so you
 only need to link against this single static library to gain the
 configuration features of Aotus in your Fortran application.
@@ -198,9 +198,9 @@ For the license of the underlying Lua library have a look at
 http://www.lua.org/license.html.
 
 ---
-Copyright (C) 2011-2013 German Research School for Simulation Sciences GmbH,
-                        Aachen and others.
-              2014-2018 University of Siegen.
+
+Copyright (C) 2011-2023
+See individual files for the respective contributors and copyright holders.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
