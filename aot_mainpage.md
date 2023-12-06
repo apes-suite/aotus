@@ -3,7 +3,6 @@ summary: A Fortran wrapper around the C-API of Lua, for usage as configuration.
 src_dir: source
 src_dir: LuaFortran
 page_dir: doc_pages
-copy_subdir: media
 output_dir: docu
 project_website: https://geb.inf.tu-dresden.de/apes-suite/pages/aotus.html
 graph: true
@@ -33,10 +32,10 @@ The Aotus library provides a Fortran wrapper around the C-API of the
 [Lua](http://www.lua.org) scripting language, allowing a convenient usage of Lua
 scripts as configuration files in Fortran applications.
 
-**It is available for download from [OSDN](https://github.com/apes-suite/aotus).**
+**It is available for download from [Github](https://github.com/apes-suite/aotus).**
 
 *This library is released under a simplified MIT licence,
- please have a look into the COPYRIGHT file for details.*
+ please have a look into the LICENSE file for details.*
 
 Aotus is part of the [APES suite](https://geb.inf.tu-dresden.de/apes-suite/).
 
@@ -58,7 +57,7 @@ If you want to select a specific Fortran compiler, set the environment variable
 And for a specific C compiler, set the environment variable *CC*.
 The Fortran compiler flags are set with the help of fcopts, which provide
 a set of compiler flag combinations for various compilers.
-They are found in the fortran_compiler.py file in the root directory of the project.
+They are found in the `fortran_compiler.py` file in the root directory of the project.
 
 By running:
 
