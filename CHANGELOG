@@ -1,0 +1,9 @@
+CHANGELOG
+=========
+
+1.0.1
+-----
+
+ * Fix for smeka Makefile to point to the correct Lua subdirectory
+ * Properly point to github as repository host in documentation
+ * Update waf to 2.0.26
