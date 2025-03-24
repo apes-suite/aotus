@@ -167,11 +167,11 @@ pointers.</p>
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
               <ul class="list-inline">
-                  <li class="list-inline-item"><a href='flu_kinds_module.html'>flu_kinds_module</a></li>
-                  <li class="list-inline-item"><a href='aot_top_module.html'>aot_top_module</a></li>
-                  <li class="list-inline-item"><a href='aot_vector_module.html'>aot_vector_module</a></li>
-                  <li class="list-inline-item"><a href='flu_binding.html'>flu_binding</a></li>
                   <li class="list-inline-item"><a href='aot_table_module.html'>aot_table_module</a></li>
+                  <li class="list-inline-item"><a href='flu_binding.html'>flu_binding</a></li>
+                  <li class="list-inline-item"><a href='flu_kinds_module.html'>flu_kinds_module</a></li>
+                  <li class="list-inline-item"><a href='aot_vector_module.html'>aot_vector_module</a></li>
+                  <li class="list-inline-item"><a href='aot_top_module.html'>aot_top_module</a></li>
               </ul>
             </li>
             <li class="list-group-item">
@@ -936,7 +936,7 @@ modules which it uses.
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-l~173"></span>
+              <span class="anchor" id="variable-l~3"></span>
               type(<a href='../type/flu_state.html'>flu_State</a>)
             </td>
 <td></td>
@@ -951,7 +951,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-filename~5"></span>
+              <span class="anchor" id="variable-filename"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -966,7 +966,7 @@ modules which it uses.
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-errcode~46"></span>
+              <span class="anchor" id="variable-errcode"></span>
               integer,
             </td>
 <td>intent(out),</td>
@@ -976,12 +976,12 @@ modules which it uses.
             <td>::</td>
             <td><strong>ErrCode</strong></td>
             <td>
-<p>Error code returned by Lua during loading or executing the file.</p><a href="../proc/open_config_file.html#variable-errcode~46" class="pull-right"><emph>Read more&hellip;</emph></a>
+<p>Error code returned by Lua during loading or executing the file.</p><a href="../proc/open_config_file.html#variable-errcode" class="pull-right"><emph>Read more&hellip;</emph></a>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-errstring~4"></span>
+              <span class="anchor" id="variable-errstring"></span>
               character(len=*),
             </td>
 <td>intent(out),</td>
@@ -991,12 +991,12 @@ modules which it uses.
             <td>::</td>
             <td><strong>ErrString</strong></td>
             <td>
-<p>Obtained error description from the Lua stack.</p><a href="../proc/open_config_file.html#variable-errstring~4" class="pull-right"><emph>Read more&hellip;</emph></a>
+<p>Obtained error description from the Lua stack.</p><a href="../proc/open_config_file.html#variable-errstring" class="pull-right"><emph>Read more&hellip;</emph></a>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-buffer~3"></span>
+              <span class="anchor" id="variable-buffer"></span>
               type(<a href='../type/cbuf_type.html'>cbuf_type</a>),
             </td>
 <td>intent(out),</td>
@@ -1007,7 +1007,7 @@ modules which it uses.
             <td><strong>buffer</strong></td>
             <td>
 <p>Optional argument to return the compiled script after loading it to
-the caller.</p><a href="../proc/open_config_file.html#variable-buffer~3" class="pull-right"><emph>Read more&hellip;</emph></a>
+the caller.</p><a href="../proc/open_config_file.html#variable-buffer" class="pull-right"><emph>Read more&hellip;</emph></a>
             </td>
         </tr>
     </tbody>
@@ -1037,7 +1037,7 @@ the caller.</p><a href="../proc/open_config_file.html#variable-buffer~3" class="
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-l~174"></span>
+              <span class="anchor" id="variable-l~4"></span>
               type(<a href='../type/flu_state.html'>flu_State</a>)
             </td>
 <td></td>
@@ -1052,7 +1052,7 @@ the caller.</p><a href="../proc/open_config_file.html#variable-buffer~3" class="
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-chunk~2"></span>
+              <span class="anchor" id="variable-chunk"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -1067,7 +1067,7 @@ the caller.</p><a href="../proc/open_config_file.html#variable-buffer~3" class="
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-errcode~47"></span>
+              <span class="anchor" id="variable-errcode~2"></span>
               integer,
             </td>
 <td>intent(out),</td>
@@ -1077,12 +1077,12 @@ the caller.</p><a href="../proc/open_config_file.html#variable-buffer~3" class="
             <td>::</td>
             <td><strong>ErrCode</strong></td>
             <td>
-<p>Error code returned by Lua during loading or executing the file.</p><a href="../proc/open_config_chunk.html#variable-errcode~47" class="pull-right"><emph>Read more&hellip;</emph></a>
+<p>Error code returned by Lua during loading or executing the file.</p><a href="../proc/open_config_chunk.html#variable-errcode~2" class="pull-right"><emph>Read more&hellip;</emph></a>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-errstring~5"></span>
+              <span class="anchor" id="variable-errstring~2"></span>
               character(len=*),
             </td>
 <td>intent(out),</td>
@@ -1092,7 +1092,7 @@ the caller.</p><a href="../proc/open_config_file.html#variable-buffer~3" class="
             <td>::</td>
             <td><strong>ErrString</strong></td>
             <td>
-<p>Obtained error description from the Lua stack.</p><a href="../proc/open_config_chunk.html#variable-errstring~5" class="pull-right"><emph>Read more&hellip;</emph></a>
+<p>Obtained error description from the Lua stack.</p><a href="../proc/open_config_chunk.html#variable-errstring~2" class="pull-right"><emph>Read more&hellip;</emph></a>
             </td>
         </tr>
     </tbody>
@@ -1123,7 +1123,7 @@ the caller.</p><a href="../proc/open_config_file.html#variable-buffer~3" class="
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-l~175"></span>
+              <span class="anchor" id="variable-l~5"></span>
               type(<a href='../type/flu_state.html'>flu_State</a>)
             </td>
 <td></td>
@@ -1138,7 +1138,7 @@ the caller.</p><a href="../proc/open_config_file.html#variable-buffer~3" class="
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-buffer~4"></span>
+              <span class="anchor" id="variable-buffer~2"></span>
               character(len=1),
             </td>
 <td>intent(in)</td>
@@ -1153,7 +1153,7 @@ the caller.</p><a href="../proc/open_config_file.html#variable-buffer~3" class="
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-bufname~2"></span>
+              <span class="anchor" id="variable-bufname"></span>
               character(len=*),
             </td>
 <td>intent(in),</td>
@@ -1168,7 +1168,7 @@ the caller.</p><a href="../proc/open_config_file.html#variable-buffer~3" class="
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-errcode~48"></span>
+              <span class="anchor" id="variable-errcode~3"></span>
               integer,
             </td>
 <td>intent(out),</td>
@@ -1178,12 +1178,12 @@ the caller.</p><a href="../proc/open_config_file.html#variable-buffer~3" class="
             <td>::</td>
             <td><strong>ErrCode</strong></td>
             <td>
-<p>Error code returned by Lua during loading or executing the file.</p><a href="../proc/open_config_buffer.html#variable-errcode~48" class="pull-right"><emph>Read more&hellip;</emph></a>
+<p>Error code returned by Lua during loading or executing the file.</p><a href="../proc/open_config_buffer.html#variable-errcode~3" class="pull-right"><emph>Read more&hellip;</emph></a>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-errstring~6"></span>
+              <span class="anchor" id="variable-errstring~3"></span>
               character(len=*),
             </td>
 <td>intent(out),</td>
@@ -1193,7 +1193,7 @@ the caller.</p><a href="../proc/open_config_file.html#variable-buffer~3" class="
             <td>::</td>
             <td><strong>ErrString</strong></td>
             <td>
-<p>Obtained error description from the Lua stack.</p><a href="../proc/open_config_buffer.html#variable-errstring~6" class="pull-right"><emph>Read more&hellip;</emph></a>
+<p>Obtained error description from the Lua stack.</p><a href="../proc/open_config_buffer.html#variable-errstring~3" class="pull-right"><emph>Read more&hellip;</emph></a>
             </td>
         </tr>
     </tbody>
@@ -1223,7 +1223,7 @@ the caller.</p><a href="../proc/open_config_file.html#variable-buffer~3" class="
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-l~176"></span>
+              <span class="anchor" id="variable-l~6"></span>
               type(<a href='../type/flu_state.html'>flu_State</a>)
             </td>
 <td></td>
@@ -1263,7 +1263,7 @@ the caller.</p><a href="../proc/open_config_file.html#variable-buffer~3" class="
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-filename~6"></span>
+              <span class="anchor" id="variable-filename~2"></span>
               character(len=*),
             </td>
 <td>intent(in)</td>
@@ -1278,7 +1278,7 @@ the caller.</p><a href="../proc/open_config_file.html#variable-buffer~3" class="
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-buffer~5"></span>
+              <span class="anchor" id="variable-buffer~3"></span>
               type(<a href='../type/cbuf_type.html'>cbuf_type</a>),
             </td>
 <td>intent(out)</td>
@@ -1293,7 +1293,7 @@ the caller.</p><a href="../proc/open_config_file.html#variable-buffer~3" class="
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-errcode~49"></span>
+              <span class="anchor" id="variable-errcode~4"></span>
               integer,
             </td>
 <td>intent(out),</td>
@@ -1303,12 +1303,12 @@ the caller.</p><a href="../proc/open_config_file.html#variable-buffer~3" class="
             <td>::</td>
             <td><strong>ErrCode</strong></td>
             <td>
-<p>Error code returned by Lua during loading or executing the file.</p><a href="../proc/aot_file_to_buffer.html#variable-errcode~49" class="pull-right"><emph>Read more&hellip;</emph></a>
+<p>Error code returned by Lua during loading or executing the file.</p><a href="../proc/aot_file_to_buffer.html#variable-errcode~4" class="pull-right"><emph>Read more&hellip;</emph></a>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-errstring~7"></span>
+              <span class="anchor" id="variable-errstring~4"></span>
               character(len=*),
             </td>
 <td>intent(out),</td>
@@ -1318,7 +1318,7 @@ the caller.</p><a href="../proc/open_config_file.html#variable-buffer~3" class="
             <td>::</td>
             <td><strong>ErrString</strong></td>
             <td>
-<p>Obtained error description from the Lua stack.</p><a href="../proc/aot_file_to_buffer.html#variable-errstring~7" class="pull-right"><emph>Read more&hellip;</emph></a>
+<p>Obtained error description from the Lua stack.</p><a href="../proc/aot_file_to_buffer.html#variable-errstring~4" class="pull-right"><emph>Read more&hellip;</emph></a>
             </td>
         </tr>
     </tbody>
@@ -1349,7 +1349,7 @@ the given module name.</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-l~178"></span>
+              <span class="anchor" id="variable-l~8"></span>
               type(<a href='../type/flu_state.html'>flu_State</a>)
             </td>
 <td></td>
@@ -1364,7 +1364,7 @@ the given module name.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-buffer~6"></span>
+              <span class="anchor" id="variable-buffer~4"></span>
               character(len=1),
             </td>
 <td>intent(in)</td>
@@ -1415,14 +1415,14 @@ the given module name.</p>
           <div class="col">
             <p>
               Aotus
- was developed by University of Siegen<br>              &copy; 2024 
-<br /><small>d666bbc6b925</small></p>
+ was developed by University of Siegen<br>              &copy; 2025 
+<br /><small>37d1cea0dc71</small></p>
           </div>
           <div class="col">
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2024-11-10T17:38:18.773981             </p>
+ on 2025-03-24T15:04:50.422931+0000             </p>
           </div>
         </div>
         <br>
