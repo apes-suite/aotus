@@ -6,7 +6,7 @@ The AOTUS library provides a Fortran wrapper around the C-API of the
 scripts as configuration files in Fortran applications.
 
 Please visit the
-[FORD generated documentation](https://geb.inf.tu-dresden.de/doxy/aotus)
+[FORD generated documentation](https://apes-suite.github.io/aotus/)
 for more information on its usage and details.
 
 *This library is released under a simplified MIT licence, please have a look
@@ -157,8 +157,7 @@ This will build a docu directory with the resulting documentation.
 Note that this requires
 [FORD to be installed](https://github.com/Fortran-FOSS-Programmers/ford/wiki/Installation)
 beforehand.
-This documentation is also available online at
-[our server](https://geb.inf.tu-dresden.de/doxy/aotus).
+This documentation is also [available online](https://apes-suite.github.io/aotus/).
 
 ### Example
 
@@ -170,10 +169,10 @@ also the source of this small program is found.
 Getting Started
 ---------------
 The central module in this library is the
-[aotus_module](https://geb.inf.tu-dresden.de/doxy/aotus/module/aotus_module.html).
+[aotus_module](https://apes-suite.github.io/aotus/module/aotus_module.html).
 Its documentation and the
-[Aotus overview](https://geb.inf.tu-dresden.de/doxy/aotus/page/index.html) would
-be good starting points.
+[Aotus overview](https://apes-suite.github.io/aotus/page/index.html) would
+be good starting point.
 
 Related Projects
 ----------------

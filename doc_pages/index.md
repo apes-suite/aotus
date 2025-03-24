@@ -54,7 +54,7 @@ massively parallel systems, it is advisable to minimize the access to config
 files. To avoid excessive filesystem meta accesses it is recommended to
 load required files only on one process.
 An implementation of this for MPI can be found in TreElMs
-[distconf](https://geb.inf.tu-dresden.de/doxy/treelm/proc/tem_open_distconf_array.html).
+[distconf](https://apes-suite.github.io/treelm/proc/tem_open_distconf_array.html).
 
 
 Reading a Lua Script
