@@ -552,7 +552,7 @@ static int multiline (lua_State *L) {
       lua_saveline(L, line);  /* keep history */
       return status;  /* should not or cannot try to add continuation line */
     }
-    lua_remove(L, -2); /* remove error message (from incomplete line) */
+    lua_remove(L, -2);  /* remove error message (from incomplete line) */
     lua_pushliteral(L, "\n");  /* add newline... */
     lua_insert(L, -2);  /* ...between the two lines */
     lua_concat(L, 3);  /* join them */

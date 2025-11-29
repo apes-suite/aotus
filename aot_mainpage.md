@@ -1,10 +1,12 @@
 project: Aotus
 summary: A Fortran wrapper around the C-API of Lua, for usage as configuration.
+license: mit
 src_dir: source
 src_dir: LuaFortran
 page_dir: doc_pages
 output_dir: docu
-project_website: https://apes-suite.github.io/pages/aotus
+project_website: https://apes-suite.org/pages/aotus
+project_github: https://github.com/apes-suite/aotus
 graph: true
 display: public
 display: protected
@@ -13,7 +15,8 @@ print_creation_date: True
 sort: permission
 source: true
 externalize: true
-author: University of Siegen
+author: APES Team
+github: https://github.com/apes-suite
 exclude: dummy_extdouble_fun_module.f90
 exclude: dummy_extdouble_out_module.f90
 exclude: dummy_extdouble_table_module.f90
@@ -37,7 +40,7 @@ scripts as configuration files in Fortran applications.
 *This library is released under a simplified MIT licence,
  please have a look into the LICENSE file for details.*
 
-Aotus is part of the [APES suite](https://apes-suite.github.io/).
+Aotus is part of the [APES suite](https://apes-suite.org/).
 
 
 How To Build
@@ -151,8 +154,8 @@ ranlib libaotus.a
 What is Built
 -------------
 
-For your convenience the Lua library is included in version 5.4.6 (released
-2023-05-14).
+For your convenience the Lua library is included in version 5.4.8 (released
+2025-05-21).
 Its objects are completely gathered into the final *libaotus* library, so it is
 only necessary to link against this single static library to gain the
 configuration features of aotus in your Fortran application.
@@ -183,8 +186,8 @@ This will build a docu directory with the resulting documentation.
 Note, that this requires
 [FORD to be installed](https://github.com/Fortran-FOSS-Programmers/ford/wiki/Installation)
 beforehand.
-This documentation is also online available at
-[our server](https://apes-suite.github.io/aotus/).
+This documentation is also online available
+[online](https://apes-suite.org/aotus/).
 
 ### Example
 

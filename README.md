@@ -125,8 +125,8 @@ ranlib libaotus.a
 What is Built
 -------------
 
-For your convenience the Lua library is included in version 5.4.7 (released
-2024-06-25).
+For your convenience the Lua library is included in version 5.4.8 (released
+2025-05-21).
 Its objects are completely gathered into the final *libaotus* library, so you
 only need to link against this single static library to gain the
 configuration features of Aotus in your Fortran application.
@@ -157,7 +157,7 @@ This will build a docu directory with the resulting documentation.
 Note that this requires
 [FORD to be installed](https://github.com/Fortran-FOSS-Programmers/ford/wiki/Installation)
 beforehand.
-This documentation is also [available online](https://apes-suite.github.io/aotus/).
+This documentation is also [available online](https://apes-suite.org/aotus/).
 
 ### Example
 
@@ -169,9 +169,9 @@ also the source of this small program is found.
 Getting Started
 ---------------
 The central module in this library is the
-[aotus_module](https://apes-suite.github.io/aotus/module/aotus_module.html).
+[aotus_module](https://apes-suite.org/aotus/module/aotus_module.html).
 Its documentation and the
-[Aotus overview](https://apes-suite.github.io/aotus/page/index.html) would
+[Aotus overview](https://apes-suite.org/aotus/page/index.html) would
 be good starting point.
 
 Related Projects
