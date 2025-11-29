@@ -7,19 +7,34 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta name="description" content="A Fortran wrapper around the C-API of Lua, for usage as configuration.">
-    <meta name="author" content="University of Siegen" >
+    <meta name="author" content="APES Team" >
     <link rel="icon" href="../favicon.png">
 
     <title>aot_out_close_table &ndash; Aotus</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link href="../css/pygments.css" rel="stylesheet">
-    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
     <link href="../css/local.css" rel="stylesheet">
-      <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
-
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link href="../css/pygments.css" rel="stylesheet">
     <script src="../js/svg-pan-zoom.min.js"></script>
   </head>
 
@@ -77,6 +92,7 @@
     <div class="row align-items-center justify-content-between" id="info-bar">
       <div class="col">
         <ul class="list-inline" style="margin-bottom:0px;display:inline">
+            <li class="list-inline-item" id="meta-license"><i class="fa fa-legal"></i> <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a></li>
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
@@ -101,9 +117,11 @@
     </div>
   </div>
   <script>
-    $(function () {
-    $('[data-bs-toggle="tooltip"]').tooltip()
-    })
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
   </script>
 
   </div>
@@ -168,7 +186,7 @@ table, you have to set advance_previous = .false.</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-put_conf~8"></span>
+              <span class="anchor" id="variable-put_conf~20"></span>
               type(<a href='../type/aot_out_type.html'>aot_out_type</a>),
             </td>
 <td>intent(inout)</td>
@@ -183,7 +201,7 @@ table, you have to set advance_previous = .false.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-advance_previous~6"></span>
+              <span class="anchor" id="variable-advance_previous~18"></span>
               logical,
             </td>
 <td>intent(in),</td>
@@ -237,18 +255,18 @@ table, you have to set advance_previous = .false.</p>
 <path fill="none" stroke="#000000" d="M245.12,-146.79C318.53,-146.6 439.63,-146.44 544,-147 552.33,-147.04 561.07,-147.11 569.73,-147.19"/>
 <polygon fill="#000000" stroke="#000000" points="569.8,-150.69 579.83,-147.28 569.87,-143.69 569.8,-150.69"/>
 </g>
-<!-- interface~aot_out_val -->
-<g id="proc~~aot_out_close_table~~CalledByGraph_node10" class="node">
-<title>interface~aot_out_val</title>
-<g id="a_proc~~aot_out_close_table~~CalledByGraph_node10"><a xlink:href="../interface/aot_out_val.html" xlink:title="aot_out_val">
+<!-- interface~aot_out_val~3 -->
+<g id="proc~~aot_out_close_table~~CalledByGraph_node12" class="node">
+<title>interface~aot_out_val~3</title>
+<g id="a_proc~~aot_out_close_table~~CalledByGraph_node12"><a xlink:href="../interface/aot_out_val~3.html" xlink:title="aot_out_val">
 <polygon fill="#a7506f" stroke="#a7506f" points="354,-180 281,-180 281,-156 354,-156 354,-180"/>
 <text text-anchor="middle" x="317.5" y="-165.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_out_val</text>
 </a>
 </g>
 </g>
-<!-- proc~aot_out_val_arr_double&#45;&gt;interface~aot_out_val -->
-<g id="proc~~aot_out_close_table~~CalledByGraph_edge17" class="edge">
-<title>proc~aot_out_val_arr_double&#45;&gt;interface~aot_out_val</title>
+<!-- proc~aot_out_val_arr_double&#45;&gt;interface~aot_out_val~3 -->
+<g id="proc~~aot_out_close_table~~CalledByGraph_edge18" class="edge">
+<title>proc~aot_out_val_arr_double&#45;&gt;interface~aot_out_val~3</title>
 <path fill="none" stroke="#000000" d="M245.22,-157.19C253.85,-158.5 262.52,-159.81 270.69,-161.05"/>
 <polygon fill="#000000" stroke="#000000" points="270.33,-164.54 280.74,-162.58 271.38,-157.62 270.33,-164.54"/>
 </g>
@@ -267,9 +285,9 @@ table, you have to set advance_previous = .false.</p>
 <path fill="none" stroke="#000000" d="M543.06,-159.17C551.95,-158.12 560.98,-157.06 569.76,-156.03"/>
 <polygon fill="#000000" stroke="#000000" points="570.42,-159.48 579.94,-154.83 569.6,-152.52 570.42,-159.48"/>
 </g>
-<!-- proc~aot_out_val_arr_extdouble&#45;&gt;interface~aot_out_val -->
-<g id="proc~~aot_out_close_table~~CalledByGraph_edge18" class="edge">
-<title>proc~aot_out_val_arr_extdouble&#45;&gt;interface~aot_out_val</title>
+<!-- proc~aot_out_val_arr_extdouble&#45;&gt;interface~aot_out_val~3 -->
+<g id="proc~~aot_out_close_table~~CalledByGraph_edge19" class="edge">
+<title>proc~aot_out_val_arr_extdouble&#45;&gt;interface~aot_out_val~3</title>
 <path fill="none" stroke="#000000" d="M390.97,-174.75C381.85,-174.74 372.76,-174.59 364.26,-174.3"/>
 <polygon fill="#000000" stroke="#000000" points="364.34,-170.8 354.21,-173.88 364.05,-177.79 364.34,-170.8"/>
 </g>
@@ -288,9 +306,9 @@ table, you have to set advance_previous = .false.</p>
 <path fill="none" stroke="#000000" d="M233.95,-110.23C318.53,-118.14 478.74,-133.11 569.95,-141.64"/>
 <polygon fill="#000000" stroke="#000000" points="569.63,-145.12 579.91,-142.57 570.28,-138.15 569.63,-145.12"/>
 </g>
-<!-- proc~aot_out_val_arr_int&#45;&gt;interface~aot_out_val -->
-<g id="proc~~aot_out_close_table~~CalledByGraph_edge19" class="edge">
-<title>proc~aot_out_val_arr_int&#45;&gt;interface~aot_out_val</title>
+<!-- proc~aot_out_val_arr_int&#45;&gt;interface~aot_out_val~3 -->
+<g id="proc~~aot_out_close_table~~CalledByGraph_edge20" class="edge">
+<title>proc~aot_out_val_arr_int&#45;&gt;interface~aot_out_val~3</title>
 <path fill="none" stroke="#000000" d="M221.43,-117.02C229.39,-119.67 237.53,-122.69 245,-126 260.5,-132.88 276.88,-142.32 290.04,-150.51"/>
 <polygon fill="#000000" stroke="#000000" points="288.27,-153.53 298.59,-155.93 292.02,-147.62 288.27,-153.53"/>
 </g>
@@ -309,9 +327,9 @@ table, you have to set advance_previous = .false.</p>
 <path fill="none" stroke="#000000" d="M244.58,-71.06C318.28,-80.55 440.37,-98 544,-121 559.08,-124.35 575.32,-128.73 589.99,-132.98"/>
 <polygon fill="#000000" stroke="#000000" points="589.27,-136.42 599.86,-135.89 591.25,-129.71 589.27,-136.42"/>
 </g>
-<!-- proc~aot_out_val_arr_logical&#45;&gt;interface~aot_out_val -->
-<g id="proc~~aot_out_close_table~~CalledByGraph_edge20" class="edge">
-<title>proc~aot_out_val_arr_logical&#45;&gt;interface~aot_out_val</title>
+<!-- proc~aot_out_val_arr_logical&#45;&gt;interface~aot_out_val~3 -->
+<g id="proc~~aot_out_close_table~~CalledByGraph_edge21" class="edge">
+<title>proc~aot_out_val_arr_logical&#45;&gt;interface~aot_out_val~3</title>
 <path fill="none" stroke="#000000" d="M227.76,-75.09C233.81,-77.56 239.71,-80.5 245,-84 269.98,-100.53 291.12,-128.22 303.8,-147.26"/>
 <polygon fill="#000000" stroke="#000000" points="300.96,-149.31 309.32,-155.82 306.84,-145.52 300.96,-149.31"/>
 </g>
@@ -330,9 +348,9 @@ table, you have to set advance_previous = .false.</p>
 <path fill="none" stroke="#000000" d="M238.74,-278.68C313.98,-283.16 444.38,-282.45 544,-237 577.6,-221.67 606.8,-189.34 623.4,-168.16"/>
 <polygon fill="#000000" stroke="#000000" points="626.26,-170.19 629.53,-160.11 620.69,-165.95 626.26,-170.19"/>
 </g>
-<!-- proc~aot_out_val_arr_long&#45;&gt;interface~aot_out_val -->
-<g id="proc~~aot_out_close_table~~CalledByGraph_edge21" class="edge">
-<title>proc~aot_out_val_arr_long&#45;&gt;interface~aot_out_val</title>
+<!-- proc~aot_out_val_arr_long&#45;&gt;interface~aot_out_val~3 -->
+<g id="proc~~aot_out_close_table~~CalledByGraph_edge22" class="edge">
+<title>proc~aot_out_val_arr_long&#45;&gt;interface~aot_out_val~3</title>
 <path fill="none" stroke="#000000" d="M227.76,-260.91C233.81,-258.44 239.71,-255.5 245,-252 269.98,-235.47 291.12,-207.78 303.8,-188.74"/>
 <polygon fill="#000000" stroke="#000000" points="306.84,-190.48 309.32,-180.18 300.96,-186.69 306.84,-190.48"/>
 </g>
@@ -361,7 +379,7 @@ table, you have to set advance_previous = .false.</p>
 </g>
 </g>
 <!-- proc~aot_out_val_arr_quadruple&#45;&gt;interface~aot_out_val~2 -->
-<g id="proc~~aot_out_close_table~~CalledByGraph_edge24" class="edge">
+<g id="proc~~aot_out_close_table~~CalledByGraph_edge17" class="edge">
 <title>proc~aot_out_val_arr_quadruple&#45;&gt;interface~aot_out_val~2</title>
 <path fill="none" stroke="#000000" d="M544.05,-5.28C560.41,-5.16 577.22,-5.38 592.02,-5.93"/>
 <polygon fill="#000000" stroke="#000000" points="592.25,-9.44 602.4,-6.39 592.56,-2.45 592.25,-9.44"/>
@@ -381,9 +399,9 @@ table, you have to set advance_previous = .false.</p>
 <path fill="none" stroke="#000000" d="M237.12,-236.85C310.97,-242.1 440.24,-244.41 544,-210 571.43,-200.9 598.52,-181.64 616.52,-166.99"/>
 <polygon fill="#000000" stroke="#000000" points="619.17,-169.33 624.59,-160.23 614.68,-163.97 619.17,-169.33"/>
 </g>
-<!-- proc~aot_out_val_arr_real&#45;&gt;interface~aot_out_val -->
-<g id="proc~~aot_out_close_table~~CalledByGraph_edge22" class="edge">
-<title>proc~aot_out_val_arr_real&#45;&gt;interface~aot_out_val</title>
+<!-- proc~aot_out_val_arr_real&#45;&gt;interface~aot_out_val~3 -->
+<g id="proc~~aot_out_close_table~~CalledByGraph_edge23" class="edge">
+<title>proc~aot_out_val_arr_real&#45;&gt;interface~aot_out_val~3</title>
 <path fill="none" stroke="#000000" d="M221.43,-218.98C229.39,-216.33 237.53,-213.31 245,-210 260.5,-203.12 276.88,-193.68 290.04,-185.49"/>
 <polygon fill="#000000" stroke="#000000" points="292.02,-188.38 298.59,-180.07 288.27,-182.47 292.02,-188.38"/>
 </g>
@@ -402,17 +420,56 @@ table, you have to set advance_previous = .false.</p>
 <path fill="none" stroke="#000000" d="M242.29,-196.86C316.02,-204.07 440.12,-210.67 544,-189 566.35,-184.34 589.9,-174.06 607.84,-164.96"/>
 <polygon fill="#000000" stroke="#000000" points="609.94,-167.8 617.18,-160.07 606.7,-161.6 609.94,-167.8"/>
 </g>
-<!-- proc~aot_out_val_arr_string&#45;&gt;interface~aot_out_val -->
-<g id="proc~~aot_out_close_table~~CalledByGraph_edge23" class="edge">
-<title>proc~aot_out_val_arr_string&#45;&gt;interface~aot_out_val</title>
+<!-- proc~aot_out_val_arr_string&#45;&gt;interface~aot_out_val~3 -->
+<g id="proc~~aot_out_close_table~~CalledByGraph_edge24" class="edge">
+<title>proc~aot_out_val_arr_string&#45;&gt;interface~aot_out_val~3</title>
 <path fill="none" stroke="#000000" d="M242.38,-179.24C252.03,-177.77 261.81,-176.29 270.96,-174.91"/>
 <polygon fill="#000000" stroke="#000000" points="271.62,-178.35 280.98,-173.39 270.57,-171.42 271.62,-178.35"/>
 </g>
-<!-- interface~aot_out_val&#45;&gt;proc~aot_out_val_arr_extdouble -->
-<g id="proc~~aot_out_close_table~~CalledByGraph_edge10" class="edge">
-<title>interface~aot_out_val&#45;&gt;proc~aot_out_val_arr_extdouble</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M354.21,-162.12C362.41,-161.71 371.47,-161.44 380.79,-161.32"/>
-<polygon fill="#000000" stroke="#000000" points="381,-164.82 390.97,-161.25 380.95,-157.82 381,-164.82"/>
+<!-- interface~aot_out_val -->
+<g id="proc~~aot_out_close_table~~CalledByGraph_node10" class="node">
+<title>interface~aot_out_val</title>
+<g id="a_proc~~aot_out_close_table~~CalledByGraph_node10"><a xlink:href="../interface/aot_out_val.html" xlink:title="aot_out_val">
+<polygon fill="#a7506f" stroke="#a7506f" points="73,-180 0,-180 0,-156 73,-156 73,-180"/>
+<text text-anchor="middle" x="36.5" y="-165.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_out_val</text>
+</a>
+</g>
+</g>
+<!-- interface~aot_out_val&#45;&gt;proc~aot_out_val_arr_double -->
+<g id="proc~~aot_out_close_table~~CalledByGraph_edge9" class="edge">
+<title>interface~aot_out_val&#45;&gt;proc~aot_out_val_arr_double</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M73.17,-162.59C81.15,-161.38 89.91,-160.05 98.85,-158.7"/>
+<polygon fill="#000000" stroke="#000000" points="99.62,-162.12 108.99,-157.16 98.57,-155.2 99.62,-162.12"/>
+</g>
+<!-- interface~aot_out_val&#45;&gt;proc~aot_out_val_arr_int -->
+<g id="proc~~aot_out_close_table~~CalledByGraph_edge11" class="edge">
+<title>interface~aot_out_val&#45;&gt;proc~aot_out_val_arr_int</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M55.41,-155.93C69.51,-146.81 89.92,-134.46 109,-126 113.43,-124.03 118.11,-122.17 122.84,-120.43"/>
+<polygon fill="#000000" stroke="#000000" points="124.29,-123.63 132.57,-117.02 121.98,-117.02 124.29,-123.63"/>
+</g>
+<!-- interface~aot_out_val&#45;&gt;proc~aot_out_val_arr_logical -->
+<g id="proc~~aot_out_close_table~~CalledByGraph_edge12" class="edge">
+<title>interface~aot_out_val&#45;&gt;proc~aot_out_val_arr_logical</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M44.68,-155.82C56.06,-137.58 79.93,-103.24 109,-84 111.56,-82.31 114.27,-80.74 117.06,-79.3"/>
+<polygon fill="#000000" stroke="#000000" points="118.61,-82.44 126.24,-75.09 115.69,-76.08 118.61,-82.44"/>
+</g>
+<!-- interface~aot_out_val&#45;&gt;proc~aot_out_val_arr_long -->
+<g id="proc~~aot_out_close_table~~CalledByGraph_edge13" class="edge">
+<title>interface~aot_out_val&#45;&gt;proc~aot_out_val_arr_long</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M44.68,-180.18C56.06,-198.42 79.93,-232.76 109,-252 111.56,-253.69 114.27,-255.26 117.06,-256.7"/>
+<polygon fill="#000000" stroke="#000000" points="115.69,-259.92 126.24,-260.91 118.61,-253.56 115.69,-259.92"/>
+</g>
+<!-- interface~aot_out_val&#45;&gt;proc~aot_out_val_arr_real -->
+<g id="proc~~aot_out_close_table~~CalledByGraph_edge15" class="edge">
+<title>interface~aot_out_val&#45;&gt;proc~aot_out_val_arr_real</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M55.41,-180.07C69.51,-189.19 89.92,-201.54 109,-210 113.43,-211.97 118.11,-213.83 122.84,-215.57"/>
+<polygon fill="#000000" stroke="#000000" points="121.98,-218.98 132.57,-218.98 124.29,-212.37 121.98,-218.98"/>
+</g>
+<!-- interface~aot_out_val&#45;&gt;proc~aot_out_val_arr_string -->
+<g id="proc~~aot_out_close_table~~CalledByGraph_edge16" class="edge">
+<title>interface~aot_out_val&#45;&gt;proc~aot_out_val_arr_string</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M73.17,-173.41C82.06,-174.76 91.94,-176.25 101.94,-177.77"/>
+<polygon fill="#000000" stroke="#000000" points="101.55,-181.25 111.96,-179.29 102.6,-174.33 101.55,-181.25"/>
 </g>
 <!-- interface~aot_out_val~2&#45;&gt;proc~aot_out_val_arr_quadruple -->
 <g id="proc~~aot_out_close_table~~CalledByGraph_edge14" class="edge">
@@ -420,50 +477,11 @@ table, you have to set advance_previous = .false.</p>
 <path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M602.4,-17.61C588.19,-18.36 571.17,-18.73 554.09,-18.75"/>
 <polygon fill="#000000" stroke="#000000" points="554.06,-15.25 544.05,-18.72 554.04,-22.25 554.06,-15.25"/>
 </g>
-<!-- interface~aot_out_val~3 -->
-<g id="proc~~aot_out_close_table~~CalledByGraph_node12" class="node">
-<title>interface~aot_out_val~3</title>
-<g id="a_proc~~aot_out_close_table~~CalledByGraph_node12"><a xlink:href="../interface/aot_out_val~3.html" xlink:title="aot_out_val">
-<polygon fill="#a7506f" stroke="#a7506f" points="73,-180 0,-180 0,-156 73,-156 73,-180"/>
-<text text-anchor="middle" x="36.5" y="-165.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_out_val</text>
-</a>
-</g>
-</g>
-<!-- interface~aot_out_val~3&#45;&gt;proc~aot_out_val_arr_double -->
-<g id="proc~~aot_out_close_table~~CalledByGraph_edge9" class="edge">
-<title>interface~aot_out_val~3&#45;&gt;proc~aot_out_val_arr_double</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M73.17,-162.59C81.15,-161.38 89.91,-160.05 98.85,-158.7"/>
-<polygon fill="#000000" stroke="#000000" points="99.62,-162.12 108.99,-157.16 98.57,-155.2 99.62,-162.12"/>
-</g>
-<!-- interface~aot_out_val~3&#45;&gt;proc~aot_out_val_arr_int -->
-<g id="proc~~aot_out_close_table~~CalledByGraph_edge11" class="edge">
-<title>interface~aot_out_val~3&#45;&gt;proc~aot_out_val_arr_int</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M55.41,-155.93C69.51,-146.81 89.92,-134.46 109,-126 113.43,-124.03 118.11,-122.17 122.84,-120.43"/>
-<polygon fill="#000000" stroke="#000000" points="124.29,-123.63 132.57,-117.02 121.98,-117.02 124.29,-123.63"/>
-</g>
-<!-- interface~aot_out_val~3&#45;&gt;proc~aot_out_val_arr_logical -->
-<g id="proc~~aot_out_close_table~~CalledByGraph_edge12" class="edge">
-<title>interface~aot_out_val~3&#45;&gt;proc~aot_out_val_arr_logical</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M44.68,-155.82C56.06,-137.58 79.93,-103.24 109,-84 111.56,-82.31 114.27,-80.74 117.06,-79.3"/>
-<polygon fill="#000000" stroke="#000000" points="118.61,-82.44 126.24,-75.09 115.69,-76.08 118.61,-82.44"/>
-</g>
-<!-- interface~aot_out_val~3&#45;&gt;proc~aot_out_val_arr_long -->
-<g id="proc~~aot_out_close_table~~CalledByGraph_edge13" class="edge">
-<title>interface~aot_out_val~3&#45;&gt;proc~aot_out_val_arr_long</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M44.68,-180.18C56.06,-198.42 79.93,-232.76 109,-252 111.56,-253.69 114.27,-255.26 117.06,-256.7"/>
-<polygon fill="#000000" stroke="#000000" points="115.69,-259.92 126.24,-260.91 118.61,-253.56 115.69,-259.92"/>
-</g>
-<!-- interface~aot_out_val~3&#45;&gt;proc~aot_out_val_arr_real -->
-<g id="proc~~aot_out_close_table~~CalledByGraph_edge15" class="edge">
-<title>interface~aot_out_val~3&#45;&gt;proc~aot_out_val_arr_real</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M55.41,-180.07C69.51,-189.19 89.92,-201.54 109,-210 113.43,-211.97 118.11,-213.83 122.84,-215.57"/>
-<polygon fill="#000000" stroke="#000000" points="121.98,-218.98 132.57,-218.98 124.29,-212.37 121.98,-218.98"/>
-</g>
-<!-- interface~aot_out_val~3&#45;&gt;proc~aot_out_val_arr_string -->
-<g id="proc~~aot_out_close_table~~CalledByGraph_edge16" class="edge">
-<title>interface~aot_out_val~3&#45;&gt;proc~aot_out_val_arr_string</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M73.17,-173.41C82.06,-174.76 91.94,-176.25 101.94,-177.77"/>
-<polygon fill="#000000" stroke="#000000" points="101.55,-181.25 111.96,-179.29 102.6,-174.33 101.55,-181.25"/>
+<!-- interface~aot_out_val~3&#45;&gt;proc~aot_out_val_arr_extdouble -->
+<g id="proc~~aot_out_close_table~~CalledByGraph_edge10" class="edge">
+<title>interface~aot_out_val~3&#45;&gt;proc~aot_out_val_arr_extdouble</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M354.21,-162.12C362.41,-161.71 371.47,-161.44 380.79,-161.32"/>
+<polygon fill="#000000" stroke="#000000" points="381,-164.82 390.97,-161.25 380.95,-157.82 381,-164.82"/>
 </g>
 </g>
 </svg>
@@ -619,40 +637,18 @@ implementation in a submodule of an interface in a parent module.
           <div class="col">
             <p>
               Aotus
- was developed by University of Siegen<br>              &copy; 2025 
-<br /><small>37d1cea0dc71</small></p>
+ was developed by APES Team<br>              &copy; 2025 <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a>
+<br /><small>e33a4e28d95a</small></p>
           </div>
           <div class="col">
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2025-03-24T15:04:50.422931+0000             </p>
+ on 2025-11-29T17:06:50.716771+0000             </p>
           </div>
         </div>
         <br>
       </div> <!-- /container -->
     </footer>
-
-    <!-- Bootstrap core JavaScript -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>    
-
-    <!-- MathJax JavaScript
-             ================================================== -->
-             <!-- Placed at the end of the document so the pages load faster -->
-        <script type="text/x-mathjax-config">
-          MathJax.Hub.Config({
-          TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } },
-          jax: ['input/TeX','input/MathML','output/HTML-CSS'],
-          extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
-          });
-        </script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-          <script src="../tipuesearch/tipuesearch_content.js"></script>
-          <script src="../tipuesearch/tipuesearch_set.js"></script>
-          <script src="../tipuesearch/tipuesearch.js"></script>
-
   </body>
 </html>

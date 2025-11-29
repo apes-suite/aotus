@@ -7,19 +7,34 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta name="description" content="A Fortran wrapper around the C-API of Lua, for usage as configuration.">
-    <meta name="author" content="University of Siegen" >
+    <meta name="author" content="APES Team" >
     <link rel="icon" href="../favicon.png">
 
     <title>aot_top_module &ndash; Aotus</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link href="../css/pygments.css" rel="stylesheet">
-    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
     <link href="../css/local.css" rel="stylesheet">
-      <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
-
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link href="../css/pygments.css" rel="stylesheet">
     <script src="../js/svg-pan-zoom.min.js"></script>
   </head>
 
@@ -77,6 +92,7 @@
     <div class="row align-items-center justify-content-between" id="info-bar">
       <div class="col">
         <ul class="list-inline" style="margin-bottom:0px;display:inline">
+            <li class="list-inline-item" id="meta-license"><i class="fa fa-legal"></i> <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a></li>
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
@@ -100,9 +116,11 @@
     </div>
   </div>
   <script>
-    $(function () {
-    $('[data-bs-toggle="tooltip"]').tooltip()
-    })
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
   </script>
 
   </div>
@@ -126,7 +144,7 @@
       </a>
       <div id="inters-0" class="collapse">
         <div class="list-group list-group-flush">
-            <a class="list-group-item" href="../module/aot_top_module.html#interface-aot_top_get_val">aot_top_get_val</a>
+            <a class="list-group-item" href="../module/aot_top_module.html#interface-aot_top_get_val~6">aot_top_get_val</a>
         </div>
       </div>
     </div>
@@ -176,11 +194,11 @@ All intrinsic variables except complex numbers can be accessed this way.</p>
         <ul class="list-group list-group-flush">
             <li class="list-group-item">
               <ul class="list-inline">
+                  <li class="list-inline-item"><a href='flu_kinds_module.html'>flu_kinds_module</a></li>
+                  <li class="list-inline-item"><a href='aot_extdouble_top_module.html'>aot_extdouble_top_module</a></li>
+                  <li class="list-inline-item"><a href='aot_err_module.html'>aot_err_module</a></li>
                   <li class="list-inline-item"><a href='aot_quadruple_top_module.html'>aot_quadruple_top_module</a></li>
                   <li class="list-inline-item"><a href='flu_binding.html'>flu_binding</a></li>
-                  <li class="list-inline-item"><a href='flu_kinds_module.html'>flu_kinds_module</a></li>
-                  <li class="list-inline-item"><a href='aot_err_module.html'>aot_err_module</a></li>
-                  <li class="list-inline-item"><a href='aot_extdouble_top_module.html'>aot_extdouble_top_module</a></li>
               </ul>
             </li>
             <li class="list-group-item">
@@ -892,8 +910,8 @@ modules which it uses.
           <h2>Interfaces</h2>
               <div class="card">
     <div class="card-header bg-light codesum">
-      <span class="anchor" id="interface-aot_top_get_val"></span>
-      <h3>public        interface <a href='../interface/aot_top_get_val.html'>aot_top_get_val</a> 
+      <span class="anchor" id="interface-aot_top_get_val~6"></span>
+      <h3>public        interface <a href='../interface/aot_top_get_val~6.html'>aot_top_get_val</a> 
       </h3>
     </div>
       <div class="card-body">
@@ -907,10 +925,6 @@ See for example <a href="../proc/aot_top_get_real.html">aot_top_get_real</a> for
 parameters.</p>
 <p>aot_top_get_val can not be in the same generic interface as the other
 <a href="../interface/aot_get_val.html">aot_get_val</a> routines, as it results in ambiguities of the interfaces.</p>
-<div class="alert alert-info">
-<p class="alert-title h4">Note</p>
-<p>The retrieved value will be popped from the Lua API stack.</p>
-</div>
       </div>
     <ul class="list-group">
           <li class="list-group-item">
@@ -934,7 +948,7 @@ parameters.</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-val~33"></span>
+              <span class="anchor" id="variable-val~48"></span>
               real(kind=single_k),
             </td>
 <td>intent(out)</td>
@@ -949,7 +963,7 @@ parameters.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-errcode~13"></span>
+              <span class="anchor" id="variable-errcode~38"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -964,7 +978,7 @@ parameters.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-l~28"></span>
+              <span class="anchor" id="variable-l~95"></span>
               type(<a href='../type/flu_state.html'>flu_State</a>)
             </td>
 <td></td>
@@ -979,7 +993,7 @@ parameters.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-default~8"></span>
+              <span class="anchor" id="variable-default~32"></span>
               real(kind=single_k),
             </td>
 <td>intent(in),</td>
@@ -1019,7 +1033,7 @@ the Lua script.</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-val~34"></span>
+              <span class="anchor" id="variable-val~49"></span>
               real(kind=double_k),
             </td>
 <td>intent(out)</td>
@@ -1034,7 +1048,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-errcode~14"></span>
+              <span class="anchor" id="variable-errcode~39"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -1049,7 +1063,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-l~29"></span>
+              <span class="anchor" id="variable-l~96"></span>
               type(<a href='../type/flu_state.html'>flu_State</a>)
             </td>
 <td></td>
@@ -1064,7 +1078,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-default~9"></span>
+              <span class="anchor" id="variable-default~33"></span>
               real(kind=double_k),
             </td>
 <td>intent(in),</td>
@@ -1104,7 +1118,7 @@ the Lua script.</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-val~35"></span>
+              <span class="anchor" id="variable-val~50"></span>
               integer(kind=int_k),
             </td>
 <td>intent(out)</td>
@@ -1119,7 +1133,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-errcode~15"></span>
+              <span class="anchor" id="variable-errcode~40"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -1134,7 +1148,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-l~30"></span>
+              <span class="anchor" id="variable-l~97"></span>
               type(<a href='../type/flu_state.html'>flu_State</a>)
             </td>
 <td></td>
@@ -1149,7 +1163,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-default~10"></span>
+              <span class="anchor" id="variable-default~34"></span>
               integer(kind=int_k),
             </td>
 <td>intent(in),</td>
@@ -1189,7 +1203,7 @@ the Lua script.</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-val~36"></span>
+              <span class="anchor" id="variable-val~51"></span>
               integer(kind=long_k),
             </td>
 <td>intent(out)</td>
@@ -1204,7 +1218,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-errcode~16"></span>
+              <span class="anchor" id="variable-errcode~41"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -1219,7 +1233,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-l~31"></span>
+              <span class="anchor" id="variable-l~98"></span>
               type(<a href='../type/flu_state.html'>flu_State</a>)
             </td>
 <td></td>
@@ -1234,7 +1248,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-default~11"></span>
+              <span class="anchor" id="variable-default~35"></span>
               integer(kind=long_k),
             </td>
 <td>intent(in),</td>
@@ -1274,7 +1288,7 @@ the Lua script.</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-val~38"></span>
+              <span class="anchor" id="variable-val~53"></span>
               character(len=*)
             </td>
 <td></td>
@@ -1289,7 +1303,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-errcode~18"></span>
+              <span class="anchor" id="variable-errcode~43"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -1304,7 +1318,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-l~33"></span>
+              <span class="anchor" id="variable-l~100"></span>
               type(<a href='../type/flu_state.html'>flu_State</a>)
             </td>
 <td></td>
@@ -1319,7 +1333,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-default~13"></span>
+              <span class="anchor" id="variable-default~37"></span>
               character(len=*),
             </td>
 <td>intent(in),</td>
@@ -1359,7 +1373,7 @@ the Lua script.</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-val~37"></span>
+              <span class="anchor" id="variable-val~52"></span>
               logical,
             </td>
 <td>intent(out)</td>
@@ -1374,7 +1388,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-errcode~17"></span>
+              <span class="anchor" id="variable-errcode~42"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -1389,7 +1403,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-l~32"></span>
+              <span class="anchor" id="variable-l~99"></span>
               type(<a href='../type/flu_state.html'>flu_State</a>)
             </td>
 <td></td>
@@ -1404,7 +1418,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-default~12"></span>
+              <span class="anchor" id="variable-default~36"></span>
               logical,
             </td>
 <td>intent(in),</td>
@@ -1444,7 +1458,7 @@ the Lua script.</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-val~39"></span>
+              <span class="anchor" id="variable-val~54"></span>
               type(c_ptr),
             </td>
 <td>intent(out)</td>
@@ -1459,7 +1473,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-errcode~19"></span>
+              <span class="anchor" id="variable-errcode~44"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -1474,7 +1488,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-l~34"></span>
+              <span class="anchor" id="variable-l~101"></span>
               type(<a href='../type/flu_state.html'>flu_State</a>)
             </td>
 <td></td>
@@ -1489,7 +1503,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-default~14"></span>
+              <span class="anchor" id="variable-default~38"></span>
               type(c_ptr),
             </td>
 <td>intent(in),</td>
@@ -1539,7 +1553,7 @@ the Lua script.</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-val~33"></span>
+              <span class="anchor" id="variable-val~48"></span>
               real(kind=single_k),
             </td>
 <td>intent(out)</td>
@@ -1554,7 +1568,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-errcode~13"></span>
+              <span class="anchor" id="variable-errcode~38"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -1569,7 +1583,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-l~28"></span>
+              <span class="anchor" id="variable-l~95"></span>
               type(<a href='../type/flu_state.html'>flu_State</a>)
             </td>
 <td></td>
@@ -1584,7 +1598,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-default~8"></span>
+              <span class="anchor" id="variable-default~32"></span>
               real(kind=single_k),
             </td>
 <td>intent(in),</td>
@@ -1625,7 +1639,7 @@ the Lua script.</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-val~34"></span>
+              <span class="anchor" id="variable-val~49"></span>
               real(kind=double_k),
             </td>
 <td>intent(out)</td>
@@ -1640,7 +1654,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-errcode~14"></span>
+              <span class="anchor" id="variable-errcode~39"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -1655,7 +1669,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-l~29"></span>
+              <span class="anchor" id="variable-l~96"></span>
               type(<a href='../type/flu_state.html'>flu_State</a>)
             </td>
 <td></td>
@@ -1670,7 +1684,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-default~9"></span>
+              <span class="anchor" id="variable-default~33"></span>
               real(kind=double_k),
             </td>
 <td>intent(in),</td>
@@ -1711,7 +1725,7 @@ the Lua script.</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-val~35"></span>
+              <span class="anchor" id="variable-val~50"></span>
               integer(kind=int_k),
             </td>
 <td>intent(out)</td>
@@ -1726,7 +1740,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-errcode~15"></span>
+              <span class="anchor" id="variable-errcode~40"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -1741,7 +1755,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-l~30"></span>
+              <span class="anchor" id="variable-l~97"></span>
               type(<a href='../type/flu_state.html'>flu_State</a>)
             </td>
 <td></td>
@@ -1756,7 +1770,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-default~10"></span>
+              <span class="anchor" id="variable-default~34"></span>
               integer(kind=int_k),
             </td>
 <td>intent(in),</td>
@@ -1797,7 +1811,7 @@ the Lua script.</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-val~36"></span>
+              <span class="anchor" id="variable-val~51"></span>
               integer(kind=long_k),
             </td>
 <td>intent(out)</td>
@@ -1812,7 +1826,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-errcode~16"></span>
+              <span class="anchor" id="variable-errcode~41"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -1827,7 +1841,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-l~31"></span>
+              <span class="anchor" id="variable-l~98"></span>
               type(<a href='../type/flu_state.html'>flu_State</a>)
             </td>
 <td></td>
@@ -1842,7 +1856,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-default~11"></span>
+              <span class="anchor" id="variable-default~35"></span>
               integer(kind=long_k),
             </td>
 <td>intent(in),</td>
@@ -1883,7 +1897,7 @@ the Lua script.</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-val~37"></span>
+              <span class="anchor" id="variable-val~52"></span>
               logical,
             </td>
 <td>intent(out)</td>
@@ -1898,7 +1912,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-errcode~17"></span>
+              <span class="anchor" id="variable-errcode~42"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -1913,7 +1927,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-l~32"></span>
+              <span class="anchor" id="variable-l~99"></span>
               type(<a href='../type/flu_state.html'>flu_State</a>)
             </td>
 <td></td>
@@ -1928,7 +1942,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-default~12"></span>
+              <span class="anchor" id="variable-default~36"></span>
               logical,
             </td>
 <td>intent(in),</td>
@@ -1969,7 +1983,7 @@ the Lua script.</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-val~38"></span>
+              <span class="anchor" id="variable-val~53"></span>
               character(len=*)
             </td>
 <td></td>
@@ -1984,7 +1998,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-errcode~18"></span>
+              <span class="anchor" id="variable-errcode~43"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -1999,7 +2013,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-l~33"></span>
+              <span class="anchor" id="variable-l~100"></span>
               type(<a href='../type/flu_state.html'>flu_State</a>)
             </td>
 <td></td>
@@ -2014,7 +2028,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-default~13"></span>
+              <span class="anchor" id="variable-default~37"></span>
               character(len=*),
             </td>
 <td>intent(in),</td>
@@ -2055,7 +2069,7 @@ the Lua script.</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-val~39"></span>
+              <span class="anchor" id="variable-val~54"></span>
               type(c_ptr),
             </td>
 <td>intent(out)</td>
@@ -2070,7 +2084,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-errcode~19"></span>
+              <span class="anchor" id="variable-errcode~44"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -2085,7 +2099,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-l~34"></span>
+              <span class="anchor" id="variable-l~101"></span>
               type(<a href='../type/flu_state.html'>flu_State</a>)
             </td>
 <td></td>
@@ -2100,7 +2114,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-default~14"></span>
+              <span class="anchor" id="variable-default~38"></span>
               type(c_ptr),
             </td>
 <td>intent(in),</td>
@@ -2137,40 +2151,18 @@ the Lua script.</p>
           <div class="col">
             <p>
               Aotus
- was developed by University of Siegen<br>              &copy; 2025 
-<br /><small>37d1cea0dc71</small></p>
+ was developed by APES Team<br>              &copy; 2025 <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a>
+<br /><small>e33a4e28d95a</small></p>
           </div>
           <div class="col">
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2025-03-24T15:04:50.422931+0000             </p>
+ on 2025-11-29T17:06:50.716771+0000             </p>
           </div>
         </div>
         <br>
       </div> <!-- /container -->
     </footer>
-
-    <!-- Bootstrap core JavaScript -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>    
-
-    <!-- MathJax JavaScript
-             ================================================== -->
-             <!-- Placed at the end of the document so the pages load faster -->
-        <script type="text/x-mathjax-config">
-          MathJax.Hub.Config({
-          TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } },
-          jax: ['input/TeX','input/MathML','output/HTML-CSS'],
-          extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
-          });
-        </script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-          <script src="../tipuesearch/tipuesearch_content.js"></script>
-          <script src="../tipuesearch/tipuesearch_set.js"></script>
-          <script src="../tipuesearch/tipuesearch.js"></script>
-
   </body>
 </html>

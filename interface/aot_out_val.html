@@ -7,19 +7,34 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta name="description" content="A Fortran wrapper around the C-API of Lua, for usage as configuration.">
-    <meta name="author" content="University of Siegen" >
+    <meta name="author" content="APES Team" >
     <link rel="icon" href="../favicon.png">
 
     <title>aot_out_val &ndash; Aotus</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link href="../css/pygments.css" rel="stylesheet">
-    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
     <link href="../css/local.css" rel="stylesheet">
-      <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
-
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link href="../css/pygments.css" rel="stylesheet">
     <script src="../js/svg-pan-zoom.min.js"></script>
   </head>
 
@@ -77,23 +92,24 @@
     <div class="row align-items-center justify-content-between" id="info-bar">
       <div class="col">
         <ul class="list-inline" style="margin-bottom:0px;display:inline">
+            <li class="list-inline-item" id="meta-license"><i class="fa fa-legal"></i> <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a></li>
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title="<p> 0.0% of total for procedures.</p>Including implementation: 48 statements,  0.5% of total for procedures.">4 statements</a>
+                 title="<p> 0.1% of total for procedures.</p>Including implementation: 284 statements,  2.8% of total for procedures.">14 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
               <i class="fa fa-code"></i>
-              <a href="../src/aot_extdouble_out_module.f90"> Source File</a>
+              <a href="../src/aot_out_module.f90"> Source File</a>
             </li>
         </ul>
       </div>
       <div class="col">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
-                <li class="breadcrumb-item"><a href='../sourcefile/aot_extdouble_out_module.f90.html'>aot_extdouble_out_module.f90</a></li>
-                <li class="breadcrumb-item"><a href='../module/aot_extdouble_out_module.html'>aot_extdouble_out_module</a></li>
+                <li class="breadcrumb-item"><a href='../sourcefile/aot_out_module.f90.html'>aot_out_module.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/aot_out_module.html'>aot_out_module</a></li>
             <li class="breadcrumb-item active" aria-current="page">aot_out_val</li>
           </ol>
         </nav>
@@ -101,9 +117,11 @@
     </div>
   </div>
   <script>
-    $(function () {
-    $('[data-bs-toggle="tooltip"]').tooltip()
-    })
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
   </script>
 
   </div>
@@ -137,8 +155,18 @@
       </a>
       <div id="modprocs-0" class="collapse">
         <div class="list-group list-group-flush">
-            <a class="list-group-item" href="../interface/aot_out_val.html#moduleprocedure-aot_out_val_extdouble">aot_out_val_extdouble</a>
-            <a class="list-group-item" href="../interface/aot_out_val.html#moduleprocedure-aot_out_val_arr_extdouble">aot_out_val_arr_extdouble</a>
+            <a class="list-group-item" href="../interface/aot_out_val.html#moduleprocedure-aot_out_val_int">aot_out_val_int</a>
+            <a class="list-group-item" href="../interface/aot_out_val.html#moduleprocedure-aot_out_val_long">aot_out_val_long</a>
+            <a class="list-group-item" href="../interface/aot_out_val.html#moduleprocedure-aot_out_val_real">aot_out_val_real</a>
+            <a class="list-group-item" href="../interface/aot_out_val.html#moduleprocedure-aot_out_val_double">aot_out_val_double</a>
+            <a class="list-group-item" href="../interface/aot_out_val.html#moduleprocedure-aot_out_val_logical">aot_out_val_logical</a>
+            <a class="list-group-item" href="../interface/aot_out_val.html#moduleprocedure-aot_out_val_string">aot_out_val_string</a>
+            <a class="list-group-item" href="../interface/aot_out_val.html#moduleprocedure-aot_out_val_arr_int">aot_out_val_arr_int</a>
+            <a class="list-group-item" href="../interface/aot_out_val.html#moduleprocedure-aot_out_val_arr_long">aot_out_val_arr_long</a>
+            <a class="list-group-item" href="../interface/aot_out_val.html#moduleprocedure-aot_out_val_arr_real">aot_out_val_arr_real</a>
+            <a class="list-group-item" href="../interface/aot_out_val.html#moduleprocedure-aot_out_val_arr_double">aot_out_val_arr_double</a>
+            <a class="list-group-item" href="../interface/aot_out_val.html#moduleprocedure-aot_out_val_arr_logical">aot_out_val_arr_logical</a>
+            <a class="list-group-item" href="../interface/aot_out_val.html#moduleprocedure-aot_out_val_arr_string">aot_out_val_arr_string</a>
         </div>
       </div>
     </div>
@@ -154,9 +182,15 @@
       <h2>public interface aot_out_val</h2>
       <p>Put Fortran intrinsic types into the script.</p>
 <p>Scalar values and one-dimensional arrays are supported.
-Here we add support for extdouble precision.
-NOTE however, that the used format will only be in double precision, as
-Lua does not provide higher accuracy right now anyway.</p>
+Supported data-types are
+- integer
+- integer(kind=long_k)
+- real
+- real(kind=double_k)
+- logical
+- character(len=*)
+complex values are not supported, as they are indistinguishable from
+arrays with two entries on the Lua side.</p>
         <div class="card">
           <div class="card-header">
             <h3 class="card-title">Calls</h3>
@@ -168,369 +202,447 @@ Lua does not provide higher accuracy right now anyway.</p>
 <!-- Generated by graphviz version 2.43.0 (0)
  -->
 <!-- Title: interface~~aot_out_val~~CallsGraph Pages: 1 -->
-<svg id="interfaceaot_out_valCallsGraph" width="566pt" height="114pt"
- viewBox="0.00 0.00 566.00 114.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="interface~~aot_out_val~~CallsGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 110)">
+<svg id="interfaceaot_out_valCallsGraph" width="641pt" height="584pt"
+ viewBox="0.00 0.00 641.00 584.30" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="interface~~aot_out_val~~CallsGraph" class="graph" transform="scale(0.71 0.71) rotate(0) translate(4 818.21)">
 <title>interface~~aot_out_val~~CallsGraph</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-110 562,-110 562,4 -4,4"/>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-818.21 898,-818.21 898,4 -4,4"/>
 <!-- interface~aot_out_val -->
 <g id="interface~~aot_out_val~~CallsGraph_node1" class="node">
 <title>interface~aot_out_val</title>
-<polygon fill="none" stroke="black" points="73,-66 0,-66 0,-42 73,-42 73,-66"/>
-<text text-anchor="middle" x="36.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50">aot_out_val</text>
+<polygon fill="none" stroke="black" points="73,-402.62 0,-402.62 0,-378.62 73,-378.62 73,-402.62"/>
+<text text-anchor="middle" x="36.5" y="-388.22" font-family="Helvetica,sans-Serif" font-size="10.50">aot_out_val</text>
 </g>
-<!-- proc~aot_out_val_arr_extdouble -->
+<!-- proc~aot_out_val_arr_double -->
 <g id="interface~~aot_out_val~~CallsGraph_node2" class="node">
-<title>proc~aot_out_val_arr_extdouble</title>
-<g id="a_interface~~aot_out_val~~CallsGraph_node2"><a xlink:href="../proc/aot_out_val_arr_extdouble.html" xlink:title="aot_out_val_arr_extdouble">
-<polygon fill="#d9534f" stroke="#d9534f" points="261,-66 109,-66 109,-42 261,-42 261,-66"/>
-<text text-anchor="middle" x="185" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_out_val_arr_extdouble</text>
+<title>proc~aot_out_val_arr_double</title>
+<g id="a_interface~~aot_out_val~~CallsGraph_node2"><a xlink:href="../proc/aot_out_val_arr_double.html" xlink:title="aot_out_val_arr_double">
+<polygon fill="#d9534f" stroke="#d9534f" points="245,-322.62 109,-322.62 109,-298.62 245,-298.62 245,-322.62"/>
+<text text-anchor="middle" x="177" y="-308.22" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_out_val_arr_double</text>
 </a>
 </g>
 </g>
-<!-- interface~aot_out_val&#45;&gt;proc~aot_out_val_arr_extdouble -->
+<!-- interface~aot_out_val&#45;&gt;proc~aot_out_val_arr_double -->
 <g id="interface~~aot_out_val~~CallsGraph_edge1" class="edge">
-<title>interface~aot_out_val&#45;&gt;proc~aot_out_val_arr_extdouble</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M73.34,-48.1C81.22,-47.71 89.88,-47.45 98.79,-47.33"/>
-<polygon fill="#000000" stroke="#000000" points="98.95,-50.83 108.93,-47.25 98.9,-43.83 98.95,-50.83"/>
+<title>interface~aot_out_val&#45;&gt;proc~aot_out_val_arr_double</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M57.79,-378.59C72.08,-370.15 91.67,-358.62 109,-348.62 120.97,-341.71 134.2,-334.18 145.72,-327.67"/>
+<polygon fill="#000000" stroke="#000000" points="147.54,-330.65 154.53,-322.69 144.1,-324.56 147.54,-330.65"/>
 </g>
-<!-- proc~aot_out_val_extdouble -->
+<!-- proc~aot_out_val_arr_int -->
 <g id="interface~~aot_out_val~~CallsGraph_node3" class="node">
-<title>proc~aot_out_val_extdouble</title>
-<g id="a_interface~~aot_out_val~~CallsGraph_node3"><a xlink:href="../proc/aot_out_val_extdouble.html" xlink:title="aot_out_val_extdouble">
-<polygon fill="#d9534f" stroke="#d9534f" points="250.5,-24 119.5,-24 119.5,0 250.5,0 250.5,-24"/>
-<text text-anchor="middle" x="185" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_out_val_extdouble</text>
+<title>proc~aot_out_val_arr_int</title>
+<g id="a_interface~~aot_out_val~~CallsGraph_node3"><a xlink:href="../proc/aot_out_val_arr_int.html" xlink:title="aot_out_val_arr_int">
+<polygon fill="#d9534f" stroke="#d9534f" points="233.5,-465.62 120.5,-465.62 120.5,-441.62 233.5,-441.62 233.5,-465.62"/>
+<text text-anchor="middle" x="177" y="-451.22" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_out_val_arr_int</text>
 </a>
 </g>
 </g>
-<!-- interface~aot_out_val&#45;&gt;proc~aot_out_val_extdouble -->
+<!-- interface~aot_out_val&#45;&gt;proc~aot_out_val_arr_int -->
 <g id="interface~~aot_out_val~~CallsGraph_edge2" class="edge">
-<title>interface~aot_out_val&#45;&gt;proc~aot_out_val_extdouble</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M73.12,-43.44C84.56,-40.08 97.31,-36.35 109,-33 116.14,-30.95 123.67,-28.82 131.09,-26.72"/>
-<polygon fill="#000000" stroke="#000000" points="132.06,-30.09 140.74,-24.01 130.17,-23.35 132.06,-30.09"/>
+<title>interface~aot_out_val&#45;&gt;proc~aot_out_val_arr_int</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M55.41,-402.69C69.51,-411.81 89.92,-424.16 109,-432.62 113.43,-434.58 118.11,-436.45 122.84,-438.19"/>
+<polygon fill="#000000" stroke="#000000" points="121.98,-441.6 132.57,-441.6 124.29,-434.99 121.98,-441.6"/>
 </g>
-<!-- proc~aot_out_val_arr_extdouble&#45;&gt;interface~aot_out_val -->
+<!-- proc~aot_out_val_arr_logical -->
+<g id="interface~~aot_out_val~~CallsGraph_node4" class="node">
+<title>proc~aot_out_val_arr_logical</title>
+<g id="a_interface~~aot_out_val~~CallsGraph_node4"><a xlink:href="../proc/aot_out_val_arr_logical.html" xlink:title="aot_out_val_arr_logical">
+<polygon fill="#d9534f" stroke="#d9534f" points="244.5,-423.62 109.5,-423.62 109.5,-399.62 244.5,-399.62 244.5,-423.62"/>
+<text text-anchor="middle" x="177" y="-409.22" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_out_val_arr_logical</text>
+</a>
+</g>
+</g>
+<!-- interface~aot_out_val&#45;&gt;proc~aot_out_val_arr_logical -->
 <g id="interface~~aot_out_val~~CallsGraph_edge3" class="edge">
-<title>proc~aot_out_val_arr_extdouble&#45;&gt;interface~aot_out_val</title>
-<path fill="none" stroke="#000000" d="M108.93,-60.75C100.2,-60.73 91.51,-60.58 83.35,-60.31"/>
-<polygon fill="#000000" stroke="#000000" points="83.47,-56.81 73.34,-59.9 83.18,-63.81 83.47,-56.81"/>
+<title>interface~aot_out_val&#45;&gt;proc~aot_out_val_arr_logical</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M73.17,-396.03C81.29,-397.26 90.23,-398.61 99.33,-399.99"/>
+<polygon fill="#000000" stroke="#000000" points="98.85,-403.46 109.26,-401.5 99.89,-396.54 98.85,-403.46"/>
+</g>
+<!-- proc~aot_out_val_arr_long -->
+<g id="interface~~aot_out_val~~CallsGraph_node5" class="node">
+<title>proc~aot_out_val_arr_long</title>
+<g id="a_interface~~aot_out_val~~CallsGraph_node5"><a xlink:href="../proc/aot_out_val_arr_long.html" xlink:title="aot_out_val_arr_long">
+<polygon fill="#d9534f" stroke="#d9534f" points="238.5,-524.62 115.5,-524.62 115.5,-500.62 238.5,-500.62 238.5,-524.62"/>
+<text text-anchor="middle" x="177" y="-510.22" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_out_val_arr_long</text>
+</a>
+</g>
+</g>
+<!-- interface~aot_out_val&#45;&gt;proc~aot_out_val_arr_long -->
+<g id="interface~~aot_out_val~~CallsGraph_edge4" class="edge">
+<title>interface~aot_out_val&#45;&gt;proc~aot_out_val_arr_long</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M45.64,-402.63C57.88,-420.05 82.43,-452.66 109,-474.62 118.57,-482.53 130,-489.7 140.7,-495.62"/>
+<polygon fill="#000000" stroke="#000000" points="139.36,-498.88 149.84,-500.5 142.66,-492.7 139.36,-498.88"/>
+</g>
+<!-- proc~aot_out_val_arr_real -->
+<g id="interface~~aot_out_val~~CallsGraph_node6" class="node">
+<title>proc~aot_out_val_arr_real</title>
+<g id="a_interface~~aot_out_val~~CallsGraph_node6"><a xlink:href="../proc/aot_out_val_arr_real.html" xlink:title="aot_out_val_arr_real">
+<polygon fill="#d9534f" stroke="#d9534f" points="237,-264.62 117,-264.62 117,-240.62 237,-240.62 237,-264.62"/>
+<text text-anchor="middle" x="177" y="-250.22" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_out_val_arr_real</text>
+</a>
+</g>
+</g>
+<!-- interface~aot_out_val&#45;&gt;proc~aot_out_val_arr_real -->
+<g id="interface~~aot_out_val~~CallsGraph_edge5" class="edge">
+<title>interface~aot_out_val&#45;&gt;proc~aot_out_val_arr_real</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M43.76,-378.4C54.71,-357.95 79.05,-316.4 109,-289.62 117.81,-281.74 128.59,-274.87 138.9,-269.26"/>
+<polygon fill="#000000" stroke="#000000" points="140.51,-272.36 147.78,-264.66 137.29,-266.15 140.51,-272.36"/>
+</g>
+<!-- proc~aot_out_val_arr_string -->
+<g id="interface~~aot_out_val~~CallsGraph_node7" class="node">
+<title>proc~aot_out_val_arr_string</title>
+<g id="a_interface~~aot_out_val~~CallsGraph_node7"><a xlink:href="../proc/aot_out_val_arr_string.html" xlink:title="aot_out_val_arr_string">
+<polygon fill="#d9534f" stroke="#d9534f" points="242,-381.62 112,-381.62 112,-357.62 242,-357.62 242,-381.62"/>
+<text text-anchor="middle" x="177" y="-367.22" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_out_val_arr_string</text>
+</a>
+</g>
+</g>
+<!-- interface~aot_out_val&#45;&gt;proc~aot_out_val_arr_string -->
+<g id="interface~~aot_out_val~~CallsGraph_edge6" class="edge">
+<title>interface~aot_out_val&#45;&gt;proc~aot_out_val_arr_string</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M73.17,-385.21C82.06,-383.86 91.94,-382.36 101.94,-380.85"/>
+<polygon fill="#000000" stroke="#000000" points="102.6,-384.29 111.96,-379.33 101.55,-377.37 102.6,-384.29"/>
+</g>
+<!-- proc~aot_out_val_double -->
+<g id="interface~~aot_out_val~~CallsGraph_node8" class="node">
+<title>proc~aot_out_val_double</title>
+<g id="a_interface~~aot_out_val~~CallsGraph_node8"><a xlink:href="../proc/aot_out_val_double.html" xlink:title="aot_out_val_double">
+<polygon fill="#d9534f" stroke="#d9534f" points="396,-116.62 281,-116.62 281,-92.62 396,-92.62 396,-116.62"/>
+<text text-anchor="middle" x="338.5" y="-102.22" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_out_val_double</text>
+</a>
+</g>
+</g>
+<!-- interface~aot_out_val&#45;&gt;proc~aot_out_val_double -->
+<g id="interface~~aot_out_val~~CallsGraph_edge7" class="edge">
+<title>interface~aot_out_val&#45;&gt;proc~aot_out_val_double</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M40.25,-378.45C47.26,-349.81 68.17,-277.13 109,-231.62 159.11,-175.76 239.81,-139.08 290.68,-120.1"/>
+<polygon fill="#000000" stroke="#000000" points="291.94,-123.37 300.13,-116.65 289.54,-116.8 291.94,-123.37"/>
+</g>
+<!-- proc~aot_out_val_int -->
+<g id="interface~~aot_out_val~~CallsGraph_node9" class="node">
+<title>proc~aot_out_val_int</title>
+<g id="a_interface~~aot_out_val~~CallsGraph_node9"><a xlink:href="../proc/aot_out_val_int.html" xlink:title="aot_out_val_int">
+<polygon fill="#d9534f" stroke="#d9534f" points="384.5,-74.62 292.5,-74.62 292.5,-50.62 384.5,-50.62 384.5,-74.62"/>
+<text text-anchor="middle" x="338.5" y="-60.22" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_out_val_int</text>
+</a>
+</g>
+</g>
+<!-- interface~aot_out_val&#45;&gt;proc~aot_out_val_int -->
+<g id="interface~~aot_out_val~~CallsGraph_edge8" class="edge">
+<title>interface~aot_out_val&#45;&gt;proc~aot_out_val_int</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M37.18,-378.4C36.83,-338.15 41.23,-208.28 109,-137.62 154.52,-90.16 230.52,-72.71 282.26,-66.31"/>
+<polygon fill="#000000" stroke="#000000" points="282.73,-69.78 292.27,-65.17 281.94,-62.82 282.73,-69.78"/>
+</g>
+<!-- proc~aot_out_val_logical -->
+<g id="interface~~aot_out_val~~CallsGraph_node10" class="node">
+<title>proc~aot_out_val_logical</title>
+<g id="a_interface~~aot_out_val~~CallsGraph_node10"><a xlink:href="../proc/aot_out_val_logical.html" xlink:title="aot_out_val_logical">
+<polygon fill="#d9534f" stroke="#d9534f" points="565,-35.62 451,-35.62 451,-11.62 565,-11.62 565,-35.62"/>
+<text text-anchor="middle" x="508" y="-21.22" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_out_val_logical</text>
+</a>
+</g>
+</g>
+<!-- interface~aot_out_val&#45;&gt;proc~aot_out_val_logical -->
+<g id="interface~~aot_out_val~~CallsGraph_edge9" class="edge">
+<title>interface~aot_out_val&#45;&gt;proc~aot_out_val_logical</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M38.42,-378.53C42.72,-325.41 62.6,-113.41 109,-69.62 198.41,14.77 354.08,4.56 441.9,-9.85"/>
+<polygon fill="#000000" stroke="#000000" points="441.55,-13.35 452,-11.58 442.73,-6.45 441.55,-13.35"/>
+</g>
+<!-- proc~aot_out_val_long -->
+<g id="interface~~aot_out_val~~CallsGraph_node11" class="node">
+<title>proc~aot_out_val_long</title>
+<g id="a_interface~~aot_out_val~~CallsGraph_node11"><a xlink:href="../proc/aot_out_val_long.html" xlink:title="aot_out_val_long">
+<polygon fill="#d9534f" stroke="#d9534f" points="736.5,-774.62 634.5,-774.62 634.5,-750.62 736.5,-750.62 736.5,-774.62"/>
+<text text-anchor="middle" x="685.5" y="-760.22" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_out_val_long</text>
+</a>
+</g>
+</g>
+<!-- interface~aot_out_val&#45;&gt;proc~aot_out_val_long -->
+<g id="interface~~aot_out_val~~CallsGraph_edge10" class="edge">
+<title>interface~aot_out_val&#45;&gt;proc~aot_out_val_long</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M38.19,-402.68C41.61,-457.7 58.59,-683.99 109,-728.62 259.06,-861.48 526.49,-807.29 635.86,-777.39"/>
+<polygon fill="#000000" stroke="#000000" points="636.93,-780.72 645.63,-774.66 635.06,-773.98 636.93,-780.72"/>
+</g>
+<!-- proc~aot_out_val_real -->
+<g id="interface~~aot_out_val~~CallsGraph_node12" class="node">
+<title>proc~aot_out_val_real</title>
+<g id="a_interface~~aot_out_val~~CallsGraph_node12"><a xlink:href="../proc/aot_out_val_real.html" xlink:title="aot_out_val_real">
+<polygon fill="#d9534f" stroke="#d9534f" points="388,-734.62 289,-734.62 289,-710.62 388,-710.62 388,-734.62"/>
+<text text-anchor="middle" x="338.5" y="-720.22" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_out_val_real</text>
+</a>
+</g>
+</g>
+<!-- interface~aot_out_val&#45;&gt;proc~aot_out_val_real -->
+<g id="interface~~aot_out_val~~CallsGraph_edge11" class="edge">
+<title>interface~aot_out_val&#45;&gt;proc~aot_out_val_real</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M38.53,-402.85C43.18,-454.67 63.88,-655.31 109,-695.62 154.57,-736.32 227.26,-738.03 278.39,-732.8"/>
+<polygon fill="#000000" stroke="#000000" points="279.1,-736.24 288.64,-731.63 278.31,-729.29 279.1,-736.24"/>
+</g>
+<!-- proc~aot_out_val_string -->
+<g id="interface~~aot_out_val~~CallsGraph_node13" class="node">
+<title>proc~aot_out_val_string</title>
+<g id="a_interface~~aot_out_val~~CallsGraph_node13"><a xlink:href="../proc/aot_out_val_string.html" xlink:title="aot_out_val_string">
+<polygon fill="#d9534f" stroke="#d9534f" points="562.5,-694.62 453.5,-694.62 453.5,-670.62 562.5,-670.62 562.5,-694.62"/>
+<text text-anchor="middle" x="508" y="-680.22" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_out_val_string</text>
+</a>
+</g>
+</g>
+<!-- interface~aot_out_val&#45;&gt;proc~aot_out_val_string -->
+<g id="interface~~aot_out_val~~CallsGraph_edge12" class="edge">
+<title>interface~aot_out_val&#45;&gt;proc~aot_out_val_string</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M40.34,-402.82C47.31,-430.09 67.73,-496.49 109,-533.62 205.58,-620.52 357.61,-658.37 443.1,-673.53"/>
+<polygon fill="#000000" stroke="#000000" points="442.74,-677.02 453.19,-675.27 443.93,-670.12 442.74,-677.02"/>
+</g>
+<!-- interface~aot_out_val~3 -->
+<g id="interface~~aot_out_val~~CallsGraph_node14" class="node">
+<title>interface~aot_out_val~3</title>
+<g id="a_interface~~aot_out_val~~CallsGraph_node14"><a xlink:href="../interface/aot_out_val~3.html" xlink:title="aot_out_val">
+<polygon fill="#a7506f" stroke="#a7506f" points="375,-424.62 302,-424.62 302,-400.62 375,-400.62 375,-424.62"/>
+<text text-anchor="middle" x="338.5" y="-410.22" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_out_val</text>
+</a>
+</g>
+</g>
+<!-- proc~aot_out_val_arr_double&#45;&gt;interface~aot_out_val~3 -->
+<g id="interface~~aot_out_val~~CallsGraph_edge13" class="edge">
+<title>proc~aot_out_val_arr_double&#45;&gt;interface~aot_out_val~3</title>
+<path fill="none" stroke="#000000" d="M200.32,-322.62C213.49,-329.87 230.39,-339.45 245,-348.62 268.45,-363.34 294.3,-381.39 312.7,-394.56"/>
+<polygon fill="#000000" stroke="#000000" points="310.93,-397.6 321.09,-400.6 315.02,-391.92 310.93,-397.6"/>
 </g>
 <!-- proc~aot_out_close_table -->
-<g id="interface~~aot_out_val~~CallsGraph_node5" class="node">
+<g id="interface~~aot_out_val~~CallsGraph_node16" class="node">
 <title>proc~aot_out_close_table</title>
-<g id="a_interface~~aot_out_val~~CallsGraph_node5"><a xlink:href="../proc/aot_out_close_table.html" xlink:title="aot_out_close_table">
-<polygon fill="#d9534f" stroke="#d9534f" points="415,-106 297,-106 297,-82 415,-82 415,-106"/>
-<text text-anchor="middle" x="356" y="-91.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_out_close_table</text>
+<g id="a_interface~~aot_out_val~~CallsGraph_node16"><a xlink:href="../proc/aot_out_close_table.html" xlink:title="aot_out_close_table">
+<polygon fill="#d9534f" stroke="#d9534f" points="744.5,-424.62 626.5,-424.62 626.5,-400.62 744.5,-400.62 744.5,-424.62"/>
+<text text-anchor="middle" x="685.5" y="-410.22" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_out_close_table</text>
 </a>
 </g>
 </g>
-<!-- proc~aot_out_val_arr_extdouble&#45;&gt;proc~aot_out_close_table -->
-<g id="interface~~aot_out_val~~CallsGraph_edge4" class="edge">
-<title>proc~aot_out_val_arr_extdouble&#45;&gt;proc~aot_out_close_table</title>
-<path fill="none" stroke="#000000" d="M236.71,-66C254.75,-70.27 275.27,-75.13 294.08,-79.58"/>
-<polygon fill="#000000" stroke="#000000" points="293.5,-83.04 304.04,-81.94 295.11,-76.23 293.5,-83.04"/>
+<!-- proc~aot_out_val_arr_double&#45;&gt;proc~aot_out_close_table -->
+<g id="interface~~aot_out_val~~CallsGraph_edge14" class="edge">
+<title>proc~aot_out_val_arr_double&#45;&gt;proc~aot_out_close_table</title>
+<path fill="none" stroke="#000000" d="M245.07,-316.15C326.37,-323.93 467.02,-340.85 584,-372.62 606.48,-378.72 630.77,-388.3 649.84,-396.56"/>
+<polygon fill="#000000" stroke="#000000" points="648.46,-399.77 659.02,-400.6 651.28,-393.37 648.46,-399.77"/>
 </g>
 <!-- proc~aot_out_open_table -->
-<g id="interface~~aot_out_val~~CallsGraph_node6" class="node">
+<g id="interface~~aot_out_val~~CallsGraph_node17" class="node">
 <title>proc~aot_out_open_table</title>
-<g id="a_interface~~aot_out_val~~CallsGraph_node6"><a xlink:href="../proc/aot_out_open_table.html" xlink:title="aot_out_open_table">
-<polygon fill="#d9534f" stroke="#d9534f" points="414.5,-64 297.5,-64 297.5,-40 414.5,-40 414.5,-64"/>
-<text text-anchor="middle" x="356" y="-49.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_out_open_table</text>
+<g id="a_interface~~aot_out_val~~CallsGraph_node17"><a xlink:href="../proc/aot_out_open_table.html" xlink:title="aot_out_open_table">
+<polygon fill="#d9534f" stroke="#d9534f" points="744,-364.62 627,-364.62 627,-340.62 744,-340.62 744,-364.62"/>
+<text text-anchor="middle" x="685.5" y="-350.22" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_out_open_table</text>
 </a>
 </g>
 </g>
-<!-- proc~aot_out_val_arr_extdouble&#45;&gt;proc~aot_out_open_table -->
-<g id="interface~~aot_out_val~~CallsGraph_edge5" class="edge">
-<title>proc~aot_out_val_arr_extdouble&#45;&gt;proc~aot_out_open_table</title>
-<path fill="none" stroke="#000000" d="M261.11,-53.11C269.85,-53.01 278.73,-52.9 287.37,-52.8"/>
-<polygon fill="#000000" stroke="#000000" points="287.41,-56.3 297.37,-52.68 287.33,-49.3 287.41,-56.3"/>
+<!-- proc~aot_out_val_arr_double&#45;&gt;proc~aot_out_open_table -->
+<g id="interface~~aot_out_val~~CallsGraph_edge15" class="edge">
+<title>proc~aot_out_val_arr_double&#45;&gt;proc~aot_out_open_table</title>
+<path fill="none" stroke="#000000" d="M202.16,-298.58C215.17,-291.77 231.32,-282.8 245,-273.62 262.06,-262.17 261.62,-251.45 281,-244.62 329.2,-227.62 345.37,-237.62 396,-244.62 481.99,-256.51 503.63,-264.79 584,-297.62 609.59,-308.07 637.02,-323.39 656.74,-335.2"/>
+<polygon fill="#000000" stroke="#000000" points="655.14,-338.32 665.5,-340.52 658.77,-332.34 655.14,-338.32"/>
+</g>
+<!-- proc~aot_out_val_arr_int&#45;&gt;interface~aot_out_val~3 -->
+<g id="interface~~aot_out_val~~CallsGraph_edge16" class="edge">
+<title>proc~aot_out_val_arr_int&#45;&gt;interface~aot_out_val~3</title>
+<path fill="none" stroke="#000000" d="M224.99,-441.54C246.16,-436.1 271.05,-429.7 292.03,-424.31"/>
+<polygon fill="#000000" stroke="#000000" points="293.16,-427.63 301.98,-421.75 291.42,-420.85 293.16,-427.63"/>
+</g>
+<!-- proc~aot_out_val_arr_int&#45;&gt;proc~aot_out_close_table -->
+<g id="interface~~aot_out_val~~CallsGraph_edge17" class="edge">
+<title>proc~aot_out_val_arr_int&#45;&gt;proc~aot_out_close_table</title>
+<path fill="none" stroke="#000000" d="M233.79,-460.02C312.64,-467.59 460.81,-476.39 584,-452.62 607.66,-448.05 632.85,-438.01 652.1,-429.14"/>
+<polygon fill="#000000" stroke="#000000" points="653.77,-432.22 661.3,-424.77 650.77,-425.89 653.77,-432.22"/>
+</g>
+<!-- proc~aot_out_val_arr_int&#45;&gt;proc~aot_out_open_table -->
+<g id="interface~~aot_out_val~~CallsGraph_edge18" class="edge">
+<title>proc~aot_out_val_arr_int&#45;&gt;proc~aot_out_open_table</title>
+<path fill="none" stroke="#000000" d="M233.6,-464.11C315.12,-476.66 469.78,-489.6 584,-433.62 606.08,-422.8 601.24,-407.51 620,-391.62 629.57,-383.51 641.03,-376 651.61,-369.78"/>
+<polygon fill="#000000" stroke="#000000" points="653.65,-372.65 660.61,-364.67 650.19,-366.56 653.65,-372.65"/>
+</g>
+<!-- proc~aot_out_val_arr_logical&#45;&gt;interface~aot_out_val~3 -->
+<g id="interface~~aot_out_val~~CallsGraph_edge19" class="edge">
+<title>proc~aot_out_val_arr_logical&#45;&gt;interface~aot_out_val~3</title>
+<path fill="none" stroke="#000000" d="M244.72,-412.04C260.52,-412.14 277.02,-412.24 291.65,-412.33"/>
+<polygon fill="#000000" stroke="#000000" points="291.91,-415.83 301.93,-412.4 291.96,-408.83 291.91,-415.83"/>
+</g>
+<!-- proc~aot_out_val_arr_logical&#45;&gt;proc~aot_out_close_table -->
+<g id="interface~~aot_out_val~~CallsGraph_edge20" class="edge">
+<title>proc~aot_out_val_arr_logical&#45;&gt;proc~aot_out_close_table</title>
+<path fill="none" stroke="#000000" d="M224.07,-423.62C241.74,-427.65 262.18,-431.63 281,-433.62 414.92,-447.76 450.05,-447.46 584,-433.62 598.05,-432.17 613.04,-429.6 627.03,-426.75"/>
+<polygon fill="#000000" stroke="#000000" points="627.96,-430.13 637.02,-424.63 626.51,-423.28 627.96,-430.13"/>
+</g>
+<!-- proc~aot_out_val_arr_logical&#45;&gt;proc~aot_out_open_table -->
+<g id="interface~~aot_out_val~~CallsGraph_edge21" class="edge">
+<title>proc~aot_out_val_arr_logical&#45;&gt;proc~aot_out_open_table</title>
+<path fill="none" stroke="#000000" d="M234.77,-399.59C249.76,-396.69 265.95,-393.8 281,-391.62 398.56,-374.56 536.49,-363.05 616.84,-357.18"/>
+<polygon fill="#000000" stroke="#000000" points="617.11,-360.67 626.83,-356.45 616.6,-353.68 617.11,-360.67"/>
+</g>
+<!-- proc~aot_out_val_arr_long&#45;&gt;interface~aot_out_val~3 -->
+<g id="interface~~aot_out_val~~CallsGraph_edge22" class="edge">
+<title>proc~aot_out_val_arr_long&#45;&gt;interface~aot_out_val~3</title>
+<path fill="none" stroke="#000000" d="M200.27,-500.53C213.42,-493.26 230.32,-483.68 245,-474.62 268.04,-460.39 293.56,-443.17 311.95,-430.49"/>
+<polygon fill="#000000" stroke="#000000" points="314.13,-433.24 320.36,-424.67 310.15,-427.48 314.13,-433.24"/>
+</g>
+<!-- proc~aot_out_val_arr_long&#45;&gt;proc~aot_out_close_table -->
+<g id="interface~~aot_out_val~~CallsGraph_edge23" class="edge">
+<title>proc~aot_out_val_arr_long&#45;&gt;proc~aot_out_close_table</title>
+<path fill="none" stroke="#000000" d="M238.57,-515.15C319.47,-516.68 466.29,-512.91 584,-473.62 601.79,-467.68 603.98,-461.36 620,-451.62 631.62,-444.56 644.43,-436.8 655.56,-430.08"/>
+<polygon fill="#000000" stroke="#000000" points="657.69,-432.88 664.44,-424.72 654.07,-426.89 657.69,-432.88"/>
+</g>
+<!-- proc~aot_out_val_arr_long&#45;&gt;proc~aot_out_open_table -->
+<g id="interface~~aot_out_val~~CallsGraph_edge24" class="edge">
+<title>proc~aot_out_val_arr_long&#45;&gt;proc~aot_out_open_table</title>
+<path fill="none" stroke="#000000" d="M238.72,-522.7C324.13,-533.41 480.8,-539.99 584,-466.62 614.13,-445.19 595.14,-418.99 620,-391.62 627.81,-383.01 637.97,-375.69 647.9,-369.79"/>
+<polygon fill="#000000" stroke="#000000" points="649.86,-372.7 656.88,-364.77 646.45,-366.59 649.86,-372.7"/>
+</g>
+<!-- proc~aot_out_val_arr_real&#45;&gt;interface~aot_out_val~3 -->
+<g id="interface~~aot_out_val~~CallsGraph_edge25" class="edge">
+<title>proc~aot_out_val_arr_real&#45;&gt;interface~aot_out_val~3</title>
+<path fill="none" stroke="#000000" d="M205.76,-264.64C218.52,-270.97 233.36,-279.51 245,-289.62 279.85,-319.9 309.79,-365.33 325.58,-391.67"/>
+<polygon fill="#000000" stroke="#000000" points="322.65,-393.6 330.74,-400.45 328.69,-390.06 322.65,-393.6"/>
+</g>
+<!-- proc~aot_out_val_arr_real&#45;&gt;proc~aot_out_close_table -->
+<g id="interface~~aot_out_val~~CallsGraph_edge26" class="edge">
+<title>proc~aot_out_val_arr_real&#45;&gt;proc~aot_out_close_table</title>
+<path fill="none" stroke="#000000" d="M237.16,-254.12C319.68,-258.52 471.82,-275.11 584,-336.62 604.12,-347.65 602.04,-359.34 620,-373.62 630.08,-381.63 641.95,-389.25 652.74,-395.59"/>
+<polygon fill="#000000" stroke="#000000" points="651.06,-398.67 661.48,-400.6 654.54,-392.59 651.06,-398.67"/>
+</g>
+<!-- proc~aot_out_val_arr_real&#45;&gt;proc~aot_out_open_table -->
+<g id="interface~~aot_out_val~~CallsGraph_edge27" class="edge">
+<title>proc~aot_out_val_arr_real&#45;&gt;proc~aot_out_open_table</title>
+<path fill="none" stroke="#000000" d="M218.27,-240.61C294.2,-220.32 461.85,-186.89 584,-245.62 623.69,-264.7 655.58,-306.77 672.13,-332.1"/>
+<polygon fill="#000000" stroke="#000000" points="669.2,-334.03 677.51,-340.6 675.12,-330.28 669.2,-334.03"/>
+</g>
+<!-- proc~aot_out_val_arr_string&#45;&gt;interface~aot_out_val~3 -->
+<g id="interface~~aot_out_val~~CallsGraph_edge28" class="edge">
+<title>proc~aot_out_val_arr_string&#45;&gt;interface~aot_out_val~3</title>
+<path fill="none" stroke="#000000" d="M222.85,-381.71C244.41,-387.52 270.2,-394.48 291.86,-400.32"/>
+<polygon fill="#000000" stroke="#000000" points="291.24,-403.77 301.81,-403 293.06,-397.01 291.24,-403.77"/>
+</g>
+<!-- proc~aot_out_val_arr_string&#45;&gt;proc~aot_out_close_table -->
+<g id="interface~~aot_out_val~~CallsGraph_edge29" class="edge">
+<title>proc~aot_out_val_arr_string&#45;&gt;proc~aot_out_close_table</title>
+<path fill="none" stroke="#000000" d="M242.27,-370.1C322.54,-371.38 463.96,-375.92 584,-391.62 597.17,-393.34 611.19,-395.84 624.44,-398.52"/>
+<polygon fill="#000000" stroke="#000000" points="623.9,-401.98 634.4,-400.59 625.32,-395.13 623.9,-401.98"/>
+</g>
+<!-- proc~aot_out_val_arr_string&#45;&gt;proc~aot_out_open_table -->
+<g id="interface~~aot_out_val~~CallsGraph_edge30" class="edge">
+<title>proc~aot_out_val_arr_string&#45;&gt;proc~aot_out_open_table</title>
+<path fill="none" stroke="#000000" d="M196.81,-357.51C216.77,-345.43 249.71,-327.68 281,-320.62 412.36,-290.97 450.93,-299.94 584,-320.62 604.71,-323.84 626.98,-330.57 645.29,-337.04"/>
+<polygon fill="#000000" stroke="#000000" points="644.15,-340.34 654.74,-340.47 646.54,-333.77 644.15,-340.34"/>
 </g>
 <!-- proc~aot_out_breakline -->
-<g id="interface~~aot_out_val~~CallsGraph_node4" class="node">
+<g id="interface~~aot_out_val~~CallsGraph_node15" class="node">
 <title>proc~aot_out_breakline</title>
-<g id="a_interface~~aot_out_val~~CallsGraph_node4"><a xlink:href="../proc/aot_out_breakline.html" xlink:title="aot_out_breakline">
-<polygon fill="#d9534f" stroke="#d9534f" points="558,-44 451,-44 451,-20 558,-20 558,-44"/>
-<text text-anchor="middle" x="504.5" y="-29.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_out_breakline</text>
+<g id="a_interface~~aot_out_val~~CallsGraph_node15"><a xlink:href="../proc/aot_out_breakline.html" xlink:title="aot_out_breakline">
+<polygon fill="#d9534f" stroke="#d9534f" points="894,-442.62 787,-442.62 787,-418.62 894,-418.62 894,-442.62"/>
+<text text-anchor="middle" x="840.5" y="-428.22" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_out_breakline</text>
 </a>
 </g>
 </g>
-<!-- proc~aot_out_val_extdouble&#45;&gt;proc~aot_out_breakline -->
-<g id="interface~~aot_out_val~~CallsGraph_edge6" class="edge">
-<title>proc~aot_out_val_extdouble&#45;&gt;proc~aot_out_breakline</title>
-<path fill="none" stroke="#000000" d="M250.63,-16.07C306.08,-19.56 385.49,-24.57 440.47,-28.03"/>
-<polygon fill="#000000" stroke="#000000" points="440.58,-31.54 450.78,-28.68 441.02,-24.56 440.58,-31.54"/>
+<!-- proc~aot_out_val_double&#45;&gt;proc~aot_out_breakline -->
+<g id="interface~~aot_out_val~~CallsGraph_edge31" class="edge">
+<title>proc~aot_out_val_double&#45;&gt;proc~aot_out_breakline</title>
+<path fill="none" stroke="#000000" d="M374.28,-116.72C422.77,-134.23 512.77,-169 584,-209.62 663.85,-255.15 682.88,-269.9 751,-331.62 778.78,-356.79 806.97,-389.92 823.85,-410.75"/>
+<polygon fill="#000000" stroke="#000000" points="821.16,-412.99 830.15,-418.61 826.62,-408.61 821.16,-412.99"/>
+</g>
+<!-- proc~aot_out_val_int&#45;&gt;proc~aot_out_breakline -->
+<g id="interface~~aot_out_val~~CallsGraph_edge32" class="edge">
+<title>proc~aot_out_val_int&#45;&gt;proc~aot_out_breakline</title>
+<path fill="none" stroke="#000000" d="M384.74,-67.81C469.12,-79.89 650.99,-117.73 751,-226.62 801,-281.05 825.71,-368.16 834.99,-408.63"/>
+<polygon fill="#000000" stroke="#000000" points="831.6,-409.51 837.17,-418.52 838.44,-408.01 831.6,-409.51"/>
+</g>
+<!-- proc~aot_out_val_logical&#45;&gt;proc~aot_out_breakline -->
+<g id="interface~~aot_out_val~~CallsGraph_edge33" class="edge">
+<title>proc~aot_out_val_logical&#45;&gt;proc~aot_out_breakline</title>
+<path fill="none" stroke="#000000" d="M565.05,-13.66C619.4,-7.43 700.79,-7.68 751,-52.62 804.98,-100.93 830.71,-334.64 837.57,-408.32"/>
+<polygon fill="#000000" stroke="#000000" points="834.09,-408.71 838.48,-418.35 841.06,-408.08 834.09,-408.71"/>
+</g>
+<!-- proc~aot_out_val_long&#45;&gt;proc~aot_out_breakline -->
+<g id="interface~~aot_out_val~~CallsGraph_edge34" class="edge">
+<title>proc~aot_out_val_long&#45;&gt;proc~aot_out_breakline</title>
+<path fill="none" stroke="#000000" d="M731.85,-750.52C738.99,-746.99 745.74,-742.44 751,-736.62 826.77,-652.72 837.96,-507.7 839.4,-452.67"/>
+<polygon fill="#000000" stroke="#000000" points="842.9,-452.68 839.57,-442.62 835.9,-452.56 842.9,-452.68"/>
+</g>
+<!-- proc~aot_out_val_real&#45;&gt;proc~aot_out_breakline -->
+<g id="interface~~aot_out_val~~CallsGraph_edge35" class="edge">
+<title>proc~aot_out_val_real&#45;&gt;proc~aot_out_breakline</title>
+<path fill="none" stroke="#000000" d="M388.28,-725.93C438.7,-727.73 519,-726.04 584,-703.62 668.25,-674.56 690.77,-658.31 751,-592.62 790.48,-549.56 818.6,-485.69 831.53,-452.48"/>
+<polygon fill="#000000" stroke="#000000" points="834.91,-453.42 835.19,-442.83 828.37,-450.94 834.91,-453.42"/>
+</g>
+<!-- proc~aot_out_val_string&#45;&gt;proc~aot_out_breakline -->
+<g id="interface~~aot_out_val~~CallsGraph_edge36" class="edge">
+<title>proc~aot_out_val_string&#45;&gt;proc~aot_out_breakline</title>
+<path fill="none" stroke="#000000" d="M553.11,-670.54C563.59,-666.81 574.48,-662.18 584,-656.62 685.83,-597.1 783.86,-493.4 822.37,-450.29"/>
+<polygon fill="#000000" stroke="#000000" points="825.05,-452.54 829.06,-442.74 819.81,-447.9 825.05,-452.54"/>
+</g>
+<!-- proc~aot_out_val_arr_extdouble -->
+<g id="interface~~aot_out_val~~CallsGraph_node18" class="node">
+<title>proc~aot_out_val_arr_extdouble</title>
+<g id="a_interface~~aot_out_val~~CallsGraph_node18"><a xlink:href="../proc/aot_out_val_arr_extdouble.html" xlink:title="aot_out_val_arr_extdouble">
+<polygon fill="#d9534f" stroke="#d9534f" points="584,-424.62 432,-424.62 432,-400.62 584,-400.62 584,-424.62"/>
+<text text-anchor="middle" x="508" y="-410.22" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_out_val_arr_extdouble</text>
+</a>
+</g>
+</g>
+<!-- interface~aot_out_val~3&#45;&gt;proc~aot_out_val_arr_extdouble -->
+<g id="interface~~aot_out_val~~CallsGraph_edge37" class="edge">
+<title>interface~aot_out_val~3&#45;&gt;proc~aot_out_val_arr_extdouble</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M375.02,-406.98C388.78,-406.26 405.17,-405.89 421.65,-405.87"/>
+<polygon fill="#000000" stroke="#000000" points="421.88,-409.37 431.89,-405.9 421.9,-402.37 421.88,-409.37"/>
+</g>
+<!-- proc~aot_out_val_extdouble -->
+<g id="interface~~aot_out_val~~CallsGraph_node19" class="node">
+<title>proc~aot_out_val_extdouble</title>
+<g id="a_interface~~aot_out_val~~CallsGraph_node19"><a xlink:href="../proc/aot_out_val_extdouble.html" xlink:title="aot_out_val_extdouble">
+<polygon fill="#d9534f" stroke="#d9534f" points="751,-484.62 620,-484.62 620,-460.62 751,-460.62 751,-484.62"/>
+<text text-anchor="middle" x="685.5" y="-470.22" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_out_val_extdouble</text>
+</a>
+</g>
+</g>
+<!-- interface~aot_out_val~3&#45;&gt;proc~aot_out_val_extdouble -->
+<g id="interface~~aot_out_val~~CallsGraph_edge38" class="edge">
+<title>interface~aot_out_val~3&#45;&gt;proc~aot_out_val_extdouble</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M375.4,-421.38C392.48,-425.4 413.23,-430.04 432,-433.62 491.52,-444.96 559.4,-455.3 609.79,-462.48"/>
+<polygon fill="#000000" stroke="#000000" points="609.55,-465.98 619.94,-463.92 610.53,-459.05 609.55,-465.98"/>
 </g>
 <!-- proc~aot_out_open_table&#45;&gt;proc~aot_out_breakline -->
-<g id="interface~~aot_out_val~~CallsGraph_edge7" class="edge">
+<g id="interface~~aot_out_val~~CallsGraph_edge39" class="edge">
 <title>proc~aot_out_open_table&#45;&gt;proc~aot_out_breakline</title>
-<path fill="none" stroke="#000000" d="M414.9,-44.1C423.41,-42.93 432.21,-41.73 440.8,-40.56"/>
-<polygon fill="#000000" stroke="#000000" points="441.34,-44.02 450.78,-39.2 440.4,-37.08 441.34,-44.02"/>
+<path fill="none" stroke="#000000" d="M710.07,-364.64C736.01,-377.86 777.89,-399.21 806.95,-414.03"/>
+<polygon fill="#000000" stroke="#000000" points="805.4,-417.16 815.9,-418.59 808.58,-410.93 805.4,-417.16"/>
+</g>
+<!-- proc~aot_out_val_arr_extdouble&#45;&gt;interface~aot_out_val~3 -->
+<g id="interface~~aot_out_val~~CallsGraph_edge40" class="edge">
+<title>proc~aot_out_val_arr_extdouble&#45;&gt;interface~aot_out_val~3</title>
+<path fill="none" stroke="#000000" d="M431.89,-419.34C415.96,-419.46 399.6,-419.24 385.16,-418.71"/>
+<polygon fill="#000000" stroke="#000000" points="385.17,-415.2 375.02,-418.25 384.86,-422.2 385.17,-415.2"/>
+</g>
+<!-- proc~aot_out_val_arr_extdouble&#45;&gt;proc~aot_out_close_table -->
+<g id="interface~~aot_out_val~~CallsGraph_edge41" class="edge">
+<title>proc~aot_out_val_arr_extdouble&#45;&gt;proc~aot_out_close_table</title>
+<path fill="none" stroke="#000000" d="M584.19,-412.62C594.8,-412.62 605.65,-412.62 616.12,-412.62"/>
+<polygon fill="#000000" stroke="#000000" points="616.44,-416.12 626.44,-412.62 616.44,-409.12 616.44,-416.12"/>
+</g>
+<!-- proc~aot_out_val_arr_extdouble&#45;&gt;proc~aot_out_open_table -->
+<g id="interface~~aot_out_val~~CallsGraph_edge42" class="edge">
+<title>proc~aot_out_val_arr_extdouble&#45;&gt;proc~aot_out_open_table</title>
+<path fill="none" stroke="#000000" d="M544.52,-400.48C571.96,-391.09 610.13,-378.05 639.68,-367.94"/>
+<polygon fill="#000000" stroke="#000000" points="641.01,-371.19 649.34,-364.64 638.74,-364.56 641.01,-371.19"/>
+</g>
+<!-- proc~aot_out_val_extdouble&#45;&gt;proc~aot_out_breakline -->
+<g id="interface~~aot_out_val~~CallsGraph_edge43" class="edge">
+<title>proc~aot_out_val_extdouble&#45;&gt;proc~aot_out_breakline</title>
+<path fill="none" stroke="#000000" d="M730.34,-460.58C747.63,-455.84 767.65,-450.34 785.79,-445.36"/>
+<polygon fill="#000000" stroke="#000000" points="786.93,-448.68 795.65,-442.66 785.08,-441.93 786.93,-448.68"/>
 </g>
 </g>
 </svg>
-</div>          <div>
+</div>                <script>
+                  var paninterfaceaot_out_valCallsGraph = svgPanZoom('#interfaceaot_out_valCallsGraph',
+                    {zoomEnabled: true, controlIconsEnabled: true, fit: true, center: true,}
+                  );
+                </script>          <div>
             <a type="button" class="graph-help" data-bs-toggle="modal" href="#CallsGraph-help-text">Help</a>
           </div>
           <div class="modal fade" id="CallsGraph-help-text" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-lg" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h4 class="modal-title" id="-graph-help-label">Graph Key</h4>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-<p>Nodes of different colours represent the following: </p>
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
- "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<!-- Generated by graphviz version 2.43.0 (0)
- -->
-<!-- Title: Graph Key Pages: 1 -->
-<svg width="641pt" height="28pt"
- viewBox="0.00 0.00 641.00 27.51" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(0.86 0.86) rotate(0) translate(4 28)">
-<title>Graph Key</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-28 741.5,-28 741.5,4 -4,4"/>
-<!-- Subroutine -->
-<g id="node1" class="node">
-<title>Subroutine</title>
-<polygon fill="#d9534f" stroke="#d9534f" points="70,-24 0,-24 0,0 70,0 70,-24"/>
-<text text-anchor="middle" x="35" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Subroutine</text>
-</g>
-<!-- Function -->
-<g id="node2" class="node">
-<title>Function</title>
-<polygon fill="#d94e8f" stroke="#d94e8f" points="146,-24 88,-24 88,0 146,0 146,-24"/>
-<text text-anchor="middle" x="117" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Function</text>
-</g>
-<!-- Interface -->
-<g id="node3" class="node">
-<title>Interface</title>
-<polygon fill="#a7506f" stroke="#a7506f" points="225.5,-24 164.5,-24 164.5,0 225.5,0 225.5,-24"/>
-<text text-anchor="middle" x="195" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Interface</text>
-</g>
-<!-- Type Bound Procedure -->
-<g id="node4" class="node">
-<title>Type Bound Procedure</title>
-<polygon fill="#a7506f" stroke="#a7506f" points="374,-24 244,-24 244,0 374,0 374,-24"/>
-<text text-anchor="middle" x="309" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Type Bound Procedure</text>
-</g>
-<!-- Unknown Procedure Type -->
-<g id="node5" class="node">
-<title>Unknown Procedure Type</title>
-<polygon fill="#777777" stroke="#777777" points="537.5,-24 392.5,-24 392.5,0 537.5,0 537.5,-24"/>
-<text text-anchor="middle" x="465" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Unknown Procedure Type</text>
-</g>
-<!-- Program -->
-<g id="node6" class="node">
-<title>Program</title>
-<polygon fill="#f0ad4e" stroke="#f0ad4e" points="614,-24 556,-24 556,0 614,0 614,-24"/>
-<text text-anchor="middle" x="585" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">Program</text>
-</g>
-<!-- This Page&#39;s Entity -->
-<g id="node7" class="node">
-<title>This Page&#39;s Entity</title>
-<polygon fill="none" stroke="black" points="737.5,-24 632.5,-24 632.5,0 737.5,0 737.5,-24"/>
-<text text-anchor="middle" x="685" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">This Page&#39;s Entity</text>
-</g>
-</g>
-</svg>
-
-<p>Solid arrows point from a procedure to one which it calls. Dashed 
-arrows point from an interface to procedures which implement that interface.
-This could include the module procedures in a generic interface or the
-implementation in a submodule of an interface in a parent module.
-</p>
- </div>
-            </div>
-          </div>
-        </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">Called by</h3>
-          </div>
-          <div class="card-body">
-            <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
- "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<!-- Generated by graphviz version 2.43.0 (0)
- -->
-<!-- Title: interface~~aot_out_val~~CalledByGraph Pages: 1 -->
-<svg id="interfaceaot_out_valCalledByGraph" width="550pt" height="242pt"
- viewBox="0.00 0.00 550.00 242.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="interface~~aot_out_val~~CalledByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 238)">
-<title>interface~~aot_out_val~~CalledByGraph</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-238 546,-238 546,4 -4,4"/>
-<!-- interface~aot_out_val -->
-<g id="interface~~aot_out_val~~CalledByGraph_node1" class="node">
-<title>interface~aot_out_val</title>
-<polygon fill="none" stroke="black" points="354,-129 281,-129 281,-105 354,-105 354,-129"/>
-<text text-anchor="middle" x="317.5" y="-114.6" font-family="Helvetica,sans-Serif" font-size="10.50">aot_out_val</text>
-</g>
-<!-- proc~aot_out_val_arr_extdouble -->
-<g id="interface~~aot_out_val~~CalledByGraph_node3" class="node">
-<title>proc~aot_out_val_arr_extdouble</title>
-<g id="a_interface~~aot_out_val~~CalledByGraph_node3"><a xlink:href="../proc/aot_out_val_arr_extdouble.html" xlink:title="aot_out_val_arr_extdouble">
-<polygon fill="#d9534f" stroke="#d9534f" points="542,-129 390,-129 390,-105 542,-105 542,-129"/>
-<text text-anchor="middle" x="466" y="-114.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_out_val_arr_extdouble</text>
-</a>
-</g>
-</g>
-<!-- interface~aot_out_val&#45;&gt;proc~aot_out_val_arr_extdouble -->
-<g id="interface~~aot_out_val~~CalledByGraph_edge9" class="edge">
-<title>interface~aot_out_val&#45;&gt;proc~aot_out_val_arr_extdouble</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M354.34,-111.1C362.22,-110.71 370.88,-110.45 379.79,-110.33"/>
-<polygon fill="#000000" stroke="#000000" points="379.95,-113.83 389.93,-110.25 379.9,-106.83 379.95,-113.83"/>
-</g>
-<!-- proc~aot_out_val_arr_double -->
-<g id="interface~~aot_out_val~~CalledByGraph_node2" class="node">
-<title>proc~aot_out_val_arr_double</title>
-<g id="a_interface~~aot_out_val~~CalledByGraph_node2"><a xlink:href="../proc/aot_out_val_arr_double.html" xlink:title="aot_out_val_arr_double">
-<polygon fill="#d9534f" stroke="#d9534f" points="245,-234 109,-234 109,-210 245,-210 245,-234"/>
-<text text-anchor="middle" x="177" y="-219.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_out_val_arr_double</text>
-</a>
-</g>
-</g>
-<!-- proc~aot_out_val_arr_double&#45;&gt;interface~aot_out_val -->
-<g id="interface~~aot_out_val~~CalledByGraph_edge1" class="edge">
-<title>proc~aot_out_val_arr_double&#45;&gt;interface~aot_out_val</title>
-<path fill="none" stroke="#000000" d="M227.76,-209.91C233.81,-207.44 239.71,-204.5 245,-201 269.98,-184.47 291.12,-156.78 303.8,-137.74"/>
-<polygon fill="#000000" stroke="#000000" points="306.84,-139.48 309.32,-129.18 300.96,-135.69 306.84,-139.48"/>
-</g>
-<!-- proc~aot_out_val_arr_extdouble&#45;&gt;interface~aot_out_val -->
-<g id="interface~~aot_out_val~~CalledByGraph_edge2" class="edge">
-<title>proc~aot_out_val_arr_extdouble&#45;&gt;interface~aot_out_val</title>
-<path fill="none" stroke="#000000" d="M389.93,-123.75C381.2,-123.73 372.51,-123.58 364.35,-123.31"/>
-<polygon fill="#000000" stroke="#000000" points="364.47,-119.81 354.34,-122.9 364.18,-126.81 364.47,-119.81"/>
-</g>
-<!-- proc~aot_out_val_arr_int -->
-<g id="interface~~aot_out_val~~CalledByGraph_node4" class="node">
-<title>proc~aot_out_val_arr_int</title>
-<g id="a_interface~~aot_out_val~~CalledByGraph_node4"><a xlink:href="../proc/aot_out_val_arr_int.html" xlink:title="aot_out_val_arr_int">
-<polygon fill="#d9534f" stroke="#d9534f" points="233.5,-192 120.5,-192 120.5,-168 233.5,-168 233.5,-192"/>
-<text text-anchor="middle" x="177" y="-177.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_out_val_arr_int</text>
-</a>
-</g>
-</g>
-<!-- proc~aot_out_val_arr_int&#45;&gt;interface~aot_out_val -->
-<g id="interface~~aot_out_val~~CalledByGraph_edge3" class="edge">
-<title>proc~aot_out_val_arr_int&#45;&gt;interface~aot_out_val</title>
-<path fill="none" stroke="#000000" d="M221.43,-167.98C229.39,-165.33 237.53,-162.31 245,-159 260.5,-152.12 276.88,-142.68 290.04,-134.49"/>
-<polygon fill="#000000" stroke="#000000" points="292.02,-137.38 298.59,-129.07 288.27,-131.47 292.02,-137.38"/>
-</g>
-<!-- proc~aot_out_val_arr_logical -->
-<g id="interface~~aot_out_val~~CalledByGraph_node5" class="node">
-<title>proc~aot_out_val_arr_logical</title>
-<g id="a_interface~~aot_out_val~~CalledByGraph_node5"><a xlink:href="../proc/aot_out_val_arr_logical.html" xlink:title="aot_out_val_arr_logical">
-<polygon fill="#d9534f" stroke="#d9534f" points="244.5,-150 109.5,-150 109.5,-126 244.5,-126 244.5,-150"/>
-<text text-anchor="middle" x="177" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_out_val_arr_logical</text>
-</a>
-</g>
-</g>
-<!-- proc~aot_out_val_arr_logical&#45;&gt;interface~aot_out_val -->
-<g id="interface~~aot_out_val~~CalledByGraph_edge4" class="edge">
-<title>proc~aot_out_val_arr_logical&#45;&gt;interface~aot_out_val</title>
-<path fill="none" stroke="#000000" d="M244.82,-127.87C253.67,-126.53 262.57,-125.18 270.95,-123.91"/>
-<polygon fill="#000000" stroke="#000000" points="271.51,-127.36 280.87,-122.4 270.46,-120.44 271.51,-127.36"/>
-</g>
-<!-- proc~aot_out_val_arr_long -->
-<g id="interface~~aot_out_val~~CalledByGraph_node6" class="node">
-<title>proc~aot_out_val_arr_long</title>
-<g id="a_interface~~aot_out_val~~CalledByGraph_node6"><a xlink:href="../proc/aot_out_val_arr_long.html" xlink:title="aot_out_val_arr_long">
-<polygon fill="#d9534f" stroke="#d9534f" points="238.5,-108 115.5,-108 115.5,-84 238.5,-84 238.5,-108"/>
-<text text-anchor="middle" x="177" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_out_val_arr_long</text>
-</a>
-</g>
-</g>
-<!-- proc~aot_out_val_arr_long&#45;&gt;interface~aot_out_val -->
-<g id="interface~~aot_out_val~~CalledByGraph_edge5" class="edge">
-<title>proc~aot_out_val_arr_long&#45;&gt;interface~aot_out_val</title>
-<path fill="none" stroke="#000000" d="M238.75,-105.21C249.54,-106.85 260.61,-108.53 270.9,-110.09"/>
-<polygon fill="#000000" stroke="#000000" points="270.46,-113.56 280.88,-111.6 271.51,-106.64 270.46,-113.56"/>
-</g>
-<!-- proc~aot_out_val_arr_real -->
-<g id="interface~~aot_out_val~~CalledByGraph_node7" class="node">
-<title>proc~aot_out_val_arr_real</title>
-<g id="a_interface~~aot_out_val~~CalledByGraph_node7"><a xlink:href="../proc/aot_out_val_arr_real.html" xlink:title="aot_out_val_arr_real">
-<polygon fill="#d9534f" stroke="#d9534f" points="237,-66 117,-66 117,-42 237,-42 237,-66"/>
-<text text-anchor="middle" x="177" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_out_val_arr_real</text>
-</a>
-</g>
-</g>
-<!-- proc~aot_out_val_arr_real&#45;&gt;interface~aot_out_val -->
-<g id="interface~~aot_out_val~~CalledByGraph_edge6" class="edge">
-<title>proc~aot_out_val_arr_real&#45;&gt;interface~aot_out_val</title>
-<path fill="none" stroke="#000000" d="M221.43,-66.02C229.39,-68.67 237.53,-71.69 245,-75 260.5,-81.88 276.88,-91.32 290.04,-99.51"/>
-<polygon fill="#000000" stroke="#000000" points="288.27,-102.53 298.59,-104.93 292.02,-96.62 288.27,-102.53"/>
-</g>
-<!-- proc~aot_out_val_arr_string -->
-<g id="interface~~aot_out_val~~CalledByGraph_node8" class="node">
-<title>proc~aot_out_val_arr_string</title>
-<g id="a_interface~~aot_out_val~~CalledByGraph_node8"><a xlink:href="../proc/aot_out_val_arr_string.html" xlink:title="aot_out_val_arr_string">
-<polygon fill="#d9534f" stroke="#d9534f" points="242,-24 112,-24 112,0 242,0 242,-24"/>
-<text text-anchor="middle" x="177" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_out_val_arr_string</text>
-</a>
-</g>
-</g>
-<!-- proc~aot_out_val_arr_string&#45;&gt;interface~aot_out_val -->
-<g id="interface~~aot_out_val~~CalledByGraph_edge7" class="edge">
-<title>proc~aot_out_val_arr_string&#45;&gt;interface~aot_out_val</title>
-<path fill="none" stroke="#000000" d="M227.76,-24.09C233.81,-26.56 239.71,-29.5 245,-33 269.98,-49.53 291.12,-77.22 303.8,-96.26"/>
-<polygon fill="#000000" stroke="#000000" points="300.96,-98.31 309.32,-104.82 306.84,-94.52 300.96,-98.31"/>
-</g>
-<!-- interface~aot_out_val~3 -->
-<g id="interface~~aot_out_val~~CalledByGraph_node9" class="node">
-<title>interface~aot_out_val~3</title>
-<g id="a_interface~~aot_out_val~~CalledByGraph_node9"><a xlink:href="../interface/aot_out_val~3.html" xlink:title="aot_out_val">
-<polygon fill="#a7506f" stroke="#a7506f" points="73,-129 0,-129 0,-105 73,-105 73,-129"/>
-<text text-anchor="middle" x="36.5" y="-114.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_out_val</text>
-</a>
-</g>
-</g>
-<!-- interface~aot_out_val~3&#45;&gt;proc~aot_out_val_arr_double -->
-<g id="interface~~aot_out_val~~CalledByGraph_edge8" class="edge">
-<title>interface~aot_out_val~3&#45;&gt;proc~aot_out_val_arr_double</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M44.68,-129.18C56.06,-147.42 79.93,-181.76 109,-201 111.56,-202.69 114.27,-204.26 117.06,-205.7"/>
-<polygon fill="#000000" stroke="#000000" points="115.69,-208.92 126.24,-209.91 118.61,-202.56 115.69,-208.92"/>
-</g>
-<!-- interface~aot_out_val~3&#45;&gt;proc~aot_out_val_arr_int -->
-<g id="interface~~aot_out_val~~CalledByGraph_edge10" class="edge">
-<title>interface~aot_out_val~3&#45;&gt;proc~aot_out_val_arr_int</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M55.41,-129.07C69.51,-138.19 89.92,-150.54 109,-159 113.43,-160.97 118.11,-162.83 122.84,-164.57"/>
-<polygon fill="#000000" stroke="#000000" points="121.98,-167.98 132.57,-167.98 124.29,-161.37 121.98,-167.98"/>
-</g>
-<!-- interface~aot_out_val~3&#45;&gt;proc~aot_out_val_arr_logical -->
-<g id="interface~~aot_out_val~~CalledByGraph_edge11" class="edge">
-<title>interface~aot_out_val~3&#45;&gt;proc~aot_out_val_arr_logical</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M73.17,-122.41C81.29,-123.64 90.23,-124.99 99.33,-126.38"/>
-<polygon fill="#000000" stroke="#000000" points="98.85,-129.84 109.26,-127.88 99.89,-122.92 98.85,-129.84"/>
-</g>
-<!-- interface~aot_out_val~3&#45;&gt;proc~aot_out_val_arr_long -->
-<g id="interface~~aot_out_val~~CalledByGraph_edge12" class="edge">
-<title>interface~aot_out_val~3&#45;&gt;proc~aot_out_val_arr_long</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M73.17,-111.59C83.05,-110.09 94.13,-108.41 105.26,-106.73"/>
-<polygon fill="#000000" stroke="#000000" points="106.11,-110.14 115.47,-105.18 105.06,-103.22 106.11,-110.14"/>
-</g>
-<!-- interface~aot_out_val~3&#45;&gt;proc~aot_out_val_arr_real -->
-<g id="interface~~aot_out_val~~CalledByGraph_edge13" class="edge">
-<title>interface~aot_out_val~3&#45;&gt;proc~aot_out_val_arr_real</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M55.41,-104.93C69.51,-95.81 89.92,-83.46 109,-75 113.43,-73.03 118.11,-71.17 122.84,-69.43"/>
-<polygon fill="#000000" stroke="#000000" points="124.29,-72.63 132.57,-66.02 121.98,-66.02 124.29,-72.63"/>
-</g>
-<!-- interface~aot_out_val~3&#45;&gt;proc~aot_out_val_arr_string -->
-<g id="interface~~aot_out_val~~CalledByGraph_edge14" class="edge">
-<title>interface~aot_out_val~3&#45;&gt;proc~aot_out_val_arr_string</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M44.68,-104.82C56.06,-86.58 79.93,-52.24 109,-33 111.56,-31.31 114.27,-29.74 117.06,-28.3"/>
-<polygon fill="#000000" stroke="#000000" points="118.61,-31.44 126.24,-24.09 115.69,-25.08 118.61,-31.44"/>
-</g>
-</g>
-</svg>
-</div>          <div>
-            <a type="button" class="graph-help" data-bs-toggle="modal" href="#CalledByGraph-help-text">Help</a>
-          </div>
-          <div class="modal fade" id="CalledByGraph-help-text" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-lg" role="document">
               <div class="modal-content">
                 <div class="modal-header">
@@ -611,11 +723,11 @@ implementation in a submodule of an interface in a parent module.
 
         <h2>Module Procedures</h2>
             <div class="card">
-    <div class="card-header codesum"><span class="anchor" id="proc-aot_out_val_extdouble"></span> <h3>private  subroutine <a href='../proc/aot_out_val_extdouble.html'>aot_out_val_extdouble</a>(put_conf, val, vname, advance_previous)  
+    <div class="card-header codesum"><span class="anchor" id="proc-aot_out_val_int"></span> <h3>private  subroutine <a href='../proc/aot_out_val_int.html'>aot_out_val_int</a>(put_conf, val, vname, advance_previous)  
 </h3></div>
     <div class="card-body">
           
-  <p>Put extdouble variables into the Lua script.</p><a href="../proc/aot_out_val_extdouble.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Put integer variables into the Lua script.</p><a href="../proc/aot_out_val_int.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -645,8 +757,8 @@ implementation in a submodule of an interface in a parent module.
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-val"></span>
-              real(kind=xdble_k),
+              <span class="anchor" id="variable-val~4"></span>
+              integer(kind=int_k),
             </td>
 <td>intent(in)</td>
               <td></td>            <td>
@@ -696,11 +808,11 @@ implementation in a submodule of an interface in a parent module.
   </div>
 
             <div class="card">
-    <div class="card-header codesum"><span class="anchor" id="proc-aot_out_val_arr_extdouble"></span> <h3>private  subroutine <a href='../proc/aot_out_val_arr_extdouble.html'>aot_out_val_arr_extdouble</a>(put_conf, val, vname, advance_previous, max_per_line)  
+    <div class="card-header codesum"><span class="anchor" id="proc-aot_out_val_long"></span> <h3>private  subroutine <a href='../proc/aot_out_val_long.html'>aot_out_val_long</a>(put_conf, val, vname, advance_previous)  
 </h3></div>
     <div class="card-body">
           
-  <p>This is a vectorized version of the value output.</p><a href="../proc/aot_out_val_arr_extdouble.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Put long variables into the Lua script.</p><a href="../proc/aot_out_val_long.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -725,22 +837,22 @@ implementation in a submodule of an interface in a parent module.
             <td>::</td>
             <td><strong>put_conf</strong></td>
             <td>
-<p>Lua script to write the array into.</p>
+
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-val~2"></span>
-              real(kind=xdble_k),
+              <span class="anchor" id="variable-val~5"></span>
+              integer(kind=long_k),
             </td>
 <td>intent(in)</td>
               <td></td>            <td>
               
             </td>
             <td>::</td>
-            <td><strong>val</strong>(:)</td>
+            <td><strong>val</strong></td>
             <td>
-<p>Actual data to write into the script</p>
+
             </td>
         </tr>
         <tr>
@@ -755,12 +867,437 @@ implementation in a submodule of an interface in a parent module.
             <td>::</td>
             <td><strong>vname</strong></td>
             <td>
-<p>Name for this array</p>
+
             </td>
         </tr>
         <tr>
             <td>
               <span class="anchor" id="variable-advance_previous~2"></span>
+              logical,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>advance_previous</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+            <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-aot_out_val_real"></span> <h3>private  subroutine <a href='../proc/aot_out_val_real.html'>aot_out_val_real</a>(put_conf, val, vname, advance_previous)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Put real variables into the Lua script.</p><a href="../proc/aot_out_val_real.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-put_conf~3"></span>
+              type(<a href='../type/aot_out_type.html'>aot_out_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>put_conf</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-val~6"></span>
+              real(kind=single_k),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>val</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-vname~3"></span>
+              character(len=*),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>vname</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-advance_previous~3"></span>
+              logical,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>advance_previous</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+            <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-aot_out_val_double"></span> <h3>private  subroutine <a href='../proc/aot_out_val_double.html'>aot_out_val_double</a>(put_conf, val, vname, advance_previous)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Put double variables into the Lua script.</p><a href="../proc/aot_out_val_double.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-put_conf~4"></span>
+              type(<a href='../type/aot_out_type.html'>aot_out_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>put_conf</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-val~7"></span>
+              real(kind=double_k),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>val</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-vname~4"></span>
+              character(len=*),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>vname</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-advance_previous~4"></span>
+              logical,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>advance_previous</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+            <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-aot_out_val_logical"></span> <h3>private  subroutine <a href='../proc/aot_out_val_logical.html'>aot_out_val_logical</a>(put_conf, val, vname, advance_previous)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Put logical variables into the Lua script.</p><a href="../proc/aot_out_val_logical.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-put_conf~5"></span>
+              type(<a href='../type/aot_out_type.html'>aot_out_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>put_conf</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-val~8"></span>
+              logical,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>val</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-vname~5"></span>
+              character(len=*),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>vname</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-advance_previous~5"></span>
+              logical,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>advance_previous</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+            <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-aot_out_val_string"></span> <h3>private  subroutine <a href='../proc/aot_out_val_string.html'>aot_out_val_string</a>(put_conf, val, vname, advance_previous)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>Put string variables into the Lua script.</p><a href="../proc/aot_out_val_string.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-put_conf~6"></span>
+              type(<a href='../type/aot_out_type.html'>aot_out_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>put_conf</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-val~9"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>val</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-vname~6"></span>
+              character(len=*),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>vname</strong></td>
+            <td>
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-advance_previous~6"></span>
+              logical,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>advance_previous</strong></td>
+            <td>
+
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+            <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-aot_out_val_arr_int"></span> <h3>private  subroutine <a href='../proc/aot_out_val_arr_int.html'>aot_out_val_arr_int</a>(put_conf, val, vname, advance_previous, max_per_line)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>This is a vectorized version of the value output.</p><a href="../proc/aot_out_val_arr_int.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-put_conf~7"></span>
+              type(<a href='../type/aot_out_type.html'>aot_out_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>put_conf</strong></td>
+            <td>
+<p>Lua script to write the array into.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-val~10"></span>
+              integer(kind=int_k),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>val</strong>(:)</td>
+            <td>
+<p>Actual data to write into the script</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-vname~7"></span>
+              character(len=*),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>vname</strong></td>
+            <td>
+<p>Name for this array</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-advance_previous~7"></span>
               logical,
             </td>
 <td>intent(in),</td>
@@ -787,7 +1324,517 @@ the parent table.</p>
             <td><strong>max_per_line</strong></td>
             <td>
 <p>Maximal number of entries to put into a single line.
+Defaults to 8.</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+            <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-aot_out_val_arr_long"></span> <h3>private  subroutine <a href='../proc/aot_out_val_arr_long.html'>aot_out_val_arr_long</a>(put_conf, val, vname, advance_previous, max_per_line)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>This is a vectorized version of the value output.</p><a href="../proc/aot_out_val_arr_long.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-put_conf~8"></span>
+              type(<a href='../type/aot_out_type.html'>aot_out_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>put_conf</strong></td>
+            <td>
+<p>Lua script to write the array into.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-val~11"></span>
+              integer(kind=long_k),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>val</strong>(:)</td>
+            <td>
+<p>Actual data to write into the script</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-vname~8"></span>
+              character(len=*),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>vname</strong></td>
+            <td>
+<p>Name for this array</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-advance_previous~8"></span>
+              logical,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>advance_previous</strong></td>
+            <td>
+<p>Flag if this array should be put on the same line as the last entry of
+the parent table.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-max_per_line~2"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>max_per_line</strong></td>
+            <td>
+<p>Maximal number of entries to put into a single line.
+Defaults to 8.</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+            <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-aot_out_val_arr_real"></span> <h3>private  subroutine <a href='../proc/aot_out_val_arr_real.html'>aot_out_val_arr_real</a>(put_conf, val, vname, advance_previous, max_per_line)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>This is a vectorized version of the value output.</p><a href="../proc/aot_out_val_arr_real.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-put_conf~9"></span>
+              type(<a href='../type/aot_out_type.html'>aot_out_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>put_conf</strong></td>
+            <td>
+<p>Lua script to write the array into.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-val~12"></span>
+              real(kind=single_k),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>val</strong>(:)</td>
+            <td>
+<p>Actual data to write into the script</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-vname~9"></span>
+              character(len=*),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>vname</strong></td>
+            <td>
+<p>Name for this array</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-advance_previous~9"></span>
+              logical,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>advance_previous</strong></td>
+            <td>
+<p>Flag if this array should be put on the same line as the last entry of
+the parent table.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-max_per_line~3"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>max_per_line</strong></td>
+            <td>
+<p>Maximal number of entries to put into a single line.
+Defaults to 5.</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+            <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-aot_out_val_arr_double"></span> <h3>private  subroutine <a href='../proc/aot_out_val_arr_double.html'>aot_out_val_arr_double</a>(put_conf, val, vname, advance_previous, max_per_line)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>This is a vectorized version of the value output.</p><a href="../proc/aot_out_val_arr_double.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-put_conf~10"></span>
+              type(<a href='../type/aot_out_type.html'>aot_out_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>put_conf</strong></td>
+            <td>
+<p>Lua script to write the array into.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-val~13"></span>
+              real(kind=double_k),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>val</strong>(:)</td>
+            <td>
+<p>Actual data to write into the script</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-vname~10"></span>
+              character(len=*),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>vname</strong></td>
+            <td>
+<p>Name for this array</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-advance_previous~10"></span>
+              logical,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>advance_previous</strong></td>
+            <td>
+<p>Flag if this array should be put on the same line as the last entry of
+the parent table.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-max_per_line~4"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>max_per_line</strong></td>
+            <td>
+<p>Maximal number of entries to put into a single line.
 Defaults to 3.</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+            <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-aot_out_val_arr_logical"></span> <h3>private  subroutine <a href='../proc/aot_out_val_arr_logical.html'>aot_out_val_arr_logical</a>(put_conf, val, vname, advance_previous, max_per_line)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>This is a vectorized version of the value output.</p><a href="../proc/aot_out_val_arr_logical.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-put_conf~11"></span>
+              type(<a href='../type/aot_out_type.html'>aot_out_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>put_conf</strong></td>
+            <td>
+<p>Lua script to write the array into.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-val~14"></span>
+              logical,
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>val</strong>(:)</td>
+            <td>
+<p>Actual data to write into the script</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-vname~11"></span>
+              character(len=*),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>vname</strong></td>
+            <td>
+<p>Name for this array</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-advance_previous~11"></span>
+              logical,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>advance_previous</strong></td>
+            <td>
+<p>Flag if this array should be put on the same line as the last entry of
+the parent table.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-max_per_line~5"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>max_per_line</strong></td>
+            <td>
+<p>Maximal number of entries to put into a single line.
+Defaults to 10.</p>
+            </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+    </div>
+  </div>
+
+            <div class="card">
+    <div class="card-header codesum"><span class="anchor" id="proc-aot_out_val_arr_string"></span> <h3>private  subroutine <a href='../proc/aot_out_val_arr_string.html'>aot_out_val_arr_string</a>(put_conf, val, vname, advance_previous, max_per_line)  
+</h3></div>
+    <div class="card-body">
+          
+  <p>This is a vectorized version of the value output.</p><a href="../proc/aot_out_val_arr_string.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+
+  <h4>Arguments</h4>
+      <table class="table table-striped varlist">
+    <thead>
+      <tr>
+        <th scope="col">Type</th>
+<th scope="col">Intent</th><th scope="col">Optional</th>        <th scope="col">Attributes</th>
+        <th scope="col"></th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-put_conf~12"></span>
+              type(<a href='../type/aot_out_type.html'>aot_out_type</a>),
+            </td>
+<td>intent(inout)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>put_conf</strong></td>
+            <td>
+<p>Lua script to write the array into.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-val~15"></span>
+              character(len=*),
+            </td>
+<td>intent(in)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>val</strong>(:)</td>
+            <td>
+<p>Actual data to write into the script</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-vname~12"></span>
+              character(len=*),
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>vname</strong></td>
+            <td>
+<p>Name for this array</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-advance_previous~12"></span>
+              logical,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>advance_previous</strong></td>
+            <td>
+<p>Flag if this array should be put on the same line as the last entry of
+the parent table.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-max_per_line~6"></span>
+              integer,
+            </td>
+<td>intent(in),</td>
+              <td>optional</td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>max_per_line</strong></td>
+            <td>
+<p>Maximal number of entries to put into a single line.
+Defaults to 1.</p>
             </td>
         </tr>
     </tbody>
@@ -807,40 +1854,18 @@ Defaults to 3.</p>
           <div class="col">
             <p>
               Aotus
- was developed by University of Siegen<br>              &copy; 2025 
-<br /><small>37d1cea0dc71</small></p>
+ was developed by APES Team<br>              &copy; 2025 <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a>
+<br /><small>e33a4e28d95a</small></p>
           </div>
           <div class="col">
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2025-03-24T15:04:50.422931+0000             </p>
+ on 2025-11-29T17:06:50.716771+0000             </p>
           </div>
         </div>
         <br>
       </div> <!-- /container -->
     </footer>
-
-    <!-- Bootstrap core JavaScript -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>    
-
-    <!-- MathJax JavaScript
-             ================================================== -->
-             <!-- Placed at the end of the document so the pages load faster -->
-        <script type="text/x-mathjax-config">
-          MathJax.Hub.Config({
-          TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } },
-          jax: ['input/TeX','input/MathML','output/HTML-CSS'],
-          extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
-          });
-        </script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-          <script src="../tipuesearch/tipuesearch_content.js"></script>
-          <script src="../tipuesearch/tipuesearch_set.js"></script>
-          <script src="../tipuesearch/tipuesearch.js"></script>
-
   </body>
 </html>

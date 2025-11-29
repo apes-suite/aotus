@@ -7,19 +7,34 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta name="description" content="A Fortran wrapper around the C-API of Lua, for usage as configuration.">
-    <meta name="author" content="University of Siegen" >
+    <meta name="author" content="APES Team" >
     <link rel="icon" href="../favicon.png">
 
     <title>aot_out_val_arr_double &ndash; Aotus</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link href="../css/pygments.css" rel="stylesheet">
-    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
     <link href="../css/local.css" rel="stylesheet">
-      <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
-
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link href="../css/pygments.css" rel="stylesheet">
     <script src="../js/svg-pan-zoom.min.js"></script>
   </head>
 
@@ -77,6 +92,7 @@
     <div class="row align-items-center justify-content-between" id="info-bar">
       <div class="col">
         <ul class="list-inline" style="margin-bottom:0px;display:inline">
+            <li class="list-inline-item" id="meta-license"><i class="fa fa-legal"></i> <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a></li>
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
@@ -101,9 +117,11 @@
     </div>
   </div>
   <script>
-    $(function () {
-    $('[data-bs-toggle="tooltip"]').tooltip()
-    })
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
   </script>
 
   </div>
@@ -171,7 +189,7 @@ the closing brace will be put on the same line, as the last entry.</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-put_conf~19"></span>
+              <span class="anchor" id="variable-put_conf~10"></span>
               type(<a href='../type/aot_out_type.html'>aot_out_type</a>),
             </td>
 <td>intent(inout)</td>
@@ -186,7 +204,7 @@ the closing brace will be put on the same line, as the last entry.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-val~30"></span>
+              <span class="anchor" id="variable-val~13"></span>
               real(kind=double_k),
             </td>
 <td>intent(in)</td>
@@ -201,7 +219,7 @@ the closing brace will be put on the same line, as the last entry.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-vname~14"></span>
+              <span class="anchor" id="variable-vname~10"></span>
               character(len=*),
             </td>
 <td>intent(in),</td>
@@ -216,7 +234,7 @@ the closing brace will be put on the same line, as the last entry.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-advance_previous~17"></span>
+              <span class="anchor" id="variable-advance_previous~10"></span>
               logical,
             </td>
 <td>intent(in),</td>
@@ -232,7 +250,7 @@ the parent table.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-max_per_line~6"></span>
+              <span class="anchor" id="variable-max_per_line~4"></span>
               integer,
             </td>
 <td>intent(in),</td>
@@ -272,18 +290,18 @@ Defaults to 3.</p>
 <polygon fill="none" stroke="black" points="136,-105 0,-105 0,-81 136,-81 136,-105"/>
 <text text-anchor="middle" x="68" y="-90.6" font-family="Helvetica,sans-Serif" font-size="10.50">aot_out_val_arr_double</text>
 </g>
-<!-- interface~aot_out_val -->
+<!-- interface~aot_out_val~3 -->
 <g id="proc~~aot_out_val_arr_double~~CallsGraph_node2" class="node">
-<title>interface~aot_out_val</title>
-<g id="a_proc~~aot_out_val_arr_double~~CallsGraph_node2"><a xlink:href="../interface/aot_out_val.html" xlink:title="aot_out_val">
+<title>interface~aot_out_val~3</title>
+<g id="a_proc~~aot_out_val_arr_double~~CallsGraph_node2"><a xlink:href="../interface/aot_out_val~3.html" xlink:title="aot_out_val">
 <polygon fill="#a7506f" stroke="#a7506f" points="245,-105 172,-105 172,-81 245,-81 245,-105"/>
 <text text-anchor="middle" x="208.5" y="-90.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_out_val</text>
 </a>
 </g>
 </g>
-<!-- proc~aot_out_val_arr_double&#45;&gt;interface~aot_out_val -->
+<!-- proc~aot_out_val_arr_double&#45;&gt;interface~aot_out_val~3 -->
 <g id="proc~~aot_out_val_arr_double~~CallsGraph_edge1" class="edge">
-<title>proc~aot_out_val_arr_double&#45;&gt;interface~aot_out_val</title>
+<title>proc~aot_out_val_arr_double&#45;&gt;interface~aot_out_val~3</title>
 <path fill="none" stroke="#000000" d="M136.22,-93C144.85,-93 153.52,-93 161.69,-93"/>
 <polygon fill="#000000" stroke="#000000" points="161.74,-96.5 171.74,-93 161.74,-89.5 161.74,-96.5"/>
 </g>
@@ -326,9 +344,9 @@ Defaults to 3.</p>
 </a>
 </g>
 </g>
-<!-- interface~aot_out_val&#45;&gt;proc~aot_out_val_arr_extdouble -->
+<!-- interface~aot_out_val~3&#45;&gt;proc~aot_out_val_arr_extdouble -->
 <g id="proc~~aot_out_val_arr_double~~CallsGraph_edge4" class="edge">
-<title>interface~aot_out_val&#45;&gt;proc~aot_out_val_arr_extdouble</title>
+<title>interface~aot_out_val~3&#45;&gt;proc~aot_out_val_arr_extdouble</title>
 <path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M245.34,-87.1C253.22,-86.71 261.88,-86.45 270.79,-86.33"/>
 <polygon fill="#000000" stroke="#000000" points="270.95,-89.83 280.93,-86.25 270.9,-82.83 270.95,-89.83"/>
 </g>
@@ -341,9 +359,9 @@ Defaults to 3.</p>
 </a>
 </g>
 </g>
-<!-- interface~aot_out_val&#45;&gt;proc~aot_out_val_extdouble -->
+<!-- interface~aot_out_val~3&#45;&gt;proc~aot_out_val_extdouble -->
 <g id="proc~~aot_out_val_arr_double~~CallsGraph_edge5" class="edge">
-<title>interface~aot_out_val&#45;&gt;proc~aot_out_val_extdouble</title>
+<title>interface~aot_out_val~3&#45;&gt;proc~aot_out_val_extdouble</title>
 <path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M245.12,-82.44C256.56,-79.08 269.31,-75.35 281,-72 288.14,-69.95 295.67,-67.82 303.09,-65.72"/>
 <polygon fill="#000000" stroke="#000000" points="304.06,-69.09 312.74,-63.01 302.17,-62.35 304.06,-69.09"/>
 </g>
@@ -362,9 +380,9 @@ Defaults to 3.</p>
 <path fill="none" stroke="#000000" d="M586.9,-85.1C595.41,-83.93 604.21,-82.73 612.8,-81.56"/>
 <polygon fill="#000000" stroke="#000000" points="613.34,-85.02 622.78,-80.2 612.4,-78.08 613.34,-85.02"/>
 </g>
-<!-- proc~aot_out_val_arr_extdouble&#45;&gt;interface~aot_out_val -->
+<!-- proc~aot_out_val_arr_extdouble&#45;&gt;interface~aot_out_val~3 -->
 <g id="proc~~aot_out_val_arr_double~~CallsGraph_edge7" class="edge">
-<title>proc~aot_out_val_arr_extdouble&#45;&gt;interface~aot_out_val</title>
+<title>proc~aot_out_val_arr_extdouble&#45;&gt;interface~aot_out_val~3</title>
 <path fill="none" stroke="#000000" d="M280.93,-99.75C272.2,-99.73 263.51,-99.58 255.35,-99.31"/>
 <polygon fill="#000000" stroke="#000000" points="255.47,-95.81 245.34,-98.9 255.18,-102.81 255.47,-95.81"/>
 </g>
@@ -493,18 +511,18 @@ implementation in a submodule of an interface in a parent module.
 <polygon fill="none" stroke="black" points="245,-24 109,-24 109,0 245,0 245,-24"/>
 <text text-anchor="middle" x="177" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50">aot_out_val_arr_double</text>
 </g>
-<!-- interface~aot_out_val~3 -->
+<!-- interface~aot_out_val -->
 <g id="proc~~aot_out_val_arr_double~~CalledByGraph_node2" class="node">
-<title>interface~aot_out_val~3</title>
-<g id="a_proc~~aot_out_val_arr_double~~CalledByGraph_node2"><a xlink:href="../interface/aot_out_val~3.html" xlink:title="aot_out_val">
+<title>interface~aot_out_val</title>
+<g id="a_proc~~aot_out_val_arr_double~~CalledByGraph_node2"><a xlink:href="../interface/aot_out_val.html" xlink:title="aot_out_val">
 <polygon fill="#a7506f" stroke="#a7506f" points="73,-24 0,-24 0,0 73,0 73,-24"/>
 <text text-anchor="middle" x="36.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_out_val</text>
 </a>
 </g>
 </g>
-<!-- interface~aot_out_val~3&#45;&gt;proc~aot_out_val_arr_double -->
+<!-- interface~aot_out_val&#45;&gt;proc~aot_out_val_arr_double -->
 <g id="proc~~aot_out_val_arr_double~~CalledByGraph_edge1" class="edge">
-<title>interface~aot_out_val~3&#45;&gt;proc~aot_out_val_arr_double</title>
+<title>interface~aot_out_val&#45;&gt;proc~aot_out_val_arr_double</title>
 <path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M73.17,-12C81.15,-12 89.91,-12 98.85,-12"/>
 <polygon fill="#000000" stroke="#000000" points="98.99,-15.5 108.99,-12 98.99,-8.5 98.99,-15.5"/>
 </g>
@@ -671,40 +689,18 @@ implementation in a submodule of an interface in a parent module.
           <div class="col">
             <p>
               Aotus
- was developed by University of Siegen<br>              &copy; 2025 
-<br /><small>37d1cea0dc71</small></p>
+ was developed by APES Team<br>              &copy; 2025 <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a>
+<br /><small>e33a4e28d95a</small></p>
           </div>
           <div class="col">
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2025-03-24T15:04:50.422931+0000             </p>
+ on 2025-11-29T17:06:50.716771+0000             </p>
           </div>
         </div>
         <br>
       </div> <!-- /container -->
     </footer>
-
-    <!-- Bootstrap core JavaScript -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>    
-
-    <!-- MathJax JavaScript
-             ================================================== -->
-             <!-- Placed at the end of the document so the pages load faster -->
-        <script type="text/x-mathjax-config">
-          MathJax.Hub.Config({
-          TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } },
-          jax: ['input/TeX','input/MathML','output/HTML-CSS'],
-          extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
-          });
-        </script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-          <script src="../tipuesearch/tipuesearch_content.js"></script>
-          <script src="../tipuesearch/tipuesearch_set.js"></script>
-          <script src="../tipuesearch/tipuesearch.js"></script>
-
   </body>
 </html>

@@ -7,19 +7,34 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta name="description" content="A Fortran wrapper around the C-API of Lua, for usage as configuration.">
-    <meta name="author" content="University of Siegen" >
+    <meta name="author" content="APES Team" >
     <link rel="icon" href="../favicon.png">
 
     <title>aot_table_get_val &ndash; Aotus</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link href="../css/pygments.css" rel="stylesheet">
-    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
     <link href="../css/local.css" rel="stylesheet">
-      <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
-
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link href="../css/pygments.css" rel="stylesheet">
     <script src="../js/svg-pan-zoom.min.js"></script>
   </head>
 
@@ -77,23 +92,24 @@
     <div class="row align-items-center justify-content-between" id="info-bar">
       <div class="col">
         <ul class="list-inline" style="margin-bottom:0px;display:inline">
+            <li class="list-inline-item" id="meta-license"><i class="fa fa-legal"></i> <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a></li>
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
-                 title="<p> 0.0% of total for procedures.</p>Including implementation: 31 statements,  0.3% of total for procedures.">3 statements</a>
+                 title="<p> 0.0% of total for procedures.</p>Including implementation: 30 statements,  0.3% of total for procedures.">3 statements</a>
             </li>
 
             <li class="list-inline-item" id="source-file">
               <i class="fa fa-code"></i>
-              <a href="../src/aot_quadruple_vector_module.f90"> Source File</a>
+              <a href="../src/aot_quadruple_table_module.f90"> Source File</a>
             </li>
         </ul>
       </div>
       <div class="col">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb justify-content-end mb-0">
-                <li class="breadcrumb-item"><a href='../sourcefile/aot_quadruple_vector_module.f90.html'>aot_quadruple_vector_module.f90</a></li>
-                <li class="breadcrumb-item"><a href='../module/aot_quadruple_vector_module.html'>aot_quadruple_vector_module</a></li>
+                <li class="breadcrumb-item"><a href='../sourcefile/aot_quadruple_table_module.f90.html'>aot_quadruple_table_module.f90</a></li>
+                <li class="breadcrumb-item"><a href='../module/aot_quadruple_table_module.html'>aot_quadruple_table_module</a></li>
             <li class="breadcrumb-item active" aria-current="page">aot_table_get_val</li>
           </ol>
         </nav>
@@ -101,9 +117,11 @@
     </div>
   </div>
   <script>
-    $(function () {
-    $('[data-bs-toggle="tooltip"]').tooltip()
-    })
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
   </script>
 
   </div>
@@ -137,7 +155,7 @@
       </a>
       <div id="modprocs-0" class="collapse">
         <div class="list-group list-group-flush">
-            <a class="list-group-item" href="../interface/aot_table_get_val~2.html#moduleprocedure-get_table_quadruple_vvect~2">get_table_quadruple_vvect</a>
+            <a class="list-group-item" href="../interface/aot_table_get_val~2.html#moduleprocedure-get_table_quadruple">get_table_quadruple</a>
         </div>
       </div>
     </div>
@@ -151,7 +169,13 @@
 
     <div class="col-md-9" id='text'>
       <h2>public interface aot_table_get_val</h2>
-      
+      <p>Get a value from a table.</p>
+<p>First the given key is looked up, if this fails, the value
+at the given position is looked up, and if this also fails,
+the default value is returned.
+Positional addressing is only valid, as long,
+as no value was provided by an explicit key
+in the list before the entry in question.</p>
         <div class="card">
           <div class="card-header">
             <h3 class="card-title">Calls</h3>
@@ -163,415 +187,415 @@
 <!-- Generated by graphviz version 2.43.0 (0)
  -->
 <!-- Title: interface~~aot_table_get_val~2~~CallsGraph Pages: 1 -->
-<svg id="interfaceaot_table_get_val2CallsGraph" width="641pt" height="330pt"
- viewBox="0.00 0.00 641.00 329.70" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="interface~~aot_table_get_val~2~~CallsGraph" class="graph" transform="scale(0.74 0.74) rotate(0) translate(4 444)">
+<svg id="interfaceaot_table_get_val2CallsGraph" width="641pt" height="343pt"
+ viewBox="0.00 0.00 641.00 343.09" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="interface~~aot_table_get_val~2~~CallsGraph" class="graph" transform="scale(0.77 0.77) rotate(0) translate(4 444)">
 <title>interface~~aot_table_get_val~2~~CallsGraph</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-444 867,-444 867,4 -4,4"/>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-444 833,-444 833,4 -4,4"/>
 <!-- interface~aot_table_get_val~2 -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_node1" class="node">
 <title>interface~aot_table_get_val~2</title>
 <polygon fill="none" stroke="black" points="106,-272 0,-272 0,-248 106,-248 106,-272"/>
 <text text-anchor="middle" x="53" y="-257.6" font-family="Helvetica,sans-Serif" font-size="10.50">aot_table_get_val</text>
 </g>
-<!-- proc~get_table_quadruple_vvect -->
+<!-- proc~get_table_quadruple -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_node2" class="node">
-<title>proc~get_table_quadruple_vvect</title>
-<g id="a_interface~~aot_table_get_val~2~~CallsGraph_node2"><a xlink:href="../proc/get_table_quadruple_vvect.html" xlink:title="get_table_quadruple_vvect">
-<polygon fill="#d9534f" stroke="#d9534f" points="298,-272 142,-272 142,-248 298,-248 298,-272"/>
-<text text-anchor="middle" x="220" y="-257.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_table_quadruple_vvect</text>
+<title>proc~get_table_quadruple</title>
+<g id="a_interface~~aot_table_get_val~2~~CallsGraph_node2"><a xlink:href="../proc/get_table_quadruple.html" xlink:title="get_table_quadruple">
+<polygon fill="#d9534f" stroke="#d9534f" points="264,-272 142,-272 142,-248 264,-248 264,-272"/>
+<text text-anchor="middle" x="203" y="-257.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">get_table_quadruple</text>
 </a>
 </g>
 </g>
-<!-- interface~aot_table_get_val~2&#45;&gt;proc~get_table_quadruple_vvect -->
+<!-- interface~aot_table_get_val~2&#45;&gt;proc~get_table_quadruple -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_edge1" class="edge">
-<title>interface~aot_table_get_val~2&#45;&gt;proc~get_table_quadruple_vvect</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M106.21,-260C114.35,-260 122.95,-260 131.62,-260"/>
-<polygon fill="#000000" stroke="#000000" points="131.81,-263.5 141.81,-260 131.81,-256.5 131.81,-263.5"/>
+<title>interface~aot_table_get_val~2&#45;&gt;proc~get_table_quadruple</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M106.18,-260C114.49,-260 123.21,-260 131.86,-260"/>
+<polygon fill="#000000" stroke="#000000" points="131.95,-263.5 141.95,-260 131.95,-256.5 131.95,-263.5"/>
 </g>
-<!-- interface~aot_top_get_val~5 -->
+<!-- interface~aot_top_get_val~9 -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_node3" class="node">
-<title>interface~aot_top_get_val~5</title>
-<g id="a_interface~~aot_table_get_val~2~~CallsGraph_node3"><a xlink:href="../interface/aot_top_get_val~5.html" xlink:title="aot_top_get_val">
-<polygon fill="#a7506f" stroke="#a7506f" points="430,-334 334,-334 334,-310 430,-310 430,-334"/>
-<text text-anchor="middle" x="382" y="-319.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_top_get_val</text>
+<title>interface~aot_top_get_val~9</title>
+<g id="a_interface~~aot_table_get_val~2~~CallsGraph_node3"><a xlink:href="../interface/aot_top_get_val~9.html" xlink:title="aot_top_get_val">
+<polygon fill="#a7506f" stroke="#a7506f" points="396,-334 300,-334 300,-310 396,-310 396,-334"/>
+<text text-anchor="middle" x="348" y="-319.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_top_get_val</text>
 </a>
 </g>
 </g>
-<!-- proc~get_table_quadruple_vvect&#45;&gt;interface~aot_top_get_val~5 -->
+<!-- proc~get_table_quadruple&#45;&gt;interface~aot_top_get_val~9 -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_edge2" class="edge">
-<title>proc~get_table_quadruple_vvect&#45;&gt;interface~aot_top_get_val~5</title>
-<path fill="none" stroke="#000000" d="M252.23,-272.1C277.34,-281.83 312.81,-295.58 340.17,-306.18"/>
-<polygon fill="#000000" stroke="#000000" points="339.26,-309.58 349.85,-309.93 341.79,-303.05 339.26,-309.58"/>
+<title>proc~get_table_quadruple&#45;&gt;interface~aot_top_get_val~9</title>
+<path fill="none" stroke="#000000" d="M231.91,-272.1C254.16,-281.75 285.5,-295.34 309.86,-305.9"/>
+<polygon fill="#000000" stroke="#000000" points="308.59,-309.16 319.16,-309.93 311.38,-302.74 308.59,-309.16"/>
 </g>
 <!-- proc~aot_table_push -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_node4" class="node">
 <title>proc~aot_table_push</title>
 <g id="a_interface~~aot_table_get_val~2~~CallsGraph_node4"><a xlink:href="../proc/aot_table_push.html" xlink:title="aot_table_push">
-<polygon fill="#d9534f" stroke="#d9534f" points="428.5,-171 335.5,-171 335.5,-147 428.5,-147 428.5,-171"/>
-<text text-anchor="middle" x="382" y="-156.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_table_push</text>
+<polygon fill="#d9534f" stroke="#d9534f" points="394.5,-171 301.5,-171 301.5,-147 394.5,-147 394.5,-171"/>
+<text text-anchor="middle" x="348" y="-156.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_table_push</text>
 </a>
 </g>
 </g>
-<!-- proc~get_table_quadruple_vvect&#45;&gt;proc~aot_table_push -->
+<!-- proc~get_table_quadruple&#45;&gt;proc~aot_table_push -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_edge3" class="edge">
-<title>proc~get_table_quadruple_vvect&#45;&gt;proc~aot_table_push</title>
-<path fill="none" stroke="#000000" d="M240.3,-247.82C268.41,-230.07 320.78,-197.02 353.09,-176.62"/>
-<polygon fill="#000000" stroke="#000000" points="355.04,-179.52 361.63,-171.23 351.31,-173.6 355.04,-179.52"/>
+<title>proc~get_table_quadruple&#45;&gt;proc~aot_table_push</title>
+<path fill="none" stroke="#000000" d="M221.25,-247.82C246.16,-230.22 292.38,-197.58 321.31,-177.15"/>
+<polygon fill="#000000" stroke="#000000" points="323.54,-179.85 329.69,-171.23 319.5,-174.14 323.54,-179.85"/>
 </g>
 <!-- proc~flu_getglobal -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_node5" class="node">
 <title>proc~flu_getglobal</title>
 <g id="a_interface~~aot_table_get_val~2~~CallsGraph_node5"><a xlink:href="../proc/flu_getglobal.html" xlink:title="flu_getglobal">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="573.5,-272 491.5,-272 491.5,-248 573.5,-248 573.5,-272"/>
-<text text-anchor="middle" x="532.5" y="-257.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">flu_getglobal</text>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="539.5,-272 457.5,-272 457.5,-248 539.5,-248 539.5,-272"/>
+<text text-anchor="middle" x="498.5" y="-257.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">flu_getglobal</text>
 </a>
 </g>
 </g>
-<!-- proc~get_table_quadruple_vvect&#45;&gt;proc~flu_getglobal -->
+<!-- proc~get_table_quadruple&#45;&gt;proc~flu_getglobal -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_edge4" class="edge">
-<title>proc~get_table_quadruple_vvect&#45;&gt;proc~flu_getglobal</title>
-<path fill="none" stroke="#000000" d="M298.15,-260C355.33,-260 431.62,-260 481.15,-260"/>
-<polygon fill="#000000" stroke="#000000" points="481.29,-263.5 491.29,-260 481.29,-256.5 481.29,-263.5"/>
+<title>proc~get_table_quadruple&#45;&gt;proc~flu_getglobal</title>
+<path fill="none" stroke="#000000" d="M264.1,-260C318.08,-260 396.41,-260 447.16,-260"/>
+<polygon fill="#000000" stroke="#000000" points="447.24,-263.5 457.24,-260 447.24,-256.5 447.24,-263.5"/>
 </g>
 <!-- proc~aot_top_get_extdouble -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_node8" class="node">
 <title>proc~aot_top_get_extdouble</title>
 <g id="a_interface~~aot_table_get_val~2~~CallsGraph_node8"><a xlink:href="../proc/aot_top_get_extdouble.html" xlink:title="aot_top_get_extdouble">
-<polygon fill="#d9534f" stroke="#d9534f" points="599,-356 466,-356 466,-332 599,-332 599,-356"/>
-<text text-anchor="middle" x="532.5" y="-341.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_top_get_extdouble</text>
+<polygon fill="#d9534f" stroke="#d9534f" points="565,-356 432,-356 432,-332 565,-332 565,-356"/>
+<text text-anchor="middle" x="498.5" y="-341.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_top_get_extdouble</text>
 </a>
 </g>
 </g>
-<!-- interface~aot_top_get_val~5&#45;&gt;proc~aot_top_get_extdouble -->
+<!-- interface~aot_top_get_val~9&#45;&gt;proc~aot_top_get_extdouble -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_edge5" class="edge">
-<title>interface~aot_top_get_val~5&#45;&gt;proc~aot_top_get_extdouble</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M430.39,-329.02C438.51,-330.22 447.12,-331.5 455.75,-332.78"/>
-<polygon fill="#000000" stroke="#000000" points="455.47,-336.27 465.88,-334.28 456.5,-329.35 455.47,-336.27"/>
+<title>interface~aot_top_get_val~9&#45;&gt;proc~aot_top_get_extdouble</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M396.39,-329.02C404.51,-330.22 413.12,-331.5 421.75,-332.78"/>
+<polygon fill="#000000" stroke="#000000" points="421.47,-336.27 431.88,-334.28 422.5,-329.35 421.47,-336.27"/>
 </g>
 <!-- proc~aot_table_push&#45;&gt;proc~flu_getglobal -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_edge8" class="edge">
 <title>proc~aot_table_push&#45;&gt;proc~flu_getglobal</title>
-<path fill="none" stroke="#000000" d="M393.75,-171.11C408.63,-187.27 436.97,-215.95 466,-234 471.86,-237.65 478.33,-240.95 484.84,-243.88"/>
-<polygon fill="#000000" stroke="#000000" points="483.77,-247.23 494.35,-247.91 486.5,-240.79 483.77,-247.23"/>
+<path fill="none" stroke="#000000" d="M359.75,-171.11C374.63,-187.27 402.97,-215.95 432,-234 437.86,-237.65 444.33,-240.95 450.84,-243.88"/>
+<polygon fill="#000000" stroke="#000000" points="449.77,-247.23 460.35,-247.91 452.5,-240.79 449.77,-247.23"/>
 </g>
 <!-- interface~flu_pushinteger -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_node6" class="node">
 <title>interface~flu_pushinteger</title>
 <g id="a_interface~~aot_table_get_val~2~~CallsGraph_node6"><a xlink:href="../interface/flu_pushinteger.html" xlink:title="flu_pushinteger">
-<polygon fill="#a7506f" stroke="#a7506f" points="580,-150 485,-150 485,-126 580,-126 580,-150"/>
-<text text-anchor="middle" x="532.5" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">flu_pushinteger</text>
+<polygon fill="#a7506f" stroke="#a7506f" points="546,-150 451,-150 451,-126 546,-126 546,-150"/>
+<text text-anchor="middle" x="498.5" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">flu_pushinteger</text>
 </a>
 </g>
 </g>
 <!-- proc~aot_table_push&#45;&gt;interface~flu_pushinteger -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_edge6" class="edge">
 <title>proc~aot_table_push&#45;&gt;interface~flu_pushinteger</title>
-<path fill="none" stroke="#000000" d="M428.77,-152.53C443.24,-150.48 459.41,-148.19 474.56,-146.05"/>
-<polygon fill="#000000" stroke="#000000" points="475.45,-149.46 484.86,-144.6 474.47,-142.53 475.45,-149.46"/>
+<path fill="none" stroke="#000000" d="M394.77,-152.53C409.24,-150.48 425.41,-148.19 440.56,-146.05"/>
+<polygon fill="#000000" stroke="#000000" points="441.45,-149.46 450.86,-144.6 440.47,-142.53 441.45,-149.46"/>
 </g>
 <!-- proc~flu_getfield -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_node9" class="node">
 <title>proc~flu_getfield</title>
 <g id="a_interface~~aot_table_get_val~2~~CallsGraph_node9"><a xlink:href="../proc/flu_getfield.html" xlink:title="flu_getfield">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="568.5,-108 496.5,-108 496.5,-84 568.5,-84 568.5,-108"/>
-<text text-anchor="middle" x="532.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">flu_getfield</text>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="534.5,-108 462.5,-108 462.5,-84 534.5,-84 534.5,-108"/>
+<text text-anchor="middle" x="498.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">flu_getfield</text>
 </a>
 </g>
 </g>
 <!-- proc~aot_table_push&#45;&gt;proc~flu_getfield -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_edge7" class="edge">
 <title>proc~aot_table_push&#45;&gt;proc~flu_getfield</title>
-<path fill="none" stroke="#000000" d="M404.41,-146.99C420.91,-138.01 444.49,-125.83 466,-117 472.68,-114.26 479.87,-111.64 486.94,-109.24"/>
-<polygon fill="#000000" stroke="#000000" points="488.05,-112.56 496.46,-106.11 485.87,-105.91 488.05,-112.56"/>
+<path fill="none" stroke="#000000" d="M370.41,-146.99C386.91,-138.01 410.49,-125.83 432,-117 438.68,-114.26 445.87,-111.64 452.94,-109.24"/>
+<polygon fill="#000000" stroke="#000000" points="454.05,-112.56 462.46,-106.11 451.87,-105.91 454.05,-112.56"/>
 </g>
 <!-- proc~flu_gettable -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_node10" class="node">
 <title>proc~flu_gettable</title>
 <g id="a_interface~~aot_table_get_val~2~~CallsGraph_node10"><a xlink:href="../proc/flu_gettable.html" xlink:title="flu_gettable">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="570.5,-66 494.5,-66 494.5,-42 570.5,-42 570.5,-66"/>
-<text text-anchor="middle" x="532.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">flu_gettable</text>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="536.5,-66 460.5,-66 460.5,-42 536.5,-42 536.5,-66"/>
+<text text-anchor="middle" x="498.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">flu_gettable</text>
 </a>
 </g>
 </g>
 <!-- proc~aot_table_push&#45;&gt;proc~flu_gettable -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_edge9" class="edge">
 <title>proc~aot_table_push&#45;&gt;proc~flu_gettable</title>
-<path fill="none" stroke="#000000" d="M391.83,-146.9C405.67,-128.75 434.21,-94.53 466,-75 471.81,-71.43 478.29,-68.41 484.85,-65.87"/>
-<polygon fill="#000000" stroke="#000000" points="486.18,-69.11 494.45,-62.48 483.85,-62.51 486.18,-69.11"/>
+<path fill="none" stroke="#000000" d="M357.83,-146.9C371.67,-128.75 400.21,-94.53 432,-75 437.81,-71.43 444.29,-68.41 450.85,-65.87"/>
+<polygon fill="#000000" stroke="#000000" points="452.18,-69.11 460.45,-62.48 449.85,-62.51 452.18,-69.11"/>
 </g>
 <!-- proc~flu_pop -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_node11" class="node">
 <title>proc~flu_pop</title>
 <g id="a_interface~~aot_table_get_val~2~~CallsGraph_node11"><a xlink:href="../proc/flu_pop.html" xlink:title="flu_pop">
-<polygon fill="#d9534f" stroke="#d9534f" points="709,-314 655,-314 655,-290 709,-290 709,-314"/>
-<text text-anchor="middle" x="682" y="-299.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">flu_pop</text>
+<polygon fill="#d9534f" stroke="#d9534f" points="675,-314 621,-314 621,-290 675,-290 675,-314"/>
+<text text-anchor="middle" x="648" y="-299.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">flu_pop</text>
 </a>
 </g>
 </g>
 <!-- proc~aot_table_push&#45;&gt;proc~flu_pop -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_edge10" class="edge">
 <title>proc~aot_table_push&#45;&gt;proc~flu_pop</title>
-<path fill="none" stroke="#000000" d="M403.98,-171.02C420.46,-180.12 444.2,-192.46 466,-201 523.24,-223.42 547.25,-205.81 599,-239 619.7,-252.27 615.36,-266.21 635,-281 638.22,-283.43 641.77,-285.66 645.42,-287.68"/>
-<polygon fill="#000000" stroke="#000000" points="644.08,-290.93 654.59,-292.3 647.23,-284.68 644.08,-290.93"/>
+<path fill="none" stroke="#000000" d="M369.98,-171.02C386.46,-180.12 410.2,-192.46 432,-201 489.24,-223.42 513.25,-205.81 565,-239 585.7,-252.27 581.36,-266.21 601,-281 604.22,-283.43 607.77,-285.66 611.42,-287.68"/>
+<polygon fill="#000000" stroke="#000000" points="610.08,-290.93 620.59,-292.3 613.23,-284.68 610.08,-290.93"/>
 </g>
 <!-- proc~flu_pushnil -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_node12" class="node">
 <title>proc~flu_pushnil</title>
 <g id="a_interface~~aot_table_get_val~2~~CallsGraph_node12"><a xlink:href="../proc/flu_pushnil.html" xlink:title="flu_pushnil">
-<polygon fill="#d9534f" stroke="#d9534f" points="567.5,-24 497.5,-24 497.5,0 567.5,0 567.5,-24"/>
-<text text-anchor="middle" x="532.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">flu_pushnil</text>
+<polygon fill="#d9534f" stroke="#d9534f" points="533.5,-24 463.5,-24 463.5,0 533.5,0 533.5,-24"/>
+<text text-anchor="middle" x="498.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">flu_pushnil</text>
 </a>
 </g>
 </g>
 <!-- proc~aot_table_push&#45;&gt;proc~flu_pushnil -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_edge11" class="edge">
 <title>proc~aot_table_push&#45;&gt;proc~flu_pushnil</title>
-<path fill="none" stroke="#000000" d="M387.64,-146.98C397.9,-122 424.9,-64.2 466,-33 472.42,-28.13 480.01,-24.36 487.7,-21.46"/>
-<polygon fill="#000000" stroke="#000000" points="489.04,-24.71 497.43,-18.23 486.83,-18.06 489.04,-24.71"/>
+<path fill="none" stroke="#000000" d="M353.64,-146.98C363.9,-122 390.9,-64.2 432,-33 438.42,-28.13 446.01,-24.36 453.7,-21.46"/>
+<polygon fill="#000000" stroke="#000000" points="455.04,-24.71 463.43,-18.23 452.83,-18.06 455.04,-24.71"/>
 </g>
 <!-- proc~flu_type -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_node13" class="node">
 <title>proc~flu_type</title>
 <g id="a_interface~~aot_table_get_val~2~~CallsGraph_node13"><a xlink:href="../proc/flu_type.html" xlink:title="flu_type">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="560,-192 505,-192 505,-168 560,-168 560,-192"/>
-<text text-anchor="middle" x="532.5" y="-177.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">flu_type</text>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="526,-192 471,-192 471,-168 526,-168 526,-192"/>
+<text text-anchor="middle" x="498.5" y="-177.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">flu_type</text>
 </a>
 </g>
 </g>
 <!-- proc~aot_table_push&#45;&gt;proc~flu_type -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_edge12" class="edge">
 <title>proc~aot_table_push&#45;&gt;proc~flu_type</title>
-<path fill="none" stroke="#000000" d="M428.77,-165.47C449.96,-168.47 474.8,-171.98 494.74,-174.8"/>
-<polygon fill="#000000" stroke="#000000" points="494.29,-178.27 504.68,-176.21 495.27,-171.34 494.29,-178.27"/>
+<path fill="none" stroke="#000000" d="M394.77,-165.47C415.96,-168.47 440.8,-171.98 460.74,-174.8"/>
+<polygon fill="#000000" stroke="#000000" points="460.29,-178.27 470.68,-176.21 461.27,-171.34 460.29,-178.27"/>
 </g>
 <!-- interface~lua_getglobal -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_node7" class="node">
 <title>interface~lua_getglobal</title>
 <g id="a_interface~~aot_table_get_val~2~~CallsGraph_node7"><a xlink:href="../interface/lua_getglobal.html" xlink:title="lua_getglobal">
-<polygon fill="#a7506f" stroke="#a7506f" points="724.5,-272 639.5,-272 639.5,-248 724.5,-248 724.5,-272"/>
-<text text-anchor="middle" x="682" y="-257.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">lua_getglobal</text>
+<polygon fill="#a7506f" stroke="#a7506f" points="690.5,-272 605.5,-272 605.5,-248 690.5,-248 690.5,-272"/>
+<text text-anchor="middle" x="648" y="-257.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">lua_getglobal</text>
 </a>
 </g>
 </g>
 <!-- proc~flu_getglobal&#45;&gt;interface~lua_getglobal -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_edge13" class="edge">
 <title>proc~flu_getglobal&#45;&gt;interface~lua_getglobal</title>
-<path fill="none" stroke="#000000" d="M573.81,-260C590.93,-260 611.1,-260 629.3,-260"/>
-<polygon fill="#000000" stroke="#000000" points="629.46,-263.5 639.46,-260 629.46,-256.5 629.46,-263.5"/>
+<path fill="none" stroke="#000000" d="M539.81,-260C556.93,-260 577.1,-260 595.3,-260"/>
+<polygon fill="#000000" stroke="#000000" points="595.46,-263.5 605.46,-260 595.46,-256.5 595.46,-263.5"/>
 </g>
 <!-- proc~flu_pushint -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_node21" class="node">
 <title>proc~flu_pushint</title>
 <g id="a_interface~~aot_table_get_val~2~~CallsGraph_node21"><a xlink:href="../proc/flu_pushint.html" xlink:title="flu_pushint">
-<polygon fill="#d9534f" stroke="#d9534f" points="717,-150 647,-150 647,-126 717,-126 717,-150"/>
-<text text-anchor="middle" x="682" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">flu_pushint</text>
+<polygon fill="#d9534f" stroke="#d9534f" points="683,-150 613,-150 613,-126 683,-126 683,-150"/>
+<text text-anchor="middle" x="648" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">flu_pushint</text>
 </a>
 </g>
 </g>
 <!-- interface~flu_pushinteger&#45;&gt;proc~flu_pushint -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_edge14" class="edge">
 <title>interface~flu_pushinteger&#45;&gt;proc~flu_pushint</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M580.17,-138C598.23,-138 618.81,-138 636.65,-138"/>
-<polygon fill="#000000" stroke="#000000" points="636.79,-141.5 646.79,-138 636.79,-134.5 636.79,-141.5"/>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M546.17,-138C564.23,-138 584.81,-138 602.65,-138"/>
+<polygon fill="#000000" stroke="#000000" points="602.79,-141.5 612.79,-138 602.79,-134.5 602.79,-141.5"/>
 </g>
 <!-- proc~flu_pushlong -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_node22" class="node">
 <title>proc~flu_pushlong</title>
 <g id="a_interface~~aot_table_get_val~2~~CallsGraph_node22"><a xlink:href="../proc/flu_pushlong.html" xlink:title="flu_pushlong">
-<polygon fill="#d9534f" stroke="#d9534f" points="722,-192 642,-192 642,-168 722,-168 722,-192"/>
-<text text-anchor="middle" x="682" y="-177.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">flu_pushlong</text>
+<polygon fill="#d9534f" stroke="#d9534f" points="688,-192 608,-192 608,-168 688,-168 688,-192"/>
+<text text-anchor="middle" x="648" y="-177.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">flu_pushlong</text>
 </a>
 </g>
 </g>
 <!-- interface~flu_pushinteger&#45;&gt;proc~flu_pushlong -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_edge15" class="edge">
 <title>interface~flu_pushinteger&#45;&gt;proc~flu_pushlong</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M575.77,-150.04C593.29,-155.03 613.74,-160.85 631.92,-166.03"/>
-<polygon fill="#000000" stroke="#000000" points="631.18,-169.45 641.76,-168.83 633.1,-162.72 631.18,-169.45"/>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M541.77,-150.04C559.29,-155.03 579.74,-160.85 597.92,-166.03"/>
+<polygon fill="#000000" stroke="#000000" points="597.18,-169.45 607.76,-168.83 599.1,-162.72 597.18,-169.45"/>
 </g>
 <!-- proc~aot_top_get_extdouble&#45;&gt;proc~flu_pop -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_edge18" class="edge">
 <title>proc~aot_top_get_extdouble&#45;&gt;proc~flu_pop</title>
-<path fill="none" stroke="#000000" d="M575.77,-331.96C597.71,-325.72 624.24,-318.16 645.17,-312.2"/>
-<polygon fill="#000000" stroke="#000000" points="646.29,-315.52 654.95,-309.42 644.37,-308.79 646.29,-315.52"/>
+<path fill="none" stroke="#000000" d="M541.77,-331.96C563.71,-325.72 590.24,-318.16 611.17,-312.2"/>
+<polygon fill="#000000" stroke="#000000" points="612.29,-315.52 620.95,-309.42 610.37,-308.79 612.29,-315.52"/>
 </g>
 <!-- proc~flu_isnoneornil -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_node19" class="node">
 <title>proc~flu_isnoneornil</title>
 <g id="a_interface~~aot_table_get_val~2~~CallsGraph_node19"><a xlink:href="../proc/flu_isnoneornil.html" xlink:title="flu_isNoneOrNil">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="729,-356 635,-356 635,-332 729,-332 729,-356"/>
-<text text-anchor="middle" x="682" y="-341.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">flu_isNoneOrNil</text>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="695,-356 601,-356 601,-332 695,-332 695,-356"/>
+<text text-anchor="middle" x="648" y="-341.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">flu_isNoneOrNil</text>
 </a>
 </g>
 </g>
 <!-- proc~aot_top_get_extdouble&#45;&gt;proc~flu_isnoneornil -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_edge16" class="edge">
 <title>proc~aot_top_get_extdouble&#45;&gt;proc~flu_isnoneornil</title>
-<path fill="none" stroke="#000000" d="M599.05,-344C607.59,-344 616.27,-344 624.63,-344"/>
-<polygon fill="#000000" stroke="#000000" points="624.65,-347.5 634.65,-344 624.65,-340.5 624.65,-347.5"/>
+<path fill="none" stroke="#000000" d="M565.05,-344C573.59,-344 582.27,-344 590.63,-344"/>
+<polygon fill="#000000" stroke="#000000" points="590.65,-347.5 600.65,-344 590.65,-340.5 590.65,-347.5"/>
 </g>
 <!-- proc~flu_isnumber -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_node20" class="node">
 <title>proc~flu_isnumber</title>
 <g id="a_interface~~aot_table_get_val~2~~CallsGraph_node20"><a xlink:href="../proc/flu_isnumber.html" xlink:title="flu_isnumber">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="723,-440 641,-440 641,-416 723,-416 723,-440"/>
-<text text-anchor="middle" x="682" y="-425.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">flu_isnumber</text>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="689,-440 607,-440 607,-416 689,-416 689,-440"/>
+<text text-anchor="middle" x="648" y="-425.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">flu_isnumber</text>
 </a>
 </g>
 </g>
 <!-- proc~aot_top_get_extdouble&#45;&gt;proc~flu_isnumber -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_edge17" class="edge">
 <title>proc~aot_top_get_extdouble&#45;&gt;proc~flu_isnumber</title>
-<path fill="none" stroke="#000000" d="M551.42,-356.1C571.39,-369.34 604.84,-390.84 635,-407 637.86,-408.53 640.86,-410.06 643.89,-411.56"/>
-<polygon fill="#000000" stroke="#000000" points="642.46,-414.75 652.99,-415.9 645.48,-408.44 642.46,-414.75"/>
+<path fill="none" stroke="#000000" d="M517.42,-356.1C537.39,-369.34 570.84,-390.84 601,-407 603.86,-408.53 606.86,-410.06 609.89,-411.56"/>
+<polygon fill="#000000" stroke="#000000" points="608.46,-414.75 618.99,-415.9 611.48,-408.44 608.46,-414.75"/>
 </g>
 <!-- proc~flu_todouble -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_node23" class="node">
 <title>proc~flu_todouble</title>
 <g id="a_interface~~aot_table_get_val~2~~CallsGraph_node23"><a xlink:href="../proc/flu_todouble.html" xlink:title="flu_todouble">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="721.5,-398 642.5,-398 642.5,-374 721.5,-374 721.5,-398"/>
-<text text-anchor="middle" x="682" y="-383.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">flu_todouble</text>
+<polygon fill="#d94e8f" stroke="#d94e8f" points="687.5,-398 608.5,-398 608.5,-374 687.5,-374 687.5,-398"/>
+<text text-anchor="middle" x="648" y="-383.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">flu_todouble</text>
 </a>
 </g>
 </g>
 <!-- proc~aot_top_get_extdouble&#45;&gt;proc~flu_todouble -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_edge19" class="edge">
 <title>proc~aot_top_get_extdouble&#45;&gt;proc~flu_todouble</title>
-<path fill="none" stroke="#000000" d="M575.77,-356.04C593.52,-361.09 614.27,-367 632.62,-372.23"/>
-<polygon fill="#000000" stroke="#000000" points="631.68,-375.6 642.26,-374.97 633.6,-368.86 631.68,-375.6"/>
+<path fill="none" stroke="#000000" d="M541.77,-356.04C559.52,-361.09 580.27,-367 598.62,-372.23"/>
+<polygon fill="#000000" stroke="#000000" points="597.68,-375.6 608.26,-374.97 599.6,-368.86 597.68,-375.6"/>
 </g>
 <!-- interface~lua_getfield -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_node14" class="node">
 <title>interface~lua_getfield</title>
 <g id="a_interface~~aot_table_get_val~2~~CallsGraph_node14"><a xlink:href="../interface/lua_getfield.html" xlink:title="lua_getfield">
-<polygon fill="#a7506f" stroke="#a7506f" points="719.5,-108 644.5,-108 644.5,-84 719.5,-84 719.5,-108"/>
-<text text-anchor="middle" x="682" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">lua_getfield</text>
+<polygon fill="#a7506f" stroke="#a7506f" points="685.5,-108 610.5,-108 610.5,-84 685.5,-84 685.5,-108"/>
+<text text-anchor="middle" x="648" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">lua_getfield</text>
 </a>
 </g>
 </g>
 <!-- proc~flu_getfield&#45;&gt;interface~lua_getfield -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_edge20" class="edge">
 <title>proc~flu_getfield&#45;&gt;interface~lua_getfield</title>
-<path fill="none" stroke="#000000" d="M568.83,-96C588.46,-96 613.13,-96 634.33,-96"/>
-<polygon fill="#000000" stroke="#000000" points="634.42,-99.5 644.42,-96 634.42,-92.5 634.42,-99.5"/>
+<path fill="none" stroke="#000000" d="M534.83,-96C554.46,-96 579.13,-96 600.33,-96"/>
+<polygon fill="#000000" stroke="#000000" points="600.42,-99.5 610.42,-96 600.42,-92.5 600.42,-99.5"/>
 </g>
 <!-- interface~lua_gettable -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_node15" class="node">
 <title>interface~lua_gettable</title>
 <g id="a_interface~~aot_table_get_val~2~~CallsGraph_node15"><a xlink:href="../interface/lua_gettable.html" xlink:title="lua_gettable">
-<polygon fill="#a7506f" stroke="#a7506f" points="721.5,-66 642.5,-66 642.5,-42 721.5,-42 721.5,-66"/>
-<text text-anchor="middle" x="682" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">lua_gettable</text>
+<polygon fill="#a7506f" stroke="#a7506f" points="687.5,-66 608.5,-66 608.5,-42 687.5,-42 687.5,-66"/>
+<text text-anchor="middle" x="648" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">lua_gettable</text>
 </a>
 </g>
 </g>
 <!-- proc~flu_gettable&#45;&gt;interface~lua_gettable -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_edge21" class="edge">
 <title>proc~flu_gettable&#45;&gt;interface~lua_gettable</title>
-<path fill="none" stroke="#000000" d="M570.72,-54C589.33,-54 612.08,-54 632.08,-54"/>
-<polygon fill="#000000" stroke="#000000" points="632.25,-57.5 642.25,-54 632.25,-50.5 632.25,-57.5"/>
+<path fill="none" stroke="#000000" d="M536.72,-54C555.33,-54 578.08,-54 598.08,-54"/>
+<polygon fill="#000000" stroke="#000000" points="598.25,-57.5 608.25,-54 598.25,-50.5 598.25,-57.5"/>
 </g>
 <!-- interface~lua_settop -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_node17" class="node">
 <title>interface~lua_settop</title>
 <g id="a_interface~~aot_table_get_val~2~~CallsGraph_node17"><a xlink:href="../interface/lua_settop.html" xlink:title="lua_settop">
-<polygon fill="#a7506f" stroke="#a7506f" points="847.5,-314 780.5,-314 780.5,-290 847.5,-290 847.5,-314"/>
-<text text-anchor="middle" x="814" y="-299.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">lua_settop</text>
+<polygon fill="#a7506f" stroke="#a7506f" points="813.5,-314 746.5,-314 746.5,-290 813.5,-290 813.5,-314"/>
+<text text-anchor="middle" x="780" y="-299.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">lua_settop</text>
 </a>
 </g>
 </g>
 <!-- proc~flu_pop&#45;&gt;interface~lua_settop -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_edge22" class="edge">
 <title>proc~flu_pop&#45;&gt;interface~lua_settop</title>
-<path fill="none" stroke="#000000" d="M709.31,-302C726.74,-302 750.02,-302 770.11,-302"/>
-<polygon fill="#000000" stroke="#000000" points="770.27,-305.5 780.27,-302 770.27,-298.5 770.27,-305.5"/>
+<path fill="none" stroke="#000000" d="M675.31,-302C692.74,-302 716.02,-302 736.11,-302"/>
+<polygon fill="#000000" stroke="#000000" points="736.27,-305.5 746.27,-302 736.27,-298.5 736.27,-305.5"/>
 </g>
 <!-- interface~lua_pushnil -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_node16" class="node">
 <title>interface~lua_pushnil</title>
 <g id="a_interface~~aot_table_get_val~2~~CallsGraph_node16"><a xlink:href="../interface/lua_pushnil.html" xlink:title="lua_pushnil">
-<polygon fill="#a7506f" stroke="#a7506f" points="718.5,-24 645.5,-24 645.5,0 718.5,0 718.5,-24"/>
-<text text-anchor="middle" x="682" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">lua_pushnil</text>
+<polygon fill="#a7506f" stroke="#a7506f" points="684.5,-24 611.5,-24 611.5,0 684.5,0 684.5,-24"/>
+<text text-anchor="middle" x="648" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">lua_pushnil</text>
 </a>
 </g>
 </g>
 <!-- proc~flu_pushnil&#45;&gt;interface~lua_pushnil -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_edge23" class="edge">
 <title>proc~flu_pushnil&#45;&gt;interface~lua_pushnil</title>
-<path fill="none" stroke="#000000" d="M567.71,-12C587.84,-12 613.55,-12 635.39,-12"/>
-<polygon fill="#000000" stroke="#000000" points="635.44,-15.5 645.44,-12 635.44,-8.5 635.44,-15.5"/>
+<path fill="none" stroke="#000000" d="M533.71,-12C553.84,-12 579.55,-12 601.39,-12"/>
+<polygon fill="#000000" stroke="#000000" points="601.44,-15.5 611.44,-12 601.44,-8.5 601.44,-15.5"/>
 </g>
 <!-- interface~lua_type -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_node18" class="node">
 <title>interface~lua_type</title>
 <g id="a_interface~~aot_table_get_val~2~~CallsGraph_node18"><a xlink:href="../interface/lua_type.html" xlink:title="lua_type">
-<polygon fill="#a7506f" stroke="#a7506f" points="843,-356 785,-356 785,-332 843,-332 843,-356"/>
-<text text-anchor="middle" x="814" y="-341.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">lua_type</text>
+<polygon fill="#a7506f" stroke="#a7506f" points="809,-356 751,-356 751,-332 809,-332 809,-356"/>
+<text text-anchor="middle" x="780" y="-341.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">lua_type</text>
 </a>
 </g>
 </g>
 <!-- proc~flu_type&#45;&gt;interface~lua_type -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_edge24" class="edge">
 <title>proc~flu_type&#45;&gt;interface~lua_type</title>
-<path fill="none" stroke="#000000" d="M560.07,-185.07C607.47,-194.57 703.98,-216.19 729,-239 759.02,-266.36 736.39,-294.17 765,-323 768.19,-326.21 771.94,-328.96 775.93,-331.32"/>
-<polygon fill="#000000" stroke="#000000" points="774.4,-334.47 784.9,-335.86 777.56,-328.22 774.4,-334.47"/>
+<path fill="none" stroke="#000000" d="M526.07,-185.07C573.47,-194.57 669.98,-216.19 695,-239 725.02,-266.36 702.39,-294.17 731,-323 734.19,-326.21 737.94,-328.96 741.93,-331.32"/>
+<polygon fill="#000000" stroke="#000000" points="740.4,-334.47 750.9,-335.86 743.56,-328.22 740.4,-334.47"/>
 </g>
 <!-- proc~flu_isnoneornil&#45;&gt;interface~lua_type -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_edge25" class="edge">
 <title>proc~flu_isnoneornil&#45;&gt;interface~lua_type</title>
-<path fill="none" stroke="#000000" d="M729.2,-344C743.97,-344 760.16,-344 774.34,-344"/>
-<polygon fill="#000000" stroke="#000000" points="774.73,-347.5 784.73,-344 774.73,-340.5 774.73,-347.5"/>
+<path fill="none" stroke="#000000" d="M695.2,-344C709.97,-344 726.16,-344 740.34,-344"/>
+<polygon fill="#000000" stroke="#000000" points="740.73,-347.5 750.73,-344 740.73,-340.5 740.73,-347.5"/>
 </g>
 <!-- interface~lua_isnumber -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_node24" class="node">
 <title>interface~lua_isnumber</title>
 <g id="a_interface~~aot_table_get_val~2~~CallsGraph_node24"><a xlink:href="../interface/lua_isnumber.html" xlink:title="lua_isNumber">
-<polygon fill="#a7506f" stroke="#a7506f" points="856.5,-440 771.5,-440 771.5,-416 856.5,-416 856.5,-440"/>
-<text text-anchor="middle" x="814" y="-425.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">lua_isNumber</text>
+<polygon fill="#a7506f" stroke="#a7506f" points="822.5,-440 737.5,-440 737.5,-416 822.5,-416 822.5,-440"/>
+<text text-anchor="middle" x="780" y="-425.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">lua_isNumber</text>
 </a>
 </g>
 </g>
 <!-- proc~flu_isnumber&#45;&gt;interface~lua_isnumber -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_edge26" class="edge">
 <title>proc~flu_isnumber&#45;&gt;interface~lua_isnumber</title>
-<path fill="none" stroke="#000000" d="M723.07,-428C735.19,-428 748.68,-428 761.45,-428"/>
-<polygon fill="#000000" stroke="#000000" points="761.49,-431.5 771.49,-428 761.49,-424.5 761.49,-431.5"/>
+<path fill="none" stroke="#000000" d="M689.07,-428C701.19,-428 714.68,-428 727.45,-428"/>
+<polygon fill="#000000" stroke="#000000" points="727.49,-431.5 737.49,-428 727.49,-424.5 727.49,-431.5"/>
 </g>
 <!-- interface~lua_pushinteger -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_node25" class="node">
 <title>interface~lua_pushinteger</title>
 <g id="a_interface~~aot_table_get_val~2~~CallsGraph_node25"><a xlink:href="../interface/lua_pushinteger.html" xlink:title="lua_pushinteger">
-<polygon fill="#a7506f" stroke="#a7506f" points="863,-171 765,-171 765,-147 863,-147 863,-171"/>
-<text text-anchor="middle" x="814" y="-156.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">lua_pushinteger</text>
+<polygon fill="#a7506f" stroke="#a7506f" points="829,-171 731,-171 731,-147 829,-147 829,-171"/>
+<text text-anchor="middle" x="780" y="-156.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">lua_pushinteger</text>
 </a>
 </g>
 </g>
 <!-- proc~flu_pushint&#45;&gt;interface~lua_pushinteger -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_edge27" class="edge">
 <title>proc~flu_pushint&#45;&gt;interface~lua_pushinteger</title>
-<path fill="none" stroke="#000000" d="M717.16,-143.52C728.67,-145.38 741.87,-147.51 754.71,-149.58"/>
-<polygon fill="#000000" stroke="#000000" points="754.47,-153.09 764.9,-151.23 755.58,-146.18 754.47,-153.09"/>
+<path fill="none" stroke="#000000" d="M683.16,-143.52C694.67,-145.38 707.87,-147.51 720.71,-149.58"/>
+<polygon fill="#000000" stroke="#000000" points="720.47,-153.09 730.9,-151.23 721.58,-146.18 720.47,-153.09"/>
 </g>
 <!-- proc~flu_pushlong&#45;&gt;interface~lua_pushinteger -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_edge28" class="edge">
 <title>proc~flu_pushlong&#45;&gt;interface~lua_pushinteger</title>
-<path fill="none" stroke="#000000" d="M722,-173.7C732.31,-172.03 743.66,-170.2 754.75,-168.41"/>
-<polygon fill="#000000" stroke="#000000" points="755.5,-171.83 764.82,-166.78 754.39,-164.92 755.5,-171.83"/>
+<path fill="none" stroke="#000000" d="M688,-173.7C698.31,-172.03 709.66,-170.2 720.75,-168.41"/>
+<polygon fill="#000000" stroke="#000000" points="721.5,-171.83 730.82,-166.78 720.39,-164.92 721.5,-171.83"/>
 </g>
 <!-- interface~lua_tonumberx -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_node26" class="node">
 <title>interface~lua_tonumberx</title>
 <g id="a_interface~~aot_table_get_val~2~~CallsGraph_node26"><a xlink:href="../interface/lua_tonumberx.html" xlink:title="lua_tonumberx">
-<polygon fill="#a7506f" stroke="#a7506f" points="860,-398 768,-398 768,-374 860,-374 860,-398"/>
-<text text-anchor="middle" x="814" y="-383.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">lua_tonumberx</text>
+<polygon fill="#a7506f" stroke="#a7506f" points="826,-398 734,-398 734,-374 826,-374 826,-398"/>
+<text text-anchor="middle" x="780" y="-383.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">lua_tonumberx</text>
 </a>
 </g>
 </g>
 <!-- proc~flu_todouble&#45;&gt;interface~lua_tonumberx -->
 <g id="interface~~aot_table_get_val~2~~CallsGraph_edge29" class="edge">
 <title>proc~flu_todouble&#45;&gt;interface~lua_tonumberx</title>
-<path fill="none" stroke="#000000" d="M721.65,-386C733,-386 745.63,-386 757.79,-386"/>
-<polygon fill="#000000" stroke="#000000" points="757.86,-389.5 767.86,-386 757.86,-382.5 757.86,-389.5"/>
+<path fill="none" stroke="#000000" d="M687.65,-386C699,-386 711.63,-386 723.79,-386"/>
+<polygon fill="#000000" stroke="#000000" points="723.86,-389.5 733.86,-386 723.86,-382.5 723.86,-389.5"/>
 </g>
 </g>
 </svg>
@@ -663,12 +687,11 @@ implementation in a submodule of an interface in a parent module.
 
         <h2>Module Procedures</h2>
             <div class="card">
-    <div class="card-header codesum"><span class="anchor" id="proc-get_table_quadruple_vvect"></span> <h3>private  subroutine <a href='../proc/get_table_quadruple_vvect.html'>get_table_quadruple_vvect</a>(val, ErrCode, maxlength, L, thandle, key, pos, default)  
+    <div class="card-header codesum"><span class="anchor" id="proc-get_table_quadruple"></span> <h3>private  subroutine <a href='../proc/get_table_quadruple.html'>get_table_quadruple</a>(val, ErrCode, L, thandle, key, pos, default)  
 </h3></div>
     <div class="card-body">
           
-  <p>This routine obtains a vectorial quantity with variable length from a Lua
-table as a whole.</p><a href="../proc/get_table_quadruple_vvect.html" class="pull-right"><emph>Read more&hellip;</emph></a>
+  <p>Retrieve a quadruple precision real value from a table.</p><a href="../proc/get_table_quadruple.html" class="pull-right"><emph>Read more&hellip;</emph></a>
 
   <h4>Arguments</h4>
       <table class="table table-striped varlist">
@@ -683,56 +706,37 @@ table as a whole.</p><a href="../proc/get_table_quadruple_vvect.html" class="pul
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-val~41"></span>
+              <span class="anchor" id="variable-val~17"></span>
               real(kind=quad_k),
             </td>
-<td>intent(out),</td>
-              <td></td>            <td>
-              allocatable
-            </td>
-            <td>::</td>
-            <td><strong>val</strong>(:)</td>
-            <td>
-<p>Vector read from the Lua table, will have the same length as the table
-but not exceed maxlength, if provided.</p>
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-errcode~21"></span>
-              integer,
-            </td>
-<td>intent(out),</td>
-              <td></td>            <td>
-              allocatable
-            </td>
-            <td>::</td>
-            <td><strong>ErrCode</strong>(:)</td>
-            <td>
-<p>Error code describing problems encountered in each of the components.
-Will be allocated with the same length as the returned vector.
-If the complete vector is not given in the Lua script, and no default
-is provided, an zerosized array will be returned.</p>
-            </td>
-        </tr>
-        <tr>
-            <td>
-              <span class="anchor" id="variable-maxlength"></span>
-              integer,
-            </td>
-<td>intent(in)</td>
+<td>intent(out)</td>
               <td></td>            <td>
               
             </td>
             <td>::</td>
-            <td><strong>maxlength</strong></td>
+            <td><strong>val</strong></td>
             <td>
-<p>Maximal length to allocate for the vector.</p>
+<p>Value of the table entry if it exists.</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-l~36"></span>
+              <span class="anchor" id="variable-errcode~9"></span>
+              integer,
+            </td>
+<td>intent(out)</td>
+              <td></td>            <td>
+              
+            </td>
+            <td>::</td>
+            <td><strong>ErrCode</strong></td>
+            <td>
+<p>Error code to indicate what kind of problem might have occured.</p>
+            </td>
+        </tr>
+        <tr>
+            <td>
+              <span class="anchor" id="variable-l~24"></span>
               type(<a href='../type/flu_state.html'>flu_State</a>)
             </td>
 <td></td>
@@ -747,7 +751,7 @@ is provided, an zerosized array will be returned.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-thandle~20"></span>
+              <span class="anchor" id="variable-thandle~7"></span>
               integer,
             </td>
 <td>intent(in),</td>
@@ -757,12 +761,12 @@ is provided, an zerosized array will be returned.</p>
             <td>::</td>
             <td><strong>thandle</strong></td>
             <td>
-
+<p>Handle to the table to look the value up in.</p>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-key~18"></span>
+              <span class="anchor" id="variable-key~5"></span>
               character(len=*),
             </td>
 <td>intent(in),</td>
@@ -772,12 +776,12 @@ is provided, an zerosized array will be returned.</p>
             <td>::</td>
             <td><strong>key</strong></td>
             <td>
-<p>Name of the variable (vector) to read.</p>
+<p>Name of the entry to look for.</p><a href="../proc/get_table_quadruple.html#variable-key~5" class="pull-right"><emph>Read more&hellip;</emph></a>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-pos~18"></span>
+              <span class="anchor" id="variable-pos~5"></span>
               integer,
             </td>
 <td>intent(in),</td>
@@ -787,12 +791,12 @@ is provided, an zerosized array will be returned.</p>
             <td>::</td>
             <td><strong>pos</strong></td>
             <td>
-<p>Position of the (vector) to read.</p>
+<p>Position of the entry to look for in the table.</p><a href="../proc/get_table_quadruple.html#variable-pos~5" class="pull-right"><emph>Read more&hellip;</emph></a>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-default~16"></span>
+              <span class="anchor" id="variable-default~3"></span>
               real(kind=quad_k),
             </td>
 <td>intent(in),</td>
@@ -800,10 +804,10 @@ is provided, an zerosized array will be returned.</p>
               
             </td>
             <td>::</td>
-            <td><strong>default</strong>(:)</td>
+            <td><strong>default</strong></td>
             <td>
-<p>A default vector to use, if no proper definition is found.
-Components will be filled with the help of this default definition.</p>
+<p>Some default value, that should be used, if the variable is not set in
+the Lua script.</p>
             </td>
         </tr>
     </tbody>
@@ -823,40 +827,18 @@ Components will be filled with the help of this default definition.</p>
           <div class="col">
             <p>
               Aotus
- was developed by University of Siegen<br>              &copy; 2025 
-<br /><small>37d1cea0dc71</small></p>
+ was developed by APES Team<br>              &copy; 2025 <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a>
+<br /><small>e33a4e28d95a</small></p>
           </div>
           <div class="col">
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2025-03-24T15:04:50.422931+0000             </p>
+ on 2025-11-29T17:06:50.716771+0000             </p>
           </div>
         </div>
         <br>
       </div> <!-- /container -->
     </footer>
-
-    <!-- Bootstrap core JavaScript -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>    
-
-    <!-- MathJax JavaScript
-             ================================================== -->
-             <!-- Placed at the end of the document so the pages load faster -->
-        <script type="text/x-mathjax-config">
-          MathJax.Hub.Config({
-          TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } },
-          jax: ['input/TeX','input/MathML','output/HTML-CSS'],
-          extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
-          });
-        </script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-          <script src="../tipuesearch/tipuesearch_content.js"></script>
-          <script src="../tipuesearch/tipuesearch_set.js"></script>
-          <script src="../tipuesearch/tipuesearch.js"></script>
-
   </body>
 </html>

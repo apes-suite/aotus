@@ -7,19 +7,34 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta name="description" content="A Fortran wrapper around the C-API of Lua, for usage as configuration.">
-    <meta name="author" content="University of Siegen" >
+    <meta name="author" content="APES Team" >
     <link rel="icon" href="../favicon.png">
 
     <title>lua_gettop &ndash; Aotus</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link href="../css/pygments.css" rel="stylesheet">
-    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Font Awesome -->
+    <link href="../css/fontawesome.min.css" rel="stylesheet">
+    <link href="../css/brands.min.css" rel="stylesheet">
+    <link href="../css/regular.min.css" rel="stylesheet">
+    <link href="../css/solid.min.css" rel="stylesheet">
+    <link href="../css/v4-font-face.min.css" rel="stylesheet">
+    <link href="../css/v4-shims.min.css" rel="stylesheet">
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async
+            integrity="sha256-DViIOMYdwlM/axqoGDPeUyf0urLoHMN4QACBKyB58Uw=" crossorigin="anonymous"></script>
+    <!-- Other scripts and stylesheets -->
     <link href="../css/local.css" rel="stylesheet">
-      <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
-
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link href="../css/pygments.css" rel="stylesheet">
     <script src="../js/svg-pan-zoom.min.js"></script>
   </head>
 
@@ -77,6 +92,7 @@
     <div class="row align-items-center justify-content-between" id="info-bar">
       <div class="col">
         <ul class="list-inline" style="margin-bottom:0px;display:inline">
+            <li class="list-inline-item" id="meta-license"><i class="fa fa-legal"></i> <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a></li>
 
             <li class="list-inline-item" id="statements"><i class="fa fa-list-ol"></i>
               <a data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true"
@@ -101,9 +117,11 @@
     </div>
   </div>
   <script>
-    $(function () {
-    $('[data-bs-toggle="tooltip"]').tooltip()
-    })
+    // Enable Bootstrap tooltips
+    (function () {
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    })();
   </script>
 
   </div>
@@ -370,22 +388,16 @@
 <g id="interface~~lua_gettop~~CalledByGraph_node13" class="node">
 <title>interface~aot_table_from_1darray</title>
 <g id="a_interface~~lua_gettop~~CalledByGraph_node13"><a xlink:href="../interface/aot_table_from_1darray.html" xlink:title="aot_table_from_1Darray">
-<polygon fill="#a7506f" stroke="#a7506f" points="602.5,-86 461.5,-86 461.5,-62 602.5,-62 602.5,-86"/>
-<text text-anchor="middle" x="532" y="-71.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_table_from_1Darray</text>
+<polygon fill="#a7506f" stroke="#a7506f" points="602.5,-936 461.5,-936 461.5,-912 602.5,-912 602.5,-936"/>
+<text text-anchor="middle" x="532" y="-921.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_table_from_1Darray</text>
 </a>
 </g>
 </g>
-<!-- interface~aot_table_from_1darray&#45;&gt;proc~create_1darray_double -->
-<g id="interface~~lua_gettop~~CalledByGraph_edge33" class="edge">
-<title>interface~aot_table_from_1darray&#45;&gt;proc~create_1darray_double</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M602.75,-82.32C614.79,-83.75 627.37,-85.25 639.61,-86.71"/>
-<polygon fill="#000000" stroke="#000000" points="639.44,-90.22 649.79,-87.93 640.27,-83.27 639.44,-90.22"/>
-</g>
-<!-- interface~aot_table_from_1darray&#45;&gt;proc~create_1darray_real -->
-<g id="interface~~lua_gettop~~CalledByGraph_edge36" class="edge">
-<title>interface~aot_table_from_1darray&#45;&gt;proc~create_1darray_real</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M602.75,-66.44C617.51,-64.84 633.09,-63.15 647.84,-61.55"/>
-<polygon fill="#000000" stroke="#000000" points="648.34,-65.02 657.9,-60.46 647.59,-58.06 648.34,-65.02"/>
+<!-- interface~aot_table_from_1darray&#45;&gt;proc~create_1darray_extdouble -->
+<g id="interface~~lua_gettop~~CalledByGraph_edge34" class="edge">
+<title>interface~aot_table_from_1darray&#45;&gt;proc~create_1darray_extdouble</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M588.64,-911.95C594.43,-909.5 600.01,-906.55 605,-903 655.71,-866.96 691.82,-800.64 707.99,-766.52"/>
+<polygon fill="#000000" stroke="#000000" points="711.18,-767.97 712.2,-757.42 704.83,-765.03 711.18,-767.97"/>
 </g>
 <!-- interface~aot_table_from_1darray~2 -->
 <g id="interface~~lua_gettop~~CalledByGraph_node14" class="node">
@@ -406,16 +418,22 @@
 <g id="interface~~lua_gettop~~CalledByGraph_node15" class="node">
 <title>interface~aot_table_from_1darray~3</title>
 <g id="a_interface~~lua_gettop~~CalledByGraph_node15"><a xlink:href="../interface/aot_table_from_1darray~3.html" xlink:title="aot_table_from_1Darray">
-<polygon fill="#a7506f" stroke="#a7506f" points="602.5,-936 461.5,-936 461.5,-912 602.5,-912 602.5,-936"/>
-<text text-anchor="middle" x="532" y="-921.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_table_from_1Darray</text>
+<polygon fill="#a7506f" stroke="#a7506f" points="602.5,-86 461.5,-86 461.5,-62 602.5,-62 602.5,-86"/>
+<text text-anchor="middle" x="532" y="-71.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_table_from_1Darray</text>
 </a>
 </g>
 </g>
-<!-- interface~aot_table_from_1darray~3&#45;&gt;proc~create_1darray_extdouble -->
-<g id="interface~~lua_gettop~~CalledByGraph_edge34" class="edge">
-<title>interface~aot_table_from_1darray~3&#45;&gt;proc~create_1darray_extdouble</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M588.64,-911.95C594.43,-909.5 600.01,-906.55 605,-903 655.71,-866.96 691.82,-800.64 707.99,-766.52"/>
-<polygon fill="#000000" stroke="#000000" points="711.18,-767.97 712.2,-757.42 704.83,-765.03 711.18,-767.97"/>
+<!-- interface~aot_table_from_1darray~3&#45;&gt;proc~create_1darray_double -->
+<g id="interface~~lua_gettop~~CalledByGraph_edge33" class="edge">
+<title>interface~aot_table_from_1darray~3&#45;&gt;proc~create_1darray_double</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M602.75,-82.32C614.79,-83.75 627.37,-85.25 639.61,-86.71"/>
+<polygon fill="#000000" stroke="#000000" points="639.44,-90.22 649.79,-87.93 640.27,-83.27 639.44,-90.22"/>
+</g>
+<!-- interface~aot_table_from_1darray~3&#45;&gt;proc~create_1darray_real -->
+<g id="interface~~lua_gettop~~CalledByGraph_edge36" class="edge">
+<title>interface~aot_table_from_1darray~3&#45;&gt;proc~create_1darray_real</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M602.75,-66.44C617.51,-64.84 633.09,-63.15 647.84,-61.55"/>
+<polygon fill="#000000" stroke="#000000" points="648.34,-65.02 657.9,-60.46 647.59,-58.06 648.34,-65.02"/>
 </g>
 <!-- proc~aot_fun_ref -->
 <g id="interface~~lua_gettop~~CalledByGraph_node16" class="node">
@@ -768,159 +786,159 @@
 <path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M91.2,-141.45C99.35,-140.26 108.03,-138.99 116.66,-137.72"/>
 <polygon fill="#000000" stroke="#000000" points="117.35,-141.16 126.74,-136.24 116.33,-134.23 117.35,-141.16"/>
 </g>
-<!-- interface~aot_top_get_val~3 -->
+<!-- interface~aot_top_get_val~2 -->
 <g id="interface~~lua_gettop~~CalledByGraph_node38" class="node">
-<title>interface~aot_top_get_val~3</title>
-<g id="a_interface~~lua_gettop~~CalledByGraph_node38"><a xlink:href="../interface/aot_top_get_val~3.html" xlink:title="aot_top_get_val">
+<title>interface~aot_top_get_val~2</title>
+<g id="a_interface~~lua_gettop~~CalledByGraph_node38"><a xlink:href="../interface/aot_top_get_val~2.html" xlink:title="aot_top_get_val">
 <polygon fill="#a7506f" stroke="#a7506f" points="398,-264 302,-264 302,-240 398,-240 398,-264"/>
 <text text-anchor="middle" x="350" y="-249.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_top_get_val</text>
 </a>
 </g>
 </g>
-<!-- interface~aot_top_get_val~3&#45;&gt;proc~get_top_quadruple_vvect -->
+<!-- interface~aot_top_get_val~2&#45;&gt;proc~get_top_quadruple_vvect -->
 <g id="interface~~lua_gettop~~CalledByGraph_edge56" class="edge">
-<title>interface~aot_top_get_val~3&#45;&gt;proc~get_top_quadruple_vvect</title>
+<title>interface~aot_top_get_val~2&#45;&gt;proc~get_top_quadruple_vvect</title>
 <path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M398.29,-252C413.79,-252 431.49,-252 448.8,-252"/>
 <polygon fill="#000000" stroke="#000000" points="448.93,-255.5 458.93,-252 448.93,-248.5 448.93,-255.5"/>
 </g>
-<!-- interface~aot_top_get_val~4 -->
+<!-- interface~aot_top_get_val~3 -->
 <g id="interface~~lua_gettop~~CalledByGraph_node39" class="node">
-<title>interface~aot_top_get_val~4</title>
-<g id="a_interface~~lua_gettop~~CalledByGraph_node39"><a xlink:href="../interface/aot_top_get_val~4.html" xlink:title="aot_top_get_val">
+<title>interface~aot_top_get_val~3</title>
+<g id="a_interface~~lua_gettop~~CalledByGraph_node39"><a xlink:href="../interface/aot_top_get_val~3.html" xlink:title="aot_top_get_val">
 <polygon fill="#a7506f" stroke="#a7506f" points="398,-306 302,-306 302,-282 398,-282 398,-306"/>
 <text text-anchor="middle" x="350" y="-291.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_top_get_val</text>
 </a>
 </g>
 </g>
-<!-- interface~aot_top_get_val~4&#45;&gt;proc~get_top_quadruple_v -->
+<!-- interface~aot_top_get_val~3&#45;&gt;proc~get_top_quadruple_v -->
 <g id="interface~~lua_gettop~~CalledByGraph_edge55" class="edge">
-<title>interface~aot_top_get_val~4&#45;&gt;proc~get_top_quadruple_v</title>
+<title>interface~aot_top_get_val~3&#45;&gt;proc~get_top_quadruple_v</title>
 <path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M398.29,-294C417.09,-294 439.12,-294 459.78,-294"/>
 <polygon fill="#000000" stroke="#000000" points="459.79,-297.5 469.79,-294 459.79,-290.5 459.79,-297.5"/>
 </g>
-<!-- interface~aot_top_get_val~6 -->
+<!-- interface~aot_top_get_val~4 -->
 <g id="interface~~lua_gettop~~CalledByGraph_node40" class="node">
-<title>interface~aot_top_get_val~6</title>
-<g id="a_interface~~lua_gettop~~CalledByGraph_node40"><a xlink:href="../interface/aot_top_get_val~6.html" xlink:title="aot_top_get_val">
+<title>interface~aot_top_get_val~4</title>
+<g id="a_interface~~lua_gettop~~CalledByGraph_node40"><a xlink:href="../interface/aot_top_get_val~4.html" xlink:title="aot_top_get_val">
 <polygon fill="#a7506f" stroke="#a7506f" points="398,-537 302,-537 302,-513 398,-513 398,-537"/>
 <text text-anchor="middle" x="350" y="-522.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_top_get_val</text>
 </a>
 </g>
 </g>
-<!-- interface~aot_top_get_val~6&#45;&gt;proc~get_top_double_vvect -->
+<!-- interface~aot_top_get_val~4&#45;&gt;proc~get_top_double_vvect -->
 <g id="interface~~lua_gettop~~CalledByGraph_edge46" class="edge">
-<title>interface~aot_top_get_val~6&#45;&gt;proc~get_top_double_vvect</title>
+<title>interface~aot_top_get_val~4&#45;&gt;proc~get_top_double_vvect</title>
 <path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M363.21,-537.07C382.16,-555.17 420.5,-589.33 459,-609 462.78,-610.93 466.77,-612.71 470.85,-614.35"/>
 <polygon fill="#000000" stroke="#000000" points="469.89,-617.73 480.48,-617.91 472.32,-611.16 469.89,-617.73"/>
 </g>
-<!-- interface~aot_top_get_val~6&#45;&gt;proc~get_top_integer_vvect -->
+<!-- interface~aot_top_get_val~4&#45;&gt;proc~get_top_integer_vvect -->
 <g id="interface~~lua_gettop~~CalledByGraph_edge50" class="edge">
-<title>interface~aot_top_get_val~6&#45;&gt;proc~get_top_integer_vvect</title>
+<title>interface~aot_top_get_val~4&#45;&gt;proc~get_top_integer_vvect</title>
 <path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M380.08,-537.1C401.68,-545.9 431.95,-557.81 459,-567 464.99,-569.03 471.29,-571.05 477.58,-572.99"/>
 <polygon fill="#000000" stroke="#000000" points="476.82,-576.41 487.4,-575.95 478.84,-569.71 476.82,-576.41"/>
 </g>
-<!-- interface~aot_top_get_val~6&#45;&gt;proc~get_top_logical_vvect -->
+<!-- interface~aot_top_get_val~4&#45;&gt;proc~get_top_logical_vvect -->
 <g id="interface~~lua_gettop~~CalledByGraph_edge52" class="edge">
-<title>interface~aot_top_get_val~6&#45;&gt;proc~get_top_logical_vvect</title>
+<title>interface~aot_top_get_val~4&#45;&gt;proc~get_top_logical_vvect</title>
 <path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M398.29,-530.52C416.65,-532.66 438.09,-535.16 458.32,-537.52"/>
 <polygon fill="#000000" stroke="#000000" points="458.11,-541.02 468.45,-538.7 458.92,-534.07 458.11,-541.02"/>
 </g>
-<!-- interface~aot_top_get_val~6&#45;&gt;proc~get_top_long_vvect -->
+<!-- interface~aot_top_get_val~4&#45;&gt;proc~get_top_long_vvect -->
 <g id="interface~~lua_gettop~~CalledByGraph_edge54" class="edge">
-<title>interface~aot_top_get_val~6&#45;&gt;proc~get_top_long_vvect</title>
+<title>interface~aot_top_get_val~4&#45;&gt;proc~get_top_long_vvect</title>
 <path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M398.29,-519.48C418.53,-517.12 442.51,-514.32 464.48,-511.76"/>
 <polygon fill="#000000" stroke="#000000" points="464.89,-515.24 474.42,-510.6 464.08,-508.28 464.89,-515.24"/>
 </g>
-<!-- interface~aot_top_get_val~6&#45;&gt;proc~get_top_real_vvect -->
+<!-- interface~aot_top_get_val~4&#45;&gt;proc~get_top_real_vvect -->
 <g id="interface~~lua_gettop~~CalledByGraph_edge58" class="edge">
-<title>interface~aot_top_get_val~6&#45;&gt;proc~get_top_real_vvect</title>
+<title>interface~aot_top_get_val~4&#45;&gt;proc~get_top_real_vvect</title>
 <path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M380.08,-512.9C401.68,-504.1 431.95,-492.19 459,-483 464.99,-480.97 471.29,-478.95 477.58,-477.01"/>
 <polygon fill="#000000" stroke="#000000" points="478.84,-480.29 487.4,-474.05 476.82,-473.59 478.84,-480.29"/>
 </g>
-<!-- interface~aot_top_get_val~6&#45;&gt;proc~get_top_string_vvect -->
+<!-- interface~aot_top_get_val~4&#45;&gt;proc~get_top_string_vvect -->
 <g id="interface~~lua_gettop~~CalledByGraph_edge60" class="edge">
-<title>interface~aot_top_get_val~6&#45;&gt;proc~get_top_string_vvect</title>
+<title>interface~aot_top_get_val~4&#45;&gt;proc~get_top_string_vvect</title>
 <path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M363.21,-512.93C382.16,-494.83 420.5,-460.67 459,-441 462.78,-439.07 466.77,-437.29 470.85,-435.65"/>
 <polygon fill="#000000" stroke="#000000" points="472.32,-438.84 480.48,-432.09 469.89,-432.27 472.32,-438.84"/>
 </g>
-<!-- interface~aot_top_get_val~7 -->
+<!-- interface~aot_top_get_val~5 -->
 <g id="interface~~lua_gettop~~CalledByGraph_node41" class="node">
-<title>interface~aot_top_get_val~7</title>
-<g id="a_interface~~lua_gettop~~CalledByGraph_node41"><a xlink:href="../interface/aot_top_get_val~7.html" xlink:title="aot_top_get_val">
+<title>interface~aot_top_get_val~5</title>
+<g id="a_interface~~lua_gettop~~CalledByGraph_node41"><a xlink:href="../interface/aot_top_get_val~5.html" xlink:title="aot_top_get_val">
 <polygon fill="#a7506f" stroke="#a7506f" points="398,-789 302,-789 302,-765 398,-765 398,-789"/>
 <text text-anchor="middle" x="350" y="-774.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_top_get_val</text>
 </a>
 </g>
 </g>
-<!-- interface~aot_top_get_val~7&#45;&gt;proc~get_top_double_v -->
+<!-- interface~aot_top_get_val~5&#45;&gt;proc~get_top_double_v -->
 <g id="interface~~lua_gettop~~CalledByGraph_edge45" class="edge">
-<title>interface~aot_top_get_val~7&#45;&gt;proc~get_top_double_v</title>
+<title>interface~aot_top_get_val~5&#45;&gt;proc~get_top_double_v</title>
 <path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M376.33,-789.1C390.77,-796.64 408.77,-807.14 423,-819 441.88,-834.75 438.34,-847.67 459,-861 462.29,-863.12 465.8,-865.04 469.44,-866.76"/>
 <polygon fill="#000000" stroke="#000000" points="468.1,-870 478.67,-870.67 470.83,-863.55 468.1,-870"/>
 </g>
-<!-- interface~aot_top_get_val~7&#45;&gt;proc~get_top_integer_v -->
+<!-- interface~aot_top_get_val~5&#45;&gt;proc~get_top_integer_v -->
 <g id="interface~~lua_gettop~~CalledByGraph_edge49" class="edge">
-<title>interface~aot_top_get_val~7&#45;&gt;proc~get_top_integer_v</title>
+<title>interface~aot_top_get_val~5&#45;&gt;proc~get_top_integer_v</title>
 <path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M380.08,-789.1C401.68,-797.9 431.95,-809.81 459,-819 464.99,-821.03 471.29,-823.05 477.58,-824.99"/>
 <polygon fill="#000000" stroke="#000000" points="476.82,-828.41 487.4,-827.95 478.84,-821.71 476.82,-828.41"/>
 </g>
-<!-- interface~aot_top_get_val~7&#45;&gt;proc~get_top_logical_v -->
+<!-- interface~aot_top_get_val~5&#45;&gt;proc~get_top_logical_v -->
 <g id="interface~~lua_gettop~~CalledByGraph_edge51" class="edge">
-<title>interface~aot_top_get_val~7&#45;&gt;proc~get_top_logical_v</title>
+<title>interface~aot_top_get_val~5&#45;&gt;proc~get_top_logical_v</title>
 <path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M398.29,-782.52C420.16,-785.07 446.41,-788.13 469.76,-790.86"/>
 <polygon fill="#000000" stroke="#000000" points="469.58,-794.36 479.92,-792.04 470.39,-787.41 469.58,-794.36"/>
 </g>
-<!-- interface~aot_top_get_val~7&#45;&gt;proc~get_top_long_v -->
+<!-- interface~aot_top_get_val~5&#45;&gt;proc~get_top_long_v -->
 <g id="interface~~lua_gettop~~CalledByGraph_edge53" class="edge">
-<title>interface~aot_top_get_val~7&#45;&gt;proc~get_top_long_v</title>
+<title>interface~aot_top_get_val~5&#45;&gt;proc~get_top_long_v</title>
 <path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M398.29,-771.48C422.1,-768.71 451.09,-765.32 475.89,-762.43"/>
 <polygon fill="#000000" stroke="#000000" points="476.36,-765.9 485.88,-761.26 475.55,-758.95 476.36,-765.9"/>
 </g>
-<!-- interface~aot_top_get_val~7&#45;&gt;proc~get_top_real_v -->
+<!-- interface~aot_top_get_val~5&#45;&gt;proc~get_top_real_v -->
 <g id="interface~~lua_gettop~~CalledByGraph_edge57" class="edge">
-<title>interface~aot_top_get_val~7&#45;&gt;proc~get_top_real_v</title>
+<title>interface~aot_top_get_val~5&#45;&gt;proc~get_top_real_v</title>
 <path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M380.08,-764.9C401.68,-756.1 431.95,-744.19 459,-735 464.99,-732.97 471.29,-730.95 477.58,-729.01"/>
 <polygon fill="#000000" stroke="#000000" points="478.84,-732.29 487.4,-726.05 476.82,-725.59 478.84,-732.29"/>
 </g>
-<!-- interface~aot_top_get_val~7&#45;&gt;proc~get_top_string_v -->
+<!-- interface~aot_top_get_val~5&#45;&gt;proc~get_top_string_v -->
 <g id="interface~~lua_gettop~~CalledByGraph_edge59" class="edge">
-<title>interface~aot_top_get_val~7&#45;&gt;proc~get_top_string_v</title>
+<title>interface~aot_top_get_val~5&#45;&gt;proc~get_top_string_v</title>
 <path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M363.21,-764.93C382.16,-746.83 420.5,-712.67 459,-693 463.34,-690.78 467.94,-688.77 472.65,-686.94"/>
 <polygon fill="#000000" stroke="#000000" points="474.16,-690.12 482.39,-683.45 471.8,-683.53 474.16,-690.12"/>
 </g>
-<!-- interface~aot_top_get_val~8 -->
+<!-- interface~aot_top_get_val~7 -->
 <g id="interface~~lua_gettop~~CalledByGraph_node42" class="node">
-<title>interface~aot_top_get_val~8</title>
-<g id="a_interface~~lua_gettop~~CalledByGraph_node42"><a xlink:href="../interface/aot_top_get_val~8.html" xlink:title="aot_top_get_val">
+<title>interface~aot_top_get_val~7</title>
+<g id="a_interface~~lua_gettop~~CalledByGraph_node42"><a xlink:href="../interface/aot_top_get_val~7.html" xlink:title="aot_top_get_val">
 <polygon fill="#a7506f" stroke="#a7506f" points="398,-348 302,-348 302,-324 398,-324 398,-348"/>
 <text text-anchor="middle" x="350" y="-333.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_top_get_val</text>
 </a>
 </g>
 </g>
-<!-- interface~aot_top_get_val~8&#45;&gt;proc~get_top_extdouble_vvect -->
+<!-- interface~aot_top_get_val~7&#45;&gt;proc~get_top_extdouble_vvect -->
 <g id="interface~~lua_gettop~~CalledByGraph_edge48" class="edge">
-<title>interface~aot_top_get_val~8&#45;&gt;proc~get_top_extdouble_vvect</title>
+<title>interface~aot_top_get_val~7&#45;&gt;proc~get_top_extdouble_vvect</title>
 <path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M398.29,-336C414.05,-336 432.09,-336 449.68,-336"/>
 <polygon fill="#000000" stroke="#000000" points="449.96,-339.5 459.96,-336 449.96,-332.5 449.96,-339.5"/>
 </g>
-<!-- interface~aot_top_get_val~9 -->
+<!-- interface~aot_top_get_val~8 -->
 <g id="interface~~lua_gettop~~CalledByGraph_node43" class="node">
-<title>interface~aot_top_get_val~9</title>
-<g id="a_interface~~lua_gettop~~CalledByGraph_node43"><a xlink:href="../interface/aot_top_get_val~9.html" xlink:title="aot_top_get_val">
+<title>interface~aot_top_get_val~8</title>
+<g id="a_interface~~lua_gettop~~CalledByGraph_node43"><a xlink:href="../interface/aot_top_get_val~8.html" xlink:title="aot_top_get_val">
 <polygon fill="#a7506f" stroke="#a7506f" points="398,-390 302,-390 302,-366 398,-366 398,-390"/>
 <text text-anchor="middle" x="350" y="-375.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_top_get_val</text>
 </a>
 </g>
 </g>
-<!-- interface~aot_top_get_val~9&#45;&gt;proc~get_top_extdouble_v -->
+<!-- interface~aot_top_get_val~8&#45;&gt;proc~get_top_extdouble_v -->
 <g id="interface~~lua_gettop~~CalledByGraph_edge47" class="edge">
-<title>interface~aot_top_get_val~9&#45;&gt;proc~get_top_extdouble_v</title>
+<title>interface~aot_top_get_val~8&#45;&gt;proc~get_top_extdouble_v</title>
 <path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M398.29,-378C417.54,-378 440.18,-378 461.25,-378"/>
 <polygon fill="#000000" stroke="#000000" points="461.45,-381.5 471.45,-378 461.45,-374.5 461.45,-381.5"/>
 </g>
-<!-- proc~aot_fun_put_double_v&#45;&gt;interface~aot_table_from_1darray~3 -->
+<!-- proc~aot_fun_put_double_v&#45;&gt;interface~aot_table_from_1darray -->
 <g id="interface~~lua_gettop~~CalledByGraph_edge37" class="edge">
-<title>proc~aot_fun_put_double_v&#45;&gt;interface~aot_table_from_1darray~3</title>
+<title>proc~aot_fun_put_double_v&#45;&gt;interface~aot_table_from_1darray</title>
 <path fill="none" stroke="#000000" d="M402.58,-953.96C423.48,-949.09 447.79,-943.42 469.59,-938.33"/>
 <polygon fill="#000000" stroke="#000000" points="470.47,-941.72 479.41,-936.04 468.88,-934.9 470.47,-941.72"/>
 </g>
@@ -933,9 +951,9 @@
 </a>
 </g>
 </g>
-<!-- proc~aot_fun_put_extdouble_v&#45;&gt;interface~aot_table_from_1darray~3 -->
+<!-- proc~aot_fun_put_extdouble_v&#45;&gt;interface~aot_table_from_1darray -->
 <g id="interface~~lua_gettop~~CalledByGraph_edge38" class="edge">
-<title>proc~aot_fun_put_extdouble_v&#45;&gt;interface~aot_table_from_1darray~3</title>
+<title>proc~aot_fun_put_extdouble_v&#45;&gt;interface~aot_table_from_1darray</title>
 <path fill="none" stroke="#000000" d="M402.58,-894.04C423.48,-898.91 447.79,-904.58 469.59,-909.67"/>
 <polygon fill="#000000" stroke="#000000" points="468.88,-913.1 479.41,-911.96 470.47,-906.28 468.88,-913.1"/>
 </g>
@@ -948,15 +966,15 @@
 </a>
 </g>
 </g>
-<!-- proc~aot_fun_put_quadruple_v&#45;&gt;interface~aot_table_from_1darray~3 -->
+<!-- proc~aot_fun_put_quadruple_v&#45;&gt;interface~aot_table_from_1darray -->
 <g id="interface~~lua_gettop~~CalledByGraph_edge39" class="edge">
-<title>proc~aot_fun_put_quadruple_v&#45;&gt;interface~aot_table_from_1darray~3</title>
+<title>proc~aot_fun_put_quadruple_v&#45;&gt;interface~aot_table_from_1darray</title>
 <path fill="none" stroke="#000000" d="M405.21,-852.05C411.45,-854.52 417.53,-857.47 423,-861 443.66,-874.33 438.34,-889.67 459,-903 461.74,-904.76 464.62,-906.39 467.61,-907.87"/>
 <polygon fill="#000000" stroke="#000000" points="466.23,-911.09 476.79,-911.95 469.07,-904.69 466.23,-911.09"/>
 </g>
-<!-- proc~aot_fun_put_single_v&#45;&gt;interface~aot_table_from_1darray~3 -->
+<!-- proc~aot_fun_put_single_v&#45;&gt;interface~aot_table_from_1darray -->
 <g id="interface~~lua_gettop~~CalledByGraph_edge40" class="edge">
-<title>proc~aot_fun_put_single_v&#45;&gt;interface~aot_table_from_1darray~3</title>
+<title>proc~aot_fun_put_single_v&#45;&gt;interface~aot_table_from_1darray</title>
 <path fill="none" stroke="#000000" d="M411.69,-924C424.38,-924 437.94,-924 451.2,-924"/>
 <polygon fill="#000000" stroke="#000000" points="451.26,-927.5 461.26,-924 451.26,-920.5 451.26,-927.5"/>
 </g>
@@ -976,31 +994,31 @@
 <g id="interface~~lua_gettop~~CalledByGraph_node49" class="node">
 <title>interface~aot_fun_put~2</title>
 <g id="a_interface~~lua_gettop~~CalledByGraph_node49"><a xlink:href="../interface/aot_fun_put~2.html" xlink:title="aot_fun_put">
-<polygon fill="#a7506f" stroke="#a7506f" points="221.5,-852 146.5,-852 146.5,-828 221.5,-828 221.5,-852"/>
-<text text-anchor="middle" x="184" y="-837.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_fun_put</text>
-</a>
-</g>
-</g>
-<!-- interface~aot_fun_put~2&#45;&gt;proc~aot_fun_put_quadruple_v -->
-<g id="interface~~lua_gettop~~CalledByGraph_edge64" class="edge">
-<title>interface~aot_fun_put~2&#45;&gt;proc~aot_fun_put_quadruple_v</title>
-<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M221.8,-840C235.13,-840 250.77,-840 266.44,-840"/>
-<polygon fill="#000000" stroke="#000000" points="266.71,-843.5 276.71,-840 266.71,-836.5 266.71,-843.5"/>
-</g>
-<!-- interface~aot_fun_put~3 -->
-<g id="interface~~lua_gettop~~CalledByGraph_node50" class="node">
-<title>interface~aot_fun_put~3</title>
-<g id="a_interface~~lua_gettop~~CalledByGraph_node50"><a xlink:href="../interface/aot_fun_put~3.html" xlink:title="aot_fun_put">
 <polygon fill="#a7506f" stroke="#a7506f" points="221.5,-894 146.5,-894 146.5,-870 221.5,-870 221.5,-894"/>
 <text text-anchor="middle" x="184" y="-879.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_fun_put</text>
 </a>
 </g>
 </g>
-<!-- interface~aot_fun_put~3&#45;&gt;proc~aot_fun_put_extdouble_v -->
+<!-- interface~aot_fun_put~2&#45;&gt;proc~aot_fun_put_extdouble_v -->
 <g id="interface~~lua_gettop~~CalledByGraph_edge63" class="edge">
-<title>interface~aot_fun_put~3&#45;&gt;proc~aot_fun_put_extdouble_v</title>
+<title>interface~aot_fun_put~2&#45;&gt;proc~aot_fun_put_extdouble_v</title>
 <path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M221.8,-882C235.36,-882 251.32,-882 267.26,-882"/>
 <polygon fill="#000000" stroke="#000000" points="267.71,-885.5 277.71,-882 267.71,-878.5 267.71,-885.5"/>
+</g>
+<!-- interface~aot_fun_put~3 -->
+<g id="interface~~lua_gettop~~CalledByGraph_node50" class="node">
+<title>interface~aot_fun_put~3</title>
+<g id="a_interface~~lua_gettop~~CalledByGraph_node50"><a xlink:href="../interface/aot_fun_put~3.html" xlink:title="aot_fun_put">
+<polygon fill="#a7506f" stroke="#a7506f" points="221.5,-852 146.5,-852 146.5,-828 221.5,-828 221.5,-852"/>
+<text text-anchor="middle" x="184" y="-837.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">aot_fun_put</text>
+</a>
+</g>
+</g>
+<!-- interface~aot_fun_put~3&#45;&gt;proc~aot_fun_put_quadruple_v -->
+<g id="interface~~lua_gettop~~CalledByGraph_edge64" class="edge">
+<title>interface~aot_fun_put~3&#45;&gt;proc~aot_fun_put_quadruple_v</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M221.8,-840C235.13,-840 250.77,-840 266.44,-840"/>
+<polygon fill="#000000" stroke="#000000" points="266.71,-843.5 276.71,-840 266.71,-836.5 266.71,-843.5"/>
 </g>
 </g>
 </svg>
@@ -1106,7 +1124,7 @@ implementation in a submodule of an interface in a parent module.
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-l~46"></span>
+              <span class="anchor" id="variable-l~62"></span>
               type(c_ptr),
             </td>
 <td></td>
@@ -1137,40 +1155,18 @@ implementation in a submodule of an interface in a parent module.
           <div class="col">
             <p>
               Aotus
- was developed by University of Siegen<br>              &copy; 2025 
-<br /><small>37d1cea0dc71</small></p>
+ was developed by APES Team<br>              &copy; 2025 <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a>
+<br /><small>e33a4e28d95a</small></p>
           </div>
           <div class="col">
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2025-03-24T15:04:50.422931+0000             </p>
+ on 2025-11-29T17:06:50.716771+0000             </p>
           </div>
         </div>
         <br>
       </div> <!-- /container -->
     </footer>
-
-    <!-- Bootstrap core JavaScript -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>    
-
-    <!-- MathJax JavaScript
-             ================================================== -->
-             <!-- Placed at the end of the document so the pages load faster -->
-        <script type="text/x-mathjax-config">
-          MathJax.Hub.Config({
-          TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } },
-          jax: ['input/TeX','input/MathML','output/HTML-CSS'],
-          extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
-          });
-        </script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
-          <script src="../tipuesearch/tipuesearch_content.js"></script>
-          <script src="../tipuesearch/tipuesearch_set.js"></script>
-          <script src="../tipuesearch/tipuesearch.js"></script>
-
   </body>
 </html>
