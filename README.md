@@ -1,7 +1,7 @@
 Advanced Options and Tables in Universal Scripting
 ==================================================
 
-<img src="doc_pages/logo.svg" height="100"> ![powered by Lua](doc_pages/powered-by-lua.gif)
+<img src="doc_pages/logo.svg" height="150"> ![powered by Lua](doc_pages/powered-by-lua.gif)
 
 The AOTUS library provides a Fortran wrapper around the C-API of the
 [Lua](http://www.lua.org) scripting language, allowing a convenient usage of Lua
