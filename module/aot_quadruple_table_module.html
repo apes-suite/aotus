@@ -144,10 +144,10 @@
       </a>
       <div id="inters-0" class="collapse">
         <div class="list-group list-group-flush">
-            <a class="list-group-item" href="../module/aot_quadruple_table_module.html#interface-aot_table_get_val~2">aot_table_get_val</a>
-            <a class="list-group-item" href="../module/aot_quadruple_table_module.html#interface-aot_table_set_val~2">aot_table_set_val</a>
-            <a class="list-group-item" href="../module/aot_quadruple_table_module.html#interface-aot_get_val~2">aot_get_val</a>
-            <a class="list-group-item" href="../module/aot_quadruple_table_module.html#interface-aot_table_from_1darray~2">aot_table_from_1Darray</a>
+            <a class="list-group-item" href="../module/aot_quadruple_table_module.html#interface-aot_table_get_val~5">aot_table_get_val</a>
+            <a class="list-group-item" href="../module/aot_quadruple_table_module.html#interface-aot_table_set_val~3">aot_table_set_val</a>
+            <a class="list-group-item" href="../module/aot_quadruple_table_module.html#interface-aot_get_val~5">aot_get_val</a>
+            <a class="list-group-item" href="../module/aot_quadruple_table_module.html#interface-aot_table_from_1darray~3">aot_table_from_1Darray</a>
         </div>
       </div>
     </div>
@@ -191,11 +191,11 @@
             <li class="list-group-item">
               <ul class="list-inline">
                   <li class="list-inline-item"><a href='aot_top_module.html'>aot_top_module</a></li>
+                  <li class="list-inline-item"><a href='aot_table_ops_module.html'>aot_table_ops_module</a></li>
                   <li class="list-inline-item"><a href='flu_kinds_module.html'>flu_kinds_module</a></li>
                   <li class="list-inline-item"><a href='aot_err_module.html'>aot_err_module</a></li>
                   <li class="list-inline-item"><a href='aot_quadruple_top_module.html'>aot_quadruple_top_module</a></li>
                   <li class="list-inline-item"><a href='flu_binding.html'>flu_binding</a></li>
-                  <li class="list-inline-item"><a href='aot_table_ops_module.html'>aot_table_ops_module</a></li>
               </ul>
             </li>
             <li class="list-group-item">
@@ -794,8 +794,8 @@ modules which it uses.
           <h2>Interfaces</h2>
               <div class="card">
     <div class="card-header bg-light codesum">
-      <span class="anchor" id="interface-aot_table_get_val~2"></span>
-      <h3>public        interface <a href='../interface/aot_table_get_val~2.html'>aot_table_get_val</a> 
+      <span class="anchor" id="interface-aot_table_get_val~5"></span>
+      <h3>public        interface <a href='../interface/aot_table_get_val~5.html'>aot_table_get_val</a> 
       </h3>
     </div>
       <div class="card-body">
@@ -832,7 +832,7 @@ quadruple precision real numbers.</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-val~17"></span>
+              <span class="anchor" id="variable-val~47"></span>
               real(kind=quad_k),
             </td>
 <td>intent(out)</td>
@@ -847,7 +847,7 @@ quadruple precision real numbers.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-errcode~9"></span>
+              <span class="anchor" id="variable-errcode~27"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -862,7 +862,7 @@ quadruple precision real numbers.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-l~24"></span>
+              <span class="anchor" id="variable-l~102"></span>
               type(<a href='../type/flu_state.html'>flu_State</a>)
             </td>
 <td></td>
@@ -877,7 +877,7 @@ quadruple precision real numbers.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-thandle~7"></span>
+              <span class="anchor" id="variable-thandle~37"></span>
               integer,
             </td>
 <td>intent(in),</td>
@@ -892,7 +892,7 @@ quadruple precision real numbers.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-key~5"></span>
+              <span class="anchor" id="variable-key~28"></span>
               character(len=*),
             </td>
 <td>intent(in),</td>
@@ -902,12 +902,12 @@ quadruple precision real numbers.</p>
             <td>::</td>
             <td><strong>key</strong></td>
             <td>
-<p>Name of the entry to look for.</p><a href="../proc/get_table_quadruple.html#variable-key~5" class="pull-right"><emph>Read more&hellip;</emph></a>
+<p>Name of the entry to look for.</p><a href="../proc/get_table_quadruple.html#variable-key~28" class="pull-right"><emph>Read more&hellip;</emph></a>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-pos~5"></span>
+              <span class="anchor" id="variable-pos~28"></span>
               integer,
             </td>
 <td>intent(in),</td>
@@ -917,12 +917,12 @@ quadruple precision real numbers.</p>
             <td>::</td>
             <td><strong>pos</strong></td>
             <td>
-<p>Position of the entry to look for in the table.</p><a href="../proc/get_table_quadruple.html#variable-pos~5" class="pull-right"><emph>Read more&hellip;</emph></a>
+<p>Position of the entry to look for in the table.</p><a href="../proc/get_table_quadruple.html#variable-pos~28" class="pull-right"><emph>Read more&hellip;</emph></a>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-default~3"></span>
+              <span class="anchor" id="variable-default~20"></span>
               real(kind=quad_k),
             </td>
 <td>intent(in),</td>
@@ -946,8 +946,8 @@ the Lua script.</p>
 
               <div class="card">
     <div class="card-header bg-light codesum">
-      <span class="anchor" id="interface-aot_table_set_val~2"></span>
-      <h3>public        interface <a href='../interface/aot_table_set_val~2.html'>aot_table_set_val</a> 
+      <span class="anchor" id="interface-aot_table_set_val~3"></span>
+      <h3>public        interface <a href='../interface/aot_table_set_val~3.html'>aot_table_set_val</a> 
       </h3>
     </div>
       <div class="card-body">
@@ -981,7 +981,7 @@ Though, both of them are optional, at least one of them has to be provided.</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-val~18"></span>
+              <span class="anchor" id="variable-val~48"></span>
               real(kind=quad_k),
             </td>
 <td>intent(in)</td>
@@ -996,7 +996,7 @@ Though, both of them are optional, at least one of them has to be provided.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-l~25"></span>
+              <span class="anchor" id="variable-l~103"></span>
               type(<a href='../type/flu_state.html'>flu_State</a>)
             </td>
 <td></td>
@@ -1011,7 +1011,7 @@ Though, both of them are optional, at least one of them has to be provided.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-thandle~8"></span>
+              <span class="anchor" id="variable-thandle~38"></span>
               integer,
             </td>
 <td>intent(in)</td>
@@ -1026,7 +1026,7 @@ Though, both of them are optional, at least one of them has to be provided.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-key~6"></span>
+              <span class="anchor" id="variable-key~29"></span>
               character(len=*),
             </td>
 <td>intent(in),</td>
@@ -1036,12 +1036,12 @@ Though, both of them are optional, at least one of them has to be provided.</p>
             <td>::</td>
             <td><strong>key</strong></td>
             <td>
-<p>Name of the entry to look for.</p><a href="../proc/set_table_quadruple.html#variable-key~6" class="pull-right"><emph>Read more&hellip;</emph></a>
+<p>Name of the entry to look for.</p><a href="../proc/set_table_quadruple.html#variable-key~29" class="pull-right"><emph>Read more&hellip;</emph></a>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-pos~6"></span>
+              <span class="anchor" id="variable-pos~29"></span>
               integer,
             </td>
 <td>intent(in),</td>
@@ -1051,7 +1051,7 @@ Though, both of them are optional, at least one of them has to be provided.</p>
             <td>::</td>
             <td><strong>pos</strong></td>
             <td>
-<p>Position of the entry to look for in the table.</p><a href="../proc/set_table_quadruple.html#variable-pos~6" class="pull-right"><emph>Read more&hellip;</emph></a>
+<p>Position of the entry to look for in the table.</p><a href="../proc/set_table_quadruple.html#variable-pos~29" class="pull-right"><emph>Read more&hellip;</emph></a>
             </td>
         </tr>
     </tbody>
@@ -1064,8 +1064,8 @@ Though, both of them are optional, at least one of them has to be provided.</p>
 
               <div class="card">
     <div class="card-header bg-light codesum">
-      <span class="anchor" id="interface-aot_get_val~2"></span>
-      <h3>public        interface <a href='../interface/aot_get_val~2.html'>aot_get_val</a> 
+      <span class="anchor" id="interface-aot_get_val~5"></span>
+      <h3>public        interface <a href='../interface/aot_get_val~5.html'>aot_get_val</a> 
       </h3>
     </div>
       <div class="card-body">
@@ -1118,7 +1118,7 @@ quadruple precision real numbers.</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-val~17"></span>
+              <span class="anchor" id="variable-val~47"></span>
               real(kind=quad_k),
             </td>
 <td>intent(out)</td>
@@ -1133,7 +1133,7 @@ quadruple precision real numbers.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-errcode~9"></span>
+              <span class="anchor" id="variable-errcode~27"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -1148,7 +1148,7 @@ quadruple precision real numbers.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-l~24"></span>
+              <span class="anchor" id="variable-l~102"></span>
               type(<a href='../type/flu_state.html'>flu_State</a>)
             </td>
 <td></td>
@@ -1163,7 +1163,7 @@ quadruple precision real numbers.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-thandle~7"></span>
+              <span class="anchor" id="variable-thandle~37"></span>
               integer,
             </td>
 <td>intent(in),</td>
@@ -1178,7 +1178,7 @@ quadruple precision real numbers.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-key~5"></span>
+              <span class="anchor" id="variable-key~28"></span>
               character(len=*),
             </td>
 <td>intent(in),</td>
@@ -1188,12 +1188,12 @@ quadruple precision real numbers.</p>
             <td>::</td>
             <td><strong>key</strong></td>
             <td>
-<p>Name of the entry to look for.</p><a href="../proc/get_table_quadruple.html#variable-key~5" class="pull-right"><emph>Read more&hellip;</emph></a>
+<p>Name of the entry to look for.</p><a href="../proc/get_table_quadruple.html#variable-key~28" class="pull-right"><emph>Read more&hellip;</emph></a>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-pos~5"></span>
+              <span class="anchor" id="variable-pos~28"></span>
               integer,
             </td>
 <td>intent(in),</td>
@@ -1203,12 +1203,12 @@ quadruple precision real numbers.</p>
             <td>::</td>
             <td><strong>pos</strong></td>
             <td>
-<p>Position of the entry to look for in the table.</p><a href="../proc/get_table_quadruple.html#variable-pos~5" class="pull-right"><emph>Read more&hellip;</emph></a>
+<p>Position of the entry to look for in the table.</p><a href="../proc/get_table_quadruple.html#variable-pos~28" class="pull-right"><emph>Read more&hellip;</emph></a>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-default~3"></span>
+              <span class="anchor" id="variable-default~20"></span>
               real(kind=quad_k),
             </td>
 <td>intent(in),</td>
@@ -1232,8 +1232,8 @@ the Lua script.</p>
 
               <div class="card">
     <div class="card-header bg-light codesum">
-      <span class="anchor" id="interface-aot_table_from_1darray~2"></span>
-      <h3>public        interface <a href='../interface/aot_table_from_1darray~2.html'>aot_table_from_1Darray</a> 
+      <span class="anchor" id="interface-aot_table_from_1darray~3"></span>
+      <h3>public        interface <a href='../interface/aot_table_from_1darray~3.html'>aot_table_from_1Darray</a> 
       </h3>
     </div>
       <div class="card-body">
@@ -1267,7 +1267,7 @@ table.</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-l~26"></span>
+              <span class="anchor" id="variable-l~104"></span>
               type(<a href='../type/flu_state.html'>flu_State</a>)
             </td>
 <td></td>
@@ -1282,7 +1282,7 @@ table.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-thandle~9"></span>
+              <span class="anchor" id="variable-thandle~39"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -1297,7 +1297,7 @@ table.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-val~19"></span>
+              <span class="anchor" id="variable-val~49"></span>
               real(kind=quad_k),
             </td>
 <td>intent(in)</td>
@@ -1346,7 +1346,7 @@ table.</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-val~17"></span>
+              <span class="anchor" id="variable-val~47"></span>
               real(kind=quad_k),
             </td>
 <td>intent(out)</td>
@@ -1361,7 +1361,7 @@ table.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-errcode~9"></span>
+              <span class="anchor" id="variable-errcode~27"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -1376,7 +1376,7 @@ table.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-l~24"></span>
+              <span class="anchor" id="variable-l~102"></span>
               type(<a href='../type/flu_state.html'>flu_State</a>)
             </td>
 <td></td>
@@ -1391,7 +1391,7 @@ table.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-thandle~7"></span>
+              <span class="anchor" id="variable-thandle~37"></span>
               integer,
             </td>
 <td>intent(in),</td>
@@ -1406,7 +1406,7 @@ table.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-key~5"></span>
+              <span class="anchor" id="variable-key~28"></span>
               character(len=*),
             </td>
 <td>intent(in),</td>
@@ -1416,12 +1416,12 @@ table.</p>
             <td>::</td>
             <td><strong>key</strong></td>
             <td>
-<p>Name of the entry to look for.</p><a href="../proc/get_table_quadruple.html#variable-key~5" class="pull-right"><emph>Read more&hellip;</emph></a>
+<p>Name of the entry to look for.</p><a href="../proc/get_table_quadruple.html#variable-key~28" class="pull-right"><emph>Read more&hellip;</emph></a>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-pos~5"></span>
+              <span class="anchor" id="variable-pos~28"></span>
               integer,
             </td>
 <td>intent(in),</td>
@@ -1431,12 +1431,12 @@ table.</p>
             <td>::</td>
             <td><strong>pos</strong></td>
             <td>
-<p>Position of the entry to look for in the table.</p><a href="../proc/get_table_quadruple.html#variable-pos~5" class="pull-right"><emph>Read more&hellip;</emph></a>
+<p>Position of the entry to look for in the table.</p><a href="../proc/get_table_quadruple.html#variable-pos~28" class="pull-right"><emph>Read more&hellip;</emph></a>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-default~3"></span>
+              <span class="anchor" id="variable-default~20"></span>
               real(kind=quad_k),
             </td>
 <td>intent(in),</td>
@@ -1477,7 +1477,7 @@ the Lua script.</p>
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-val~18"></span>
+              <span class="anchor" id="variable-val~48"></span>
               real(kind=quad_k),
             </td>
 <td>intent(in)</td>
@@ -1492,7 +1492,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-l~25"></span>
+              <span class="anchor" id="variable-l~103"></span>
               type(<a href='../type/flu_state.html'>flu_State</a>)
             </td>
 <td></td>
@@ -1507,7 +1507,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-thandle~8"></span>
+              <span class="anchor" id="variable-thandle~38"></span>
               integer,
             </td>
 <td>intent(in)</td>
@@ -1522,7 +1522,7 @@ the Lua script.</p>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-key~6"></span>
+              <span class="anchor" id="variable-key~29"></span>
               character(len=*),
             </td>
 <td>intent(in),</td>
@@ -1532,12 +1532,12 @@ the Lua script.</p>
             <td>::</td>
             <td><strong>key</strong></td>
             <td>
-<p>Name of the entry to look for.</p><a href="../proc/set_table_quadruple.html#variable-key~6" class="pull-right"><emph>Read more&hellip;</emph></a>
+<p>Name of the entry to look for.</p><a href="../proc/set_table_quadruple.html#variable-key~29" class="pull-right"><emph>Read more&hellip;</emph></a>
             </td>
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-pos~6"></span>
+              <span class="anchor" id="variable-pos~29"></span>
               integer,
             </td>
 <td>intent(in),</td>
@@ -1547,7 +1547,7 @@ the Lua script.</p>
             <td>::</td>
             <td><strong>pos</strong></td>
             <td>
-<p>Position of the entry to look for in the table.</p><a href="../proc/set_table_quadruple.html#variable-pos~6" class="pull-right"><emph>Read more&hellip;</emph></a>
+<p>Position of the entry to look for in the table.</p><a href="../proc/set_table_quadruple.html#variable-pos~29" class="pull-right"><emph>Read more&hellip;</emph></a>
             </td>
         </tr>
     </tbody>
@@ -1578,7 +1578,7 @@ into the Lua context.</p><a href="../proc/create_1darray_quadruple.html" class="
     <tbody>
         <tr>
             <td>
-              <span class="anchor" id="variable-l~26"></span>
+              <span class="anchor" id="variable-l~104"></span>
               type(<a href='../type/flu_state.html'>flu_State</a>)
             </td>
 <td></td>
@@ -1593,7 +1593,7 @@ into the Lua context.</p><a href="../proc/create_1darray_quadruple.html" class="
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-thandle~9"></span>
+              <span class="anchor" id="variable-thandle~39"></span>
               integer,
             </td>
 <td>intent(out)</td>
@@ -1608,7 +1608,7 @@ into the Lua context.</p><a href="../proc/create_1darray_quadruple.html" class="
         </tr>
         <tr>
             <td>
-              <span class="anchor" id="variable-val~19"></span>
+              <span class="anchor" id="variable-val~49"></span>
               real(kind=quad_k),
             </td>
 <td>intent(in)</td>
@@ -1645,13 +1645,13 @@ into the Lua context.</p><a href="../proc/create_1darray_quadruple.html" class="
             <p>
               Aotus
  was developed by APES Team<br>              &copy; 2025 <a rel="license" href="https://opensource.org/licenses/MIT">MIT</a>
-<br /><small>e33a4e28d95a</small></p>
+<br /><small>2c1ec4d4629a</small></p>
           </div>
           <div class="col">
             <p class="text-end">
               Documentation generated by
               <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2025-11-29T17:06:50.716771+0000             </p>
+ on 2025-11-30T20:28:00.829546+0000             </p>
           </div>
         </div>
         <br>
