@@ -20,7 +20,7 @@ We are using [Waf](http://waf.io/) as build system.
 Installing `aotus` from the sources should be as simple as:
 
 ~~~~~~~~~~~{.sh}
-./waf configure build install
+./waf configure install
 ~~~~~~~~~~~
 
 If you want to select a specific Fortran compiler, set the environment variable
