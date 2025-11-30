@@ -188,6 +188,7 @@ def subconf(conf):
 
 
 def build(bld):
+    import os
     from waflib import Runner
     orig_refill = Runner.Parallel.refill_task_list
     def catch_circular(self):
@@ -372,11 +373,16 @@ def build(bld):
     bld.add_post_fun(utest_results.summary)
 
     # install_files actually only done, if in install mode.
-    # However, the if here avoids the ant_glob in the build directory
-    # to be run if not in the install phase...
+    # However, the if here avoids the construction of the modfiles list
+    # if we are not in the install phase...
     if bld.cmd == 'install':
-        bld.install_files('${PREFIX}/include',
-                          bld.path.get_bld().ant_glob('*.mod'))
+        bld.add_group()
+        modfiles = []
+        for aots in aotus_sources:
+            modfiles.append(bld.modfile(os.path.splitext(os.path.basename(aots))[0]))
+        for flus in flu_sources:
+            modfiles.append(bld.modfile(os.path.splitext(os.path.basename(flus))[0]))
+        bld.install_files('${PREFIX}/include', modfiles)
         bld.install_files('${PREFIX}/lib', 'libaotus.a')
 
 
